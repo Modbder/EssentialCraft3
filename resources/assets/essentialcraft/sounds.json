@@ -1,0 +1,29 @@
+{
+    "records.letsbefriends": {
+    "category": "record",
+    "sounds": [
+      {
+        "name": "records/Let's Be Friends",
+        "stream": true
+      }
+    ]
+  },
+    "records.arstotzkan": {
+    "category": "record",
+    "sounds": [
+      {
+        "name": "records/Arstotzkan Anthem",
+        "stream": true
+      }
+    ]
+  },
+      "records.secret": {
+    "category": "record",
+    "sounds": [
+      {
+        "name": "records/There Are No Secrets",
+        "stream": true
+      }
+    ]
+  }
+}
