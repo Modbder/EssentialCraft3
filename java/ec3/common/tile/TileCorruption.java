@@ -47,59 +47,65 @@ public class TileCorruption extends TileEntity
     
     public void updateEntity()
     {
-    	super.updateEntity();
-    	if(this.worldObj.rand.nextFloat() <= 0.0001F)
-    	{
-    		int biomeId = 0;
-    		Block blk = this.worldObj.getBlock(xCoord, yCoord, zCoord);
-    		if(blk == BlocksCore.lightCorruption[0])
-    		{
-    			biomeId = BiomeRegistry.chaosCorruption.biomeID;
-    		}
-    		if(blk == BlocksCore.lightCorruption[1])
-    		{
-    			biomeId = BiomeRegistry.frozenCorruption.biomeID;
-    		}
-    		if(blk == BlocksCore.lightCorruption[2])
-    		{
-    			biomeId = BiomeRegistry.shadowCorruption.biomeID;
-    		}
-    		if(blk == BlocksCore.lightCorruption[3])
-    		{
-    			biomeId = BiomeRegistry.magicCorruption.biomeID;
-    		}
-    		if(!this.worldObj.isRemote)
-    			changeBiomeAtPos(biomeId);
-    	}
-    	int metadata = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-    	if(metadata >= 7)
-    	{
-    		Block blk = this.worldObj.getBlock(xCoord, yCoord, zCoord);
-    		if(this.worldObj.getBlock(xCoord+1, yCoord, zCoord).isBlockNormalCube())
-    		{
-    			this.worldObj.setBlock(xCoord+1, yCoord, zCoord, blk, 0, 3);
-    		}
-    		if(this.worldObj.getBlock(xCoord-1, yCoord, zCoord).isBlockNormalCube())
-    		{
-    			this.worldObj.setBlock(xCoord-1, yCoord, zCoord, blk, 0, 3);
-    		}
-    		if(this.worldObj.getBlock(xCoord, yCoord+1, zCoord).isBlockNormalCube())
-    		{
-    			this.worldObj.setBlock(xCoord, yCoord+1, zCoord, blk, 0, 3);
-    		}
-    		if(this.worldObj.getBlock(xCoord, yCoord-1, zCoord).isBlockNormalCube())
-    		{
-    			this.worldObj.setBlock(xCoord, yCoord-1, zCoord, blk, 0, 3);
-    		}
-    		if(this.worldObj.getBlock(xCoord, yCoord, zCoord+1).isBlockNormalCube())
-    		{
-    			this.worldObj.setBlock(xCoord, yCoord, zCoord+1, blk, 0, 3);
-    		}
-    		if(this.worldObj.getBlock(xCoord, yCoord, zCoord-1).isBlockNormalCube())
-    		{
-    			this.worldObj.setBlock(xCoord, yCoord, zCoord-1, blk, 0, 3);
-    		}
-    		this.worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.air, 0, 3);
-    	}
+    	try {
+			super.updateEntity();
+			if(this.worldObj.rand.nextFloat() <= 0.0001F)
+			{
+				int biomeId = 0;
+				Block blk = this.worldObj.getBlock(xCoord, yCoord, zCoord);
+				if(blk == BlocksCore.lightCorruption[0])
+				{
+					biomeId = BiomeRegistry.chaosCorruption.biomeID;
+				}
+				if(blk == BlocksCore.lightCorruption[1])
+				{
+					biomeId = BiomeRegistry.frozenCorruption.biomeID;
+				}
+				if(blk == BlocksCore.lightCorruption[2])
+				{
+					biomeId = BiomeRegistry.shadowCorruption.biomeID;
+				}
+				if(blk == BlocksCore.lightCorruption[3])
+				{
+					biomeId = BiomeRegistry.magicCorruption.biomeID;
+				}
+				if(!this.worldObj.isRemote)
+					changeBiomeAtPos(biomeId);
+			}
+			int metadata = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
+			if(metadata >= 7)
+			{
+				Block blk = this.worldObj.getBlock(xCoord, yCoord, zCoord);
+				if(this.worldObj.getBlock(xCoord+1, yCoord, zCoord).isBlockSolid(worldObj, xCoord+1, yCoord, zCoord, 0))
+				{
+					this.worldObj.setBlock(xCoord+1, yCoord, zCoord, blk, 0, 3);
+				}
+				if(this.worldObj.getBlock(xCoord-1, yCoord, zCoord).isBlockSolid(worldObj, xCoord-1, yCoord, zCoord, 0))
+				{
+					this.worldObj.setBlock(xCoord-1, yCoord, zCoord, blk, 0, 3);
+				}
+				if(this.worldObj.getBlock(xCoord, yCoord+1, zCoord).isBlockSolid(worldObj, xCoord, yCoord+1, zCoord, 0))
+				{
+					this.worldObj.setBlock(xCoord, yCoord+1, zCoord, blk, 0, 3);
+				}
+				if(this.worldObj.getBlock(xCoord, yCoord-1, zCoord).isBlockSolid(worldObj, xCoord, yCoord-1, zCoord, 0))
+				{
+					this.worldObj.setBlock(xCoord, yCoord-1, zCoord, blk, 0, 3);
+				}
+				if(this.worldObj.getBlock(xCoord, yCoord, zCoord+1).isBlockSolid(worldObj, xCoord, yCoord, zCoord+1, 0))
+				{
+					this.worldObj.setBlock(xCoord, yCoord, zCoord+1, blk, 0, 3);
+				}
+				if(this.worldObj.getBlock(xCoord, yCoord, zCoord-1).isBlockSolid(worldObj, xCoord, yCoord, zCoord-1, 0))
+				{
+					this.worldObj.setBlock(xCoord, yCoord, zCoord-1, blk, 0, 3);
+				}
+				this.worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.air, 0, 3);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
+		}
     }
 }

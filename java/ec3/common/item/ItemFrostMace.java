@@ -61,36 +61,40 @@ public class ItemFrostMace extends ItemStoresMRUInNBT {
     
     public boolean hitEntity(ItemStack p_77644_1_, EntityLivingBase p_77644_2_, EntityLivingBase p_77644_3_)
     {
-    	if(p_77644_3_ instanceof EntityPlayer)
-    	{
-	        if((ECUtils.tryToDecreaseMRUInStorage((EntityPlayer) p_77644_3_, -250) || this.setMRU(p_77644_1_, -250)))
-	        {
-	        	String username = ((EntityPlayer) p_77644_3_).getDisplayName();
-	        	String attunement = DummyDataUtils.getDataForPlayer(username, "essentialcraft", "attunement");
-				if(attunement != null && !attunement.isEmpty() && !attunement.equals("no data") && !attunement.equals("empty string") && !attunement.equals("empty"))
-				{
-					int att = Integer.parseInt(attunement);
-					if(att == 2)
+    	try {
+			if(p_77644_3_ instanceof EntityPlayer)
+			{
+			    if((ECUtils.tryToDecreaseMRUInStorage((EntityPlayer) p_77644_3_, -250) || this.setMRU(p_77644_1_, -250)))
+			    {
+			    	String username = ((EntityPlayer) p_77644_3_).getDisplayName();
+			    	String attunement = DummyDataUtils.getDataForPlayer(username, "essentialcraft", "attunement");
+					if(attunement != null && !attunement.isEmpty() && !attunement.equals("no data") && !attunement.equals("empty string") && !attunement.equals("empty"))
 					{
-						PotionEffect eff = p_77644_2_.getActivePotionEffect(Potion.moveSlowdown);
-						if(p_77644_2_.hurtResistantTime == 0 || p_77644_2_.hurtResistantTime >= 15 && eff != null)
+						int att = Integer.parseInt(attunement);
+						if(att == 2)
 						{
-							p_77644_2_.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id,1000,eff.getAmplifier()+1));
-							return true;
-						}
-						else
-						{
-							if(p_77644_2_.hurtResistantTime == 0 || p_77644_2_.hurtResistantTime >= 15)
+							PotionEffect eff = p_77644_2_.getActivePotionEffect(Potion.moveSlowdown);
+							if(eff != null && p_77644_2_.hurtResistantTime == 0 || p_77644_2_.hurtResistantTime >= 15 && eff != null)
 							{
-								p_77644_2_.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id,1000,0));
+								p_77644_2_.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id,1000,eff.getAmplifier()+1));
 								return true;
 							}
+							else
+							{
+								if(p_77644_2_.hurtResistantTime == 0 || p_77644_2_.hurtResistantTime >= 15)
+								{
+									p_77644_2_.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id,1000,0));
+									return true;
+								}
+							}
+							
 						}
-						
 					}
-				}
-	        }
-    	}
+			    }
+			}
+		} catch (Exception e) {
+			return false;
+		}
         return false;
     }
     

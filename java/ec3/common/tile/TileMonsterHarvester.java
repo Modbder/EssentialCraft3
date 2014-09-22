@@ -69,7 +69,8 @@ public class TileMonsterHarvester extends TileMRUGeneric{
     					this.worldObj.spawnEntityInWorld(copy);
     					FakePlayer player = new FakePlayer((WorldServer) e.worldObj, ECUtils.EC3FakePlayerProfile);
     					ItemStack stk = this.getStackInSlot(2);
-    					player.inventory.setInventorySlotContents(player.inventory.currentItem, stk.copy());
+    					if(stk != null)
+    						player.inventory.setInventorySlotContents(player.inventory.currentItem, stk.copy());
     					copy.setHealth(0.1F);
     					player.attackTargetEntityWithCurrentItem(copy);
     					player.setDead();

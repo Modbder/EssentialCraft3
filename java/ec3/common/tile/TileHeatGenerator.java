@@ -104,7 +104,7 @@ public class TileHeatGenerator extends TileMRUGeneric{
                     {
                         if (this.getStackInSlot(0) != null)
                         {
-                           this.decrStackSize(0, 1);
+                           
                            if(this.getStackInSlot(1) == null || this.getStackInSlot(1).stackSize < this.getInventoryStackLimit())
                            {
                         	   if(this.getStackInSlot(1) != null && this.getStackInSlot(1).getItem() == ItemsCore.magicalSlag)
@@ -123,6 +123,7 @@ public class TileHeatGenerator extends TileMRUGeneric{
                             {
                                 this.setInventorySlotContents(0, this.getStackInSlot(0).getItem().getContainerItem(this.getStackInSlot(0)));
                             }
+                            this.decrStackSize(0, 1);
                         }
                     }
                 }

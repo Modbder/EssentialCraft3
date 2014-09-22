@@ -28,7 +28,7 @@ public class TileMatrixAbsorber extends TileMRUGeneric{
 	
 	public TileMatrixAbsorber()
 	{
-		this.balance = 0;
+		this.balance = 1;
 		this.maxMRU = (int) ApiCore.GENERATOR_MAX_MRU_GENERIC/10;
 		this.setSlotsNum(1);
 	}
@@ -41,6 +41,7 @@ public class TileMatrixAbsorber extends TileMRUGeneric{
 	@Override
 	public void updateEntity()
 	{
+		this.balance = 1;
 		super.updateEntity();
 		ItemStack stk = this.getStackInSlot(0);
 		if(stk != null && stk.getItem() instanceof ItemSoulStone)

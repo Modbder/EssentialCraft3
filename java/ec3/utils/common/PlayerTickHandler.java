@@ -191,7 +191,7 @@ public class PlayerTickHandler{
 								Block b_check_b3 = item.worldObj.getBlock((int)item.posX+x, (int)item.posY-1, (int)item.posZ+z+1);
 								Block b_check_b4 = item.worldObj.getBlock((int)item.posX+x, (int)item.posY-1, (int)item.posZ+z-1);
 								Block b_check_air = item.worldObj.getBlock((int)item.posX+x, (int)item.posY, (int)item.posZ+z);
-								if(b_check_air == Blocks.air && b_check_b1 == Blocks.end_stone && b_check_b4 == Blocks.end_stone && b_check_b2 == Blocks.end_stone && b_check_b3 == Blocks.end_stone)
+								if(b_check_air == Blocks.air && b_check_b1 == Blocks.sand && b_check_b4 == Blocks.sand && b_check_b2 == Blocks.sand && b_check_b3 == Blocks.sand)
 								{
 									if(item.getEntityItem().stackSize == 1)
 									item.lifespan = 0;
@@ -218,7 +218,7 @@ public class PlayerTickHandler{
 							for(int z = -1; z <= 1; ++z)
 							{
 								Block b = item.worldObj.getBlock((int)item.posX+x, (int)item.posY-1, (int)item.posZ+z);
-								if(b == Blocks.beacon)
+								if(b == Blocks.emerald_block)
 								{
 									Block b_check_air = item.worldObj.getBlock((int)item.posX+x, (int)item.posY, (int)item.posZ+z);
 									if(b_check_air == Blocks.air)
@@ -248,7 +248,7 @@ public class PlayerTickHandler{
 								for(int z = -1; z <= 1; ++z)
 								{
 									Block b = item.worldObj.getBlock((int)item.posX+x, (int)item.posY-1, (int)item.posZ+z);
-									if(b == Blocks.beacon)
+									if(b == Blocks.emerald_block)
 									{
 										Block b_check_air = item.worldObj.getBlock((int)item.posX+x, (int)item.posY, (int)item.posZ+z);
 										if(b_check_air == Blocks.air)

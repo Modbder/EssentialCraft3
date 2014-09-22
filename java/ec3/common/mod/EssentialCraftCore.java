@@ -30,7 +30,7 @@ import ec3.utils.common.CommandCreateMRUCU;
 import ec3.utils.common.CommandSetBalance;
 import ec3.utils.common.CommandSetMRU;
 
-@Mod(modid = "essentialcraft", name = "EssentialCraftIII", version = "4.0.1710.421")
+@Mod(modid = "essentialcraft", name = "EssentialCraftIII", version = "4.0.1710.534")
 public class EssentialCraftCore {
 
 //============================================CORE START=================================================//

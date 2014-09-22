@@ -110,7 +110,7 @@ public class TileElementalCrystal extends TileEntity{
 		if(metadata == 1)
 		{
 			Block b = this.worldObj.getBlock(xCoord, yCoord-1, zCoord);
-			if(!b.isBlockNormalCube() || !b.isBlockSolid(worldObj, xCoord, yCoord-1, zCoord, 0))
+			if(!b.isBlockSolid(worldObj, xCoord, yCoord-1, zCoord, 0))
 			{
 				this.worldObj.getBlock(xCoord, yCoord, zCoord).dropBlockAsItem(getWorldObj(), xCoord, yCoord, zCoord, metadata, 0);
 				this.worldObj.setBlockToAir(xCoord, yCoord, zCoord);
@@ -120,7 +120,7 @@ public class TileElementalCrystal extends TileEntity{
 		if(metadata == 0)
 		{
 			Block b = this.worldObj.getBlock(xCoord, yCoord+1, zCoord);
-			if(!b.isBlockNormalCube() || !b.isBlockSolid(worldObj, xCoord, yCoord+1, zCoord, 1))
+			if(!b.isBlockSolid(worldObj, xCoord, yCoord+1, zCoord, 1))
 			{
 				this.worldObj.getBlock(xCoord, yCoord, zCoord).dropBlockAsItem(getWorldObj(), xCoord, yCoord, zCoord, metadata, 0);
 				this.worldObj.setBlockToAir(xCoord, yCoord, zCoord);
@@ -130,7 +130,7 @@ public class TileElementalCrystal extends TileEntity{
 		if(metadata == 2)
 		{
 			Block b = this.worldObj.getBlock(xCoord, yCoord, zCoord+1);
-			if(!b.isBlockNormalCube() || !b.isBlockSolid(worldObj, xCoord, yCoord, zCoord+1, 3))
+			if(!b.isBlockSolid(worldObj, xCoord, yCoord, zCoord+1, 3))
 			{
 				this.worldObj.getBlock(xCoord, yCoord, zCoord).dropBlockAsItem(getWorldObj(), xCoord, yCoord, zCoord, metadata, 0);
 				this.worldObj.setBlockToAir(xCoord, yCoord, zCoord);
@@ -140,7 +140,7 @@ public class TileElementalCrystal extends TileEntity{
 		if(metadata == 3)
 		{
 			Block b = this.worldObj.getBlock(xCoord, yCoord, zCoord-1);
-			if(!b.isBlockNormalCube() || !b.isBlockSolid(worldObj, xCoord, yCoord, zCoord-1, 2))
+			if(!b.isBlockSolid(worldObj, xCoord, yCoord, zCoord-1, 2))
 			{
 				this.worldObj.getBlock(xCoord, yCoord, zCoord).dropBlockAsItem(getWorldObj(), xCoord, yCoord, zCoord, metadata, 0);
 				this.worldObj.setBlockToAir(xCoord, yCoord, zCoord);
@@ -150,7 +150,7 @@ public class TileElementalCrystal extends TileEntity{
 		if(metadata == 4)
 		{
 			Block b = this.worldObj.getBlock(xCoord+1, yCoord, zCoord);
-			if(!b.isBlockNormalCube() || !b.isBlockSolid(worldObj, xCoord+1, yCoord, zCoord, 5))
+			if(!b.isBlockSolid(worldObj, xCoord+1, yCoord, zCoord, 5))
 			{
 				this.worldObj.getBlock(xCoord, yCoord, zCoord).dropBlockAsItem(getWorldObj(), xCoord, yCoord, zCoord, metadata, 0);
 				this.worldObj.setBlockToAir(xCoord, yCoord, zCoord);
@@ -160,7 +160,7 @@ public class TileElementalCrystal extends TileEntity{
 		if(metadata == 5)
 		{
 			Block b = this.worldObj.getBlock(xCoord-1, yCoord, zCoord);
-			if(!b.isBlockNormalCube() || !b.isBlockSolid(worldObj, xCoord-1, yCoord, zCoord, 4))
+			if(!b.isBlockSolid(worldObj, xCoord-1, yCoord, zCoord, 4))
 			{
 				this.worldObj.getBlock(xCoord, yCoord, zCoord).dropBlockAsItem(getWorldObj(), xCoord, yCoord, zCoord, metadata, 0);
 				this.worldObj.setBlockToAir(xCoord, yCoord, zCoord);

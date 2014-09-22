@@ -61,40 +61,44 @@ public class ItemChaosFork extends ItemStoresMRUInNBT {
     
     public boolean hitEntity(ItemStack p_77644_1_, EntityLivingBase p_77644_2_, EntityLivingBase p_77644_3_)
     {
-    	if(p_77644_3_ instanceof EntityPlayer)
-    	{
-	        if((ECUtils.tryToDecreaseMRUInStorage((EntityPlayer) p_77644_3_, -250) || this.setMRU(p_77644_1_, -250)))
-	        {
-	        	String username = ((EntityPlayer) p_77644_3_).getDisplayName();
-	        	String attunement = DummyDataUtils.getDataForPlayer(username, "essentialcraft", "attunement");
-				if(attunement != null && !attunement.isEmpty() && !attunement.equals("no data") && !attunement.equals("empty string") && !attunement.equals("empty"))
-				{
-					int att = Integer.parseInt(attunement);
-					if(att == 1)
+    	try {
+			if(p_77644_3_ instanceof EntityPlayer)
+			{
+			    if((ECUtils.tryToDecreaseMRUInStorage((EntityPlayer) p_77644_3_, -250) || this.setMRU(p_77644_1_, -250)))
+			    {
+			    	String username = ((EntityPlayer) p_77644_3_).getDisplayName();
+			    	String attunement = DummyDataUtils.getDataForPlayer(username, "essentialcraft", "attunement");
+					if(attunement != null && !attunement.isEmpty() && !attunement.equals("no data") && !attunement.equals("empty string") && !attunement.equals("empty"))
 					{
-						PotionEffect eff = p_77644_2_.getActivePotionEffect(Potion.digSlowdown);
-						if(p_77644_2_.hurtResistantTime == 0 || p_77644_2_.hurtResistantTime >= 15 && eff != null)
+						int att = Integer.parseInt(attunement);
+						if(att == 1)
 						{
-							int buffLevel = eff.getAmplifier();
-							p_77644_2_.addPotionEffect(new PotionEffect(Potion.digSlowdown.id,100,eff.getAmplifier()+1));
-							p_77644_3_.addPotionEffect(new PotionEffect(Potion.damageBoost.id,100,buffLevel));
-							return true;
-						}
-						else
-						{
-							if(p_77644_2_.hurtResistantTime == 0 || p_77644_2_.hurtResistantTime >= 15)
+							PotionEffect eff = p_77644_2_.getActivePotionEffect(Potion.digSlowdown);
+							if(eff != null && p_77644_2_.hurtResistantTime == 0 || p_77644_2_.hurtResistantTime >= 15 && eff != null)
 							{
-								int buffLevel = 0;
-								p_77644_2_.addPotionEffect(new PotionEffect(Potion.digSlowdown.id,100,0));
+								int buffLevel = eff.getAmplifier();
+								p_77644_2_.addPotionEffect(new PotionEffect(Potion.digSlowdown.id,100,eff.getAmplifier()+1));
 								p_77644_3_.addPotionEffect(new PotionEffect(Potion.damageBoost.id,100,buffLevel));
 								return true;
 							}
+							else
+							{
+								if(p_77644_2_.hurtResistantTime == 0 || p_77644_2_.hurtResistantTime >= 15)
+								{
+									int buffLevel = 0;
+									p_77644_2_.addPotionEffect(new PotionEffect(Potion.digSlowdown.id,100,0));
+									p_77644_3_.addPotionEffect(new PotionEffect(Potion.damageBoost.id,100,buffLevel));
+									return true;
+								}
+							}
+							
 						}
-						
 					}
-				}
-	        }
-    	}
+			    }
+			}
+		} catch (Exception e) {
+			return false;
+		}
         return false;
     }
     

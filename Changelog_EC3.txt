@@ -1,0 +1,14 @@
+4.0.1710.534
+    -Fixed: Crash on server with crystals
+    -Fixed: Crash on server with corruption
+    -Fixed: Crashes with Chaos Fork & Frozen Mace
+    -Fixed: Crash with Monster Duplicator
+    -Fixed: Crash with ECController if no controller preset or structure not initialised
+    -Fixed: Crashes with Scala dependency in GenericItem
+    -Fixed: Crash with Heat Generator if only 1 item was burned
+    -Fixed: Matrix Destructor not producing the ideal balance
+    -Fixed: Crash with Scala dependency in Monster Holder 
+    
+    -Changed: Elemental Gems no longer require a diamond in craft(too much diamonds required)
+    -Changed: Air Drops no longer require quartz blocks to be presented
+    

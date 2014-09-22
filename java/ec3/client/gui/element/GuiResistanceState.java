@@ -51,7 +51,8 @@ public class GuiResistanceState extends GuiTextField{
 		if(tile instanceof TileecStateChecker)
 		{
 			TileecController controllerTile = (TileecController) ((TileecStateChecker)tile).structureController();
-			Minecraft.getMinecraft().fontRenderer.drawString(controllerTile.resistance+" MROV", posX+2, posY+5, 0xffffff, true);
+			if(controllerTile != null)
+				Minecraft.getMinecraft().fontRenderer.drawString(controllerTile.resistance+" MROV", posX+2, posY+5, 0xffffff, true);
 		}
 	}
 

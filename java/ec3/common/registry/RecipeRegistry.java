@@ -90,7 +90,7 @@ public class RecipeRegistry {
 	public void registerRecipes()
 	{
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ItemsCore.drops,1,4), new Object[]{
-			"shardFire","shardWater","shardEarth","shardAir","gemDiamond"
+			"shardFire","shardWater","shardEarth","shardAir","gemEnderPearl"
 		}));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ItemsCore.mruMover1,1,0), new Object[]{
 			"shardElemental","stickWood"
