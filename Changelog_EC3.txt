@@ -11,4 +11,21 @@
     
     -Changed: Elemental Gems no longer require a diamond in craft(too much diamonds required)
     -Changed: Air Drops no longer require quartz blocks to be presented
-    
+   
+4.2.1710.36
+	-A bit of API tweaking
+	-Switched GuiCommon and GuiElement to DummyCore(no functional changes)
+	-Added Magical Furnace
+	-Added Magical Teleporter
+	-Created EC3 Main menu
+	-Added 4 sets of 3d armor
+	-New Dimension - First World corrupted by MRU(after Nuclear MRU War)
+	-New Enemy - wind mages, carrying around trapped winds
+	-Added Ember Forge
+	-Added Baubles integration
+	-Added Elemental Swords
+	-Added Embers
+	-Added 8 potion effects
+	-Added 2 new biomes
+	-New mechanics - wind relations. Player can increase their wind relations by releasing trapped winds or by random world events
+	
