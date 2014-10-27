@@ -8,13 +8,16 @@ import ec3.common.tile.TileCrystalController;
 import ec3.common.tile.TileCrystalExtractor;
 import ec3.common.tile.TileCrystalFormer;
 import ec3.common.tile.TileElementalCrystal;
+import ec3.common.tile.TileEmberForge;
 import ec3.common.tile.TileEnderGenerator;
 import ec3.common.tile.TileFlowerBurner;
 import ec3.common.tile.TileHeatGenerator;
 import ec3.common.tile.TileMagicalEnchanter;
+import ec3.common.tile.TileMagicalFurnace;
 import ec3.common.tile.TileMagicalJukebox;
 import ec3.common.tile.TileMagicalQuarry;
 import ec3.common.tile.TileMagicalRepairer;
+import ec3.common.tile.TileMagicalTeleporter;
 import ec3.common.tile.TileMagicianTable;
 import ec3.common.tile.TileMagmaticSmelter;
 import ec3.common.tile.TileMatrixAbsorber;
@@ -71,6 +74,9 @@ public class TileRegistry {
 		addTileToMapping(TileCrystalController.class);
 		addTileToMapping(TileCrystalExtractor.class);
 		addTileToMapping(TileChargingChamber.class);
+		addTileToMapping(TileMagicalTeleporter.class);
+		addTileToMapping(TileMagicalFurnace.class);
+		addTileToMapping(TileEmberForge.class);
 	}
 	
 	public static void addTileToMapping(Class<? extends TileEntity> tile)

@@ -56,6 +56,7 @@ public class PlayerTickHandler{
 				EntityPlayer player = (EntityPlayer) event.entityLiving;
 				if(!event.entityLiving.worldObj.isRemote) //We should only run block changes on server-side
 				{		
+					WindRelations.playerTick(player);
 					if(player.ticksExisted % 20 == 0)
 					{
 						String str = DummyDataUtils.getDataForPlayer(player.getDisplayName(), "essentialcraft", "ubmruEnergy");

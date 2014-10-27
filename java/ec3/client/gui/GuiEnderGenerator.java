@@ -1,5 +1,6 @@
 package ec3.client.gui;
 
+import DummyCore.Client.GuiCommon;
 import ec3.api.ITEHasMRU;
 import ec3.client.gui.element.GuiBalanceState;
 import ec3.client.gui.element.GuiHeightState;

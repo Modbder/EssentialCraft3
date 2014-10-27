@@ -24,6 +24,15 @@ public class EntityMRUArrow extends EntityArrow{
     public void onUpdate()
     {
         super.onUpdate();
+        if(this.ticksExisted > 60)
+        	this.setDead();
+        this.motionX *= 0.8F;
+        //this.motionY *= 0.8F;
+        this.motionZ *= 0.8F;
+        for(int i = 0; i < 2; ++i)
+        {
+        	EssentialCraftCore.proxy.spawnParticle("cSpellFX", (float)posX+MathUtils.randomFloat(rand)/10, (float)posY+MathUtils.randomFloat(rand)/10, (float)posZ+MathUtils.randomFloat(rand)/10, motionX*10, motionY*10, motionZ*10);
+        }
     }
 
 }

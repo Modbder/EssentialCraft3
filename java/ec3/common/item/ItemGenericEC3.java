@@ -19,7 +19,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 public class ItemGenericEC3 extends Item{
-	public static String[] names = new String[]{"combinedMagicalAlloys","elementalCore","enderScalePlating","magicalEssence","magicalGoldenOrb","magicalIngot","magicalWater","magicFortifiedPlating","magicPurifyedEnderScaleAlloy","magicPurifyedGlassAlloy","magicPurifyedGoldAlloy","magicPurifyedRedstoneAlloy","mruShard","mruCrystal","mruGem","mruChunk","mruLargeChunk","inventoryUpgrade","efficencyUpgrade","diamondUpgrade","crystalDust","diamondPlate","emeraldPlate","eyeOfAbsorbtion","fortifiedFrame","heatingRod","ironSupport","magicalScreen","matrixLink","mruCatcher","mruConversionMatrix","obsidianPlate","sunImbuedGlass","worldInteractor","magicPlate"};
+	public static String[] names = new String[]{"combinedMagicalAlloys","elementalCore","enderScalePlating","magicalEssence","magicalGoldenOrb","magicalIngot","magicalWater","magicFortifiedPlating","magicPurifyedEnderScaleAlloy","magicPurifyedGlassAlloy","magicPurifyedGoldAlloy","magicPurifyedRedstoneAlloy","mruShard","mruCrystal","mruGem","mruChunk","mruLargeChunk","inventoryUpgrade","efficencyUpgrade","diamondUpgrade","crystalDust","diamondPlate","emeraldPlate","eyeOfAbsorbtion","fortifiedFrame","heatingRod","ironSupport","magicalScreen","matrixLink","mruCatcher","mruConversionMatrix","obsidianPlate","sunImbuedGlass","worldInteractor","magicPlate","voidPlating","voidCore","voidMruReactor"};
 	public static IIcon[] itemIcons = new IIcon[128];
 	
 	public ItemGenericEC3()

@@ -1,5 +1,6 @@
 package ec3.client.gui.element;
 
+import DummyCore.Client.GuiElement;
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
 import ec3.api.ITEHasMRU;

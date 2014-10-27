@@ -103,12 +103,12 @@ public class EntityCSpellFX extends EntityFX{
             this.setDead();
             for(int t = 0; t < 10; ++t)
             {
-            	this.worldObj.spawnParticle("smoke", posX, posY, posZ, MathUtils.randomFloat(rand)/6, MathUtils.randomFloat(rand)/6, MathUtils.randomFloat(rand)/6);
-            	if(this.worldObj.rand.nextFloat() < 0.01F)
-            		this.worldObj.spawnParticle("explode", posX, posY, posZ, MathUtils.randomFloat(rand)/6, MathUtils.randomFloat(rand)/6, MathUtils.randomFloat(rand)/6);
+            	//this.worldObj.spawnParticle("smoke", posX, posY, posZ, MathUtils.randomFloat(rand)/6, MathUtils.randomFloat(rand)/6, MathUtils.randomFloat(rand)/6);
+            	//if(this.worldObj.rand.nextFloat() < 0.01F)
+            	//this.worldObj.spawnParticle("explode", posX, posY, posZ, MathUtils.randomFloat(rand)/6, MathUtils.randomFloat(rand)/6, MathUtils.randomFloat(rand)/6);
             }
         }
-        if(this.worldObj.rand.nextFloat() < 0.01F)
-        	this.worldObj.spawnParticle("reddust", posX, posY, posZ, -1, 0, 0);
+       // if(this.worldObj.rand.nextFloat() < 0.01F)
+        	//this.worldObj.spawnParticle("reddust", posX, posY, posZ, -1, 0, 0);
     }
 }

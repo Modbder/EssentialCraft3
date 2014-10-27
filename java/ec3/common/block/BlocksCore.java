@@ -85,6 +85,19 @@ public class BlocksCore {
 		BlocksRegistry.registerBlock(voidStone, "voidStone", EssentialCraftCore.class, ItemBlockGeneric.class);
 		voidGlass = new BlockConnectedTextures(Material.glass).setTexturePath("voidGlass").setHardness(8.0F).setResistance(150.0F).setBlockName("essentialcraft.voidGlass").setBlockTextureName("essentialcraft:voidGlass");
 		BlocksRegistry.registerBlock(voidGlass, "voidGlass", EssentialCraftCore.class, ItemBlockGeneric.class);
+		
+		concrete = registerBlockSimple(Block.class,Material.rock,concrete,"concrete","firstWorld/burnedConcrete",1,1,0);
+		cacti = registerBlockSimple(BlockDreadCacti.class,Material.cactus,cacti,"cacti","firstWorld/cactus",1,1,0);
+		dreadDirt = registerBlockSimple(Block.class,Material.ground,dreadDirt,"dreadDirt","firstWorld/dreadDirt",1,1,0);
+		dreadDirt.setStepSound(Block.soundTypeGravel);
+		flowerGreen = registerBlockSimple(BlockModFlower.class,Material.grass,flowerGreen,"flowerGreen","firstWorld/flower_green",1,1,0);
+		fruit = registerBlockSimple(BlockMagicalFruit.class,Material.grass,fruit,"fruit","firstWorld/magicalFruit",1,1,0);
+		root = registerBlockSimple(Block.class,Material.wood,root,"root","firstWorld/root",1,1,0);
+		tallGrass = registerBlockSimple(BlockModTallGrass.class,Material.grass,tallGrass,"tallGrass","firstWorld/tallGrass",1,1,0);
+		
+		magicalTeleporter = registerBlockSimple(BlockMagicalTeleporter.class,Material.rock,magicalTeleporter,"magicalTeleporter","magicPlatingBlock",1,1,0);
+		magicalFurnace = registerBlockSimple(BlockMagicalFurnace.class,Material.rock,magicalFurnace,"magicalFurnace","magicPlatingBlock",1,1,0);
+		emberForge = registerBlockSimple(BlockEmberForge.class,Material.rock,emberForge,"emberForge","magicPlatingBlock",1,1,0);
 	}
 	
 	public static Block registerBlockSimple(Class<? extends Block> c,Material m,Block b, String name, String texture, float hardness, float resistance, int opacity)
@@ -98,9 +111,17 @@ public class BlocksCore {
 		catch (Exception e) {
 			try
 			{
-				b = c.getConstructor(Material.class).newInstance(m).setBlockName("essentialcraft:"+name).setBlockTextureName("essentialcraft:"+name).setResistance(resistance).setHardness(hardness).setLightOpacity(opacity);
-				BlocksRegistry.registerBlock(b, name, EssentialCraftCore.class, ItemBlockGeneric.class);
-				return b;
+				if(c == Block.class)
+				{
+					b = new ModBlock(m).setBlockName("essentialcraft:"+name).setBlockTextureName("essentialcraft:"+texture).setResistance(resistance).setHardness(hardness).setLightOpacity(opacity);
+					BlocksRegistry.registerBlock(b, name, EssentialCraftCore.class, ItemBlockGeneric.class);
+					return b;
+				}else
+				{
+					b = c.getConstructor(Material.class).newInstance(m).setBlockName("essentialcraft:"+name).setBlockTextureName("essentialcraft:"+texture).setResistance(resistance).setHardness(hardness).setLightOpacity(opacity);
+					BlocksRegistry.registerBlock(b, name, EssentialCraftCore.class, ItemBlockGeneric.class);
+					return b;
+				}
 			}
 			catch (Exception e1) {
 				e1.printStackTrace();
@@ -147,5 +168,19 @@ public class BlocksCore {
 	public static Block chargingChamber;
 	public static Block voidStone;
 	public static Block voidGlass;
+	
+	public static Block concrete;
+	public static Block cacti;
+	public static Block dreadDirt;
+	public static Block flowerGreen;
+	public static Block fruit;
+	public static Block root;
+	public static Block tallGrass;
+	public static Block thorns;
+	
+	public static Block magicalTeleporter;
+	public static Block magicalFurnace;
+	public static Block emberForge;
+	
 	public static Block[] lightCorruption = new Block[4];
 }

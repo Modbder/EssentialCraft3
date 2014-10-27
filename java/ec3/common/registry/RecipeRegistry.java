@@ -75,6 +75,10 @@ public class RecipeRegistry {
 		OreDictionary.registerOre("ttitanite", new ItemStack(ItemsCore.twinkling_titanite,1,0));
 		OreDictionary.registerOre("titaniteTwinkling", new ItemStack(ItemsCore.twinkling_titanite,1,0));
 		
+		OreDictionary.registerOre("plateVoid", new ItemStack(ItemsCore.genericItem,1,35));
+		OreDictionary.registerOre("voidCore", new ItemStack(ItemsCore.genericItem,1,36));
+		OreDictionary.registerOre("voidMRU", new ItemStack(ItemsCore.genericItem,1,37));
+		
 		OreDictionary.registerOre("focusFire", new ItemStack(ItemsCore.fFocus,1,0));
 		OreDictionary.registerOre("focusWater", new ItemStack(ItemsCore.wFocus,1,0));
 		OreDictionary.registerOre("focusEarth", new ItemStack(ItemsCore.eFocus,1,0));
@@ -90,7 +94,7 @@ public class RecipeRegistry {
 	public void registerRecipes()
 	{
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ItemsCore.drops,1,4), new Object[]{
-			"shardFire","shardWater","shardEarth","shardAir","gemEnderPearl"
+			"shardFire","shardWater","shardEarth","shardAir"
 		}));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ItemsCore.mruMover1,1,0), new Object[]{
 			"shardElemental","stickWood"
@@ -561,6 +565,78 @@ public class RecipeRegistry {
 			"ingotMagic","focusWater","matterOfEternity",
 			"ingotMagic",ItemsCore.elemental_sword,"focusWater",
 			new ItemStack(ItemsCore.matrixProj,1,2),"ingotMagic","ingotMagic",
+		});
+		
+		addRecipe(new ItemStack(ItemsCore.windTablet,1,0),new Object[]{
+			"focusAir","plateFortified","focusAir",
+			"plateFortified",ItemsCore.windKeeper,"plateFortified",
+			"focusAir","plateFortified","focusAir",
+		});
+		
+		addRecipe(new ItemStack(BlocksCore.magicalTeleporter,1,0),new Object[]{
+			"screenMagic","voidMRU","worldInteractor",
+			"plateMagic","voidCore","plateMagic",
+			"plateVoid","matterOfEternity","plateVoid",
+		});
+		
+		addRecipe(new ItemStack(BlocksCore.magicalFurnace,1,0),new Object[]{
+			"screenMagic","voidMRU","worldInteractor",
+			"plateFortified","voidCore","plateFortified",
+			"plateVoid","matterOfEternity","plateVoid",
+		});
+		
+		addRecipe(new ItemStack(BlocksCore.emberForge,1,0),new Object[]{
+			"screenMagic","voidMRU","plateEnder",
+			"plateFortified","voidCore","plateFortified",
+			"plateVoid","matterOfEternity","plateVoid",
+		});
+		
+		addRecipe(new ItemStack(ItemsCore.magicArmorItems[0],1,0),new Object[]{
+			"alloysMagical","worldInteractor","alloysMagical",
+			"plateMagic","plateGlass","plateMagic",
+			"dustCrystal","dustCrystal","dustCrystal",
+		});
+		
+		addRecipe(new ItemStack(ItemsCore.magicArmorItems[1],1,0),new Object[]{
+			"worldInteractor","dustCrystal","worldInteractor",
+			"plateMagic","alloysMagical","plateMagic",
+			"plateMagic","alloysMagical","plateMagic",
+		});
+		
+		addRecipe(new ItemStack(ItemsCore.magicArmorItems[2],1,0),new Object[]{
+			"alloysMagical","worldInteractor","alloysMagical",
+			"plateMagic","dustCrystal","plateMagic",
+			"plateMagic","dustCrystal","plateMagic",
+		});
+		
+		addRecipe(new ItemStack(ItemsCore.magicArmorItems[3],1,0),new Object[]{
+			"dustCrystal","worldInteractor","dustCrystal",
+			"plateMagic","dustCrystal","plateMagic",
+			"alloysMagical","dustCrystal","alloysMagical",
+		});
+		
+		addRecipe(new ItemStack(ItemsCore.magicArmorItems[4],1,0),new Object[]{
+			"gemNetherStar","voidMRU","gemNetherStar",
+			"voidCore",new ItemStack(ItemsCore.magicArmorItems[0],1,0),"voidCore",
+			"plateVoid","matterOfEternity","plateVoid",
+		});
+		
+		addRecipe(new ItemStack(ItemsCore.magicArmorItems[5],1,0),new Object[]{
+			"voidMRU","gemNetherStar","voidMRU",
+			"voidCore",new ItemStack(ItemsCore.magicArmorItems[1],1,0),"voidCore",
+			"plateVoid","matterOfEternity","plateVoid",
+		});
+		
+		addRecipe(new ItemStack(ItemsCore.magicArmorItems[6],1,0),new Object[]{
+			"gemNetherStar","voidMRU","gemNetherStar",
+			"voidCore",new ItemStack(ItemsCore.magicArmorItems[2],1,0),"voidCore",
+			"plateVoid","matterOfEternity","plateVoid",
+		});
+		
+		addRecipe(new ItemStack(ItemsCore.magicArmorItems[7],1,0),new Object[]{
+			"gemNetherStar","voidMRU","gemNetherStar",
+			"voidCore",new ItemStack(ItemsCore.magicArmorItems[3],1,0),"voidCore",
+			"plateVoid","matterOfEternity","plateVoid",
 		});
 		
 		registerEFuelCrafts();

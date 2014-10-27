@@ -1,17 +1,24 @@
 package ec3.common.tile;
 
+import java.util.List;
+
 import ec3.common.block.BlocksCore;
 import ec3.common.registry.BiomeRegistry;
+import ec3.common.registry.PotionRegistry;
+import ec3.utils.common.ECUtils;
 import DummyCore.Utils.MiscUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.INetHandlerPlayClient;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.biome.BiomeGenBase;
 
 public class TileCorruption extends TileEntity
@@ -49,10 +56,29 @@ public class TileCorruption extends TileEntity
     {
     	try {
 			super.updateEntity();
+			Potion potionToAdd = PotionRegistry.mruCorruptionPotion;
+			Block blk = this.worldObj.getBlock(xCoord, yCoord, zCoord);
+			if(blk == BlocksCore.lightCorruption[0])
+			{
+				potionToAdd = PotionRegistry.chaosInfluence;
+			}
+			if(blk == BlocksCore.lightCorruption[1])
+			{
+				potionToAdd = PotionRegistry.frozenMind;
+			}
+			List<EntityPlayer> players = worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord+1, yCoord+1, zCoord+1));
+			for(int i = 0; i < players.size(); ++i)
+			{
+				if(!this.worldObj.isRemote)
+				{
+					float increasement = 5;
+					increasement *= ECUtils.getGenResistance(1, players.get(i));
+					ECUtils.calculateAndAddPE(players.get(i),potionToAdd,2000,(int)increasement);
+				}
+			}
 			if(this.worldObj.rand.nextFloat() <= 0.0001F)
 			{
 				int biomeId = 0;
-				Block blk = this.worldObj.getBlock(xCoord, yCoord, zCoord);
 				if(blk == BlocksCore.lightCorruption[0])
 				{
 					biomeId = BiomeRegistry.chaosCorruption.biomeID;
@@ -75,7 +101,6 @@ public class TileCorruption extends TileEntity
 			int metadata = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
 			if(metadata >= 7)
 			{
-				Block blk = this.worldObj.getBlock(xCoord, yCoord, zCoord);
 				if(this.worldObj.getBlock(xCoord+1, yCoord, zCoord).isBlockSolid(worldObj, xCoord+1, yCoord, zCoord, 0))
 				{
 					this.worldObj.setBlock(xCoord+1, yCoord, zCoord, blk, 0, 3);

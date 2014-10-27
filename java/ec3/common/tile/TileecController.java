@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import DummyCore.Utils.BlockPosition;
 import DummyCore.Utils.Coord3D;
 import DummyCore.Utils.DummyData;
 import DummyCore.Utils.MiscUtils;
@@ -15,7 +16,6 @@ import ec3.api.EnumStructureType;
 import ec3.api.IMRUPressence;
 import ec3.api.IStructurePiece;
 import ec3.api.ITEHasMRU;
-import ec3.utils.common.BlockPosition;
 import ec3.utils.common.ECUtils;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;

@@ -23,9 +23,11 @@ import ec3.client.gui.GuiEnderGenerator;
 import ec3.client.gui.GuiFlowerBurner;
 import ec3.client.gui.GuiHeatGenerator;
 import ec3.client.gui.GuiMagicalEnchanter;
+import ec3.client.gui.GuiMagicalFurnace;
 import ec3.client.gui.GuiMagicalJukebox;
 import ec3.client.gui.GuiMagicalQuarry;
 import ec3.client.gui.GuiMagicalRepairer;
+import ec3.client.gui.GuiMagicalTeleporter;
 import ec3.client.gui.GuiMagicianTable;
 import ec3.client.gui.GuiMagmaticSmeltery;
 import ec3.client.gui.GuiMatrixAbsorber;
@@ -47,9 +49,11 @@ import ec3.common.inventory.ContainerHeatGenerator;
 import ec3.common.inventory.ContainerMRUAcceptor;
 import ec3.common.inventory.ContainerMRUInfo;
 import ec3.common.inventory.ContainerMagicalEnchanter;
+import ec3.common.inventory.ContainerMagicalFurnace;
 import ec3.common.inventory.ContainerMagicalJukebox;
 import ec3.common.inventory.ContainerMagicalQuarry;
 import ec3.common.inventory.ContainerMagicalRepairer;
+import ec3.common.inventory.ContainerMagicalTeleporter;
 import ec3.common.inventory.ContainerMagicianTable;
 import ec3.common.inventory.ContainerMagmaticSmeltery;
 import ec3.common.inventory.ContainerMatrixAbsorber;
@@ -69,9 +73,11 @@ import ec3.common.tile.TileEnderGenerator;
 import ec3.common.tile.TileFlowerBurner;
 import ec3.common.tile.TileHeatGenerator;
 import ec3.common.tile.TileMagicalEnchanter;
+import ec3.common.tile.TileMagicalFurnace;
 import ec3.common.tile.TileMagicalJukebox;
 import ec3.common.tile.TileMagicalQuarry;
 import ec3.common.tile.TileMagicalRepairer;
+import ec3.common.tile.TileMagicalTeleporter;
 import ec3.common.tile.TileMagicianTable;
 import ec3.common.tile.TileMagmaticSmelter;
 import ec3.common.tile.TileMatrixAbsorber;
@@ -190,6 +196,14 @@ public class CommonProxy implements IGuiHandler{
 			{
 				return new ContainerChargingChamber(player.inventory, tile);
 			}
+			if(tile instanceof TileMagicalTeleporter)
+			{
+				return new ContainerMagicalTeleporter(player.inventory, tile);
+			}
+			if(tile instanceof TileMagicalFurnace)
+			{
+				return new ContainerMagicalFurnace(player.inventory, tile);
+			}
 		}
 		return null;
 	}
@@ -234,5 +248,15 @@ public class CommonProxy implements IGuiHandler{
 	public boolean itemHasEffect(ItemStack stk)
 	{
 		return false;
+	}
+	
+	public Object getClientModel(int id)
+	{
+		return null;
+	}
+	
+	public Object getRenderer(int index)
+	{
+		return null;
 	}
 }

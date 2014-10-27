@@ -51,6 +51,7 @@ public class ItemBoundGem extends Item {
     			ITEHasMRU t_1 = (ITEHasMRU) t;
     			createTag(stack);
     			MiscUtils.getStackTag(stack).setIntArray("pos", new int[]{x,y,z});
+    			MiscUtils.getStackTag(stack).setInteger("dim", player.dimension);
     			world.playSoundAtEntity(player, "random.levelup", 1.0F, 2.0F);
     			return true;
     		}
@@ -78,6 +79,7 @@ public class ItemBoundGem extends Item {
     		par3List.add("x: "+coord[0]);
     		par3List.add("y: "+coord[1]);
     		par3List.add("z: "+coord[2]);
+    		par3List.add("dimension: "+MiscUtils.getStackTag(par1ItemStack).getInteger("dim"));
     	}
     }
     

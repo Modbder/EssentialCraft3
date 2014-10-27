@@ -20,6 +20,7 @@ import ec3.common.registry.BiomeRegistry;
 import ec3.common.registry.CoreRegistry;
 import ec3.common.registry.DimensionRegistry;
 import ec3.common.registry.EnchantRegistry;
+import ec3.common.registry.PotionRegistry;
 import ec3.common.registry.RecipeRegistry;
 import ec3.common.registry.SpellRegistry;
 import ec3.common.registry.StructureRegistry;
@@ -30,7 +31,7 @@ import ec3.utils.common.CommandCreateMRUCU;
 import ec3.utils.common.CommandSetBalance;
 import ec3.utils.common.CommandSetMRU;
 
-@Mod(modid = "essentialcraft", name = "EssentialCraftIII", version = "4.0.1710.534")
+@Mod(modid = "essentialcraft", name = "EssentialCraftIII", version = "4.2.1710.36")
 public class EssentialCraftCore {
 
 //============================================CORE START=================================================//
@@ -102,5 +103,6 @@ public class EssentialCraftCore {
 	{
 		SpellRegistry.register();
 		AchievementRegistry.register();
+		PotionRegistry.registerPotions();
 	}
 }

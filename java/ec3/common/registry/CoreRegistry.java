@@ -1,9 +1,11 @@
 package ec3.common.registry;
 
+import DummyCore.Client.MainMenuRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
+import ec3.client.gui.GuiMainMenuEC3;
 import ec3.common.block.BlocksCore;
 import ec3.common.item.ItemsCore;
 import ec3.common.mod.EssentialCraftCore;
@@ -51,6 +53,8 @@ public class CoreRegistry {
 		MinecraftForge.EVENT_BUS.register(new ECEventHandler());
 		MinecraftForge.EVENT_BUS.register(new PlayerTracker());
 		//GameRegistry.registerPlayerTracker(new PlayerTrackerECII());
+		
+		
 
 	}
 

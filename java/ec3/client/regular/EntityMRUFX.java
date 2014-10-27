@@ -8,6 +8,7 @@ import DummyCore.Utils.MiscUtils;
 import ec3.api.IItemAllowsSeeingMRUCU;
 import ec3.common.entity.EntityMRUPresence;
 import ec3.common.mod.EssentialCraftCore;
+import ec3.utils.common.ECUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.RenderHelper;
@@ -42,7 +43,7 @@ public class EntityMRUFX extends EntityFX{
 
 	public void renderParticle(Tessellator var3, float par2, float par3, float par4, float par5, float par6, float par7)
     {
-    	if(Minecraft.getMinecraft().thePlayer!=null&&Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem()!=null&&Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().getItem() instanceof IItemAllowsSeeingMRUCU)
+    	if(ECUtils.canPlayerSeeMRU(Minecraft.getMinecraft().thePlayer))
     	{
     		super.renderParticle(var3, par2, par3, par4, par5, par6, par7);
     	}

@@ -1,11 +1,13 @@
 package ec3.utils.common;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import ec3.common.item.ItemsCore;
 import DummyCore.Utils.DummyDataUtils;
 import DummyCore.Utils.MathUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -35,6 +37,11 @@ public class ECEventHandler {
 				}else
 				{
 					float maxHp = base.getMaxHealth();
+					ItemStack helmet = player.inventory.armorInventory[3];
+					if(helmet != null && helmet.getItem() == ItemsCore.magicArmorItems[4])
+					{
+						player.getFoodStats().addStats((int) (maxHp/10F), 1F);
+					}
 					addedEnergy += (20+(MathUtils.randomFloat(e.worldObj.rand)*10))*maxHp;
 				}
 				String currentEnergy = DummyDataUtils.getDataForPlayer(player.getDisplayName(),"essentialcraft", "ubmruEnergy");

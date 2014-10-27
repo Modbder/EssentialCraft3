@@ -21,6 +21,12 @@ public enum EnumOreColoring {
 	URANIUM("oreUranium",0x41b200),
 	IRIDIUM("oreIridium",0xebffff),
 	ALCHEMITE("oreAlchemite","gemAlchemite",0xff0e27,5),
+	FIRE("oreInfusedFire","shardFire",0xff0000,3),
+	WATER("oreInfusedWater","shardWater",0x0000ff,3),
+	EARTH("oreInfusedEarth","shardEarth",0x00ff00,3),
+	AIR("oreInfusedAir","shardAir",0xffff00,3),
+	ORDER("oreInfusedOrder","shardOrder",0xcccccc,3),
+	ENTROPY("oreInfusedEntropy","shardEntropy",0x333333,3),
 	;
 	
 	EnumOreColoring(String i, int j)

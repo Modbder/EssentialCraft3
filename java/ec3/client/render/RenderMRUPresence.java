@@ -16,6 +16,7 @@ import org.lwjgl.opengl.GL11;
 import ec3.api.IItemAllowsSeeingMRUCU;
 import ec3.common.entity.EntityMRUPresence;
 import ec3.common.mod.EssentialCraftCore;
+import ec3.utils.common.ECUtils;
 
 
 public class RenderMRUPresence extends Render
@@ -128,7 +129,7 @@ public class RenderMRUPresence extends Render
     
     public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
-	    	if(Minecraft.getMinecraft().thePlayer!=null&&Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem()!=null&&Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().getItem() instanceof IItemAllowsSeeingMRUCU)
+	    	if(ECUtils.canPlayerSeeMRU(Minecraft.getMinecraft().thePlayer))
 	    	{
 	    		doActualRender(par1Entity, par2, par4, par6, par8, par9);
 	    	}

@@ -1,5 +1,6 @@
 package ec3.utils.common;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -8,8 +9,12 @@ import java.util.UUID;
 
 import org.lwjgl.opengl.GL11;
 
+import baubles.api.BaublesApi;
+
 import com.mojang.authlib.GameProfile;
 
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import DummyCore.Utils.Coord3D;
@@ -17,6 +22,7 @@ import DummyCore.Utils.DummyData;
 import DummyCore.Utils.DummyDistance;
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
+import ec3.api.ApiCore;
 import ec3.api.EnumStructureType;
 import ec3.api.IItemAllowsSeeingMRUCU;
 import ec3.api.IMRUPressence;
@@ -24,8 +30,10 @@ import ec3.api.IMRUStorage;
 import ec3.api.ISpell;
 import ec3.api.ITEHasMRU;
 import ec3.common.entity.EntityMRUPresence;
+import ec3.common.item.ItemBaublesWearable;
 import ec3.common.item.ItemBoundGem;
 import ec3.common.mod.EssentialCraftCore;
+import ec3.common.registry.PotionRegistry;
 import ec3.common.tile.TileRayTower;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -34,8 +42,11 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
@@ -87,6 +98,15 @@ public class ECUtils {
 		DummyData dt = new DummyData(blk.getUnlocalizedName(),meta);
 		ignoreMeta.put(blk.getUnlocalizedName(), meta == -1);
 		mruResistance.put(dt.toString(), resistance);
+	}
+	
+	public static boolean canPlayerSeeMRU(EntityPlayer player)
+	{
+		ItemStack currentItem = player.getCurrentEquippedItem();
+		
+		ItemStack headwear = player.getEquipmentInSlot(4);
+		
+		return (currentItem != null && ApiCore.allowsSeeingMRU.contains(currentItem.getItem())) || (headwear != null && ApiCore.allowsSeeingMRU.contains(headwear.getItem())) || (currentItem != null && currentItem.getItem() instanceof IItemAllowsSeeingMRUCU) || (headwear != null && headwear.getItem() instanceof IItemAllowsSeeingMRUCU);
 	}
 	 
 	public static boolean canSpellWork(ItemStack spell, ISpell spell_2, int ubmru, int attune,EntityPlayer player)
@@ -228,11 +248,51 @@ public class ECUtils {
 			{
 				createMRUCUAt(w, c, amount, 1.0F+MathUtils.randomFloat(w.rand), true, false);
 			}
+			List<EntityPlayer> players = w.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(x, y, z, x+1, y+1, z+1).expand(6D, 3D, 6D));
+			for(int i = 0; i < players.size(); ++i)
+			{
+				if(!w.isRemote)
+					calculateAndAddMRUCorruptionPE(players.get(i));
+			}
 		}catch(Exception e)
 		{
 			return false;
 		}
 		return false;
+	}
+	
+	public static void calculateAndAddMRUCorruptionPE(EntityPlayer player)
+	{
+		boolean hasEffect = player.getActivePotionEffect(PotionRegistry.mruCorruptionPotion) != null;
+		if(hasEffect)
+		{
+			int currentDuration = player.getActivePotionEffect(PotionRegistry.mruCorruptionPotion).getDuration();
+			int currentModifer = player.getActivePotionEffect(PotionRegistry.mruCorruptionPotion).getAmplifier();
+			int newDuration = currentDuration+2;
+			int newModifier = currentDuration/2000;
+			player.removePotionEffect(PotionRegistry.mruCorruptionPotion.id);
+			player.addPotionEffect(new PotionEffect(PotionRegistry.mruCorruptionPotion.id,newDuration,newModifier));
+		}else
+		{
+			player.addPotionEffect(new PotionEffect(PotionRegistry.mruCorruptionPotion.id,200,0));
+		}
+	}
+	
+	public static void calculateAndAddPE(EntityPlayer player, Potion potion, int index, int index2)
+	{
+		boolean hasEffect = player.getActivePotionEffect(potion) != null;
+		if(hasEffect)
+		{
+			int currentDuration = player.getActivePotionEffect(potion).getDuration();
+			int currentModifer = player.getActivePotionEffect(potion).getAmplifier();
+			int newDuration = currentDuration+index2;
+			int newModifier = currentDuration/index;
+			player.removePotionEffect(potion.id);
+			player.addPotionEffect(new PotionEffect(potion.id,newDuration,newModifier));
+		}else
+		{
+			player.addPotionEffect(new PotionEffect(potion.id,200,0));
+		}
 	}
 	
 	public static IMRUPressence getClosestMRUCU(World w, DummyCore.Utils.Coord3D c, int radius)
@@ -311,7 +371,7 @@ public class ECUtils {
 	@SideOnly(Side.CLIENT)
 	public static void renderMRUBeam(TileEntity p_76986_1_, int slotNum, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_)
 	{
-	    	if(Minecraft.getMinecraft().thePlayer!=null&&Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem()!=null&&Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().getItem() instanceof IItemAllowsSeeingMRUCU)
+	    	if(canPlayerSeeMRU(Minecraft.getMinecraft().thePlayer))
 	    	{
 		        float stability = ((ITEHasMRU)p_76986_1_).getBalance();
 		        int color = 0x00ffff;
@@ -443,5 +503,46 @@ public class ECUtils {
 				}
 			}
     	}
+	
+	public static float getGenResistance(int index, EntityPlayer p)
+	{
+		float resistance = 0F;
+		for(int i = 0; i < p.inventory.armorInventory.length; ++i)
+		{
+			ItemStack armorStk = p.inventory.armorInventory[i];
+			if(armorStk != null)
+			{
+				Item itm = armorStk.getItem();
+				if(ApiCore.reductionsTable.containsKey(itm))
+				{
+					ArrayList<Float> lst = ApiCore.reductionsTable.get(itm);
+					resistance += lst.get(index);
+				}
+			}
+		}
+		resistance /= 4;
+		IInventory baublesInventory = BaublesApi.getBaubles(p);
+		if(baublesInventory != null)
+		{
+			for(int i = 0; i < baublesInventory.getSizeInventory(); ++i)
+			{
+				ItemStack stk = baublesInventory.getStackInSlot(i);
+				if(stk != null && stk.getItem() instanceof ItemBaublesWearable && MiscUtils.getStackTag(stk).hasKey("type"))
+				{
+					NBTTagCompound bTag = MiscUtils.getStackTag(stk);
+					ArrayList<Float> fltLst = new ArrayList();
+					fltLst.add(bTag.getFloat("mrucr"));
+					fltLst.add(bTag.getFloat("mrurr"));
+					fltLst.add(bTag.getFloat("car"));
+					resistance += fltLst.get(index);
+				}
+			}
+		}
+		
+		float retFlt = 1.0F - resistance;
+		if(retFlt < 0)retFlt = 0;
+		return retFlt;
+	}
+	
 	public static GameProfile EC3FakePlayerProfile = new GameProfile(UUID.fromString("5cd89d0b-e9ba-0000-89f4-b5dbb05963da"), "[EC3]");
 }

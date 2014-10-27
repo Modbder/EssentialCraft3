@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 
+import DummyCore.Client.MainMenuRegistry;
 import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
 import net.minecraft.client.Minecraft;
@@ -27,7 +28,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenBase.TempCategory;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -47,11 +50,14 @@ import ec3.client.gui.GuiHeatGenerator;
 import ec3.client.gui.GuiMRUAcceptor;
 import ec3.client.gui.GuiMRUInfo;
 import ec3.client.gui.GuiMagicalEnchanter;
+import ec3.client.gui.GuiMagicalFurnace;
 import ec3.client.gui.GuiMagicalJukebox;
 import ec3.client.gui.GuiMagicalQuarry;
 import ec3.client.gui.GuiMagicalRepairer;
+import ec3.client.gui.GuiMagicalTeleporter;
 import ec3.client.gui.GuiMagicianTable;
 import ec3.client.gui.GuiMagmaticSmeltery;
+import ec3.client.gui.GuiMainMenuEC3;
 import ec3.client.gui.GuiMatrixAbsorber;
 import ec3.client.gui.GuiMonsterHarvester;
 import ec3.client.gui.GuiMonsterHolder;
@@ -60,12 +66,15 @@ import ec3.client.gui.GuiPotionSpreader;
 import ec3.client.gui.GuiRadiatingChamber;
 import ec3.client.gui.GuiRayTower;
 import ec3.client.gui.GuiSunRayAbsorber;
+import ec3.client.model.ModelArmorEC3;
 import ec3.client.regular.EntityCSpellFX;
 import ec3.client.regular.EntityMRUFX;
 import ec3.client.regular.RenderMRUArrow;
+import ec3.client.render.ArmorRenderer;
 import ec3.client.render.ClientRenderHandler;
 import ec3.client.render.RenderBlocksECIII;
 import ec3.client.render.RenderChargingChamber;
+import ec3.client.render.RenderCloudsFirstWorld;
 import ec3.client.render.RenderColdDistillator;
 import ec3.client.render.RenderCrystalController;
 import ec3.client.render.RenderCrystalExtractor;
@@ -74,6 +83,7 @@ import ec3.client.render.RenderElementalCrystal;
 import ec3.client.render.RenderElementalCrystalAsItem;
 import ec3.client.render.RenderEnderGenerator;
 import ec3.client.render.RenderFlowerBurner;
+import ec3.client.render.RenderHandlerEC3;
 import ec3.client.render.RenderHeatGenerator;
 import ec3.client.render.RenderMRULink;
 import ec3.client.render.RenderMRUPresence;
@@ -89,13 +99,16 @@ import ec3.client.render.RenderMonsterHolder;
 import ec3.client.render.RenderPotionSpreader;
 import ec3.client.render.RenderRadiatingChamber;
 import ec3.client.render.RenderRayTower;
+import ec3.client.render.RenderSkyFirstWorld;
 import ec3.client.render.RenderSolarBeam;
 import ec3.client.render.RenderSolarPrism;
 import ec3.client.render.RenderSunRayAbsorber;
+import ec3.client.render.RenderWindMage;
 import ec3.common.block.BlocksCore;
 import ec3.common.entity.EntityMRUArrow;
 import ec3.common.entity.EntityMRUPresence;
 import ec3.common.entity.EntitySolarBeam;
+import ec3.common.entity.EntityWindMage;
 import ec3.common.inventory.ContainerChargingChamber;
 import ec3.common.inventory.ContainerColdDistillator;
 import ec3.common.inventory.ContainerCrystalController;
@@ -107,9 +120,11 @@ import ec3.common.inventory.ContainerHeatGenerator;
 import ec3.common.inventory.ContainerMRUAcceptor;
 import ec3.common.inventory.ContainerMRUInfo;
 import ec3.common.inventory.ContainerMagicalEnchanter;
+import ec3.common.inventory.ContainerMagicalFurnace;
 import ec3.common.inventory.ContainerMagicalJukebox;
 import ec3.common.inventory.ContainerMagicalQuarry;
 import ec3.common.inventory.ContainerMagicalRepairer;
+import ec3.common.inventory.ContainerMagicalTeleporter;
 import ec3.common.inventory.ContainerMagicianTable;
 import ec3.common.inventory.ContainerMagmaticSmeltery;
 import ec3.common.inventory.ContainerMatrixAbsorber;
@@ -121,6 +136,7 @@ import ec3.common.inventory.ContainerRadiatingChamber;
 import ec3.common.inventory.ContainerRayTower;
 import ec3.common.inventory.ContainerSunRayAbsorber;
 import ec3.common.item.ItemSecret;
+import ec3.common.item.ItemsCore;
 import ec3.common.tile.TileChargingChamber;
 import ec3.common.tile.TileColdDistillator;
 import ec3.common.tile.TileCrystalController;
@@ -131,9 +147,11 @@ import ec3.common.tile.TileEnderGenerator;
 import ec3.common.tile.TileFlowerBurner;
 import ec3.common.tile.TileHeatGenerator;
 import ec3.common.tile.TileMagicalEnchanter;
+import ec3.common.tile.TileMagicalFurnace;
 import ec3.common.tile.TileMagicalJukebox;
 import ec3.common.tile.TileMagicalQuarry;
 import ec3.common.tile.TileMagicalRepairer;
+import ec3.common.tile.TileMagicalTeleporter;
 import ec3.common.tile.TileMagicianTable;
 import ec3.common.tile.TileMagmaticSmelter;
 import ec3.common.tile.TileMatrixAbsorber;
@@ -253,6 +271,14 @@ ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/
 			{
 				return new GuiChargingChamber(new ContainerChargingChamber(player.inventory, tile),tile);
 			}
+			if(tile instanceof TileMagicalTeleporter)
+			{
+				return new GuiMagicalTeleporter(new ContainerMagicalTeleporter(player.inventory, tile),tile);
+			}
+			if(tile instanceof TileMagicalFurnace)
+			{
+				return new GuiMagicalFurnace(new ContainerMagicalFurnace(player.inventory, tile),tile);
+			}
 		}
 		return null;
 	}
@@ -260,12 +286,21 @@ ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/
 	@Override
 	public void registerRenderInformation()
 	{
+		MainMenuRegistry.registerNewGui(GuiMainMenuEC3.class, "[EC3] Magical Menu", "For EC3 fans ;)");
 		RenderingRegistry.registerEntityRenderingHandler(EntityMRUPresence.class, new RenderMRUPresence());
 		RenderingRegistry.registerEntityRenderingHandler(EntityMRUArrow.class, new RenderMRUArrow());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySolarBeam.class, new RenderSolarBeam());
+		RenderingRegistry.registerEntityRenderingHandler(EntityWindMage.class, new RenderWindMage());
 		RenderingRegistry.registerBlockHandler(new RenderBlocksECIII());
 		FMLCommonHandler.instance().bus().register(new ClientRenderHandler());
+		MinecraftForge.EVENT_BUS.register(new RenderHandlerEC3());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlocksCore.elementalCrystal), new RenderElementalCrystalAsItem());
+		for(int i = 0; i < ItemsCore.magicArmorItems.length; ++i)
+		{
+			if(ItemsCore.magicArmorItems[i] != null)
+				MinecraftForgeClient.registerItemRenderer(ItemsCore.magicArmorItems[i], new ArmorRenderer());
+		}
+		
 	}
 	
 	@Override
@@ -308,6 +343,10 @@ ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/
 	{
 		if(str.equals("mru"))
 			return mruIcon;
+		if(str.equals("chaosIcon"))
+			return chaosIcon;
+		if(str.equals("frozenIcon"))
+			return frozenIcon;
 		if(str.equals("mruParticleIcon"))
 			return mruParticleIcon;
 		if(str.contains("consSpellParticle"))
@@ -352,9 +391,45 @@ ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/
 		return false;
 	}
 	
+	@Override
+	public Object getClientModel(int id)
+	{
+		switch (id) 
+		{
+			case 0:
+				return chest;
+			case 1: 
+				return legs;
+			case 2:
+				return chest1;
+			default: break; 
+		} 
+		return chest; 
+	}
 	
+	@Override
+	public Object getRenderer(int index)
+	{
+		if(index == 0)
+			return skyedRenderer;
+		else
+			return cloudedRenderer;
+	}
 	
 	public static IIcon mruIcon;
 	public static IIcon mruParticleIcon;
 	public static IIcon[] c_spell_particle_array = new IIcon[4];
+	public static IIcon chaosIcon;
+	public static IIcon frozenIcon;
+	
+
+	@SideOnly(Side.CLIENT)
+	private static IRenderHandler skyedRenderer = new RenderSkyFirstWorld();
+	
+	@SideOnly(Side.CLIENT)
+	private static IRenderHandler cloudedRenderer = new RenderCloudsFirstWorld();
+	
+	private static final ModelArmorEC3 chest = new ModelArmorEC3(1.0f);
+	private static final ModelArmorEC3 chest1 = new ModelArmorEC3(0.75f);
+	private static final ModelArmorEC3 legs = new ModelArmorEC3(0.5f);
 }

@@ -40,6 +40,7 @@ public class Config implements IDummyConfig{
 		mobID[0] = config.get("Entities","MRUPresenceID", 71).getInt();
 		mobID[1] = config.get("Entities","MRUArrowID", 72).getInt();
 		mobID[2] = config.get("Entities","SolarBeamID", 73).getInt();
+		mobID[3] = config.get("Entities","WindMageID", 74).getInt();
 	}
 	
 	public void loadMisc()
@@ -48,6 +49,8 @@ public class Config implements IDummyConfig{
 		biomeID[1] = config.get("Biomes", "FrozenCorruptionID", 135).getInt();
 		biomeID[2] = config.get("Biomes", "ShadowCorruptionID", 136).getInt();
 		biomeID[3] = config.get("Biomes", "MagicCorruptionID", 137).getInt();
+		biomeID[4] = config.get("Biomes", "DesertID", 138).getInt();
+		biomeID[5] = config.get("Biomes", "DreadLandsID", 139).getInt();
 		enablePersonalityShatter = config.getBoolean("EnablePersonalityShatter", "Misc", true, "");
 	}
 	
@@ -77,7 +80,7 @@ public class Config implements IDummyConfig{
 	public static int[] guiID = new int[48];
 	public static int[] mobID = new int[16];
 	public static int[] enchantID = new int[4];
-	public static int[] biomeID = new int[4];
+	public static int[] biomeID = new int[8];
 	public static boolean isCorruptionAllowed;
 	public static boolean renderMRUPresenceWithoutMonocle;
 	public static boolean enableHardcoreCrafts;

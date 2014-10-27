@@ -8,6 +8,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ec3.common.item.ItemsCore;
 import ec3.common.tile.TileCorruption;
+import ec3.network.proxy.ClientProxy;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -95,6 +96,8 @@ public class BlockCorruption_Light extends BlockContainer{
 		{
 			iconArray[i] = p_149651_1_.registerIcon("essentialcraft:corruption/"+folderName+"/"+i);
 		}
+		ClientProxy.chaosIcon = p_149651_1_.registerIcon("essentialcraft:chaos");
+		ClientProxy.frozenIcon = p_149651_1_.registerIcon("essentialcraft:frozen");
     }
 	
 	@Override
