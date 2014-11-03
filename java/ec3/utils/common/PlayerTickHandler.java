@@ -8,6 +8,7 @@ import java.util.List;
 import DummyCore.Blocks.BlocksRegistry;
 import DummyCore.Utils.DummyDataUtils;
 import DummyCore.Utils.DummyPacketDispatcher;
+import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
 import DummyCore.Utils.Notifier;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -19,8 +20,10 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ec3.api.WorldEventLibrary;
 import ec3.common.block.BlocksCore;
 import ec3.common.item.ItemsCore;
+import ec3.common.world.WorldProviderFirstWorld;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
@@ -32,6 +35,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.S3FPacketCustomPayload;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.sound.SoundLoadEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -54,8 +59,50 @@ public class PlayerTickHandler{
 			if(event.entityLiving instanceof EntityPlayer) //Checking, if the ticking entity is the actual player
 			{
 				EntityPlayer player = (EntityPlayer) event.entityLiving;
+				if(player.worldObj.isRemote)
+				{
+					if(player.dimension == 53)
+					{
+						if(player.worldObj.provider.dimensionId == 53)
+						{
+							((WorldProviderFirstWorld)(player.worldObj.provider)).generateLightBrightnessTable();
+							if(ECUtils.isEventActive("ec3.event.darkness"))
+							{
+								if(player.worldObj.rand.nextFloat() < 0.01F)
+									player.worldObj.playSound(player.posX,player.posY,player.posZ, "ambient.cave.cave", 1, player.worldObj.rand.nextFloat()*2, true);
+								if(player.worldObj.rand.nextFloat() < 0.001F)
+								{
+									String[] sound = {"mob.zombie.death","mob.zombie.say","mob.blaze.death","mob.skeleton.step","mob.endermen.stare","mob.spider.step","mob.spider.death","mob.spider.say","mob.creeper.death"};
+									
+									player.worldObj.playSound(player.posX+MathUtils.randomDouble(player.worldObj.rand)*16,player.posY,player.posZ+MathUtils.randomDouble(player.worldObj.rand)*16, sound[player.worldObj.rand.nextInt(sound.length)], 1, 0.01F, true);
+								}
+									
+							}
+							
+							if(ECUtils.isEventActive("ec3.event.earthquake"))
+							{
+								player.cameraPitch += MathUtils.randomFloat(player.worldObj.rand);
+								player.rotationYaw += MathUtils.randomFloat(player.worldObj.rand);
+								player.motionX += MathUtils.randomFloat(player.worldObj.rand)/30;
+								player.motionY += MathUtils.randomFloat(player.worldObj.rand)/30;
+								player.motionZ += MathUtils.randomFloat(player.worldObj.rand)/30;
+								if(player.worldObj.rand.nextFloat() < 0.01F)
+								{
+									player.cameraPitch += MathUtils.randomFloat(player.worldObj.rand)*90;
+									player.rotationYaw += MathUtils.randomFloat(player.worldObj.rand)*90;
+									player.motionX += MathUtils.randomFloat(player.worldObj.rand)*3;
+									player.motionY += MathUtils.randomFloat(player.worldObj.rand)*3;
+									player.motionZ += MathUtils.randomFloat(player.worldObj.rand)*3;
+									player.worldObj.playSound(player.posX,player.posY,player.posZ, "random.explode", 0.1F, 0.1F, true);
+								}
+							}
+						}
+					}
+				}
 				if(!event.entityLiving.worldObj.isRemote) //We should only run block changes on server-side
 				{		
+					if(WorldEventLibrary.currentEvent != null)
+						WorldEventLibrary.currentEvent.playerTick(player, WorldEventLibrary.currentEventDuration);
 					WindRelations.playerTick(player);
 					if(player.ticksExisted % 20 == 0)
 					{

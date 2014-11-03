@@ -1,18 +1,133 @@
 package ec3.utils.common;
 
+import cpw.mods.fml.common.eventhandler.Event.Result;
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
+import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import ec3.api.WorldEventLibrary;
 import ec3.common.item.ItemsCore;
+import ec3.common.mod.EssentialCraftCore;
+import ec3.common.world.BiomeGenCorruption_Chaos;
+import ec3.common.world.BiomeGenCorruption_Frozen;
+import ec3.common.world.BiomeGenCorruption_Magic;
+import DummyCore.Utils.DataStorage;
+import DummyCore.Utils.DummyData;
 import DummyCore.Utils.DummyDataUtils;
 import DummyCore.Utils.MathUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.terraingen.BiomeEvent;
+import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
 
 public class ECEventHandler {
+	
+	@SubscribeEvent
+	public void worldTick(WorldTickEvent event)
+	{
+		if(!event.world.isRemote)
+		{
+			String worldEvent = DummyDataUtils.getCustomDataForMod("essentialcraft", "worldEvent");
+			if(worldEvent != null)
+			{
+				if(event.phase == Phase.END)
+				{
+					if(WorldEventLibrary.currentEvent == null)
+					{
+						worldEvent = "no data";
+					}else
+					{
+						worldEvent = new DummyData(WorldEventLibrary.currentEvent.getEventID(),WorldEventLibrary.currentEventDuration).toString();
+					}
+					ECUtils.endEvent(event.world);
+					ECUtils.newWorldEvent(event.world);
+					DummyDataUtils.writeCustomDataForMod("essentialcraft", "worldEvent", worldEvent);
+				}else
+				{
+					if(WorldEventLibrary.currentEvent == null && !worldEvent.equals("no data"))
+					{
+						DummyData[] data = DataStorage.parseData(worldEvent);
+						WorldEventLibrary.currentEvent = WorldEventLibrary.gettEffectByID(data[0].fieldName, event.world);
+						WorldEventLibrary.currentEventDuration = Integer.parseInt(data[0].fieldValue);
+					}
+					if(WorldEventLibrary.currentEvent != null)
+						WorldEventLibrary.currentEvent.worldTick(event.world, WorldEventLibrary.currentEventDuration);
+					DummyDataUtils.writeCustomDataForMod("essentialcraft", "worldEvent", worldEvent);
+				}
+			}
+		}
+	}
+	
+	@SubscribeEvent(priority=EventPriority.HIGHEST)
+	public void denyFlowerGen(DecorateBiomeEvent.Decorate event)
+	{
+		if(event.type == event.type.FLOWERS)
+		{
+			if(event.world.provider.dimensionId == 53)
+			{
+				event.setResult(Result.DENY);
+			}
+		}
+	}
+	
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
+	public void getBiomeWaterColor(BiomeEvent.GetWaterColor event)
+	{
+		EntityPlayer player = EssentialCraftCore.proxy.getClientPlayer();
+		if(player != null)
+		{
+			int dimID = player.dimension;
+			if(dimID == 53)
+			{
+				event.newColor = 0xff6a58;
+			}
+		}
+	}
+	
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
+	public void getBiomeFolliageColor(BiomeEvent.GetFoliageColor event)
+	{
+		EntityPlayer player = EssentialCraftCore.proxy.getClientPlayer();
+		if(player != null)
+		{
+			int dimID = player.dimension;
+			if(dimID == 53)
+			{
+				if(!(event.biome instanceof BiomeGenCorruption_Chaos) && !(event.biome instanceof BiomeGenCorruption_Frozen) && !(event.biome instanceof BiomeGenCorruption_Magic))
+				{
+					event.newColor = 0x886a58;
+				}
+			}
+		}
+	}
+	
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
+	public void getBiomeGrassColor(BiomeEvent.GetGrassColor event)
+	{
+		EntityPlayer player = EssentialCraftCore.proxy.getClientPlayer();
+		if(player != null)
+		{
+			int dimID = player.dimension;
+			if(dimID == 53)
+			{
+				if(!(event.biome instanceof BiomeGenCorruption_Chaos) && !(event.biome instanceof BiomeGenCorruption_Frozen) && !(event.biome instanceof BiomeGenCorruption_Magic))
+				{
+					event.newColor = 0x886a58;
+				}
+			}
+		}
+	}
 	
 	@SubscribeEvent
 	public void onKillEntity(LivingDeathEvent event)

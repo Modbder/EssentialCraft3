@@ -67,7 +67,7 @@ public class ItemWindTablet extends ItemStoresMRUInNBT {
 		super();	
 		this.setMaxMRU(5000);
 		this.maxStackSize = 1;
-		this.bFull3D = true;
+		this.bFull3D = false;
 	}
 
     /**

@@ -24,11 +24,17 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class WorldGenDestroyedHouse extends WorldGenerator{
 	
-	public int floorsAmount;
+	public int floorsAmount, rad;
 	
 	public WorldGenDestroyedHouse(int i)
 	{
 		floorsAmount = i;
+	}
+	
+	public WorldGenDestroyedHouse(int i, int j)
+	{
+		floorsAmount = i;
+		rad = j;
 	}
 
 	public static final WeightedRandomChestContent[] generatedItems = new WeightedRandomChestContent[] {
@@ -47,15 +53,43 @@ public class WorldGenDestroyedHouse extends WorldGenerator{
 		new WeightedRandomChestContent(ItemsCore.genericItem, 36, 1, 1, 6),
 		new WeightedRandomChestContent(ItemsCore.genericItem, 37, 1, 1, 6)
 	};
+	
+	public int getGroundToGenerate(World w, int x, int y, int z)
+	{
+		while(y > 5)
+		{
+			if(!w.isAirBlock(x, y, z) && w.getBlock(x, y, z) != Blocks.water)
+			{
+				if(w.getBlock(x, y, z) != BlocksCore.concrete && w.getBlock(x, y, z) != BlocksCore.fortifiedStone)
+				{
+					break;
+				}else
+				{
+					return -1;
+				}
+			}
+			--y;
+		}
+		if(y == 5)
+			return -1;
+		return y;
+	}
 
 	@Override
 	public boolean generate(World w, Random r,int x, int y, int z)
 	{
-		int rad = r.nextInt(8)+5;
-		int floorSize = 3;
-		for(int i = 0; i < floorsAmount+1; ++i)
+		int genY = getGroundToGenerate(w,x,y,z);
+		if(genY != -1)
 		{
-			generateFloor(w,r,x,y+5*i,z,i,rad);
+			y = genY;
+			if(rad == 0)
+				rad = r.nextInt(6)+3;
+			int floorSize = 3;
+			for(int i = 0; i < floorsAmount+1; ++i)
+			{
+				generateFloor(w,r,x,y+5*i,z,i,rad);
+			}
+			return true;
 		}
 		return false;
 	}
@@ -66,10 +100,17 @@ public class WorldGenDestroyedHouse extends WorldGenerator{
 		{
 			for(int dz = -size; dz <= size; ++dz)
 			{
+				if(floorNum == 0)
+				{
+					if(((dx == -size || dx == size) && (dz == -size || dz == size)) || (dx == 0 && dz == 0))
+					{
+						w.setBlock(x+dx, y-1, z+dz, BlocksCore.levitator,0,3);
+					}
+				}
 				for(int dy = 0; dy < 5; ++dy)
 				{
-
-					w.setBlock(x+dx, y+dy, z+dz, Blocks.air,0,3);
+					if(w.getBlock(x+dx, y+dy, z+dz) != Blocks.water)
+						w.setBlock(x+dx, y+dy, z+dz, Blocks.air,0,3);
 					int tryInt = dy+1;
 					if(w.rand.nextInt(tryInt) == 0)
 						w.setBlock(x+dx, y+dy, z+dz, BlocksCore.concrete);
@@ -95,7 +136,11 @@ public class WorldGenDestroyedHouse extends WorldGenerator{
 					}
 					if(floorsAmount == 0)floorsAmount = 1;
 					if(r.nextInt(floorsAmount*10)<floorNum)
-						w.createExplosion(null, x+dx, y+dy, z+dz, 3+(floorNum/3), true);
+					{
+		                ECExplosion explosion = new ECExplosion(w,null,x+dx, y+dy, z+dz, 3+(floorNum/3));
+		                explosion.doExplosionA();
+		                explosion.doExplosionB(true);
+					}
 				}
 			}
 		}

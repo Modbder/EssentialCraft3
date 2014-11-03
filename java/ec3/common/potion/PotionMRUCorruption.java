@@ -20,6 +20,11 @@ public class PotionMRUCorruption extends Potion{
 		this.setPotionName("potion.mruCorruption");
 	}
 	
+    public boolean isUsable()
+    {
+        return true;
+    }
+	
     public void performEffect(EntityLivingBase p_76394_1_, int p_76394_2_)
     {
     	if(!p_76394_1_.worldObj.isRemote && p_76394_1_.worldObj.rand.nextInt(16) < p_76394_2_)

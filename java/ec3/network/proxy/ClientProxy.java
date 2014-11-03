@@ -68,6 +68,7 @@ import ec3.client.gui.GuiRayTower;
 import ec3.client.gui.GuiSunRayAbsorber;
 import ec3.client.model.ModelArmorEC3;
 import ec3.client.regular.EntityCSpellFX;
+import ec3.client.regular.EntityFogFX;
 import ec3.client.regular.EntityMRUFX;
 import ec3.client.regular.RenderMRUArrow;
 import ec3.client.render.ArmorRenderer;
@@ -96,6 +97,7 @@ import ec3.client.render.RenderMagmaticSmelter;
 import ec3.client.render.RenderMatrixAbsorber;
 import ec3.client.render.RenderMonsterHarvester;
 import ec3.client.render.RenderMonsterHolder;
+import ec3.client.render.RenderPoisonFume;
 import ec3.client.render.RenderPotionSpreader;
 import ec3.client.render.RenderRadiatingChamber;
 import ec3.client.render.RenderRayTower;
@@ -107,6 +109,7 @@ import ec3.client.render.RenderWindMage;
 import ec3.common.block.BlocksCore;
 import ec3.common.entity.EntityMRUArrow;
 import ec3.common.entity.EntityMRUPresence;
+import ec3.common.entity.EntityPoisonFume;
 import ec3.common.entity.EntitySolarBeam;
 import ec3.common.entity.EntityWindMage;
 import ec3.common.inventory.ContainerChargingChamber;
@@ -291,6 +294,7 @@ ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/
 		RenderingRegistry.registerEntityRenderingHandler(EntityMRUArrow.class, new RenderMRUArrow());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySolarBeam.class, new RenderSolarBeam());
 		RenderingRegistry.registerEntityRenderingHandler(EntityWindMage.class, new RenderWindMage());
+		RenderingRegistry.registerEntityRenderingHandler(EntityPoisonFume.class, new RenderPoisonFume());
 		RenderingRegistry.registerBlockHandler(new RenderBlocksECIII());
 		FMLCommonHandler.instance().bus().register(new ClientRenderHandler());
 		MinecraftForge.EVENT_BUS.register(new RenderHandlerEC3());
@@ -349,6 +353,8 @@ ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/
 			return frozenIcon;
 		if(str.equals("mruParticleIcon"))
 			return mruParticleIcon;
+		if(str.equals("particle_fogFX"))
+			return fogIcon;
 		if(str.contains("consSpellParticle"))
 		{
 			int index = str.indexOf('_');
@@ -368,6 +374,8 @@ ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/
 			Minecraft.getMinecraft().effectRenderer.addEffect(new EntityMRUFX(getClientWorld(), x, y, z, i, j, k));
 		if(name.equals("cSpellFX"))
 			Minecraft.getMinecraft().effectRenderer.addEffect(new EntityCSpellFX(getClientWorld(), x, y, z, i, j, k));
+		if(name.equals("fogFX"))
+			Minecraft.getMinecraft().effectRenderer.addEffect(new EntityFogFX(getClientWorld(), x, y, z, i, j, k));
 	}
 	
 	@Override
@@ -416,6 +424,12 @@ ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/
 			return cloudedRenderer;
 	}
 	
+	@Override
+	public EntityPlayer getClientPlayer()
+	{
+		return Minecraft.getMinecraft().thePlayer;
+	}
+	
 	public static IIcon mruIcon;
 	public static IIcon mruParticleIcon;
 	public static IIcon[] c_spell_particle_array = new IIcon[4];
@@ -428,6 +442,7 @@ ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/
 	
 	@SideOnly(Side.CLIENT)
 	private static IRenderHandler cloudedRenderer = new RenderCloudsFirstWorld();
+	public static IIcon fogIcon;
 	
 	private static final ModelArmorEC3 chest = new ModelArmorEC3(1.0f);
 	private static final ModelArmorEC3 chest1 = new ModelArmorEC3(0.75f);

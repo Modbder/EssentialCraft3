@@ -7,13 +7,18 @@ import java.util.List;
 
 import ec3.api.EnumStructureType;
 import ec3.common.block.BlocksCore;
+import ec3.common.world.structure.MapGenTown;
+import ec3.common.world.structure.StructureTownPieces;
 import ec3.utils.common.ECUtils;
 import net.minecraft.block.Block;
+import net.minecraft.world.gen.structure.MapGenStructureIO;
 
 public class StructureRegistry {
 	
 	public static void register()
 	{
+		MapGenStructureIO.registerStructure(MapGenTown.Start.class, "ec3.Town");
+		StructureTownPieces.registerVillagePieces();
 		List<Block> structureBlocks_mrucucc = new ArrayList();
 		structureBlocks_mrucucc.add(BlocksCore.fortifiedGlass);
 		structureBlocks_mrucucc.add(BlocksCore.magicPlating);

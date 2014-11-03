@@ -19,6 +19,8 @@ import ec3.common.block.BlockDrops;
 import ec3.common.block.BlockEnderGenerator;
 import ec3.common.block.BlockFlowerBurner;
 import ec3.common.block.BlockHeatGenerator;
+import ec3.common.block.BlockMRULevitator;
+import ec3.common.block.BlockMRUSpreader;
 import ec3.common.block.BlockMagicalEnchanter;
 import ec3.common.block.BlockMagicalJukebox;
 import ec3.common.block.BlockMagicalQuarry;
@@ -266,6 +268,22 @@ public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicalQuarry.getIcon(0, 0),0.2F,0.5F,0.2F,0,-0.1F,0);
 			renderInventoryBlockWithSize(renderer,Blocks.glass,Blocks.beacon.getIcon(0, 0),0.3F,0.3F,0.3F,0,0.1F,0);
 		}
+		if(block instanceof BlockMRULevitator)
+		{
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.fortifiedStone.getIcon(0, 0),0.99F,0.2F,0.99F,0,0.4F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.fortifiedStone.getIcon(0, 0),0.2F,0.8F,0.2F,0.39F,0,0.39F);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.fortifiedStone.getIcon(0, 0),0.2F,0.8F,0.2F,-0.39F,0,0.39F);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.fortifiedStone.getIcon(0, 0),0.2F,0.8F,0.2F,0.39F,0,-0.39F);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.fortifiedStone.getIcon(0, 0),0.2F,0.8F,0.2F,-0.39F,0,-0.39F);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,Blocks.beacon.getIcon(0, 0),0.2F,0.5F,0.2F,0,0.1F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicalQuarry.getIcon(0, 0),0.3F,0.3F,0.3F,0,-0.1F,0);
+		}
+		if(block instanceof BlockMRUSpreader)
+		{
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicalQuarry.getIcon(0, 0),0.4F,0.5F,0.4F,0,0.1F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicalQuarry.getIcon(0, 0),0.2F,1F,0.2F,0,-0.3F,0);
+		}
+		
 		renderer.clearOverrideBlockTexture();
 	}
 	
@@ -468,6 +486,39 @@ public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 			renderer.setRenderBounds(0.4D,0.2D,0.4D,0.6D,0.6D,0.6D);
 			renderer.renderStandardBlock(Blocks.glass, x, y, z);
 			renderer.setOverrideBlockTexture(Blocks.beacon.getIcon(0, 0));
+			renderer.setRenderBounds(0.3D,0.4D,0.3D,0.7D,0.8D,0.7D);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			renderer.renderAllFaces = false;
+		}
+		if(block instanceof BlockMRULevitator)
+		{
+			renderer.renderAllFaces = true;
+			renderer.setOverrideBlockTexture(BlocksCore.fortifiedStone.getIcon(0, 0));
+			renderer.setRenderBounds(0,0.8D,0,1,1,1);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			renderer.setRenderBounds(0.8D,0.2D,0.8D,0.99D,0.8D,0.99D);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			renderer.setRenderBounds(0.01D,0.2D,0.8D,0.2D,0.8D,0.99D);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			renderer.setRenderBounds(0.8D,0.2D,0.01D,0.99D,0.8D,0.2D);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			renderer.setRenderBounds(0.01D,0.2D,0.01D,0.2D,0.8D,0.2D);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			renderer.setOverrideBlockTexture(Blocks.beacon.getIcon(0, 0));
+			renderer.setRenderBounds(0.4D,0.4D,0.4D,0.6D,0.8D,0.6D);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			renderer.setOverrideBlockTexture(BlocksCore.magicalQuarry.getIcon(0, 0));
+			renderer.setRenderBounds(0.3D,0.2D,0.3D,0.7D,0.6D,0.7D);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			renderer.renderAllFaces = false;
+		}
+		if(block instanceof BlockMRUSpreader)
+		{
+			renderer.renderAllFaces = true;
+			renderer.setOverrideBlockTexture(BlocksCore.magicalQuarry.getIcon(0, 0));
+			renderer.setRenderBounds(0.4D,0.0D,0.4D,0.6D,0.6D,0.6D);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			renderer.setOverrideBlockTexture(BlocksCore.magicalQuarry.getIcon(0, 0));
 			renderer.setRenderBounds(0.3D,0.4D,0.3D,0.7D,0.8D,0.7D);
 			renderer.renderStandardBlock(Blocks.glass, x, y, z);
 			renderer.renderAllFaces = false;

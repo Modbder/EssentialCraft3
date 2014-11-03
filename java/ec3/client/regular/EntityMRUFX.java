@@ -43,10 +43,7 @@ public class EntityMRUFX extends EntityFX{
 
 	public void renderParticle(Tessellator var3, float par2, float par3, float par4, float par5, float par6, float par7)
     {
-    	if(ECUtils.canPlayerSeeMRU(Minecraft.getMinecraft().thePlayer))
-    	{
     		super.renderParticle(var3, par2, par3, par4, par5, par6, par7);
-    	}
     }
 
     public int getBrightnessForRender(float p_70070_1_)

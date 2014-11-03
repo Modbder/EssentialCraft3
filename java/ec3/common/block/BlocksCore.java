@@ -98,6 +98,19 @@ public class BlocksCore {
 		magicalTeleporter = registerBlockSimple(BlockMagicalTeleporter.class,Material.rock,magicalTeleporter,"magicalTeleporter","magicPlatingBlock",1,1,0);
 		magicalFurnace = registerBlockSimple(BlockMagicalFurnace.class,Material.rock,magicalFurnace,"magicalFurnace","magicPlatingBlock",1,1,0);
 		emberForge = registerBlockSimple(BlockEmberForge.class,Material.rock,emberForge,"emberForge","magicPlatingBlock",1,1,0);
+		levitator = registerBlockSimple(BlockMRULevitator.class,Material.rock,levitator,"levitator","fortifiedStone",1,100,0);
+		spreader = registerBlockSimple(BlockMRUSpreader.class,Material.rock,spreader,"spreader","fortifiedStone",1,100,0);
+		
+		fence[0] = new BlockModFence(Material.rock,"essentialcraft:voidStone").setHardness(1.0F).setResistance(150.0F).setBlockName("essentialcraft.voidFence").setBlockTextureName("essentialcraft:voidStone");
+		BlocksRegistry.registerBlock(fence[0], "voidFence", EssentialCraftCore.class, ItemBlockGeneric.class);
+		fence[1] = new BlockModFence(Material.rock,"essentialcraft:magicPlatingBlock").setHardness(1.0F).setResistance(150.0F).setBlockName("essentialcraft.magicFence").setBlockTextureName("essentialcraft:magicPlatingBlock");
+		BlocksRegistry.registerBlock(fence[1], "magicFence", EssentialCraftCore.class, ItemBlockGeneric.class);
+		fence[2] = new BlockModFence(Material.rock,"essentialcraft:fortifiedStone").setHardness(1.0F).setResistance(150.0F).setBlockName("essentialcraft.fFence").setBlockTextureName("essentialcraft:fortifiedStone");
+		BlocksRegistry.registerBlock(fence[2], "fFence", EssentialCraftCore.class, ItemBlockGeneric.class);
+		
+		torch = registerBlockSimple(BlockMagicLight.class,Material.circuits,torch,"torch","firstWorld/root",0,0,1);
+		torch.setLightLevel(1.0F);
+		
 	}
 	
 	public static Block registerBlockSimple(Class<? extends Block> c,Material m,Block b, String name, String texture, float hardness, float resistance, int opacity)
@@ -181,6 +194,11 @@ public class BlocksCore {
 	public static Block magicalTeleporter;
 	public static Block magicalFurnace;
 	public static Block emberForge;
+	
+	public static Block levitator;
+	public static Block spreader;
+	public static Block[] fence = new Block[3];
+	public static Block torch;
 	
 	public static Block[] lightCorruption = new Block[4];
 }

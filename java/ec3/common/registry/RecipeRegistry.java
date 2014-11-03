@@ -639,6 +639,45 @@ public class RecipeRegistry {
 			"plateVoid","matterOfEternity","plateVoid",
 		});
 		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksCore.fence[0],16,0), new Object[]{
+			"   ",
+			"DDD",
+			"DDD",
+			'D',BlocksCore.voidStone
+		}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksCore.fence[1],16,0), new Object[]{
+			"   ",
+			"DDD",
+			"DDD",
+			'D',BlocksCore.magicPlating
+		}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksCore.fence[2],16,0), new Object[]{
+			"   ",
+			"DDD",
+			"DDD",
+			'D',BlocksCore.fortifiedStone
+		}));
+		
+		addRecipe(new ItemStack(ItemsCore.magmaticStaff,1,0),new Object[]{
+			"focusFire","focusFire",BlocksCore.magmaticSmeltery,
+			"dustCrystal","matterOfEternity","focusFire",
+			"plateMagic","dustCrystal","focusFire",
+		});
+		
+		addRecipe(new ItemStack(ItemsCore.magicalLantern,1,0),new Object[]{
+			"focusAir","focusFire","redSoulMatter",
+			ItemsCore.magicalSlag,"plateMagic","focusFire",
+			"plateMagic",ItemsCore.magicalSlag,"focusAir",
+		});
+		
+		addRecipe(new ItemStack(ItemsCore.magnetizingStaff,1,0),new Object[]{
+			"focusAir","orbGold","darkSoulMatter",
+			ItemsCore.magicalSlag,"plateMagic","orbGold",
+			"plateMagic",ItemsCore.magicalSlag,"focusAir",
+		});
+		
 		registerEFuelCrafts();
 		registerCharmsCraft();
 	}

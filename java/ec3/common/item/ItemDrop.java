@@ -37,6 +37,7 @@ public class ItemDrop extends Item{
         ClientProxy.mruParticleIcon = p_94581_1_.registerIcon("essentialcraft:particle_mru_dummy_icon");
         for(int i = 0; i < 4; ++i)
         	ClientProxy.c_spell_particle_array[i] = p_94581_1_.registerIcon("essentialcraft:particles/c_spell_"+i);
+        ClientProxy.fogIcon = p_94581_1_.registerIcon("essentialcraft:particles/fog");
     }
     
     @SideOnly(Side.CLIENT)

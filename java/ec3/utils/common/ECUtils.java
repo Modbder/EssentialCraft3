@@ -18,7 +18,9 @@ import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import DummyCore.Utils.Coord3D;
+import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
+import DummyCore.Utils.DummyDataUtils;
 import DummyCore.Utils.DummyDistance;
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
@@ -29,6 +31,8 @@ import ec3.api.IMRUPressence;
 import ec3.api.IMRUStorage;
 import ec3.api.ISpell;
 import ec3.api.ITEHasMRU;
+import ec3.api.IWorldEvent;
+import ec3.api.WorldEventLibrary;
 import ec3.common.entity.EntityMRUPresence;
 import ec3.common.item.ItemBaublesWearable;
 import ec3.common.item.ItemBoundGem;
@@ -47,8 +51,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
@@ -542,6 +549,51 @@ public class ECUtils {
 		float retFlt = 1.0F - resistance;
 		if(retFlt < 0)retFlt = 0;
 		return retFlt;
+	}
+	
+	public static void newWorldEvent(World w)
+	{
+		IWorldEvent event = WorldEventLibrary.selectRandomEffect(w);
+		if(event != null && WorldEventLibrary.currentEvent == null)
+		{
+			WorldEventLibrary.currentEvent = event;
+			WorldEventLibrary.currentEventDuration = event.getEventDuration(w);
+			event.onEventBeginning(w);
+		}
+	}
+	
+	public static void endEvent(World w)
+	{
+		if(WorldEventLibrary.currentEvent != null && --WorldEventLibrary.currentEventDuration <= 0)
+		{
+			WorldEventLibrary.currentEvent.onEventEnd(w);
+			WorldEventLibrary.currentEvent = null;
+			WorldEventLibrary.currentEventDuration = -1;
+		}
+	}
+	
+	public static boolean isEventActive(String id)
+	{
+		String eventData = DummyDataUtils.getCustomDataForMod("essentialcraft", "worldEvent");
+		if(eventData != null && !eventData.equals("no data"))
+		{
+			DummyData[] dt = DataStorage.parseData(eventData);
+			if(eventData != null && dt[0].fieldName.equals(id))
+				return true;
+		}
+		return false;
+	}
+	
+	public static void sendChatMessageToAllPlayersInDim(int dimID,String msg)
+	{
+		for(int i = 0; i < MinecraftServer.getServer().getCurrentPlayerCount(); ++i)
+		{
+			EntityPlayer player = MinecraftServer.getServer().getConfigurationManager().func_152612_a(MinecraftServer.getServer().getAllUsernames()[i]);
+			if(player.dimension == dimID)
+			{
+				player.addChatMessage(new ChatComponentText(msg));
+			}
+		}
 	}
 	
 	public static GameProfile EC3FakePlayerProfile = new GameProfile(UUID.fromString("5cd89d0b-e9ba-0000-89f4-b5dbb05963da"), "[EC3]");

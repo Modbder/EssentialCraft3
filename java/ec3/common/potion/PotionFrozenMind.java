@@ -18,6 +18,11 @@ public class PotionFrozenMind extends Potion{
 		this.setPotionName("potion.frozenMind");
 	}
 	
+    public boolean isUsable()
+    {
+        return true;
+    }
+	
     public void performEffect(EntityLivingBase p_76394_1_, int p_76394_2_)
     {
     	

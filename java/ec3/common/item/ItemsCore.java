@@ -223,6 +223,10 @@ public class ItemsCore {
 		ItemRegistry.registerItem(magicArmorItems[15], EssentialCraftCore.class);
 		
 		bauble = registerItemSimple(bauble,ItemBaublesWearable.class,"bauble","windTablet",0,true,1);
+		
+		magmaticStaff = registerItemSimple(magmaticStaff,ItemMagmaticWand.class,"magmaticStaff","tools/magmaticWand",0,true,1);
+		magicalLantern = registerItemSimple(magicalLantern,ItemMagicLantern.class,"magicalLantern","tools/elementalPurifier",0,true,1);
+		magnetizingStaff = registerItemSimple(magnetizingStaff,ItemMagnetizingStaff.class,"magnetizingStaff","tools/magnetizingStaff",0,true,1);
 	}
 
 	public static Item registerItemSimple(Item i, Class<?extends Item> itemClass, String name, String textureName, int damage, boolean full3D, int stackSize)
@@ -283,6 +287,9 @@ public class ItemsCore {
 	public static Item magicalPorkchop;
 	public static Item charm;
 	public static Item magicalWings;
+	public static Item magmaticStaff;
+	public static Item magicalLantern;
+	public static Item magnetizingStaff;
 	
 	public static Item chaosFork;
 	public static Item frozenMace;

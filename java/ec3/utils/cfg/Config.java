@@ -41,6 +41,7 @@ public class Config implements IDummyConfig{
 		mobID[1] = config.get("Entities","MRUArrowID", 72).getInt();
 		mobID[2] = config.get("Entities","SolarBeamID", 73).getInt();
 		mobID[3] = config.get("Entities","WindMageID", 74).getInt();
+		mobID[4] = config.get("Entities","PosionFumeID", 75).getInt();
 	}
 	
 	public void loadMisc()

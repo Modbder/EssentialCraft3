@@ -5,6 +5,7 @@ import java.util.Random;
 import org.lwjgl.opengl.ARBOcclusionQuery;
 import org.lwjgl.opengl.GL11;
 
+import ec3.utils.common.ECUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GLAllocation;
@@ -36,6 +37,8 @@ public class RenderSkyFirstWorld extends IRenderHandler{
 		// TODO Auto-generated method stub
 		int color = 0x011121;
 		int colorDay = 0x213141;
+		if(ECUtils.isEventActive("ec3.event.darkness"))
+			colorDay = 0x000000;
 		 GL11.glDisable(GL11.GL_FOG);
          GL11.glDisable(GL11.GL_ALPHA_TEST);
          GL11.glEnable(GL11.GL_BLEND);
@@ -173,52 +176,57 @@ public class RenderSkyFirstWorld extends IRenderHandler{
          GL11.glColor4f(1.0F, 1.0F, 1.0F, f6);
          GL11.glTranslatef(f7, f8, f9);
          Random sunRnd = new Random(54263524L);
-         for(int i = 0; i < 10; ++i)
-         {
-	         GL11.glPushMatrix();
-	         GL11.glRotatef(-90.0F+i*30F, 0.0F+i*i, i-1.0F/i/i, 1.0F*i*i);
-	         GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F * i, 1.0F, 0.0F, 0.0F);
-	         f10 = sunRnd.nextFloat()*20;
-	         mc.renderEngine.bindTexture(locationSunPng);
-	         for(int x = 0; x < i+5; ++x)
+         boolean b = ECUtils.isEventActive("ec3.event.sunArray");
+         int mod = 1;
+         if(b) mod = 3;
+         if(!ECUtils.isEventActive("ec3.event.darkness"))
+	         for(int i = 0; i < 10*mod; ++i)
 	         {
-		         tessellator1.startDrawingQuads();
-		         tessellator1.setColorOpaque_I(sunRnd.nextInt());
-		         tessellator1.addVertexWithUV((double)(-f10), 100.0D, (double)(-f10), 0.0D, 0.0D);
-		         tessellator1.addVertexWithUV((double)f10, 100.0D, (double)(-f10), 1.0D, 0.0D);
-		         tessellator1.addVertexWithUV((double)f10, 100.0D, (double)f10, 1.0D, 1.0D);
-		         tessellator1.addVertexWithUV((double)(-f10), 100.0D, (double)f10, 0.0D, 1.0D);
-		         tessellator1.draw();
+		         GL11.glPushMatrix();
+		         GL11.glRotatef(-90.0F+i*30F, 0.0F+i*i, i-1.0F/i/i, 1.0F*i*i);
+		         GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F * i, 1.0F, 0.0F, 0.0F);
+		         f10 = sunRnd.nextFloat()*20;
+		         mc.renderEngine.bindTexture(locationSunPng);
+		         for(int x = 0; x < i+5; ++x)
+		         {
+			         tessellator1.startDrawingQuads();
+			         tessellator1.setColorOpaque_I(sunRnd.nextInt());
+			         tessellator1.addVertexWithUV((double)(-f10), 100.0D, (double)(-f10), 0.0D, 0.0D);
+			         tessellator1.addVertexWithUV((double)f10, 100.0D, (double)(-f10), 1.0D, 0.0D);
+			         tessellator1.addVertexWithUV((double)f10, 100.0D, (double)f10, 1.0D, 1.0D);
+			         tessellator1.addVertexWithUV((double)(-f10), 100.0D, (double)f10, 0.0D, 1.0D);
+			         tessellator1.draw();
+		         }
+		         GL11.glPopMatrix();
 	         }
-	         GL11.glPopMatrix();
-         }
-         Random moonRnd = new Random(23564637563453L);
-         for(int i = 0; i < 6; ++i)
-         {
-	         GL11.glPushMatrix();
-	         GL11.glRotatef(-90.0F+i*30F, 0.0F+i*i, i-1.0F/i/i, 1.0F*i*i);
-	         GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F * i, 1.0F, 0.0F, 0.0F);
-	         f10 = moonRnd.nextFloat()*30F;
-	         mc.renderEngine.bindTexture(locationMoonPhasesPng);	        
-	         for(int x = 0; x < 2*i; ++x)
-	         {
-		         int k = moonRnd.nextInt(8);
-		         int l = k % 4;
-		         int i1 = k / 4 % 2;
-		         float f14 = (float)(l + 0) / 4.0F;
-		         float f15 = (float)(i1 + 0) / 2.0F;
-		         float f16 = (float)(l + 1) / 4.0F;
-		         float f17 = (float)(i1 + 1) / 2.0F;
-		         tessellator1.startDrawingQuads();
-		         tessellator1.setColorRGBA(moonRnd.nextInt(), moonRnd.nextInt(), moonRnd.nextInt(), (int)(moonRnd.nextFloat()*255F));
-		         tessellator1.addVertexWithUV((double)(-f10), -100.0D, (double)f10, (double)f16, (double)f17);
-		         tessellator1.addVertexWithUV((double)f10, -100.0D, (double)f10, (double)f14, (double)f17);
-		         tessellator1.addVertexWithUV((double)f10, -100.0D, (double)(-f10), (double)f14, (double)f15);
-		         tessellator1.addVertexWithUV((double)(-f10), -100.0D, (double)(-f10), (double)f16, (double)f15);
-		         tessellator1.draw();
-	         }
-	         GL11.glPopMatrix();
-	     }
+	         Random moonRnd = new Random(23564637563453L);
+	         if(!ECUtils.isEventActive("ec3.event.darkness"))
+		         for(int i = 0; i < 6; ++i)
+		         {
+			         GL11.glPushMatrix();
+			         GL11.glRotatef(-90.0F+i*30F, 0.0F+i*i, i-1.0F/i/i, 1.0F*i*i);
+			         GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F * i, 1.0F, 0.0F, 0.0F);
+			         f10 = moonRnd.nextFloat()*30F;
+			         mc.renderEngine.bindTexture(locationMoonPhasesPng);	        
+			         for(int x = 0; x < 2*i; ++x)
+			         {
+				         int k = moonRnd.nextInt(8);
+				         int l = k % 4;
+				         int i1 = k / 4 % 2;
+				         float f14 = (float)(l + 0) / 4.0F;
+				         float f15 = (float)(i1 + 0) / 2.0F;
+				         float f16 = (float)(l + 1) / 4.0F;
+				         float f17 = (float)(i1 + 1) / 2.0F;
+				         tessellator1.startDrawingQuads();
+				         tessellator1.setColorRGBA(moonRnd.nextInt(), moonRnd.nextInt(), moonRnd.nextInt(), (int)(moonRnd.nextFloat()*255F));
+				         tessellator1.addVertexWithUV((double)(-f10), -100.0D, (double)f10, (double)f16, (double)f17);
+				         tessellator1.addVertexWithUV((double)f10, -100.0D, (double)f10, (double)f14, (double)f17);
+				         tessellator1.addVertexWithUV((double)f10, -100.0D, (double)(-f10), (double)f14, (double)f15);
+				         tessellator1.addVertexWithUV((double)(-f10), -100.0D, (double)(-f10), (double)f16, (double)f15);
+				         tessellator1.draw();
+			         }
+			         GL11.glPopMatrix();
+			     }
          GL11.glDisable(GL11.GL_TEXTURE_2D);
          float f18 = world.getStarBrightness(partialTicks) * f6;
 

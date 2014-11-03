@@ -22,8 +22,11 @@ public class EntitiesCore {
 		
 		EntityRegistry.registerGlobalEntityID(EntityWindMage.class, "EssentialCraftII.entities.WindMage", id[3], 0x997755, 0xffffff);
 		EntityRegistry.registerModEntity(EntityWindMage.class, "EssentialCraftII.entities.WindMage", id[3], EssentialCraftCore.core, 64, 1, true);
+		EntityRegistry.registerGlobalEntityID(EntityPoisonFume.class, "EssentialCraftII.entities.poisonFume", id[4], 0x00ff00, 0xff00ff);
+		EntityRegistry.registerModEntity(EntityPoisonFume.class, "EssentialCraftII.entities.poisonFume", id[4], EssentialCraftCore.core, 64, 1, true);
 		
 		EntityRegistry.addSpawn(EntityWindMage.class, 2, 1, 6, EnumCreatureType.monster, biomesToSpawn());
+		EntityRegistry.addSpawn(EntityPoisonFume.class, 100, 8, 16, EnumCreatureType.monster, biomesToSpawn());
 	}
 	
 	public static BiomeGenBase[] biomesToSpawn()
@@ -32,7 +35,7 @@ public class EntitiesCore {
 		List<BiomeGenBase> spawnLst = new ArrayList<BiomeGenBase>();
 		for(int i = 0; i < BiomeGenBase.getBiomeGenArray().length; ++i)
 		{
-			if(BiomeGenBase.getBiomeGenArray()[i] != null && BiomeGenBase.getBiomeGenArray()[i] != BiomeGenBase.hell && BiomeGenBase.getBiomeGenArray()[i] != BiomeGenBase.sky && BiomeGenBase.getBiomeGenArray()[i] != BiomeRegistry.chaosCorruption && BiomeGenBase.getBiomeGenArray()[i] != BiomeRegistry.frozenCorruption)
+			if(BiomeGenBase.getBiomeGenArray()[i] != null && BiomeGenBase.getBiomeGenArray()[i] != BiomeGenBase.hell && BiomeGenBase.getBiomeGenArray()[i] != BiomeGenBase.sky)
 			{
 				spawnLst.add(BiomeGenBase.getBiomeGenArray()[i]);
 			}
