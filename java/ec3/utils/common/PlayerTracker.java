@@ -48,12 +48,12 @@ public class PlayerTracker{
 	@SubscribeEvent
 	public void onPlayerJump(LivingJumpEvent event)
 	{
-		if(event.entityLiving instanceof EntityPlayer && !event.entityLiving.worldObj.isRemote && event.entityLiving.worldObj.rand.nextFloat() < 0.003F)
+		if(event.entityLiving instanceof EntityPlayer && !event.entityLiving.worldObj.isRemote && event.entityLiving.worldObj.rand.nextFloat() < 0.0003F)
 		{
 			event.entityLiving.addPotionEffect(new PotionEffect(Potion.jump.id,100,12));
 			EntityPlayer player = (EntityPlayer) event.entityLiving;
 			player.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA+""+EnumChatFormatting.ITALIC+"The wind pushes you upwards..."));
-			WindRelations.increasePlayerWindRelations(player, 100);
+			WindRelations.increasePlayerWindRelations(player, 1000);
 		}
 		
 	}

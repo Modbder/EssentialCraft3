@@ -28,4 +28,6 @@
 	-Added 8 potion effects
 	-Added 2 new biomes
 	-New mechanics - wind relations. Player can increase their wind relations by releasing trapped winds or by random world events
-	
+4.2.1710.164
+	-Wind related events in the world are now 10 times more rare.
+	-restructured the array string in the GenericItemEC3 to look better for addons support.	

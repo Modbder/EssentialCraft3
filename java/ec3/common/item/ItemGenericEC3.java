@@ -19,7 +19,46 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 public class ItemGenericEC3 extends Item{
-	public static String[] names = new String[]{"combinedMagicalAlloys","elementalCore","enderScalePlating","magicalEssence","magicalGoldenOrb","magicalIngot","magicalWater","magicFortifiedPlating","magicPurifyedEnderScaleAlloy","magicPurifyedGlassAlloy","magicPurifyedGoldAlloy","magicPurifyedRedstoneAlloy","mruShard","mruCrystal","mruGem","mruChunk","mruLargeChunk","inventoryUpgrade","efficencyUpgrade","diamondUpgrade","crystalDust","diamondPlate","emeraldPlate","eyeOfAbsorbtion","fortifiedFrame","heatingRod","ironSupport","magicalScreen","matrixLink","mruCatcher","mruConversionMatrix","obsidianPlate","sunImbuedGlass","worldInteractor","magicPlate","voidPlating","voidCore","voidMruReactor"};
+	public static String[] names = new String[]{
+		"combinedMagicalAlloys", //0
+		"elementalCore", //1
+		"enderScalePlating", //2
+		"magicalEssence", //3
+		"magicalGoldenOrb", //4
+		"magicalIngot", //5
+		"magicalWater", //6
+		"magicFortifiedPlating", //7
+		"magicPurifyedEnderScaleAlloy", //8
+		"magicPurifyedGlassAlloy", //9
+		"magicPurifyedGoldAlloy", //10
+		"magicPurifyedRedstoneAlloy", //11
+		"mruShard", //12
+		"mruCrystal", //13
+		"mruGem", //14
+		"mruChunk", //15
+		"mruLargeChunk", //16
+		"inventoryUpgrade", //17
+		"efficencyUpgrade", //18
+		"diamondUpgrade", //19
+		"crystalDust", //20
+		"diamondPlate", //21
+		"emeraldPlate", //22
+		"eyeOfAbsorbtion", //23
+		"fortifiedFrame", //24
+		"heatingRod", //25
+		"ironSupport", //26
+		"magicalScreen", //27
+		"matrixLink", //28
+		"mruCatcher", //29
+		"mruConversionMatrix", //30
+		"obsidianPlate", //31
+		"sunImbuedGlass", //32
+		"worldInteractor", //33
+		"magicPlate", //34
+		"voidPlating", //35
+		"voidCore", //36
+		"voidMruReactor" //37
+		};
 	public static IIcon[] itemIcons = new IIcon[128];
 	
 	public ItemGenericEC3()
