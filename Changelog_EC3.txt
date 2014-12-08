@@ -30,4 +30,17 @@
 	-New mechanics - wind relations. Player can increase their wind relations by releasing trapped winds or by random world events
 4.2.1710.164
 	-Wind related events in the world are now 10 times more rare.
-	-restructured the array string in the GenericItemEC3 to look better for addons support.	
+	-restructured the array string in the GenericItemEC3 to look better for addons support.
+4.3.1710.112
+	+Added lots more options to API
+	+Added Categories, Pages and Discoveries(will be used later in Book Of Knowledge)
+	=Reworked Radiation Chamber Recipies - can now use different amounts of MRU/tick
+	+New block - corruption Cleaner
+	+New Structure - MRU Coil
+	+New Structure - MRU Tesla Reactor
+	+Added Lightness potion
+	+Added Paradox potion effect(currently has no use)
+	+Couple of new items, that can be used in crafting recipies
+	=MRU Movers now break.
+	+Added integration for Version Checker mod
+		
