@@ -187,6 +187,10 @@ public class EntityMRUPresence extends Entity implements IMRUPressence
 			{
 				--tickTimer;
 			}
+		}else
+		{
+			if(this.worldObj.rand.nextFloat() < 0.025F)
+				this.worldObj.playSound(posX, posY, posZ, "essentialcraft:sound.mrucu_noise", (float)this.getMRU()/60000F, 0.1F+this.worldObj.rand.nextFloat(), false);
 		}
 		if(this.getMRU() > 60000)
 		{

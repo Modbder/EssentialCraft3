@@ -32,10 +32,19 @@ public class StructureRegistry {
 		structureBlocks_mrucucc.add(BlocksCore.fortifiedStone);
 		structureBlocks_mrucucc.add(BlocksCore.voidGlass);
 		structureBlocks_mrucucc.add(BlocksCore.voidStone);
+		structureBlocks_mrucucc.add(BlocksCore.platingPale);
 		allowedBlocks.put(EnumStructureType.MRUCUContaigementChamber, structureBlocks_mrucucc);
+		
+		List<Block> structureBlocks_mrucoil = new ArrayList();
+		structureBlocks_mrucoil.add(BlocksCore.platingPale);
+		structureBlocks_mrucoil.add(BlocksCore.magicPlating);
+		structureBlocks_mrucoil.add(BlocksCore.voidStone);
+		
+		allowedBlocks.put(EnumStructureType.MRUCoil, structureBlocks_mrucoil);
 		
 		ECUtils.registerBlockResistance(BlocksCore.fortifiedGlass, 0, 3F);
 		ECUtils.registerBlockResistance(BlocksCore.magicPlating, 0, 5F);
+		ECUtils.registerBlockResistance(BlocksCore.platingPale, 0, 10F);
 		ECUtils.registerBlockResistance(BlocksCore.ecController, 0, 100F);
 		ECUtils.registerBlockResistance(BlocksCore.ecAcceptor, 0, 100F);
 		ECUtils.registerBlockResistance(BlocksCore.ecBalancer, 0, 100F);

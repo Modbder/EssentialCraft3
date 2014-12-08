@@ -1,12 +1,13 @@
 package ec3.api;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import scala.actors.threadpool.Arrays;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class DiscoveryEntry {
@@ -22,6 +23,8 @@ public class DiscoveryEntry {
 	public String name;
 	
 	public String shortDescription;
+	
+	public ResourceLocation displayTexture;
 	
 	public DiscoveryEntry(String i)
 	{
@@ -42,6 +45,8 @@ public class DiscoveryEntry {
 			displayStack = new ItemStack((Block) obj,1,0);
 		if(obj instanceof Item)
 			displayStack = new ItemStack((Item) obj,1,0);
+		if(obj instanceof ResourceLocation)
+			displayTexture = (ResourceLocation) obj;
 		return this;
 	}
 	
@@ -60,6 +65,12 @@ public class DiscoveryEntry {
 	public DiscoveryEntry setReferal(ItemStack... stk)
 	{
 		referalItemStackLst.addAll(Arrays.asList(stk));
+		for(int i = 0;i < stk.length; ++i)
+		{
+			ItemStack is = stk[i];
+			is.stackSize = 0;
+			ApiCore.discoveriesByIS.put(is.toString(), this);
+		}
 		return this;
 	}
 

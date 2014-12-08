@@ -58,6 +58,8 @@ public class ItemMRUMover extends Item{
 						presence.setPositionAndRotation(presence.posX+moveX, presence.posY+moveY, presence.posZ+moveZ, 0, 0);
 					else
 						presence.setPositionAndRotation(presence.posX-moveX, presence.posY-moveY, presence.posZ-moveZ, 0, 0);
+					if(count % 20 == 0)
+						stack.damageItem(1, player);
 				}
 					
 				break;

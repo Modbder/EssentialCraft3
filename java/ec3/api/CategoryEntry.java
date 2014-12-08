@@ -3,10 +3,10 @@ package ec3.api;
 import java.util.ArrayList;
 import java.util.List;
 
-import scala.actors.threadpool.Arrays;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 public class CategoryEntry {
 	
@@ -20,6 +20,12 @@ public class CategoryEntry {
 	
 	public String shortDescription;
 	
+	public ResourceLocation displayTexture;
+	
+	public int reqTier;
+	
+	public ResourceLocation specificBookTextures;
+	
 	public CategoryEntry(String i)
 	{
 		id = i;
@@ -31,6 +37,12 @@ public class CategoryEntry {
 		return this;
 	}
 	
+	public CategoryEntry setTier(int i)
+	{
+		reqTier = i;
+		return this;
+	}
+	
 	public CategoryEntry setDisplayStack(Object obj)
 	{
 		if(obj instanceof ItemStack)
@@ -39,12 +51,20 @@ public class CategoryEntry {
 			displayStack = new ItemStack((Block) obj,1,0);
 		if(obj instanceof Item)
 			displayStack = new ItemStack((Item) obj,1,0);
+		if(obj instanceof ResourceLocation)
+			displayTexture = (ResourceLocation) obj;
 		return this;
 	}
 	
 	public CategoryEntry setDesc(String s)
 	{
 		shortDescription = s;
+		return this;
+	}
+	
+	public CategoryEntry setSpecificTexture(ResourceLocation l)
+	{
+		specificBookTextures = l;
 		return this;
 	}
 	

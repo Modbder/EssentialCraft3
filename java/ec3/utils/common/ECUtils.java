@@ -38,6 +38,7 @@ import ec3.common.item.ItemBaublesWearable;
 import ec3.common.item.ItemBoundGem;
 import ec3.common.mod.EssentialCraftCore;
 import ec3.common.registry.PotionRegistry;
+import ec3.common.tile.TileMRUReactor;
 import ec3.common.tile.TileRayTower;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -57,6 +58,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class ECUtils {
@@ -64,7 +66,7 @@ public class ECUtils {
 	public static Hashtable<String, Float> mruResistance = new Hashtable();
 	public static Hashtable<String, Boolean> ignoreMeta = new Hashtable();
 	public static List<SpellEntry> spells = new ArrayList();
-	
+
 	public static void createNBTTag(ItemStack stack)
 	{
 		if(stack.hasTagCompound())
@@ -298,7 +300,7 @@ public class ECUtils {
 			player.addPotionEffect(new PotionEffect(potion.id,newDuration,newModifier));
 		}else
 		{
-			player.addPotionEffect(new PotionEffect(potion.id,200,0));
+			player.addPotionEffect(new PotionEffect(potion.id,index2,0));
 		}
 	}
 	
@@ -360,14 +362,18 @@ public class ECUtils {
 	    				{
 		    				if(tile.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof TileRayTower)
 		    					EssentialCraftCore.proxy.spawnParticle("mruFX", (float) (o[0]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), (float) (o[1]+1.85D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), (float) (o[2]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), tile.xCoord-o[0]+MathUtils.randomDouble(tile.getWorldObj().rand)/5, tile.yCoord-o[1]+0.25D+MathUtils.randomDouble(tile.getWorldObj().rand)/5, tile.zCoord-o[2]+MathUtils.randomDouble(tile.getWorldObj().rand)/5);
+		    				else if(tile.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof TileMRUReactor)
+		    					EssentialCraftCore.proxy.spawnParticle("mruFX", (float) (o[0]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), (float) (o[1]+1.1D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), (float) (o[2]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), tile.xCoord-o[0]+MathUtils.randomDouble(tile.getWorldObj().rand)/5, tile.yCoord-o[1]+0.8D+MathUtils.randomDouble(tile.getWorldObj().rand)/5, tile.zCoord-o[2]+MathUtils.randomDouble(tile.getWorldObj().rand)/5);
 		    				else
 		    					EssentialCraftCore.proxy.spawnParticle("mruFX", (float) (o[0]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), (float) (o[1]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), (float) (o[2]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), tile.xCoord-o[0]+MathUtils.randomDouble(tile.getWorldObj().rand)/5, tile.yCoord-o[1]+1.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5, tile.zCoord-o[2]+MathUtils.randomDouble(tile.getWorldObj().rand)/5);
 	    				}else
 	    				{
 	    					if(tile.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof TileRayTower)
 		    					EssentialCraftCore.proxy.spawnParticle("mruFX", (float) (o[0]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), (float) (o[1]+1.85D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), (float) (o[2]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), tile.xCoord-o[0]+MathUtils.randomDouble(tile.getWorldObj().rand)/5, tile.yCoord-o[1]-1.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5, tile.zCoord-o[2]+MathUtils.randomDouble(tile.getWorldObj().rand)/5);
-		    				else
-		    					EssentialCraftCore.proxy.spawnParticle("mruFX", (float) (o[0]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), (float) (o[1]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), (float) (o[2]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), tile.xCoord-o[0]+MathUtils.randomDouble(tile.getWorldObj().rand)/5, tile.yCoord-o[1]+MathUtils.randomDouble(tile.getWorldObj().rand)/5, tile.zCoord-o[2]+MathUtils.randomDouble(tile.getWorldObj().rand)/5);
+	    					else if(tile.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof TileMRUReactor)
+	    						EssentialCraftCore.proxy.spawnParticle("mruFX", (float) (o[0]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), (float) (o[1]+1.1D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), (float) (o[2]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), tile.xCoord-o[0]+MathUtils.randomDouble(tile.getWorldObj().rand)/5, tile.yCoord-o[1]-0.6D+MathUtils.randomDouble(tile.getWorldObj().rand)/5, tile.zCoord-o[2]+MathUtils.randomDouble(tile.getWorldObj().rand)/5);
+	    					else
+	    						EssentialCraftCore.proxy.spawnParticle("mruFX", (float) (o[0]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), (float) (o[1]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), (float) (o[2]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), tile.xCoord-o[0]+MathUtils.randomDouble(tile.getWorldObj().rand)/5, tile.yCoord-o[1]+MathUtils.randomDouble(tile.getWorldObj().rand)/5, tile.zCoord-o[2]+MathUtils.randomDouble(tile.getWorldObj().rand)/5);
 	    				}
 	    			}
 				}
@@ -439,11 +445,20 @@ public class ECUtils {
 		    		        if(p_76986_1_.getWorldObj().getTileEntity(p_76986_1_.xCoord, p_76986_1_.yCoord, p_76986_1_.zCoord) instanceof TileRayTower)
 		    		        {
 		    		        	//Is the transfering tile a RayTower
-			    		        if(p_76986_1_.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof TileRayTower)
+			    		        if(p_76986_1_.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof TileRayTower || p_76986_1_.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof TileMRUReactor)
 			    		        {
-				    		        f4 = (float)(o[0] - p_76986_1_.xCoord);
-						            f5 = (float)(o[1] - (double)(f31 + p_76986_1_.yCoord-0.15F));
-				    		        f6 = (float)(o[2] - p_76986_1_.zCoord);
+			    		        	TileEntity y = p_76986_1_.getWorldObj().getTileEntity(o[0], o[1], o[2]);
+			    		        	if(y instanceof TileRayTower)
+			    		        	{
+					    		        f4 = (float)(o[0] - p_76986_1_.xCoord);
+							            f5 = (float)(o[1] - (double)(f31 + p_76986_1_.yCoord-0.15F));
+					    		        f6 = (float)(o[2] - p_76986_1_.zCoord);
+			    		        	}else
+			    		        	{
+					    		        f4 = (float)(o[0] - p_76986_1_.xCoord);
+							            f5 = (float)(o[1] - (double)(f31 + p_76986_1_.yCoord+0.6F));
+					    		        f6 = (float)(o[2] - p_76986_1_.zCoord);
+			    		        	}
 			    		        }else
 			    		        {
 				    		        f4 = (float)(o[0] - p_76986_1_.xCoord);
@@ -454,12 +469,22 @@ public class ECUtils {
 		    		        }else
 		    		        {
 		    		        	//Is the transfering tile a RayTower
-			    		        if(p_76986_1_.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof TileRayTower)
+			    		        if(p_76986_1_.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof TileRayTower || p_76986_1_.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof TileMRUReactor)
 			    		        {
-				    		        f4 = (float)(o[0] - p_76986_1_.xCoord);
-						            f5 = (float)(o[1] - (double)(f31 + p_76986_1_.yCoord-1.55F));
-				    		        f6 = (float)(o[2] - p_76986_1_.zCoord);
-				    		        GL11.glTranslatef((float)p_76986_2_+0.5F, (float)p_76986_4_ + 0.5F, (float)p_76986_6_+0.5F);
+			    		        	TileEntity y = p_76986_1_.getWorldObj().getTileEntity(o[0], o[1], o[2]);
+			    		        	if(y instanceof TileRayTower)
+			    		        	{
+					    		        f4 = (float)(o[0] - p_76986_1_.xCoord);
+							            f5 = (float)(o[1] - (double)(f31 + p_76986_1_.yCoord-1.55F));
+					    		        f6 = (float)(o[2] - p_76986_1_.zCoord);
+					    		        GL11.glTranslatef((float)p_76986_2_+0.5F, (float)p_76986_4_ + 0.5F, (float)p_76986_6_+0.5F);
+			    		        	}else
+			    		        	{
+			    		        		 f4 = (float)(o[0] - p_76986_1_.xCoord);
+								         f5 = (float)(o[1] - (double)(f31 + p_76986_1_.yCoord-0.7F));
+						    		     f6 = (float)(o[2] - p_76986_1_.zCoord);
+						    		     GL11.glTranslatef((float)p_76986_2_+0.5F, (float)p_76986_4_ + 0.5F, (float)p_76986_6_+0.5F);
+			    		        	}
 			    		        }else
 			    		        {
 				    		        f4 = (float)(o[0] - p_76986_1_.xCoord);

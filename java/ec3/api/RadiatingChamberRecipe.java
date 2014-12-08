@@ -11,6 +11,7 @@ public class RadiatingChamberRecipe implements IRecipe{
 	public ItemStack result;
 	public int mruRequired;
 	public float upperBalanceLine,lowerBalanceLine;
+	public float costModifier;
 	
 	public RadiatingChamberRecipe(ItemStack[] ingred, ItemStack res, int mruReq, float[] balancePoints)
 	{
@@ -19,6 +20,17 @@ public class RadiatingChamberRecipe implements IRecipe{
 		mruRequired = mruReq;
 		upperBalanceLine = balancePoints[0];
 		lowerBalanceLine = balancePoints[1];
+		costModifier = 1.0F;
+	}
+	
+	public RadiatingChamberRecipe(ItemStack[] ingred, ItemStack res, int mruReq, float[] balancePoints, float modifier)
+	{
+		recipeItems = ingred;
+		result = res;
+		mruRequired = mruReq;
+		upperBalanceLine = balancePoints[0];
+		lowerBalanceLine = balancePoints[1];
+		costModifier = modifier;
 	}
 	
 	@Override

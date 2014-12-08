@@ -22,16 +22,18 @@ import ec3.common.registry.DimensionRegistry;
 import ec3.common.registry.EnchantRegistry;
 import ec3.common.registry.PotionRegistry;
 import ec3.common.registry.RecipeRegistry;
+import ec3.common.registry.ResearchRegistry;
 import ec3.common.registry.SpellRegistry;
 import ec3.common.registry.StructureRegistry;
 import ec3.common.registry.VillagersRegistry;
+import ec3.integration.versionChecker.Check;
 import ec3.network.proxy.CommonProxy;
 import ec3.utils.cfg.Config;
 import ec3.utils.common.CommandCreateMRUCU;
 import ec3.utils.common.CommandSetBalance;
 import ec3.utils.common.CommandSetMRU;
 
-@Mod(modid = "essentialcraft", name = "EssentialCraftIII", version = "4.2.1710.36")
+@Mod(modid = "essentialcraft", name = "EssentialCraftIII", version = "4.3.1710.112")
 public class EssentialCraftCore {
 
 //============================================CORE START=================================================//
@@ -78,6 +80,7 @@ public class EssentialCraftCore {
 			return;
 		}
 		CoreRegistry.register();
+		Check.checkerCommit();
 	}
 	
 	@EventHandler
@@ -92,6 +95,7 @@ public class EssentialCraftCore {
 		VillagersRegistry.instance.register();
 		BiomeRegistry.core.register();
 		StructureRegistry.register();
+		ResearchRegistry.init();
 		proxy.registerRenderInformation();
 		proxy.registerTileEntitySpecialRenderer();
 		

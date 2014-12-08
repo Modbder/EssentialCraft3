@@ -41,6 +41,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ec3.client.gui.GuiChargingChamber;
 import ec3.client.gui.GuiColdDistillator;
+import ec3.client.gui.GuiCorruptionCleaner;
 import ec3.client.gui.GuiCrystalController;
 import ec3.client.gui.GuiCrystalExtractor;
 import ec3.client.gui.GuiCrystalFormer;
@@ -48,6 +49,7 @@ import ec3.client.gui.GuiEnderGenerator;
 import ec3.client.gui.GuiFlowerBurner;
 import ec3.client.gui.GuiHeatGenerator;
 import ec3.client.gui.GuiMRUAcceptor;
+import ec3.client.gui.GuiMRUCoil;
 import ec3.client.gui.GuiMRUInfo;
 import ec3.client.gui.GuiMagicalEnchanter;
 import ec3.client.gui.GuiMagicalFurnace;
@@ -77,6 +79,7 @@ import ec3.client.render.RenderBlocksECIII;
 import ec3.client.render.RenderChargingChamber;
 import ec3.client.render.RenderCloudsFirstWorld;
 import ec3.client.render.RenderColdDistillator;
+import ec3.client.render.RenderCorruptionCleaner;
 import ec3.client.render.RenderCrystalController;
 import ec3.client.render.RenderCrystalExtractor;
 import ec3.client.render.RenderCrystalFormer;
@@ -86,8 +89,11 @@ import ec3.client.render.RenderEnderGenerator;
 import ec3.client.render.RenderFlowerBurner;
 import ec3.client.render.RenderHandlerEC3;
 import ec3.client.render.RenderHeatGenerator;
+import ec3.client.render.RenderMRUCoil;
+import ec3.client.render.RenderMRUCoilHardener;
 import ec3.client.render.RenderMRULink;
 import ec3.client.render.RenderMRUPresence;
+import ec3.client.render.RenderMRUReactor;
 import ec3.client.render.RenderMagicalEnchanter;
 import ec3.client.render.RenderMagicalJukebox;
 import ec3.client.render.RenderMagicalQuarry;
@@ -114,6 +120,7 @@ import ec3.common.entity.EntitySolarBeam;
 import ec3.common.entity.EntityWindMage;
 import ec3.common.inventory.ContainerChargingChamber;
 import ec3.common.inventory.ContainerColdDistillator;
+import ec3.common.inventory.ContainerCorruptionCleaner;
 import ec3.common.inventory.ContainerCrystalController;
 import ec3.common.inventory.ContainerCrystalExtractor;
 import ec3.common.inventory.ContainerCrystalFormer;
@@ -121,6 +128,7 @@ import ec3.common.inventory.ContainerEnderGenerator;
 import ec3.common.inventory.ContainerFlowerBurner;
 import ec3.common.inventory.ContainerHeatGenerator;
 import ec3.common.inventory.ContainerMRUAcceptor;
+import ec3.common.inventory.ContainerMRUCoil;
 import ec3.common.inventory.ContainerMRUInfo;
 import ec3.common.inventory.ContainerMagicalEnchanter;
 import ec3.common.inventory.ContainerMagicalFurnace;
@@ -142,6 +150,7 @@ import ec3.common.item.ItemSecret;
 import ec3.common.item.ItemsCore;
 import ec3.common.tile.TileChargingChamber;
 import ec3.common.tile.TileColdDistillator;
+import ec3.common.tile.TileCorruptionCleaner;
 import ec3.common.tile.TileCrystalController;
 import ec3.common.tile.TileCrystalExtractor;
 import ec3.common.tile.TileCrystalFormer;
@@ -149,6 +158,9 @@ import ec3.common.tile.TileElementalCrystal;
 import ec3.common.tile.TileEnderGenerator;
 import ec3.common.tile.TileFlowerBurner;
 import ec3.common.tile.TileHeatGenerator;
+import ec3.common.tile.TileMRUCoil;
+import ec3.common.tile.TileMRUCoil_Hardener;
+import ec3.common.tile.TileMRUReactor;
 import ec3.common.tile.TileMagicalEnchanter;
 import ec3.common.tile.TileMagicalFurnace;
 import ec3.common.tile.TileMagicalJukebox;
@@ -282,6 +294,14 @@ ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/
 			{
 				return new GuiMagicalFurnace(new ContainerMagicalFurnace(player.inventory, tile),tile);
 			}
+			if(tile instanceof TileMRUCoil)
+			{
+				return new GuiMRUCoil(new ContainerMRUCoil(player.inventory, tile),tile);
+			}
+			if(tile instanceof TileCorruptionCleaner)
+			{
+				return new GuiCorruptionCleaner(new ContainerCorruptionCleaner(player.inventory, tile),tile);
+			}
 		}
 		return null;
 	}
@@ -334,6 +354,10 @@ ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/
 		ClientRegistry.bindTileEntitySpecialRenderer(TileCrystalController.class, new RenderCrystalController());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileCrystalExtractor.class, new RenderCrystalExtractor());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileChargingChamber.class, new RenderChargingChamber());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileMRUCoil_Hardener.class, new RenderMRUCoilHardener());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileMRUCoil.class, new RenderMRUCoil());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileCorruptionCleaner.class, new RenderCorruptionCleaner());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileMRUReactor.class, new RenderMRUReactor());
 	}
 	
 	@Override

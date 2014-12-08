@@ -4,6 +4,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import ec3.common.tile.TileChargingChamber;
 import ec3.common.tile.TileColdDistillator;
 import ec3.common.tile.TileCorruption;
+import ec3.common.tile.TileCorruptionCleaner;
 import ec3.common.tile.TileCrystalController;
 import ec3.common.tile.TileCrystalExtractor;
 import ec3.common.tile.TileCrystalFormer;
@@ -12,6 +13,9 @@ import ec3.common.tile.TileEmberForge;
 import ec3.common.tile.TileEnderGenerator;
 import ec3.common.tile.TileFlowerBurner;
 import ec3.common.tile.TileHeatGenerator;
+import ec3.common.tile.TileMRUCoil;
+import ec3.common.tile.TileMRUCoil_Hardener;
+import ec3.common.tile.TileMRUReactor;
 import ec3.common.tile.TileMagicalEnchanter;
 import ec3.common.tile.TileMagicalFurnace;
 import ec3.common.tile.TileMagicalJukebox;
@@ -77,6 +81,10 @@ public class TileRegistry {
 		addTileToMapping(TileMagicalTeleporter.class);
 		addTileToMapping(TileMagicalFurnace.class);
 		addTileToMapping(TileEmberForge.class);
+		addTileToMapping(TileMRUCoil_Hardener.class);
+		addTileToMapping(TileMRUCoil.class);
+		addTileToMapping(TileCorruptionCleaner.class);
+		addTileToMapping(TileMRUReactor.class);
 	}
 	
 	public static void addTileToMapping(Class<? extends TileEntity> tile)

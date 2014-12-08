@@ -132,12 +132,14 @@ public class WindRelations {
 		}else
 		{
 			int current = getPlayerWindRelations(player);
-			if(!player.worldObj.isRemote && player.worldObj.rand.nextDouble() < 0.00001F)
+			int mod = 1;
+			if(player.getActivePotionEffect(PotionRegistry.paranormalLightness) != null) mod = player.getActivePotionEffect(PotionRegistry.paranormalLightness).getAmplifier()+1;
+			if(!player.worldObj.isRemote && player.worldObj.rand.nextDouble() < (0.00001F)*mod)
 			{
 				player.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA+""+EnumChatFormatting.ITALIC+"The wind timidly touches your hair..."));
 				increasePlayerWindRelations(player,1000);
 			}
-			if(!player.worldObj.isRemote && player.worldObj.rand.nextDouble() < 0.00005F)
+			if(!player.worldObj.isRemote && player.worldObj.rand.nextDouble() < 0.00005F*mod)
 			{
 				if(player.isSprinting())
 				{

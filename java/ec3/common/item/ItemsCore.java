@@ -227,13 +227,24 @@ public class ItemsCore {
 		magmaticStaff = registerItemSimple(magmaticStaff,ItemMagmaticWand.class,"magmaticStaff","tools/magmaticWand",0,true,1);
 		magicalLantern = registerItemSimple(magicalLantern,ItemMagicLantern.class,"magicalLantern","tools/elementalPurifier",0,true,1);
 		magnetizingStaff = registerItemSimple(magnetizingStaff,ItemMagnetizingStaff.class,"magnetizingStaff","tools/magnetizingStaff",0,true,1);
+		
+		research_book = registerItemSimple(research_book,ItemKnowledgeBook.class,"research_book","book_knowledge",0,false,1);
+	
+		air_potion = registerItemSimple(air_potion,ItemLiquidAir.class,"air_potion","fluidAir",0,false,64);
+		mruMover_t2 = registerItemSimple(mruMover_t2,ItemMRUMover.class,"mruMover_t2","mru_mover_t2",256*6,true,1);
+		playerList = registerItemSimple(playerList,ItemPlayerList.class,"playerList","minecraft:paper",0,false,1);
+		ApiCore.allowsSeeingMRU.add(mruMover_t2);
+		
 	}
 
 	public static Item registerItemSimple(Item i, Class<?extends Item> itemClass, String name, String textureName, int damage, boolean full3D, int stackSize)
 	{
 		try
 		{
-			i = itemClass.newInstance().setUnlocalizedName("essentialcraft:"+name).setTextureName("essentialcraft:"+textureName).setMaxDamage(damage).setMaxStackSize(stackSize);
+			if(textureName.indexOf(":") != -1)
+				i = itemClass.newInstance().setUnlocalizedName("essentialcraft:"+name).setTextureName(textureName).setMaxDamage(damage).setMaxStackSize(stackSize);
+			else
+				i = itemClass.newInstance().setUnlocalizedName("essentialcraft:"+name).setTextureName("essentialcraft:"+textureName).setMaxDamage(damage).setMaxStackSize(stackSize);
 			if(full3D)
 				i.setFull3D();
 			Item.itemRegistry.addObject(getIdForItem(name), "essentialcraft:"+name, i);
@@ -316,6 +327,14 @@ public class ItemsCore {
 	public static Item[] magicArmorItems = new Item[16];
 	
 	public static Item bauble;
+	
+	public static Item research_book;
+	
+	public static Item air_potion;
+	
+	public static Item mruMover_t2;
+	
+	public static Item playerList;
 	
 	public static ArmorMaterial magicArmorMaterial = EnumHelper.addArmorMaterial("MRUFortified", 33, new int[]{3, 8, 6, 3}, 25);
 	public static ArmorMaterial voidArmorMaterial = EnumHelper.addArmorMaterial("VoidFortified", 52, new int[]{3, 8, 6, 3}, 40);

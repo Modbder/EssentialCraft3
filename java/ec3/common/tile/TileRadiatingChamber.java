@@ -22,6 +22,7 @@ import ec3.api.RadiatingChamberRecipe;
 import ec3.api.RadiatingChamberRecipes;
 import ec3.common.block.BlocksCore;
 import ec3.common.item.ItemBoundGem;
+import ec3.common.item.ItemsCore;
 import ec3.utils.common.ECUtils;
 
 public class TileRadiatingChamber extends TileMRUGeneric{
@@ -89,7 +90,7 @@ public class TileRadiatingChamber extends TileMRUGeneric{
 				currentRecipe = null;
 				return;
 			}
-			int mruReq = 1;
+			int mruReq = (int) (1 * this.currentRecipe.costModifier);
 			if(this.getMRU() >= mruReq && this.progressLevel < this.currentRecipe.mruRequired)
 			{
 				this.progressLevel += 1;
@@ -140,7 +141,7 @@ public class TileRadiatingChamber extends TileMRUGeneric{
     	if(this.canFunction(this.currentRecipe))
     	{
     		ItemStack stk = this.currentRecipe.result;
-    		if(stk.getItem().getUnlocalizedName().equals(BlocksCore.fortifiedGlass.getUnlocalizedName()) || stk.getItem().getUnlocalizedName().equals(BlocksCore.fortifiedStone.getUnlocalizedName()))
+    		if(stk.getItem().getUnlocalizedName().equals(BlocksCore.fortifiedGlass.getUnlocalizedName()) || stk.getItem().getUnlocalizedName().equals(BlocksCore.fortifiedStone.getUnlocalizedName()) || (stk.getItem() == ItemsCore.genericItem && (stk.getItemDamage() == 39 || stk.getItemDamage() == 40)))
     			stk.stackSize = 4;
             if (this.getStackInSlot(3) == null)
             {

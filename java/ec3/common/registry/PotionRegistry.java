@@ -4,6 +4,7 @@ import DummyCore.Utils.MiscUtils;
 import ec3.common.potion.PotionChaosInfluence;
 import ec3.common.potion.PotionFrozenMind;
 import ec3.common.potion.PotionMRUCorruption;
+import ec3.common.potion.PotionMindfoldParadox;
 import ec3.common.potion.PotionPurpleFlame;
 import ec3.common.potion.PotionRadiation;
 import ec3.common.potion.PotionShadeCorruption;
@@ -16,7 +17,7 @@ public class PotionRegistry {
 	
 	public static void registerPotions()
 	{
-		int pStart = MiscUtils.extendPotionArray(8);
+		int pStart = MiscUtils.extendPotionArray(9);
         pStart = getNextPotionId(pStart);
         if(pStart >= 0)
         {
@@ -64,6 +65,12 @@ public class PotionRegistry {
         {
         	purpleFlame = new PotionPurpleFlame(pStart, true, 0xff00ff);
         }
+        
+        pStart = getNextPotionId(pStart);
+        if(pStart >= 0)
+        {
+        	paradox = new PotionMindfoldParadox(pStart, true, 0x85f8ff);
+        }
 	}
 	
     static int getNextPotionId(int start)
@@ -85,5 +92,6 @@ public class PotionRegistry {
     public static PotionRadiation radiation;
     public static PotionShadeCorruption shadeCorruption;
     public static PotionPurpleFlame purpleFlame;
+    public static PotionMindfoldParadox paradox;
 
 }

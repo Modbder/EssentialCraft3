@@ -111,6 +111,15 @@ public class BlocksCore {
 		torch = registerBlockSimple(BlockMagicLight.class,Material.circuits,torch,"torch","firstWorld/root",0,0,1);
 		torch.setLightLevel(1.0F);
 		
+		blockPale = registerBlockSimple(Block.class,Material.rock,blockPale,"blockPale","paleBlock",2,100,0);
+		blockPale.setStepSound(Block.soundTypeMetal);
+		platingPale = new BlockConnectedTextures(Material.rock).setTexturePath("palePlating").setHardness(3.0F).setResistance(100.0F).setBlockName("essentialcraft.platingPale").setBlockTextureName("essentialcraft:palePlatingBlock");
+		BlocksRegistry.registerBlock(platingPale, "platingPale", EssentialCraftCore.class, ItemBlockGeneric.class);
+		mruCoilHardener = registerBlockSimple(BlockMRUCoil_Hardener.class,Material.rock,mruCoilHardener,"mruCoilHardener","fortifiedStone",1,100,0);
+		mruCoil = registerBlockSimple(BlockMRUCoil_Coil.class,Material.rock,mruCoil,"mruCoil","fortifiedStone",1,100,0);
+		corruptionCleaner = registerBlockSimple(BlockCorruptionCleaner.class,Material.rock,corruptionCleaner,"corruptionCleaner","fortifiedStone",1,100,0);
+		reactorSupport = registerBlockSimple(BlockReactorSupport.class,Material.rock,reactorSupport,"reactorSupport","fortifiedStone",1,10,0);
+		reactor = registerBlockSimple(BlockMRUReactor.class,Material.rock,reactor,"reactor","fortifiedStone",1,10,0);
 	}
 	
 	public static Block registerBlockSimple(Class<? extends Block> c,Material m,Block b, String name, String texture, float hardness, float resistance, int opacity)
@@ -199,6 +208,15 @@ public class BlocksCore {
 	public static Block spreader;
 	public static Block[] fence = new Block[3];
 	public static Block torch;
+	
+	public static Block blockPale;
+	
+	public static Block platingPale;
+	public static Block mruCoilHardener;
+	public static Block mruCoil;
+	public static Block corruptionCleaner;
+	public static Block reactorSupport;
+	public static Block reactor;
 	
 	public static Block[] lightCorruption = new Block[4];
 }

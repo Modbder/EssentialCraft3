@@ -6,11 +6,13 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.init.Blocks;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import ec3.common.block.BlockChargingChamber;
 import ec3.common.block.BlockColdDistillator;
+import ec3.common.block.BlockCorruptionCleaner;
 import ec3.common.block.BlockCorruption_Light;
 import ec3.common.block.BlockCrystalController;
 import ec3.common.block.BlockCrystalExtractor;
@@ -19,7 +21,10 @@ import ec3.common.block.BlockDrops;
 import ec3.common.block.BlockEnderGenerator;
 import ec3.common.block.BlockFlowerBurner;
 import ec3.common.block.BlockHeatGenerator;
+import ec3.common.block.BlockMRUCoil_Coil;
+import ec3.common.block.BlockMRUCoil_Hardener;
 import ec3.common.block.BlockMRULevitator;
+import ec3.common.block.BlockMRUReactor;
 import ec3.common.block.BlockMRUSpreader;
 import ec3.common.block.BlockMagicalEnchanter;
 import ec3.common.block.BlockMagicalJukebox;
@@ -34,8 +39,10 @@ import ec3.common.block.BlockMoonWell;
 import ec3.common.block.BlockPotionSpreader;
 import ec3.common.block.BlockRadiatingChamber;
 import ec3.common.block.BlockRayTower;
+import ec3.common.block.BlockReactorSupport;
 import ec3.common.block.BlockSunRayAbsorber;
 import ec3.common.block.BlocksCore;
+import ec3.common.tile.TileMRUReactor;
 
 public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 
@@ -189,6 +196,22 @@ public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 	        RenderColdDistillator.model.renderAll();
 	        GL11.glPopMatrix();
 		}
+		if(block instanceof BlockMRUCoil_Hardener)
+		{
+	        GL11.glPushMatrix();
+	        GL11.glTranslatef(0F,-0.5F,0F);
+	        Minecraft.getMinecraft().renderEngine.bindTexture(RenderMRUCoilHardener.textures);
+	        RenderMRUCoilHardener.model.renderAll();
+	        GL11.glPopMatrix();
+		}
+		if(block instanceof BlockMRUReactor)
+		{
+	        GL11.glPushMatrix();
+	        GL11.glTranslatef(0F,-0.5F,0F);
+	        Minecraft.getMinecraft().renderEngine.bindTexture(RenderMRUReactor.textures);
+	        RenderMRUReactor.model.renderAll();
+	        GL11.glPopMatrix();
+		}
 		if(block instanceof BlockDrops)
 		{
 			switch(metadata)
@@ -283,6 +306,71 @@ public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicalQuarry.getIcon(0, 0),0.4F,0.5F,0.4F,0,0.1F,0);
 			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicalQuarry.getIcon(0, 0),0.2F,1F,0.2F,0,-0.3F,0);
 		}
+		
+		if(block instanceof BlockMRUCoil_Coil)
+		{
+			renderInventoryBlockWithSize(renderer,Blocks.glass,Blocks.end_portal_frame.getIcon(1, 0),0.4F,0.2F,0.4F,0,-0.4F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.1F,0.7F,0.1F,0,-0.0F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.ecEjector.getIcon(1, 0),0.3F,0.3F,0.3F,0,0.5F,0);
+			
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.1F,0.1F,1F,0.5F,-0.4F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.1F,0.1F,1F,-0.5F,-0.4F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),1F,0.1F,0.1F,0F,-0.4F,0.5F);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),1F,0.1F,0.1F,0F,-0.4F,-0.5F);
+			
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.1F,0.1F,1F,0.5F,-0.2F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.1F,0.1F,1F,-0.5F,-0.2F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),1F,0.1F,0.1F,0F,-0.2F,0.5F);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),1F,0.1F,0.1F,0F,-0.2F,-0.5F);
+			
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.1F,0.1F,0.9F,0.4F,-0F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.1F,0.1F,0.9F,-0.4F,-0F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.9F,0.1F,0.1F,0F,-0F,0.4F);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.9F,0.1F,0.1F,0F,-0F,-0.4F);
+			
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.1F,0.1F,0.6F,0.3F,0.2F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.1F,0.1F,0.6F,-0.3F,0.2F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.6F,0.1F,0.1F,0F,0.2F,0.3F);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.6F,0.1F,0.1F,0F,0.2F,-0.3F);
+			
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.1F,0.1F,0.3F,0.2F,0.4F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.1F,0.1F,0.3F,-0.2F,0.4F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.3F,0.1F,0.1F,0F,0.4F,0.2F);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.3F,0.1F,0.1F,0F,0.4F,-0.2F);
+		}
+		
+		if(block instanceof BlockCorruptionCleaner)
+		{
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.fortifiedGlass.getIcon(0, 0),1F,1F,1F,0F,0F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.fortifiedStone.getIcon(0, 0),0.999F,0.2F,0.999F,0F,-0.37F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.fortifiedStone.getIcon(0, 0),0.999F,0.2F,0.999F,0F,0.39F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.fortifiedStone.getIcon(0, 0),0.3F,0.2F,0.3F,0F,-0.19F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.fortifiedStone.getIcon(0, 0),0.3F,0.2F,0.3F,0F,0.19F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,Blocks.diamond_block.getIcon(0, 0),0.4F,0.2F,0.4F,0F,0F,0);
+		}
+		
+		if(block instanceof BlockReactorSupport)
+		{
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),1F,0.2F,1F,0,-0.4F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.7F,0.6F,0.7F,0,-0.1F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.5F,0.5F,0.5F,0,0.4F,0);
+		
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.1F,0.1F,0.9F,0.4F,0.2F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.1F,0.1F,0.9F,-0.4F,0.2F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.9F,0.1F,0.1F,0F,0.2F,0.4F);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.9F,0.1F,0.1F,0F,0.2F,-0.4F);
+			
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.1F,0.1F,0.9F,0.4F,0.4F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.1F,0.1F,0.9F,-0.4F,0.4F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.9F,0.1F,0.1F,0F,0.4F,0.4F);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.9F,0.1F,0.1F,0F,0.4F,-0.4F);
+			
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.1F,0.1F,0.9F,0.4F,0.6F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.1F,0.1F,0.9F,-0.4F,0.6F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.9F,0.1F,0.1F,0F,0.6F,0.4F);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.9F,0.1F,0.1F,0F,0.6F,-0.4F);
+		}
+		
 		
 		renderer.clearOverrideBlockTexture();
 	}
@@ -523,6 +611,210 @@ public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 			renderer.renderStandardBlock(Blocks.glass, x, y, z);
 			renderer.renderAllFaces = false;
 		}
+		
+		if(block instanceof BlockMRUCoil_Coil)
+		{
+			renderer.renderAllFaces = true;
+			renderer.setOverrideBlockTexture(Blocks.end_portal_frame.getIcon(1, 0));
+			renderer.setRenderBounds(0.3D,0.0D,0.3D,0.7D,0.2D,0.7D);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			renderer.setOverrideBlockTexture(BlocksCore.magicPlating.getIcon(0, 0));
+			renderer.setRenderBounds(0.45D,0.2D,0.45D,0.55D,0.8D,0.55D);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			
+			renderer.setRenderBounds(0.0D,0.0D,0.9D,1D,0.1D,1D);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			renderer.setRenderBounds(0.9D,0.0D,0.0D,1D,0.1D, 1D);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			renderer.setRenderBounds(0.0D,0.0D,0.0D,0.1D,0.1D,1D);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			renderer.setRenderBounds(0.0D,0.0D,0.0D,1D,0.1D,0.1D);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			
+			renderer.setRenderBounds(0.1D,0.2D,0.8D,0.9D,0.3D,0.9D);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			renderer.setRenderBounds(0.8D,0.2D,0.1D,0.9D,0.3D,0.9D);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			renderer.setRenderBounds(0.1D,0.2D,0.1D,0.2D,0.3D,0.9D);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			renderer.setRenderBounds(0.1D,0.2D,0.1D,0.9D,0.3D,0.2D);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			
+			renderer.setRenderBounds(0.2D,0.4D,0.7D,0.8D,0.5D,0.8D);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			renderer.setRenderBounds(0.7D,0.4D,0.2D,0.8D,0.5D,0.8D);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			renderer.setRenderBounds(0.2D,0.4D,0.2D,0.3D,0.5D,0.8D);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			renderer.setRenderBounds(0.2D,0.4D,0.2D,0.8D,0.5D,0.3D);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			
+			renderer.setRenderBounds(0.3D,0.6D,0.6D,0.7D,0.7D,0.7D);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			renderer.setRenderBounds(0.6D,0.6D,0.3D,0.7D,0.7D,0.7D);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			renderer.setRenderBounds(0.3D,0.6D,0.3D,0.4D,0.7D,0.7D);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			renderer.setRenderBounds(0.3D,0.6D,0.3D,0.7D,0.7D,0.4D);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			
+			renderer.renderAllFaces = false;
+		}
+		
+		if(block instanceof BlockCorruptionCleaner)
+		{
+			renderer.renderAllFaces = true;
+			
+			renderer.setOverrideBlockTexture(BlocksCore.fortifiedStone.getIcon(0, 0));
+			renderer.setRenderBounds(0,0.8D,0,1,1,1);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			renderer.setOverrideBlockTexture(BlocksCore.fortifiedStone.getIcon(0, 0));
+			renderer.setRenderBounds(0,0.0D,0,1,0.2D,1);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			
+			renderer.setOverrideBlockTexture(BlocksCore.fortifiedStone.getIcon(0, 0));
+			renderer.setRenderBounds(0.4,0.6D,0.4,0.6,0.8,0.6);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			
+			renderer.setOverrideBlockTexture(BlocksCore.fortifiedStone.getIcon(0, 0));
+			renderer.setRenderBounds(0.4,0.2D,0.4,0.6,0.4,0.6);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			
+			renderer.setOverrideBlockTexture(Blocks.diamond_block.getIcon(0, 0));
+			renderer.setRenderBounds(0.3,0.4D,0.3,0.7,0.6,0.7);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			
+			renderer.setOverrideBlockTexture(BlocksCore.fortifiedGlass.getIcon(0, 0));
+			renderer.setRenderBounds(0,0,0,1,1,1);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			
+			renderer.renderAllFaces = false;
+		}
+		
+		if(block instanceof BlockReactorSupport)
+		{
+			Block b_0 = world.getBlock(x, y-1, z);
+			Block b_1 = world.getBlock(x, y-2, z);
+			
+			renderer.renderAllFaces = true;
+			
+			if(!(b_0 instanceof BlockReactorSupport))
+			{
+				renderer.setOverrideBlockTexture(BlocksCore.magicPlating.getIcon(0, 0));
+				renderer.setRenderBounds(0D,0D,0D,1D,0.2D,1D);
+				renderer.renderStandardBlock(Blocks.glass, x, y, z);
+				renderer.setRenderBounds(0.2D,0.2D,0.2D,0.8D,1D,0.8D);
+				renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			}
+			else
+			if(!(b_1 instanceof BlockReactorSupport) && b_0 instanceof BlockReactorSupport)
+			{
+				renderer.setOverrideBlockTexture(BlocksCore.magicPlating.getIcon(0, 0));
+				renderer.setRenderBounds(0.2D,0.0D,0.2D,0.8D,0.4D,0.8D);
+				renderer.renderStandardBlock(Blocks.glass, x, y, z);
+				renderer.setRenderBounds(0.3D,0.4D,0.3D,0.7D,1D,0.7D);
+				renderer.renderStandardBlock(Blocks.glass, x, y, z);
+				
+				renderer.setRenderBounds(0.1D,0.8D,0.8D,0.9D,0.9D,0.9D);
+				renderer.renderStandardBlock(Blocks.glass, x, y, z);
+				renderer.setRenderBounds(0.8D,0.8D,0.1D,0.9D,0.9D,0.9D);
+				renderer.renderStandardBlock(Blocks.glass, x, y, z);
+				renderer.setRenderBounds(0.1D,0.8D,0.1D,0.2D,0.9D,0.9D);
+				renderer.renderStandardBlock(Blocks.glass, x, y, z);
+				renderer.setRenderBounds(0.1D,0.8D,0.1D,0.9D,0.9D,0.2D);
+				renderer.renderStandardBlock(Blocks.glass, x, y, z);
+				
+				renderer.setRenderBounds(0.1D,0.6D,0.8D,0.9D,0.7D,0.9D);
+				renderer.renderStandardBlock(Blocks.glass, x, y, z);
+				renderer.setRenderBounds(0.8D,0.6D,0.1D,0.9D,0.7D,0.9D);
+				renderer.renderStandardBlock(Blocks.glass, x, y, z);
+				renderer.setRenderBounds(0.1D,0.6D,0.1D,0.2D,0.7D,0.9D);
+				renderer.renderStandardBlock(Blocks.glass, x, y, z);
+				renderer.setRenderBounds(0.1D,0.6D,0.1D,0.9D,0.7D,0.2D);
+				renderer.renderStandardBlock(Blocks.glass, x, y, z);
+				
+				renderer.setRenderBounds(0.1D,0.4D,0.8D,0.9D,0.5D,0.9D);
+				renderer.renderStandardBlock(Blocks.glass, x, y, z);
+				renderer.setRenderBounds(0.8D,0.4D,0.1D,0.9D,0.5D,0.9D);
+				renderer.renderStandardBlock(Blocks.glass, x, y, z);
+				renderer.setRenderBounds(0.1D,0.4D,0.1D,0.2D,0.5D,0.9D);
+				renderer.renderStandardBlock(Blocks.glass, x, y, z);
+				renderer.setRenderBounds(0.1D,0.4D,0.1D,0.9D,0.5D,0.2D);
+				renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			}
+			else
+			{
+				renderer.setOverrideBlockTexture(BlocksCore.magicPlating.getIcon(0, 0));
+				renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			}
+			
+			TileEntity tile = world.getTileEntity(x-1, y, z);
+			if(tile instanceof TileMRUReactor)
+			{
+				TileMRUReactor tmr = (TileMRUReactor) tile;
+				if(tmr.isStructureCorrect)
+				{
+					renderer.setOverrideBlockTexture(BlocksCore.fortifiedStone.getIcon(0, 0));
+					renderer.setRenderBounds(-0.4D,0.6D,0.45D,0.6D,0.7D,0.55D);
+					renderer.renderStandardBlock(Blocks.glass, x, y, z);
+					renderer.setRenderBounds(-0.4D,0.95D,0.45D,0.6D,1.05D,0.55D);
+					renderer.renderStandardBlock(Blocks.glass, x, y, z);
+					renderer.setRenderBounds(-0.4D,1.3D,0.45D,0.6D,1.4D,0.55D);
+					renderer.renderStandardBlock(Blocks.glass, x, y, z);
+				}
+			}
+			
+			tile = world.getTileEntity(x+1, y, z);
+			if(tile instanceof TileMRUReactor)
+			{
+				TileMRUReactor tmr = (TileMRUReactor) tile;
+				if(tmr.isStructureCorrect)
+				{
+					renderer.setOverrideBlockTexture(BlocksCore.fortifiedStone.getIcon(0, 0));
+					renderer.setRenderBounds(0.4D,0.6D,0.45D,1.6D,0.7D,0.55D);
+					renderer.renderStandardBlock(Blocks.glass, x, y, z);
+					renderer.setRenderBounds(0.4D,0.95D,0.45D,1.6D,1.05D,0.55D);
+					renderer.renderStandardBlock(Blocks.glass, x, y, z);
+					renderer.setRenderBounds(0.4D,1.3D,0.45D,1.6D,1.4D,0.55D);
+					renderer.renderStandardBlock(Blocks.glass, x, y, z);
+				}
+			}
+			
+			tile = world.getTileEntity(x, y, z+1);
+			if(tile instanceof TileMRUReactor)
+			{
+				TileMRUReactor tmr = (TileMRUReactor) tile;
+				if(tmr.isStructureCorrect)
+				{
+					renderer.setOverrideBlockTexture(BlocksCore.fortifiedStone.getIcon(0, 0));
+					renderer.setRenderBounds(0.45D,0.6D,0.4D,0.55D,0.7D,1.55D);
+					renderer.renderStandardBlock(Blocks.glass, x, y, z);
+					renderer.setRenderBounds(0.45D,0.95D,0.4D,0.55D,1.05D,1.55D);
+					renderer.renderStandardBlock(Blocks.glass, x, y, z);
+					renderer.setRenderBounds(0.45D,1.3D,0.4D, 0.55D,1.4D,1.55D);
+					renderer.renderStandardBlock(Blocks.glass, x, y, z);
+				}
+			}
+			
+			tile = world.getTileEntity(x, y, z-1);
+			if(tile instanceof TileMRUReactor)
+			{
+				TileMRUReactor tmr = (TileMRUReactor) tile;
+				if(tmr.isStructureCorrect)
+				{
+					renderer.setOverrideBlockTexture(BlocksCore.fortifiedStone.getIcon(0, 0));
+					renderer.setRenderBounds(0.45D,0.6D,-0.4D,0.55D,0.7D,0.6D);
+					renderer.renderStandardBlock(Blocks.glass, x, y, z);
+					renderer.setRenderBounds(0.45D,0.95D,-0.4D,0.55D,1.05D,0.6D);
+					renderer.renderStandardBlock(Blocks.glass, x, y, z);
+					renderer.setRenderBounds(0.45D,1.3D,-0.4D, 0.55D,1.4D,0.5D);
+					renderer.renderStandardBlock(Blocks.glass, x, y, z);
+				}
+			}
+			renderer.renderAllFaces = false;
+		}
+		
+		
 		renderer.clearOverrideBlockTexture();
 		return true;
 	}

@@ -26,6 +26,8 @@ import ec3.common.item.ItemsCore;
 
 public class TileMatrixAbsorber extends TileMRUGeneric{
 	
+	public int sndTime;
+	
 	public TileMatrixAbsorber()
 	{
 		this.balance = 1;
@@ -43,6 +45,7 @@ public class TileMatrixAbsorber extends TileMRUGeneric{
 	{
 		this.balance = 1;
 		super.updateEntity();
+		boolean t = false;
 		ItemStack stk = this.getStackInSlot(0);
 		if(stk != null && stk.getItem() instanceof ItemSoulStone)
 		{
@@ -63,11 +66,20 @@ public class TileMatrixAbsorber extends TileMRUGeneric{
 				    		{
 				    			this.worldObj.spawnParticle("reddust", xCoord+0.25D+this.worldObj.rand.nextDouble()/2.2D, yCoord+0.25D+((float)o/20), zCoord+0.25D+this.worldObj.rand.nextDouble()/2.2D, 1.0D, 0.0D, 1.0D);
 				    		}
+				    		t = true;
 						}
 					}
 				}
 	    	}
 		}
+		--sndTime;
+		if(t && sndTime <= 0)
+		{
+			sndTime = 20*20;
+			this.worldObj.playSound(xCoord+0.5D, yCoord+0.5D, zCoord+0.5D, "essentialcraft:sound.deepnoise", 0.01F, 2F, false);
+		}
+		if(!t)
+			sndTime = 0;
 	}
 	
 	@Override

@@ -15,31 +15,11 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.network.IGuiHandler;
-import ec3.client.gui.GuiChargingChamber;
-import ec3.client.gui.GuiColdDistillator;
-import ec3.client.gui.GuiCrystalExtractor;
-import ec3.client.gui.GuiCrystalFormer;
-import ec3.client.gui.GuiEnderGenerator;
-import ec3.client.gui.GuiFlowerBurner;
-import ec3.client.gui.GuiHeatGenerator;
-import ec3.client.gui.GuiMagicalEnchanter;
-import ec3.client.gui.GuiMagicalFurnace;
-import ec3.client.gui.GuiMagicalJukebox;
-import ec3.client.gui.GuiMagicalQuarry;
-import ec3.client.gui.GuiMagicalRepairer;
-import ec3.client.gui.GuiMagicalTeleporter;
-import ec3.client.gui.GuiMagicianTable;
-import ec3.client.gui.GuiMagmaticSmeltery;
-import ec3.client.gui.GuiMatrixAbsorber;
-import ec3.client.gui.GuiMonsterHarvester;
-import ec3.client.gui.GuiMonsterHolder;
-import ec3.client.gui.GuiPotionSpreader;
-import ec3.client.gui.GuiRadiatingChamber;
-import ec3.client.gui.GuiSunRayAbsorber;
-import ec3.client.render.RenderMRUPresence;
+import ec3.client.gui.GuiCorruptionCleaner;
 import ec3.common.entity.EntityMRUPresence;
 import ec3.common.inventory.ContainerChargingChamber;
 import ec3.common.inventory.ContainerColdDistillator;
+import ec3.common.inventory.ContainerCorruptionCleaner;
 import ec3.common.inventory.ContainerCrystalController;
 import ec3.common.inventory.ContainerCrystalExtractor;
 import ec3.common.inventory.ContainerCrystalFormer;
@@ -47,6 +27,7 @@ import ec3.common.inventory.ContainerEnderGenerator;
 import ec3.common.inventory.ContainerFlowerBurner;
 import ec3.common.inventory.ContainerHeatGenerator;
 import ec3.common.inventory.ContainerMRUAcceptor;
+import ec3.common.inventory.ContainerMRUCoil;
 import ec3.common.inventory.ContainerMRUInfo;
 import ec3.common.inventory.ContainerMagicalEnchanter;
 import ec3.common.inventory.ContainerMagicalFurnace;
@@ -66,12 +47,14 @@ import ec3.common.inventory.ContainerRayTower;
 import ec3.common.inventory.ContainerSunRayAbsorber;
 import ec3.common.tile.TileChargingChamber;
 import ec3.common.tile.TileColdDistillator;
+import ec3.common.tile.TileCorruptionCleaner;
 import ec3.common.tile.TileCrystalController;
 import ec3.common.tile.TileCrystalExtractor;
 import ec3.common.tile.TileCrystalFormer;
 import ec3.common.tile.TileEnderGenerator;
 import ec3.common.tile.TileFlowerBurner;
 import ec3.common.tile.TileHeatGenerator;
+import ec3.common.tile.TileMRUCoil;
 import ec3.common.tile.TileMagicalEnchanter;
 import ec3.common.tile.TileMagicalFurnace;
 import ec3.common.tile.TileMagicalJukebox;
@@ -203,6 +186,14 @@ public class CommonProxy implements IGuiHandler{
 			if(tile instanceof TileMagicalFurnace)
 			{
 				return new ContainerMagicalFurnace(player.inventory, tile);
+			}
+			if(tile instanceof TileMRUCoil)
+			{
+				return new ContainerMRUCoil(player.inventory, tile);
+			}
+			if(tile instanceof TileCorruptionCleaner)
+			{
+				return new ContainerCorruptionCleaner(player.inventory, tile);
 			}
 		}
 		return null;

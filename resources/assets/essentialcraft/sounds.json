@@ -25,5 +25,12 @@
         "stream": true
       }
     ]
-  }
+  },
+        "sound.pageturn": {"category": "master","sounds":[{"name": "sound/page_turn","stream": false}]},
+		"sound.deepnoise": {"category": "master","sounds":[{"name": "sound/deep_noise","stream": false}]},
+		"sound.tinnitus": {"category": "master","sounds":[{"name": "sound/tinnitus","stream": false}]},
+		"sound.heartbeat": {"category": "master","sounds":[{"name": "sound/heartbeat","stream": false}]},
+		"sound.gen_electricity": {"category": "master","sounds":[{"name": "sound/gen_electricity","stream": false}]},
+		"sound.lightning_hit": {"category": "master","sounds":[{"name": "sound/lightning_hit","stream": false}]},
+		"sound.mrucu_noise": {"category": "master","sounds":[{"name": "sound/mrucu_noise","stream": false}]}
 }

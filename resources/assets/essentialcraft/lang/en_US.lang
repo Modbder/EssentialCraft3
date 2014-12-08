@@ -64,6 +64,12 @@ tile.essentialcraft.magicalTeleporter.name=Magical Teleporter
 tile.essentialcraft.magicalFurnace.name=Magical Furnace
 tile.essentialcraft.emberForge.name=Ember Forge
 
+tile.essentialcraft:levitator.name=MRU Levitator
+tile.essentialcraft:spreader.name=MRU Spreader
+tile.essentialcraft.voidFence.name=Void Fence
+tile.essentialcraft.magicFence.name=Magic Fence
+tile.essentialcraft.fFence.name=Fortified Stone Fence
+
 item.essentialcraft:testItem.name=[DEV ONLY]
 item.essentialcraft:mruMover1.name=MRUCU Moving Wand
 item.essentialcraft:elemental_hoe.name=Elemental Hoe
@@ -148,7 +154,7 @@ item.essentialcraft:staffOfLife.name=Staff Of Life
 item.essentialcraft:emeraldHeart.name=Emerald Heart
 item.essentialcraft:magicalShield.name=Magical Shield
 item.essentialcraft:spikyShield.name=Spiky Buckler
-item.essentialcraft:magicWaterBottle=Magical Water Bottle
+item.essentialcraft:magicWaterBottle.name=Magical Water Bottle
 item.essentialcraft:magicalPorkchop.name=Magical Porkchop
 item.essentialcraft:charm.name=Elemental Charm
 item.essentialcraft:magicalWings.name=Magical Wings
@@ -166,7 +172,7 @@ item.essentialcraft:genItemmagicalScreen.name=Magical Display
 item.essentialcraft:genItemmatrixLink.name=MRU Linking Device
 item.essentialcraft:genItemmruCatcher.name=MRU Collecting Device
 item.essentialcraft:genItemmruConversionMatrix.name=MRU Conversion Matrix
-item.essentialcraft:genItemobsidianPlate.name=Obsidian Name
+item.essentialcraft:genItemobsidianPlate.name=Obsidian Plate
 item.essentialcraft:genItemsunImbuedGlass.name=Sun Imbued Glass
 item.essentialcraft:genItemworldInteractor.name=World Interacting Device
 item.essentialcraft:genItemmagicPlate.name=Magical Plate
@@ -215,6 +221,10 @@ item.essentialcraft:legs_wind.name=Wind Mage Leggings
 item.essentialcraft:boots_wind.name=Wind Mage Boots
 item.essentialcraft:bauble.name=Mystical Accessory
 
+item.essentialcraft:magmaticStaff.name=Magmatic Staff
+item.essentialcraft:magicalLantern.name=Magical Lantern
+item.essentialcraft:magnetizingStaff.name=Magnetizing Staff
+
 item.record.arstotzkan.desc=Lucas Pope&MetalCanyon - Arstotzkan Anthem
 item.record.secret.desc=The Stanley Parable - Secrets!
 item.record.letsbefriends.desc=SilentOwl - Let's Be Friends
@@ -225,3 +235,55 @@ potion.mruCorruption=MRU Corruption
 potion.purpleFlame=Purple Flame
 potion.radiation=Radiation
 potion.windTouch=Wind Touch
+
+ec3.txt.book.startup=Book of Knowledge
+ec3.txt.book.containedKnowledge=Contains knowledge:
+ec3.txt.book.tier_0=Basic
+ec3.txt.book.tier_1=MRU
+ec3.txt.book.tier_2=Engineer's
+ec3.txt.book.tier_3=Hoanna's
+ec3.txt.book.tier_4=Shade
+ec3.txt.book.edition=Edition:
+ec3.txt.book.categories=Categories
+
+ec3book.category_ec3.basic.name=Bases of Magic
+ec3book.category_ec3.basic.desc=Learn the bases!
+ec3book.category_ec3.mru.name=MRU and Matrix
+ec3book.category_ec3.mru.desc=Magical Radiation?
+ec3book.category_ec3.eng.name=MRU Engineering
+ec3book.category_ec3.eng.desc=Magical industry
+ec3book.category_ec3.hoanna.name=The world of Hoanna
+ec3book.category_ec3.hoanna.desc=First world affected by MRU
+ec3book.category_ec3.shade.name=Knowledges of SHADE
+ec3book.category_ec3.shade.desc=The darkness falls...
+
+ec3book.discovery_ec3.disc.wind.name=Magical Wind
+ec3book.discovery_ec3.disc.wind.desc=A friend to assist your journey!
+
+ec3.page.wind_0.txt=Magical wind. What is it? We all know it, we all had met it at some point in our lives, but what it actually is? Well, the answer is pretty simple!|The wind is somewhat of a living creature, that likes to observe people with unique fate!
+ec3.page.wind_1.txt=This effect you can get randomly just by doing random stuff in the world. It does nothing on it's own.
+ec3.page.wind_2.txt=Wind mages can randomly spawn in your world.
+
+#4.3
+potion.paradox=Mind Paradox
+potion.paradox.txt=The World Shatters
+potion.paranormalLightness=Lightness
+
+item.essentialcraft:air_potion.name=Air Potion
+item.essentialcraft:mruMover_t2.name=MRUCU Moving Wand Tier 2
+item.essentialcraft:playerList.name=Player Whitelist
+item.essentialcraft:genItempalePearl.name=Pale Pearl
+item.essentialcraft:genItempaleIngot.name=Pale Ingot
+item.essentialcraft:genItemgemPale.name=Pale Gem
+item.essentialcraft:genItempalePlate.name=Pale Plating
+item.essentialcraft:genItempaleCore.name=Pale Elemental Core
+item.essentialcraft:genItemmruMagnet.name=MRU Magnet
+item.essentialcraft:genItemmruResonatingCrystal.name=MRU Resonating Crystal
+
+tile.essentialcraft:blockPale.name=Pale Block
+tile.essentialcraft.platingPale.name=Pale Plating
+tile.essentialcraft.mruCoilHardener.name=MRU Coil Base
+tile.essentialcraft.mruCoil.name=MRU Coil
+tile.essentialcraft.corruptionCleaner.name=Corruption Cleaner
+tile.essentialcraft.reactorSupport.name=MRU Tesla Reactor Support
+tile.essentialcraft.reactor.name=MRU Tesla Reactor Core

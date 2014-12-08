@@ -149,7 +149,7 @@ public class PlayerTickHandler{
 								item.getEntityItem().stackSize -= 1;
 							}
 							MiscUtils.spawnParticlesOnServer("explode", (float)item.posX, (float)item.posY, (float)item.posZ, 0D, 0D, 0D);
-							if(item.worldObj.rand.nextFloat() <= 0.3F)
+							if(item.worldObj.rand.nextFloat() <= 0.8F)
 							{
 								item.worldObj.setBlock((int)item.posX+x, (int)item.posY, (int)item.posZ+z, BlocksCore.drops, 0, 3);
 							}
@@ -182,7 +182,7 @@ public class PlayerTickHandler{
 									item.getEntityItem().stackSize -= 1;
 								}
 								MiscUtils.spawnParticlesOnServer("explode", (float)item.posX, (float)item.posY, (float)item.posZ, 0D, 0D, 0D);
-								if(item.worldObj.rand.nextFloat() <= 0.3F)
+								if(item.worldObj.rand.nextFloat() <= 0.8F)
 								{
 									item.worldObj.setBlock((int)item.posX+x, (int)item.posY, (int)item.posZ+z, BlocksCore.drops, 1, 3);
 								}
@@ -215,7 +215,7 @@ public class PlayerTickHandler{
 									item.getEntityItem().stackSize -= 1;
 								}
 								MiscUtils.spawnParticlesOnServer("explode", (float)item.posX, (float)item.posY, (float)item.posZ, 0D, 0D, 0D);
-								if(item.worldObj.rand.nextFloat() <= 0.3F)
+								if(item.worldObj.rand.nextFloat() <= 0.8F)
 								{
 									item.worldObj.setBlock((int)item.posX+x, (int)item.posY, (int)item.posZ+z, BlocksCore.drops, 2, 3);
 								}
@@ -248,7 +248,7 @@ public class PlayerTickHandler{
 										item.getEntityItem().stackSize -= 1;
 									}
 									MiscUtils.spawnParticlesOnServer("explode", (float)item.posX, (float)item.posY, (float)item.posZ, 0D, 0D, 0D);
-									if(item.worldObj.rand.nextFloat() <= 0.3F)
+									if(item.worldObj.rand.nextFloat() <= 0.8F)
 									{
 										item.worldObj.setBlock((int)item.posX+x, (int)item.posY, (int)item.posZ+z, BlocksCore.drops, 3, 3);
 									}
@@ -278,7 +278,7 @@ public class PlayerTickHandler{
 											item.getEntityItem().stackSize -= 1;
 										}
 										MiscUtils.spawnParticlesOnServer("explode", (float)item.posX, (float)item.posY, (float)item.posZ, 0D, 0D, 0D);
-										if(item.worldObj.rand.nextFloat() <= 0.2F)
+										if(item.worldObj.rand.nextFloat() <= 0.6F)
 										{
 											ECUtils.increaseCorruptionAt(item.worldObj, (float)item.posX, (float)item.posY, (float)item.posZ, 5000);
 										}
@@ -308,7 +308,7 @@ public class PlayerTickHandler{
 												item.getEntityItem().stackSize -= 1;
 											}
 											MiscUtils.spawnParticlesOnServer("explode", (float)item.posX, (float)item.posY, (float)item.posZ, 0D, 0D, 0D);
-											if(item.worldObj.rand.nextFloat() <= 0.15F)
+											if(item.worldObj.rand.nextFloat() <= 0.5F)
 											{
 												EntityItem soulStone = new EntityItem(item.worldObj,(float)item.posX, (float)item.posY, (float)item.posZ,new ItemStack(ItemsCore.soulStone,1,0));
 												item.worldObj.spawnEntityInWorld(soulStone);

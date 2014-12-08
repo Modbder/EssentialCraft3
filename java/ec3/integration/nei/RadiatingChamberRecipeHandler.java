@@ -29,6 +29,7 @@ public class RadiatingChamberRecipeHandler extends TemplateRecipeHandler{
         PositionedStack result;
         public int mruRequired;
         public float[] balanceBounds = new float[2];
+        public float mod;
         
         public RadiatingChamberCraftingPair(RadiatingChamberRecipe recipe)
         {
@@ -47,6 +48,7 @@ public class RadiatingChamberRecipeHandler extends TemplateRecipeHandler{
             ingredients = new ArrayList<PositionedStack>();
             setIngredients(craftMatrix);
             this.mruRequired = recipe.mruRequired;
+            this.mod = recipe.costModifier;
         } 
         
         public void setIngredients(Object[] items)
@@ -193,7 +195,7 @@ public class RadiatingChamberRecipeHandler extends TemplateRecipeHandler{
     	RadiatingChamberCraftingPair rec = (RadiatingChamberCraftingPair) arecipes.get(recipe);
     	MiscUtils.bindTexture("essentialcraft", "textures/gui/mruStorage.png");
     	MiscUtils.drawTexturedModalRect(0, 0, 0, 0, 18, 72,1);
-		int percentageScaled = MathUtils.pixelatedTextureSize(rec.mruRequired, 5000, 72);
+		int percentageScaled = MathUtils.pixelatedTextureSize((int) (rec.mruRequired*rec.mod), 5000, 72);
 		IIcon icon = (IIcon) EssentialCraftCore.proxy.getClientIcon("mru");
 		MiscUtils.drawTexture(1, -1+(74-percentageScaled), icon, 16, percentageScaled-2, 0);
 		
@@ -230,10 +232,12 @@ public class RadiatingChamberRecipeHandler extends TemplateRecipeHandler{
 		MiscUtils.drawTexturedModalRect(posX+32+16*6, 26, 1, 1, 17, 16,1);
 		MiscUtils.drawTexturedModalRect(posX+32+16*6, 37, 1, 1, 17, 17,1);
 		
-		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(rec.mruRequired+" MRU", posX+2, posY+5, 0xffffff);
+		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow((int)(rec.mruRequired*rec.mod)+" MRU", posX+2, posY+5, 0xffffff);
 		
 		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(""+rec.mruRequired/20/60+"Min "+(rec.mruRequired/20-((rec.mruRequired/20/60)*60))+"Sec", posX+2+60, posY+5, 0xffffff);
     	
+		
+		
 		float upperBalance = rec.balanceBounds[0];
 		if(upperBalance > 2.0F)upperBalance = 2.0F;
 		
@@ -241,6 +245,8 @@ public class RadiatingChamberRecipeHandler extends TemplateRecipeHandler{
 		if(lowerBalance < 0.1F)lowerBalance = 0.0F;
 		
 		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow("Upper Balance: "+upperBalance, posX+38, 5, 0xffffff);
+		
+		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow("MRU/Tick: "+(int)rec.mod, posX+38, 23, 0xffffff);
 		
 		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow("Lower Balance: "+lowerBalance, posX+38, 40, 0xffffff);
 		

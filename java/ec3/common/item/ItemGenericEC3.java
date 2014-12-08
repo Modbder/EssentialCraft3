@@ -4,17 +4,24 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import DummyCore.Utils.DummyDataUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ec3.common.registry.PotionRegistry;
 import ec3.common.world.WorldGenElderMRUCC;
 import ec3.network.proxy.ClientProxy;
+import ec3.utils.common.ECUtils;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.shader.ShaderGroup;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
@@ -57,7 +64,14 @@ public class ItemGenericEC3 extends Item{
 		"magicPlate", //34
 		"voidPlating", //35
 		"voidCore", //36
-		"voidMruReactor" //37
+		"voidMruReactor", //37
+		"palePearl", //38
+		"paleIngot", //39
+		"gemPale", //40
+		"palePlate", //41
+		"paleCore", //42
+		"mruMagnet", //43
+		"mruResonatingCrystal" //44
 		};
 	public static IIcon[] itemIcons = new IIcon[128];
 	
@@ -67,16 +81,26 @@ public class ItemGenericEC3 extends Item{
 		this.setHasSubtypes(true);
 	}
 	
-    public ItemStack onEaten(ItemStack p_77654_1_, World p_77654_2_, EntityPlayer p_77654_3_)
+    public ItemStack onEaten(ItemStack p_77654_1_, World p_77654_2_, EntityPlayer base)
     {
-        if (!p_77654_3_.capabilities.isCreativeMode)
+        if (!base.capabilities.isCreativeMode)
         {
             --p_77654_1_.stackSize;
         }
 
         if (!p_77654_2_.isRemote)
         {
-            
+        	String currentEnergy = DummyDataUtils.getDataForPlayer(((EntityPlayer) base).getDisplayName(),"essentialcraft", "ubmruEnergy");
+        	int addedEnergy = 500;
+			if(currentEnergy != null && !currentEnergy.isEmpty() && !currentEnergy.equals("no data") && !currentEnergy.equals("empty string") && !currentEnergy.equals("empty"))
+			{
+				int currentEnergy_int = Integer.parseInt(currentEnergy);
+				addedEnergy += currentEnergy_int;
+			}
+			DummyDataUtils.setDataForPlayer(base.getDisplayName(), "essentialcraft", "ubmruEnergy", Integer.toString(addedEnergy));
+        }else
+        {
+
         }
         return p_77654_1_.stackSize <= 0 ? new ItemStack(Items.glass_bottle) : p_77654_1_;
     }

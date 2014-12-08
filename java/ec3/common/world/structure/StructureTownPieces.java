@@ -42,18 +42,18 @@ public class StructureTownPieces
 {
     public static void registerVillagePieces()
     {
-        MapGenStructureIO.func_143031_a(StructureTownPieces.House1.class, "ViBH");
-        MapGenStructureIO.func_143031_a(StructureTownPieces.Field1.class, "ViDF");
-        MapGenStructureIO.func_143031_a(StructureTownPieces.Torch.class, "ViL");
-        MapGenStructureIO.func_143031_a(StructureTownPieces.Hall.class, "ViPH");
-        MapGenStructureIO.func_143031_a(StructureTownPieces.House4Garden.class, "ViSH");
-        MapGenStructureIO.func_143031_a(StructureTownPieces.WoodHut.class, "ViSmH");
-        MapGenStructureIO.func_143031_a(StructureTownPieces.Church.class, "ViST");
-        MapGenStructureIO.func_143031_a(StructureTownPieces.House2.class, "ViS");
-        MapGenStructureIO.func_143031_a(StructureTownPieces.Start.class, "ViStart");
-        MapGenStructureIO.func_143031_a(StructureTownPieces.Path.class, "ViSR");
-        MapGenStructureIO.func_143031_a(StructureTownPieces.House3.class, "ViTRH");
-        MapGenStructureIO.func_143031_a(StructureTownPieces.Well.class, "ViW");
+        MapGenStructureIO.func_143031_a(StructureTownPieces.House1.class, "TViBH");
+        MapGenStructureIO.func_143031_a(StructureTownPieces.Field1.class, "TViDF");
+        MapGenStructureIO.func_143031_a(StructureTownPieces.Torch.class, "TViL");
+        MapGenStructureIO.func_143031_a(StructureTownPieces.Hall.class, "TViPH");
+        MapGenStructureIO.func_143031_a(StructureTownPieces.House4Garden.class, "TViSH");
+        MapGenStructureIO.func_143031_a(StructureTownPieces.WoodHut.class, "TViSmH");
+        MapGenStructureIO.func_143031_a(StructureTownPieces.Church.class, "TViST");
+        MapGenStructureIO.func_143031_a(StructureTownPieces.House2.class, "TViS");
+        MapGenStructureIO.func_143031_a(StructureTownPieces.Start.class, "TViStart");
+        MapGenStructureIO.func_143031_a(StructureTownPieces.Path.class, "TViSR");
+        MapGenStructureIO.func_143031_a(StructureTownPieces.House3.class, "TViTRH");
+        MapGenStructureIO.func_143031_a(StructureTownPieces.Well.class, "TViW");
     }
 
     public static List getStructureVillageWeightedPieceList(Random p_75084_0_, int p_75084_1_)
@@ -321,7 +321,8 @@ public class StructureTownPieces
 
                     this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.maxY + 12 - 1, 0);
                 }
-                new WorldGenMRUTower().generate(p_74875_1_, p_74875_2_, p_74875_3_.minX,  this.getAverageGroundLevel(p_74875_1_, p_74875_3_), p_74875_3_.minZ);
+                if(p_74875_1_.provider.dimensionId == 53)
+             	  new WorldGenMRUTower().generate(p_74875_1_, p_74875_2_, p_74875_3_.minX,  this.getAverageGroundLevel(p_74875_1_, p_74875_3_), p_74875_3_.minZ);
                 return true;
             }
 
@@ -488,33 +489,6 @@ public class StructureTownPieces
                     this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.maxY + 4 - 1, 0);
                 }
 
-                this.fillWithBlocks(p_74875_1_, p_74875_3_, 0, 1, 0, 6, 4, 8, Blocks.air, Blocks.air, false);
-                this.fillWithBlocks(p_74875_1_, p_74875_3_, 1, 0, 1, 2, 0, 7, Blocks.farmland, Blocks.farmland, false);
-                this.fillWithBlocks(p_74875_1_, p_74875_3_, 4, 0, 1, 5, 0, 7, Blocks.farmland, Blocks.farmland, false);
-                this.fillWithBlocks(p_74875_1_, p_74875_3_, 0, 0, 0, 0, 0, 8, Blocks.log, Blocks.log, false);
-                this.fillWithBlocks(p_74875_1_, p_74875_3_, 6, 0, 0, 6, 0, 8, Blocks.log, Blocks.log, false);
-                this.fillWithBlocks(p_74875_1_, p_74875_3_, 1, 0, 0, 5, 0, 0, Blocks.log, Blocks.log, false);
-                this.fillWithBlocks(p_74875_1_, p_74875_3_, 1, 0, 8, 5, 0, 8, Blocks.log, Blocks.log, false);
-                this.fillWithBlocks(p_74875_1_, p_74875_3_, 3, 0, 1, 3, 0, 7, Blocks.water, Blocks.water, false);
-                int i;
-
-                for (i = 1; i <= 7; ++i)
-                {
-                    this.placeBlockAtCurrentPosition(p_74875_1_, this.cropTypeA, MathHelper.getRandomIntegerInRange(p_74875_2_, 2, 7), 1, 1, i, p_74875_3_);
-                    this.placeBlockAtCurrentPosition(p_74875_1_, this.cropTypeA, MathHelper.getRandomIntegerInRange(p_74875_2_, 2, 7), 2, 1, i, p_74875_3_);
-                    this.placeBlockAtCurrentPosition(p_74875_1_, this.cropTypeB, MathHelper.getRandomIntegerInRange(p_74875_2_, 2, 7), 4, 1, i, p_74875_3_);
-                    this.placeBlockAtCurrentPosition(p_74875_1_, this.cropTypeB, MathHelper.getRandomIntegerInRange(p_74875_2_, 2, 7), 5, 1, i, p_74875_3_);
-                }
-
-                for (i = 0; i < 9; ++i)
-                {
-                    for (int j = 0; j < 7; ++j)
-                    {
-                        this.clearCurrentPositionBlocksUpwards(p_74875_1_, j, 4, i, p_74875_3_);
-                        this.func_151554_b(p_74875_1_, Blocks.dirt, 0, j, -1, i, p_74875_3_);
-                    }
-                }
-
                 return true;
             }
         }
@@ -553,7 +527,8 @@ public class StructureTownPieces
 
                     this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.maxY + 7 - 1, 0);
                 }
-                new WorldGenMRUSpreader().generate(p_74875_1_, p_74875_2_, p_74875_3_.minX,  this.getAverageGroundLevel(p_74875_1_, p_74875_3_), p_74875_3_.minZ);
+                if(p_74875_1_.provider.dimensionId == 53)
+            	   new WorldGenMRUSpreader().generate(p_74875_1_, p_74875_2_, p_74875_3_.minX,  this.getAverageGroundLevel(p_74875_1_, p_74875_3_), p_74875_3_.minZ);
                 return true;
             }
 
@@ -601,7 +576,8 @@ public class StructureTownPieces
                     this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.maxY + 9 - 1, 0);
                 }
 
-                new WorldGenDestroyedHouse(p_74875_2_.nextInt(2)+1,5).generate(p_74875_1_, p_74875_2_, p_74875_3_.minX,  this.getAverageGroundLevel(p_74875_1_, p_74875_3_), p_74875_3_.minZ);
+                if(p_74875_1_.provider.dimensionId == 53)
+                	new WorldGenDestroyedHouse(p_74875_2_.nextInt(2)+1,5).generate(p_74875_1_, p_74875_2_, p_74875_3_.minX,  this.getAverageGroundLevel(p_74875_1_, p_74875_3_), p_74875_3_.minZ);
                 return true;
             }
 
@@ -665,7 +641,8 @@ public class StructureTownPieces
                     this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.maxY + 6 - 1, 0);
                 }
 
-                new WorldGenDestroyedHouse(p_74875_2_.nextInt(5)+1,4).generate(p_74875_1_, p_74875_2_, p_74875_3_.minX,  this.getAverageGroundLevel(p_74875_1_, p_74875_3_), p_74875_3_.minZ);
+                if(p_74875_1_.provider.dimensionId == 53)
+            	   new WorldGenDestroyedHouse(p_74875_2_.nextInt(5)+1,4).generate(p_74875_1_, p_74875_2_, p_74875_3_.minX,  this.getAverageGroundLevel(p_74875_1_, p_74875_3_), p_74875_3_.minZ);
                 return true;
             }
 
@@ -713,7 +690,8 @@ public class StructureTownPieces
 
                     this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.maxY + 7 - 1, 0);
                 }
-                new WorldGenDestroyedHouse(p_74875_2_.nextInt(9)+1,3).generate(p_74875_1_, p_74875_2_, p_74875_3_.minX,  this.getAverageGroundLevel(p_74875_1_, p_74875_3_), p_74875_3_.minZ);
+                if(p_74875_1_.provider.dimensionId == 53)
+                	new WorldGenDestroyedHouse(p_74875_2_.nextInt(9)+1,3).generate(p_74875_1_, p_74875_2_, p_74875_3_.minX,  this.getAverageGroundLevel(p_74875_1_, p_74875_3_), p_74875_3_.minZ);
                 return true;
             }
         }
@@ -767,7 +745,8 @@ public class StructureTownPieces
                     this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.maxY + 6 - 1, 0);
                 }
 
-                new WorldGenDestroyedHouse(p_74875_2_.nextInt(3)+1,7).generate(p_74875_1_, p_74875_2_, p_74875_3_.minX,  this.getAverageGroundLevel(p_74875_1_, p_74875_3_), p_74875_3_.minZ);
+                if(p_74875_1_.provider.dimensionId == 53)
+                	new WorldGenDestroyedHouse(p_74875_2_.nextInt(3)+1,7).generate(p_74875_1_, p_74875_2_, p_74875_3_.minX,  this.getAverageGroundLevel(p_74875_1_, p_74875_3_), p_74875_3_.minZ);
                 return true;
             }
         }
@@ -1014,15 +993,18 @@ public class StructureTownPieces
                     this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.maxY + 4 - 1, 0);
                 }
 
-                this.fillWithBlocks(p_74875_1_, p_74875_3_, 0, 0, 0, 2, 3, 1, Blocks.air, Blocks.air, false);
-                this.placeBlockAtCurrentPosition(p_74875_1_, BlocksCore.fence[0], 0, 1, 0, 0, p_74875_3_);
-                this.placeBlockAtCurrentPosition(p_74875_1_, BlocksCore.fence[0], 0, 1, 1, 0, p_74875_3_);
-                this.placeBlockAtCurrentPosition(p_74875_1_, BlocksCore.fence[0], 0, 1, 2, 0, p_74875_3_);
-                this.placeBlockAtCurrentPosition(p_74875_1_, BlocksCore.voidStone, 15, 1, 3, 0, p_74875_3_);
-                this.placeBlockAtCurrentPosition(p_74875_1_, BlocksCore.torch, 0, 0, 3, 0, p_74875_3_);
-                this.placeBlockAtCurrentPosition(p_74875_1_, BlocksCore.torch, 0, 1, 3, 1, p_74875_3_);
-                this.placeBlockAtCurrentPosition(p_74875_1_, BlocksCore.torch, 0, 2, 3, 0, p_74875_3_);
-                this.placeBlockAtCurrentPosition(p_74875_1_, BlocksCore.torch, 0, 1, 3, -1, p_74875_3_);
+                if(p_74875_1_.provider.dimensionId == 53)
+                {
+	                this.fillWithBlocks(p_74875_1_, p_74875_3_, 0, 0, 0, 2, 3, 1, Blocks.air, Blocks.air, false);
+	                this.placeBlockAtCurrentPosition(p_74875_1_, BlocksCore.fence[0], 0, 1, 0, 0, p_74875_3_);
+	                this.placeBlockAtCurrentPosition(p_74875_1_, BlocksCore.fence[0], 0, 1, 1, 0, p_74875_3_);
+	                this.placeBlockAtCurrentPosition(p_74875_1_, BlocksCore.fence[0], 0, 1, 2, 0, p_74875_3_);
+	                this.placeBlockAtCurrentPosition(p_74875_1_, BlocksCore.voidStone, 15, 1, 3, 0, p_74875_3_);
+	                this.placeBlockAtCurrentPosition(p_74875_1_, BlocksCore.torch, 0, 0, 3, 0, p_74875_3_);
+	                this.placeBlockAtCurrentPosition(p_74875_1_, BlocksCore.torch, 0, 1, 3, 1, p_74875_3_);
+	                this.placeBlockAtCurrentPosition(p_74875_1_, BlocksCore.torch, 0, 2, 3, 0, p_74875_3_);
+	                this.placeBlockAtCurrentPosition(p_74875_1_, BlocksCore.torch, 0, 1, 3, -1, p_74875_3_);
+                }
                 return true;
             }
         }
@@ -1159,9 +1141,6 @@ public class StructureTownPieces
                         }
 
                         ++this.villagersSpawned;
-                        EntityVillager entityvillager = new EntityVillager(p_74893_1_, this.getVillagerType(i1));
-                        entityvillager.setLocationAndAngles((double)j1 + 0.5D, (double)k1, (double)l1 + 0.5D, 0.0F, 0.0F);
-                        p_74893_1_.spawnEntityInWorld(entityvillager);
                     }
                 }
             }
@@ -1322,21 +1301,25 @@ public class StructureTownPieces
                     this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.maxY + 3, 0);
                 }
 
-                this.fillWithBlocks(p_74875_1_, p_74875_3_, 1, 0, 1, 4, 12, 4, Blocks.cobblestone, Blocks.flowing_water, false);
-                this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.air, 0, 2, 12, 2, p_74875_3_);
-                this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.air, 0, 3, 12, 2, p_74875_3_);
-                this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.air, 0, 2, 12, 3, p_74875_3_);
-                this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.air, 0, 3, 12, 3, p_74875_3_);
-                this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.fence, 0, 1, 13, 1, p_74875_3_);
-                this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.fence, 0, 1, 14, 1, p_74875_3_);
-                this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.fence, 0, 4, 13, 1, p_74875_3_);
-                this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.fence, 0, 4, 14, 1, p_74875_3_);
-                this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.fence, 0, 1, 13, 4, p_74875_3_);
-                this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.fence, 0, 1, 14, 4, p_74875_3_);
-                this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.fence, 0, 4, 13, 4, p_74875_3_);
-                this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.fence, 0, 4, 14, 4, p_74875_3_);
-                this.fillWithBlocks(p_74875_1_, p_74875_3_, 1, 15, 1, 4, 15, 4, Blocks.cobblestone, Blocks.cobblestone, false);
-
+                if(p_74875_1_.provider.dimensionId == 53)
+                {
+	                this.fillWithBlocks(p_74875_1_, p_74875_3_, 1, 0, 1, 4, 12, 4, Blocks.cobblestone, Blocks.flowing_water, false);
+	                this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.air, 0, 2, 12, 2, p_74875_3_);
+	                this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.air, 0, 3, 12, 2, p_74875_3_);
+	                this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.air, 0, 2, 12, 3, p_74875_3_);
+	                this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.air, 0, 3, 12, 3, p_74875_3_);
+	                this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.fence, 0, 1, 13, 1, p_74875_3_);
+	                this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.fence, 0, 1, 14, 1, p_74875_3_);
+	                this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.fence, 0, 4, 13, 1, p_74875_3_);
+	                this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.fence, 0, 4, 14, 1, p_74875_3_);
+	                this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.fence, 0, 1, 13, 4, p_74875_3_);
+	                this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.fence, 0, 1, 14, 4, p_74875_3_);
+	                this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.fence, 0, 4, 13, 4, p_74875_3_);
+	                this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.fence, 0, 4, 14, 4, p_74875_3_);
+	                this.fillWithBlocks(p_74875_1_, p_74875_3_, 1, 15, 1, 4, 15, 4, Blocks.cobblestone, Blocks.cobblestone, false);
+                }
+                if(p_74875_1_.provider.dimensionId == 53)
+                	
                 for (int i = 0; i <= 5; ++i)
                 {
                     for (int j = 0; j <= 5; ++j)
@@ -1407,9 +1390,12 @@ public class StructureTownPieces
                     this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.maxY + 6 - 1, 0);
                 }
                 //TODO do
-                ECExplosion explosion = new ECExplosion(p_74875_1_, null, p_74875_3_.minX,  this.getAverageGroundLevel(p_74875_1_, p_74875_3_)-3, p_74875_3_.minZ, 15F);
-                explosion.doExplosionA();
-                explosion.doExplosionB(true);
+                if(p_74875_1_.provider.dimensionId == 53)
+                {
+	                ECExplosion explosion = new ECExplosion(p_74875_1_, null, p_74875_3_.minX,  this.getAverageGroundLevel(p_74875_1_, p_74875_3_)-3, p_74875_3_.minZ, 15F);
+	                explosion.doExplosionA();
+	                explosion.doExplosionB(true);
+                }
                 return true;
             }
         }
