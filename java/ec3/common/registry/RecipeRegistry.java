@@ -14,6 +14,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import DummyCore.Core.CoreInitialiser;
+import DummyCore.Utils.MiscUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
 import ec3.api.MagicianTableRecipes;
 import ec3.api.RadiatingChamberRecipes;
@@ -44,7 +45,12 @@ public class RecipeRegistry {
 		OreDictionary.registerOre("gemNetherStar", new ItemStack(Items.nether_star,1,0));
 		OreDictionary.registerOre("obsidian", new ItemStack(Blocks.obsidian,1,0));
 		OreDictionary.registerOre("gemEnderPearl", new ItemStack(Items.ender_pearl,1,0));
+		OreDictionary.registerOre("itemFeather", new ItemStack(Items.feather,1,0));
+		OreDictionary.registerOre("itemBook", new ItemStack(Items.book,1,0));
 		OreDictionary.registerOre("gemEnderPearl",new ItemStack(ItemsCore.genericItem,1,38));
+		OreDictionary.registerOre("enderPearl",new ItemStack(ItemsCore.genericItem,1,38));
+		OreDictionary.registerOre("itemEnderPearl",new ItemStack(ItemsCore.genericItem,1,38));
+		OreDictionary.registerOre("pearlEnder",new ItemStack(ItemsCore.genericItem,1,38));
 		OreDictionary.registerOre("ingotGold",new ItemStack(ItemsCore.genericItem,1,39));
 		OreDictionary.registerOre("enderEye", new ItemStack(Items.ender_eye,1,0));
 		OreDictionary.registerOre("elementalCore", new ItemStack(ItemsCore.genericItem,1,1));
@@ -763,6 +769,36 @@ public class RecipeRegistry {
 			"plateMagic","plateMagic","plateMagic",
 		});
 		
+		ItemStack book = new ItemStack(ItemsCore.research_book);
+		MiscUtils.getStackTag(book).setInteger("tier", 0);
+		
+		addRecipe(book,new Object[]{
+			"dyeRed","itemBook","itemFeather",
+			"dyeGreen","itemBook","dyeBlack",
+			"dyeBlue","itemBook","dyeBlack",
+		});
+		
+		ItemStack book_t1 = new ItemStack(ItemsCore.research_book);
+		MiscUtils.getStackTag(book_t1).setInteger("tier", 1);
+		
+		addRecipe(book_t1,new Object[]{
+				"elementalCore","shardElemental","elementalCore",
+				"shardElemental",book,"shardElemental",
+				"elementalCore","shardElemental","elementalCore",
+			});
+
+		ItemStack book_t2 = new ItemStack(ItemsCore.research_book);
+		MiscUtils.getStackTag(book_t2).setInteger("tier", 2);
+		
+		ItemStack book_t3 = new ItemStack(ItemsCore.research_book);
+		MiscUtils.getStackTag(book_t3).setInteger("tier", 3);
+
+		addRecipe(book_t3,new Object[]{
+				"plateVoid","resonatingCrystal","plateVoid",
+				"resonatingCrystal",book_t2,"resonatingCrystal",
+				"plateVoid","resonatingCrystal","plateVoid",
+			});
+		
 		registerEFuelCrafts();
 		registerCharmsCraft();
 	}
@@ -831,6 +867,12 @@ public class RecipeRegistry {
 		MagicianTableRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Items.ender_pearl),getItemByNameEC3("genericItem",14),getItemByNameEC3("genericItem",14),getItemByNameEC3("genericItem",14),getItemByNameEC3("genericItem",14)},getItemByNameEC3("storage",2), 100);
 		MagicianTableRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Items.diamond),getItemByNameEC3("genericItem",15),getItemByNameEC3("genericItem",15),getItemByNameEC3("genericItem",15),getItemByNameEC3("genericItem",15)},getItemByNameEC3("storage",3), 250);
 		MagicianTableRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Items.nether_star),getItemByNameEC3("genericItem",16),getItemByNameEC3("genericItem",16),getItemByNameEC3("genericItem",16),getItemByNameEC3("genericItem",16)},getItemByNameEC3("storage",4), 500);
+		ItemStack book_t1 = new ItemStack(ItemsCore.research_book);
+		MiscUtils.getStackTag(book_t1).setInteger("tier", 1);
+		ItemStack book_t2 = new ItemStack(ItemsCore.research_book);
+		MiscUtils.getStackTag(book_t2).setInteger("tier", 2);
+		MagicianTableRecipes.addRecipeIS(new ItemStack[]{book_t1,null,null,null,null},book_t2, 100);
+	
 	}
 	
 	public static ItemStack getItemByNameEC3(String itemName, int metadata)

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import DummyCore.Utils.MiscUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ec3.common.item.ItemsCore;
@@ -35,6 +36,13 @@ public class BlockMagicianTable extends BlockContainer{
 	public BlockMagicianTable(Material p_i45394_1_) {
 		super(p_i45394_1_);
 	}
+	
+	@Override
+    public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6)
+    {
+		MiscUtils.dropItemsOnBlockBreak(par1World, par2, par3, par4, par5, par6);
+		super.breakBlock(par1World, par2, par3, par4, par5, par6);
+    }
 	
     public boolean isOpaqueCube()
     {

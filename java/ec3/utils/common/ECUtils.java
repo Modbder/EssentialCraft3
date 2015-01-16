@@ -3,13 +3,21 @@ package ec3.utils.common;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.UUID;
 
 import org.lwjgl.opengl.GL11;
 
 import baubles.api.BaublesApi;
+import codechicken.core.ReflectionManager;
 
 import com.mojang.authlib.GameProfile;
 
@@ -32,6 +40,11 @@ import ec3.api.IMRUStorage;
 import ec3.api.ISpell;
 import ec3.api.ITEHasMRU;
 import ec3.api.IWorldEvent;
+import ec3.api.MagicianTableRecipe;
+import ec3.api.MagicianTableRecipes;
+import ec3.api.RadiatingChamberRecipe;
+import ec3.api.RadiatingChamberRecipes;
+import ec3.api.ShapedFurnaceRecipe;
 import ec3.api.WorldEventLibrary;
 import ec3.common.entity.EntityMRUPresence;
 import ec3.common.item.ItemBaublesWearable;
@@ -46,9 +59,15 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -60,6 +79,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public class ECUtils {
 	public static Hashtable<EnumStructureType,List<Block>> allowedBlocks = new Hashtable(); 
@@ -619,6 +641,155 @@ public class ECUtils {
 				player.addChatMessage(new ChatComponentText(msg));
 			}
 		}
+	}
+	
+	/**
+	 * 0 - ShapedRecipe
+	 * 1 - ShapelessRecipe
+	 * 2 - ShapedOreRecipe
+	 * 3 - ShapelessOreRecipe
+	 * 4 - ShapedFurnaceRecipe
+	 * 5 - RadiatingChamberRecipe
+	 * 6 - MagicianTableRecipe
+	 * 7 - StructureRecipe
+	 * @param searched The IS you want to find
+	 * @param recipeType ID
+	 * @return The actual recipe or null if none found
+	 */
+	public static IRecipe findRecipeByIS(ItemStack searched, int recipeType)
+	{
+		if(recipeType == 0 || recipeType == 1)
+		{
+			List<IRecipe> rec = CraftingManager.getInstance().getRecipeList();
+			for(int i = 0; i < rec.size(); ++i)
+			{
+				IRecipe recipe = rec.get(i);
+				if(recipe instanceof ShapedRecipes)
+				{
+					ShapedRecipes mRecipe = (ShapedRecipes) recipe;
+					ItemStack output = mRecipe.getRecipeOutput();
+					if(ItemStack.areItemStackTagsEqual(output, searched) && output.isItemEqual(searched))
+						return new ShapedRecipes(mRecipe.recipeWidth,mRecipe.recipeHeight,mRecipe.recipeItems,mRecipe.getRecipeOutput());
+				}
+				if(recipe instanceof ShapelessRecipes)
+				{
+					ShapelessRecipes mRecipe = (ShapelessRecipes) recipe;
+					ItemStack output = mRecipe.getRecipeOutput();
+					if(output.isItemEqual(searched))
+						return new ShapelessRecipes(mRecipe.getRecipeOutput(),mRecipe.recipeItems);
+				}
+			}
+		}
+		if(recipeType == 2 || recipeType == 3)
+		{
+			List<IRecipe> rec = CraftingManager.getInstance().getRecipeList();
+			for(int i = 0; i < rec.size(); ++i)
+			{
+				IRecipe recipe = rec.get(i);
+				if(recipe instanceof ShapedOreRecipe)
+				{
+					ShapedOreRecipe mRecipe = (ShapedOreRecipe) recipe;
+					ItemStack output = mRecipe.getRecipeOutput();
+					if(ItemStack.areItemStackTagsEqual(output, searched) && output.isItemEqual(searched))
+						return copyShapedOreRecipe(mRecipe);
+				}
+				if(recipe instanceof ShapelessOreRecipe)
+				{
+					ShapelessOreRecipe mRecipe = (ShapelessOreRecipe) recipe;
+					ItemStack output = mRecipe.getRecipeOutput();
+					if(output.isItemEqual(searched))
+						return copyShapelessOreRecipe(mRecipe);
+				}
+			}
+		}
+		if(recipeType == 4)
+		{
+			Set $s = FurnaceRecipes.smelting().getSmeltingList().entrySet();
+			
+			Iterator $i = $s.iterator();
+			
+			while($i.hasNext())
+			{
+				try
+				{
+					Object obj = $i.next();
+					Entry entry = (Entry) obj;
+					ItemStack key = (ItemStack) entry.getKey();
+					ItemStack value = (ItemStack) entry.getValue();
+					if(value.isItemEqual(searched))
+					{
+						return new ShapedFurnaceRecipe(key,value);
+					}
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					continue;
+				}
+			}
+			
+		}
+		if(recipeType == 5)
+		{
+			return new RadiatingChamberRecipe(RadiatingChamberRecipes.getRecipeByResult(searched));
+		}
+		if(recipeType == 6)
+		{
+			return new MagicianTableRecipe(MagicianTableRecipes.getRecipeByResult(searched));
+		}
+		return null;
+	}
+	
+	public static ShapelessOreRecipe copyShapelessOreRecipe(ShapelessOreRecipe recipe)
+	{
+		ShapelessOreRecipe ret = null;
+		ArrayList<Object> lst = recipe.getInput();
+		Object[] returnObj = new Object[lst.size()];
+		for(int i = 0; i < lst.size(); ++i)
+		{
+			Object work = lst.get(i);
+			if(work instanceof ItemStack || work instanceof Block || work instanceof Item || work instanceof String)
+				returnObj[i] = work;
+			if(work instanceof List)
+			{
+				ItemStack listStk = (ItemStack) ((List)work).get(0);
+				String oreDictName = OreDictionary.getOreName(OreDictionary.getOreIDs(listStk)[0]);
+				returnObj[i] = oreDictName;
+			}
+		}
+		ret = new ShapelessOreRecipe(recipe.getRecipeOutput(), returnObj);
+		return ret;
+	}
+	
+	public static ShapedOreRecipe copyShapedOreRecipe(ShapedOreRecipe recipe)
+	{
+		ShapedOreRecipe ret = new ShapedOreRecipe(recipe.getRecipeOutput(),new Object[]{"ooo","ooo","ooo",'o',Items.stick});
+		try
+		{
+			int width = 0;
+			int height = 0;
+			Class sorClazz = ShapedOreRecipe.class;
+			Field wFld = sorClazz.getDeclaredFields()[4];
+			wFld.setAccessible(true);
+			width = wFld.getInt(recipe);
+			Field hFld = sorClazz.getDeclaredFields()[5];
+			hFld.setAccessible(true);
+			height = hFld.getInt(recipe);
+	        Object[] items = recipe.getInput();
+	        Field inputFld = sorClazz.getDeclaredFields()[3];
+	        inputFld.setAccessible(true);
+	        Object[] obj = (Object[]) inputFld.get(recipe);
+	        Field inputFld_acess = sorClazz.getDeclaredFields()[3];
+	        inputFld_acess.setAccessible(true);
+	        inputFld_acess.set(ret, obj);
+	        
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+		return ret;
 	}
 	
 	public static GameProfile EC3FakePlayerProfile = new GameProfile(UUID.fromString("5cd89d0b-e9ba-0000-89f4-b5dbb05963da"), "[EC3]");

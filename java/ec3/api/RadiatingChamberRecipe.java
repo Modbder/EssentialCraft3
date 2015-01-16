@@ -33,6 +33,15 @@ public class RadiatingChamberRecipe implements IRecipe{
 		costModifier = modifier;
 	}
 	
+	public RadiatingChamberRecipe(RadiatingChamberRecipe recipeByResult) {
+		recipeItems = recipeByResult.recipeItems;
+		result = recipeByResult.result;
+		mruRequired = recipeByResult.mruRequired;
+		upperBalanceLine = recipeByResult.upperBalanceLine;
+		lowerBalanceLine = recipeByResult.lowerBalanceLine;
+		costModifier = recipeByResult.costModifier;
+	}
+
 	@Override
 	public boolean matches(InventoryCrafting p_77569_1_, World p_77569_2_) {
 		if(p_77569_1_.getSizeInventory() >= 5)

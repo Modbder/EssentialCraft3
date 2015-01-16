@@ -1,5 +1,7 @@
 package ec3.client.gui;
 
+import DummyCore.Utils.MathUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.GuiButton;
@@ -16,5 +18,7 @@ public class GuiButtonNoSound extends GuiButton{
 	@Override
     public void func_146113_a(SoundHandler p_146113_1_)
     {
+		Minecraft mc = Minecraft.getMinecraft();
+		 mc.theWorld.playSound(mc.thePlayer.posX,mc.thePlayer.posY,mc.thePlayer.posZ, "essentialcraft:sound.pageturn", 1, 1+MathUtils.randomFloat(mc.theWorld.rand)/4, false);
     }
 }

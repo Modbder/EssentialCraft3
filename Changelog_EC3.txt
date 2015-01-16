@@ -43,4 +43,13 @@
 	+Couple of new items, that can be used in crafting recipies
 	=MRU Movers now break.
 	+Added integration for Version Checker mod
+
+4.3.1710.118r
+	+Reorganised recipes, working better now.
+	+Added Book Of Knowledge - All info is there!
+	+Added Solar Prism Rendering
+	+All Blocks should now drop their items upon breaking them down.
+	+Bound gem is now displayed in the player's hands.
+	=Elemental Charms are Metadata sensitive.
+	+Added Russian Localization, improved English one.
 		

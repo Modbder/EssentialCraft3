@@ -46,7 +46,13 @@ public class BlockMagicalTeleporter extends BlockContainer{
 		super(Material.rock);
 	}
 
-
+	@Override
+    public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6)
+    {
+		MiscUtils.dropItemsOnBlockBreak(par1World, par2, par3, par4, par5, par6);
+		super.breakBlock(par1World, par2, par3, par4, par5, par6);
+    }
+	
 	@Override
 	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
 		// TODO Auto-generated method stub

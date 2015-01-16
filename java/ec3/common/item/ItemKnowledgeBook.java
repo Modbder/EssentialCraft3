@@ -1,5 +1,6 @@
 package ec3.common.item;
 
+import java.util.Arrays;
 import java.util.List;
 
 import cpw.mods.fml.client.FMLClientHandler;
@@ -13,6 +14,7 @@ import ec3.api.ITERequiresMRU;
 import ec3.api.ITEStoresMRU;
 import ec3.api.ITETransfersMRU;
 import ec3.common.block.BlocksCore;
+import ec3.common.mod.EssentialCraftCore;
 import ec3.utils.common.ECUtils;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -44,6 +46,7 @@ public class ItemKnowledgeBook extends Item {
 	@Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
+		EssentialCraftCore.proxy.openBookGUIForPlayer();
         return par1ItemStack;
     }
     

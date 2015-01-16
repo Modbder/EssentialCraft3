@@ -5,6 +5,9 @@ import io.netty.buffer.ByteBuf;
 import java.nio.ByteBuffer;
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+
 import DummyCore.Blocks.BlocksRegistry;
 import DummyCore.Utils.DummyDataUtils;
 import DummyCore.Utils.DummyPacketDispatcher;
@@ -20,12 +23,19 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ec3.api.ApiCore;
+import ec3.api.DiscoveryEntry;
+import ec3.api.PageEntry;
 import ec3.api.WorldEventLibrary;
+import ec3.client.gui.GuiResearchBook;
 import ec3.common.block.BlocksCore;
 import ec3.common.item.ItemsCore;
+import ec3.common.mod.EssentialCraftCore;
+import ec3.common.registry.ResearchRegistry;
 import ec3.common.world.WorldProviderFirstWorld;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,7 +45,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.S3FPacketCustomPayload;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.sound.SoundLoadEvent;
@@ -44,6 +57,8 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 
 public class PlayerTickHandler{
 	public static int tickAmount;
+	
+	public boolean isRKeyPressed = false;
 	
 	@SubscribeEvent
 	public void tickEvent(WorldTickEvent event)
@@ -61,6 +76,142 @@ public class PlayerTickHandler{
 				EntityPlayer player = (EntityPlayer) event.entityLiving;
 				if(player.worldObj.isRemote)
 				{
+					if(Keyboard.isKeyDown(Keyboard.KEY_R) && !isRKeyPressed)
+					{
+						isRKeyPressed = true;
+						ItemStack currentPlayerItem = player.getCurrentEquippedItem();
+						if(currentPlayerItem != null && currentPlayerItem.getItem() == ItemsCore.research_book)
+						{
+							boolean foundItem = false;
+							Vec3 playerLookVec = player.getLookVec();
+							Vec3 itemSearchVec = Vec3.createVectorHelper(playerLookVec.xCoord, playerLookVec.yCoord, playerLookVec.zCoord);
+							//Searching for EntityItem
+							s:for(int o = 0; o < 4; ++o)
+							{
+								itemSearchVec.xCoord *= o+1;
+								itemSearchVec.yCoord *= o+1;
+								itemSearchVec.zCoord *= o+1;
+								List<EntityItem> lst = player.worldObj.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(player.posX+itemSearchVec.xCoord-0.5D, player.posY+itemSearchVec.yCoord-0.5D, player.posZ+itemSearchVec.zCoord-0.5D, player.posX+itemSearchVec.xCoord+0.5D, player.posY+itemSearchVec.yCoord+0.5D, player.posZ+itemSearchVec.zCoord+0.5D));
+								if(!lst.isEmpty())
+								{
+									for(EntityItem itm : lst)
+									{
+										if(itm != null && !itm.isDead)
+										{
+											ItemStack heldIS = itm.getEntityItem().copy();
+							    			if(ApiCore.findDiscoveryByIS(heldIS) != null)
+							    			{
+							    				DiscoveryEntry switchTo = ApiCore.findDiscoveryByIS(heldIS);
+							    				GuiResearchBook.currentPage = 0;
+							    				if(GuiResearchBook.currentCategory == null)
+							    					GuiResearchBook.currentCategory = ResearchRegistry.basic;
+							    				GuiResearchBook.currentPage_discovery = 0;
+							    				GuiResearchBook.currentDiscovery = switchTo;
+							    				if(switchTo != null)
+							    				{
+							    					f:for(int i = 0; i < switchTo.pages.size(); ++i)
+							    					{
+							    						PageEntry entry = switchTo.pages.get(i);
+							    						if(entry != null)
+							    						{
+							    							if(entry.displayedItems != null && entry.displayedItems.length > 0)
+							    							{
+							    								for(ItemStack is : entry.displayedItems)
+							    								{
+							    									if(heldIS.isItemEqual(is))
+							    									{
+							    										GuiResearchBook.currentPage = i - i%2;
+							    										break f;
+							    									}
+							    								}
+							    							}
+							    							if(entry.pageRecipe != null)
+							    							{
+							    								ItemStack result = entry.pageRecipe.getRecipeOutput();
+							    								if(result.isItemEqual(heldIS))
+							    								{
+							    									GuiResearchBook.currentPage = i - i%2;
+																	break f;
+							    								}
+							    							}
+							    						}
+							    					}
+							    				}
+							    				EssentialCraftCore.proxy.openBookGUIForPlayer();
+							    				GuiResearchBook book = (GuiResearchBook) Minecraft.getMinecraft().currentScreen;
+							    				book.initGui();
+							    				foundItem = true;
+							    				break s;
+							    			}
+										}
+									}
+								}
+							}
+							if(!foundItem)
+							{
+								Vec3 blockSearchVec = Vec3.createVectorHelper(playerLookVec.xCoord, playerLookVec.yCoord, playerLookVec.zCoord);
+								//Searching for Block
+								s:for(int o = 0; o < 4; ++o)
+								{
+									blockSearchVec.xCoord *= o+1;
+									blockSearchVec.yCoord *= o+1;
+									blockSearchVec.zCoord *= o+1;
+									Block blk = player.worldObj.getBlock(MathHelper.floor_double(blockSearchVec.xCoord+player.posX), MathHelper.floor_double(blockSearchVec.yCoord+player.posY), MathHelper.floor_double(blockSearchVec.zCoord+player.posZ));
+									if(blk != null && blk != Blocks.air)
+									{
+										ItemStack heldIS = new ItemStack(blk,1,player.worldObj.getBlockMetadata(MathHelper.floor_double(blockSearchVec.xCoord+player.posX), MathHelper.floor_double(blockSearchVec.yCoord+player.posY), MathHelper.floor_double(blockSearchVec.zCoord+player.posZ)));
+						    			if(ApiCore.findDiscoveryByIS(heldIS) != null)
+						    			{
+						    				DiscoveryEntry switchTo = ApiCore.findDiscoveryByIS(heldIS);
+						    				GuiResearchBook.currentPage = 0;
+						    				if(GuiResearchBook.currentCategory == null)
+						    					GuiResearchBook.currentCategory = ResearchRegistry.basic;
+						    				GuiResearchBook.currentPage_discovery = 0;
+						    				GuiResearchBook.currentDiscovery = switchTo;
+						    				if(switchTo != null)
+						    				{
+						    					f:for(int i = 0; i < switchTo.pages.size(); ++i)
+						    					{
+						    						PageEntry entry = switchTo.pages.get(i);
+						    						if(entry != null)
+						    						{
+						    							if(entry.displayedItems != null && entry.displayedItems.length > 0)
+						    							{
+						    								for(ItemStack is : entry.displayedItems)
+						    								{
+						    									if(heldIS.isItemEqual(is))
+						    									{
+						    										GuiResearchBook.currentPage = i - i%2;
+						    										break f;
+						    									}
+						    								}
+						    							}
+						    							if(entry.pageRecipe != null)
+						    							{
+						    								ItemStack result = entry.pageRecipe.getRecipeOutput();
+						    								if(result.isItemEqual(heldIS))
+						    								{
+						    									GuiResearchBook.currentPage = i - i%2;
+																break f;
+						    								}
+						    							}
+						    						}
+						    					}
+						    				}
+						    				EssentialCraftCore.proxy.openBookGUIForPlayer();
+						    				GuiResearchBook book = (GuiResearchBook) Minecraft.getMinecraft().currentScreen;
+						    				book.initGui();
+						    				break s;
+						    			}
+									}
+								}
+							}
+						}
+					}
+					if(!Keyboard.isKeyDown(Keyboard.KEY_R) && isRKeyPressed)
+					{
+						isRKeyPressed = false;
+					}
 					if(player.dimension == 53)
 					{
 						if(player.worldObj.provider.dimensionId == 53)

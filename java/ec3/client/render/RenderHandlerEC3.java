@@ -162,6 +162,7 @@ public class RenderHandlerEC3 {
 			if(event.entityLiving instanceof EntityClientPlayerMP)
 			{
 				EntityClientPlayerMP player = (EntityClientPlayerMP) event.entityLiving;
+				/*
 			    if(mc.thePlayer.getActivePotionEffect(PotionRegistry.paradox) != null)
 			    {
 			    	int duration = mc.thePlayer.getActivePotionEffect(PotionRegistry.paradox).getDuration();
@@ -187,7 +188,7 @@ public class RenderHandlerEC3 {
 			    	currentParadoxTicks = 0;
 		    		paradoxID = -1;
 		    		isParadoxActive = false;
-			    }
+			    }*/
 			}
 	}
 	
@@ -297,7 +298,7 @@ public class RenderHandlerEC3 {
 			        GL11.glEnable(GL11.GL_ALPHA_TEST);
 			        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			    }
-			    
+			    /*
 			    if(mc.thePlayer.getActivePotionEffect(PotionRegistry.paradox) != null)
 			    {
 			    	int duration = mc.thePlayer.getActivePotionEffect(PotionRegistry.paradox).getDuration();
@@ -330,6 +331,7 @@ public class RenderHandlerEC3 {
 			    {
 			    	return;
 			    }
+			    */
 			}
 			if(event.type == RenderGameOverlayEvent.ElementType.HEALTH)
 			{

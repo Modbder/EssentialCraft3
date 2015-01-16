@@ -30,6 +30,7 @@ public class ItemCharm extends ItemStoresMRUInNBT {
 		this.setMaxDamage(0);
 		this.maxStackSize = 1;
         this.bFull3D = false;
+        this.setHasSubtypes(true);
 	}
 	
 	@Override

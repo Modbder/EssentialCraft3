@@ -9,6 +9,7 @@ import ec3.common.tile.TileMRUCoil;
 import ec3.common.tile.TileMRUCoil_Hardener;
 import ec3.common.tile.TileecController;
 import ec3.utils.cfg.Config;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,6 +32,13 @@ public class BlockMRUCoil_Coil extends BlockContainer{
 		super(Material.rock);
 		// TODO Auto-generated constructor stub
 	}
+	
+	@Override
+    public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6)
+    {
+		MiscUtils.dropItemsOnBlockBreak(par1World, par2, par3, par4, par5, par6);
+		super.breakBlock(par1World, par2, par3, par4, par5, par6);
+    }
 	
     public boolean isOpaqueCube()
     {

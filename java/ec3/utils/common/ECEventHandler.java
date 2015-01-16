@@ -1,15 +1,19 @@
 package ec3.utils.common;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ec3.api.WorldEventLibrary;
+import ec3.client.gui.GuiResearchBook;
 import ec3.common.item.ItemsCore;
 import ec3.common.mod.EssentialCraftCore;
+import ec3.common.registry.ResearchRegistry;
 import ec3.common.world.BiomeGenCorruption_Chaos;
 import ec3.common.world.BiomeGenCorruption_Frozen;
 import ec3.common.world.BiomeGenCorruption_Magic;
@@ -23,12 +27,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.terraingen.BiomeEvent;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
 
 public class ECEventHandler {
+	
+	public String lastTickLanguage;
 	
 	@SubscribeEvent
 	public void worldTick(WorldTickEvent event)
@@ -90,6 +98,38 @@ public class ECEventHandler {
 			{
 				event.newColor = 0xff6a58;
 			}
+		}
+	}
+	
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
+	public void clientTick(TickEvent.ClientTickEvent event)
+	{
+		if(event.phase == TickEvent.Phase.START)
+		{
+
+		}else
+		{
+			if(lastTickLanguage != null && !lastTickLanguage.isEmpty())
+			{
+				if(!lastTickLanguage.equalsIgnoreCase(FMLClientHandler.instance().getCurrentLanguage()))
+				{
+					ResearchRegistry.init();
+					if(GuiResearchBook.currentCategory != null && GuiResearchBook.currentDiscovery != null)
+					{
+						String id = GuiResearchBook.currentDiscovery.id;
+						for(int i = 0; i < GuiResearchBook.currentCategory.discoveries.size(); ++i)
+						{
+							if(GuiResearchBook.currentCategory.discoveries.get(i).id.equals(id))
+							{
+								GuiResearchBook.currentDiscovery=GuiResearchBook.currentCategory.discoveries.get(i);
+								break;
+							}
+						}
+					}
+				}
+			}
+			lastTickLanguage = FMLClientHandler.instance().getCurrentLanguage();
 		}
 	}
 	

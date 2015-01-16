@@ -181,7 +181,10 @@ public class TileMagicianTable extends TileMRUGeneric{
     		ItemStack stk = this.currentRecipe.result;
             if (this.getStackInSlot(6) == null)
             {
-                this.setInventorySlotContents(6, stk.copy());
+            	ItemStack copied = stk.copy();
+            	if(copied.stackSize == 0)
+            		copied.stackSize = 1;
+                this.setInventorySlotContents(6, copied);
             }
             else if (getStackInSlot(6).getItem() == stk.getItem())
             {

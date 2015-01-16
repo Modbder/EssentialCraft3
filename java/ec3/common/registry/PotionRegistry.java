@@ -17,7 +17,7 @@ public class PotionRegistry {
 	
 	public static void registerPotions()
 	{
-		int pStart = MiscUtils.extendPotionArray(9);
+		int pStart = 0;
         pStart = getNextPotionId(pStart);
         if(pStart >= 0)
         {
@@ -54,23 +54,6 @@ public class PotionRegistry {
         	radiation = new PotionRadiation(pStart, true, 0x660066);
         }
         
-        pStart = getNextPotionId(pStart);
-        if(pStart >= 0)
-        {
-        	shadeCorruption = new PotionShadeCorruption(pStart, true, 0x222222);
-        }
-        
-        pStart = getNextPotionId(pStart);
-        if(pStart >= 0)
-        {
-        	purpleFlame = new PotionPurpleFlame(pStart, true, 0xff00ff);
-        }
-        
-        pStart = getNextPotionId(pStart);
-        if(pStart >= 0)
-        {
-        	paradox = new PotionMindfoldParadox(pStart, true, 0x85f8ff);
-        }
 	}
 	
     static int getNextPotionId(int start)
@@ -81,6 +64,8 @@ public class PotionRegistry {
             start = getNextPotionId(start);
         else
             start = -1;
+        if(start == -1 && Potion.potionTypes.length < 64)
+        	start = MiscUtils.extendPotionArray(1);
         return start;
     }
     

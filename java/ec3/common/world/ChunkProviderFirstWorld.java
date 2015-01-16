@@ -1,5 +1,6 @@
 package ec3.common.world;
 
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import ec3.common.world.structure.MapGenTown;
@@ -26,7 +27,17 @@ public class ChunkProviderFirstWorld extends ChunkProviderGenerate{
 			boolean p_i2006_4_) {
 		super(p_i2006_1_, p_i2006_2_, false);
 		instance = this;
-		rand = new Random(p_i2006_2_);
+		try
+		{
+		Class mainClazz = ChunkProviderGenerate.class;
+		Object obj = this;
+		Field rngFld = mainClazz.getDeclaredFields()[0];
+		rngFld.setAccessible(true);
+		rand = (Random) rngFld.get(obj);
+		}catch(Exception e)
+		{
+			e.printStackTrace();return;
+		}
 		this.worldObj = p_i2006_1_;
 	}
 	

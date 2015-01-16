@@ -115,6 +115,7 @@ public class ItemBoundGem extends Item {
     {
         this.icon = par1IconRegister.registerIcon("essentialcraft:gem_bound");
         this.active_icon = par1IconRegister.registerIcon("essentialcraft:gem_bound_active");
+        this.itemIcon = par1IconRegister.registerIcon("essentialcraft:gem_bound");
     }
     
     @SideOnly(Side.CLIENT)

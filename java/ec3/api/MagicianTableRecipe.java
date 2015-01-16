@@ -18,6 +18,12 @@ public class MagicianTableRecipe implements IRecipe{
 		mruRequired = k;
 	}
 	
+	public MagicianTableRecipe(MagicianTableRecipe recipeByResult) {
+		requiredItems = recipeByResult.requiredItems;
+		result = recipeByResult.result;
+		mruRequired = recipeByResult.mruRequired;
+	}
+
 	@Override
 	public boolean matches(InventoryCrafting p_77569_1_, World p_77569_2_) {
 		if(p_77569_1_.getSizeInventory() >= 5)

@@ -67,6 +67,7 @@ import ec3.client.gui.GuiMoonWell;
 import ec3.client.gui.GuiPotionSpreader;
 import ec3.client.gui.GuiRadiatingChamber;
 import ec3.client.gui.GuiRayTower;
+import ec3.client.gui.GuiResearchBook;
 import ec3.client.gui.GuiSunRayAbsorber;
 import ec3.client.model.ModelArmorEC3;
 import ec3.client.regular.EntityCSpellFX;
@@ -110,6 +111,7 @@ import ec3.client.render.RenderRayTower;
 import ec3.client.render.RenderSkyFirstWorld;
 import ec3.client.render.RenderSolarBeam;
 import ec3.client.render.RenderSolarPrism;
+import ec3.client.render.RenderSolarPrismAsItem;
 import ec3.client.render.RenderSunRayAbsorber;
 import ec3.client.render.RenderWindMage;
 import ec3.common.block.BlocksCore;
@@ -305,6 +307,12 @@ ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/
 		}
 		return null;
 	}
+	
+	@Override
+	public void openBookGUIForPlayer()
+	{
+		Minecraft.getMinecraft().displayGuiScreen(new GuiResearchBook());
+	}
 
 	@Override
 	public void registerRenderInformation()
@@ -319,6 +327,7 @@ ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/
 		FMLCommonHandler.instance().bus().register(new ClientRenderHandler());
 		MinecraftForge.EVENT_BUS.register(new RenderHandlerEC3());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlocksCore.elementalCrystal), new RenderElementalCrystalAsItem());
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlocksCore.solarPrism), new RenderSolarPrismAsItem());
 		for(int i = 0; i < ItemsCore.magicArmorItems.length; ++i)
 		{
 			if(ItemsCore.magicArmorItems[i] != null)

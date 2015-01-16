@@ -120,6 +120,9 @@ public class BlocksCore {
 		corruptionCleaner = registerBlockSimple(BlockCorruptionCleaner.class,Material.rock,corruptionCleaner,"corruptionCleaner","fortifiedStone",1,100,0);
 		reactorSupport = registerBlockSimple(BlockReactorSupport.class,Material.rock,reactorSupport,"reactorSupport","fortifiedStone",1,10,0);
 		reactor = registerBlockSimple(BlockMRUReactor.class,Material.rock,reactor,"reactor","fortifiedStone",1,10,0);
+		air = registerBlockSimple(Block.class,Material.rock,air,"air","glass",-1,-1,0);
+		air.setBlockName("air");
+		air.setBlockTextureName("cauldron_top");
 	}
 	
 	public static Block registerBlockSimple(Class<? extends Block> c,Material m,Block b, String name, String texture, float hardness, float resistance, int opacity)
@@ -217,6 +220,8 @@ public class BlocksCore {
 	public static Block corruptionCleaner;
 	public static Block reactorSupport;
 	public static Block reactor;
+	
+	public static Block air;
 	
 	public static Block[] lightCorruption = new Block[4];
 }

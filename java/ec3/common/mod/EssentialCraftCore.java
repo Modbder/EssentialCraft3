@@ -27,13 +27,14 @@ import ec3.common.registry.SpellRegistry;
 import ec3.common.registry.StructureRegistry;
 import ec3.common.registry.VillagersRegistry;
 import ec3.integration.versionChecker.Check;
+import ec3.integration.waila.WailaInitialiser;
 import ec3.network.proxy.CommonProxy;
 import ec3.utils.cfg.Config;
 import ec3.utils.common.CommandCreateMRUCU;
 import ec3.utils.common.CommandSetBalance;
 import ec3.utils.common.CommandSetMRU;
 
-@Mod(modid = "essentialcraft", name = "EssentialCraftIII", version = "4.3.1710.112")
+@Mod(modid = "essentialcraft", name = "EssentialCraftIII", version = EssentialCraftCore.version)
 public class EssentialCraftCore {
 
 //============================================CORE START=================================================//
@@ -44,7 +45,7 @@ public class EssentialCraftCore {
 	@SidedProxy(clientSide = "ec3.network.proxy.ClientProxy", serverSide = "ec3.network.proxy.CommonProxy")
 	public static CommonProxy proxy;
 	public static Config cfg = new Config();
-	public static String version = "4.0.1710.421";
+	public static final String version = "4.3.1710.118";
 	public static int globalECVersion;
 	public static int modVersion;
 	public static int mcVersion;
@@ -64,6 +65,7 @@ public class EssentialCraftCore {
         ((CommandHandler)mcserver.getCommandManager()).registerCommand(new CommandSetMRU());
         ((CommandHandler)mcserver.getCommandManager()).registerCommand(new CommandSetBalance());
         ((CommandHandler)mcserver.getCommandManager()).registerCommand(new CommandCreateMRUCU());
+        
     }
 	
 	@EventHandler
@@ -81,6 +83,7 @@ public class EssentialCraftCore {
 		}
 		CoreRegistry.register();
 		Check.checkerCommit();
+		WailaInitialiser.sendIMC();
 	}
 	
 	@EventHandler
@@ -95,11 +98,21 @@ public class EssentialCraftCore {
 		VillagersRegistry.instance.register();
 		BiomeRegistry.core.register();
 		StructureRegistry.register();
-		ResearchRegistry.init();
 		proxy.registerRenderInformation();
 		proxy.registerTileEntitySpecialRenderer();
-		
-		
+	}
+	
+	public static boolean clazzExists(String clazzName)
+	{
+		try
+		{
+			Class clazz = Class.forName(clazzName);
+			return true;
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
 	}
 	
 	@EventHandler
@@ -108,5 +121,6 @@ public class EssentialCraftCore {
 		SpellRegistry.register();
 		AchievementRegistry.register();
 		PotionRegistry.registerPotions();
+		ResearchRegistry.init();
 	}
 }

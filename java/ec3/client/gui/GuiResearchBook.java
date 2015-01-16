@@ -2,30 +2,51 @@ package ec3.client.gui;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import DummyCore.Utils.MathUtils;
+import DummyCore.Utils.MiscUtils;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import ec3.api.ApiCore;
 import ec3.api.CategoryEntry;
 import ec3.api.DiscoveryEntry;
+import ec3.api.MagicianTableRecipe;
 import ec3.api.PageEntry;
+import ec3.api.RadiatingChamberRecipe;
+import ec3.api.StructureBlock;
+import ec3.api.StructureRecipe;
+import ec3.common.item.ItemsCore;
 import ec3.common.mod.EssentialCraftCore;
+import ec3.utils.common.ECUtils;
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.resources.IReloadableResourceManager;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.gen.ChunkProviderGenerate;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public class GuiResearchBook extends GuiScreen{
 	
@@ -37,15 +58,33 @@ public class GuiResearchBook extends GuiScreen{
 	 public static DiscoveryEntry currentDiscovery;
 	 public static int currentPage_discovery;
 	 
+	 public static List<Object> hoveringText = new ArrayList();
+	 
+	 public static List<Object[]> prevState = new ArrayList();
+	 
 	 public static final int discoveries_per_page = 48;
 	 
 	 public NBTTagCompound bookTag;
 	 
+	 public boolean firstOpened = false;
+	 
+	 public boolean isLeftMouseKeyPressed = false;
+	 
+	 public boolean isRightMouseKeyPressed = false;
+	 
 	 public static final ResourceLocation gui = new ResourceLocation("essentialcraft","textures/gui/research_book_generic.png");
+	 
+	 public GuiResearchBook()
+	 {
+		 super();
+	 }
 	 
 	 public void initGui() 
 	 {
-		 this.mc.theWorld.playSound(this.mc.thePlayer.posX,this.mc.thePlayer.posY,this.mc.thePlayer.posZ, "essentialcraft:sound.pageturn", 1, 1+MathUtils.randomFloat(this.mc.theWorld.rand)/4, false);
+		 isLeftMouseKeyPressed = Mouse.isButtonDown(0);
+		 isRightMouseKeyPressed = Mouse.isButtonDown(1);
+		 firstOpened = false;
+		
 		 this.buttonList.clear();
 		 this.labelList.clear();
 		 bookTag = this.mc.thePlayer.getCurrentEquippedItem().getTagCompound();
@@ -77,7 +116,10 @@ public class GuiResearchBook extends GuiScreen{
 	     }
 	     if(currentCategory != null && currentDiscovery != null)
 	     {
-	    	 this.mc.renderEngine.bindTexture(gui);
+    		 if(currentCategory == null || currentCategory.specificBookTextures == null)
+    			 this.mc.renderEngine.bindTexture(gui);
+    		 else
+    			 this.mc.renderEngine.bindTexture(currentCategory.specificBookTextures);
 	     }
 	     this.drawTexturedModalRect(k, l, 0, 0, 256, 180);
 	 }
@@ -85,6 +127,40 @@ public class GuiResearchBook extends GuiScreen{
 	 @Override
 	 public void drawScreen(int p_73863_1_, int p_73863_2_, float p_73863_3_)
 	 {
+		 try
+		 {
+		 }catch(Exception e)
+		 {
+			 e.printStackTrace();return;
+		 }
+		 if(isRightMouseKeyPressed && !Mouse.isButtonDown(1))
+		 {
+			 isRightMouseKeyPressed = false;
+		 }
+		 if(!isRightMouseKeyPressed && Mouse.isButtonDown(1))
+		 {
+			 isRightMouseKeyPressed = true;
+			 if(!this.prevState.isEmpty())
+			 {
+				  Object[] tryArray = this.prevState.get(this.prevState.size()-1);
+				  currentPage = (int) tryArray[1];
+				  currentPage_discovery = (int) tryArray[2];
+				  currentDiscovery = (DiscoveryEntry) tryArray[0];
+				  this.prevState.remove(this.prevState.size()-1);
+				  this.initGui();
+			 }
+		 }
+		 if(isLeftMouseKeyPressed && !Mouse.isButtonDown(0))
+			 isLeftMouseKeyPressed = false;
+	     if(FMLClientHandler.instance().getCurrentLanguage().equalsIgnoreCase("en_gb") && !firstOpened)
+	     {
+	    	 firstOpened = true;
+	    	 this.fontRendererObj = new FontRenderer(mc.gameSettings, new ResourceLocation("essentialcraft","textures/special/research_font.png"), mc.renderEngine, false);
+	    	 fontRendererObj.setUnicodeFlag(false);
+	    	 fontRendererObj.setBidiFlag(true);
+	    	 ((IReloadableResourceManager)this.mc.getResourceManager()).registerReloadListener(fontRendererObj);
+	     }
+		 hoveringText.clear();
 	     int k = (this.width - 256) / 2;
 	     int l = (this.height - 168) / 2;
 		 drawBackground(0);
@@ -99,6 +175,25 @@ public class GuiResearchBook extends GuiScreen{
 		 if(currentCategory != null && currentDiscovery != null)
 		 {
 			 drawPage(p_73863_1_,p_73863_2_);
+		 }
+		 drawAllText();
+	 }
+	 
+	 public void drawAllText()
+	 {
+		 //TODO drawText
+		 for(int i = 0; i < this.hoveringText.size(); ++i)
+		 {
+			 Object obj = this.hoveringText.get(i);
+			 if(obj instanceof Object[])
+			 {
+				 Object[] drawable = (Object[]) obj;
+				 List<String> listToDraw = (List<String>) drawable[0];
+				 int x = (int) drawable[1];
+				 int y = (int) drawable[2];
+				 FontRenderer renderer = (FontRenderer) drawable[3];
+				 this.drawHoveringText(listToDraw, x, y, renderer);
+			 }
 		 }
 	 }
 	 
@@ -124,7 +219,7 @@ public class GuiResearchBook extends GuiScreen{
 	     for(int i = 48*(currentPage_discovery); i < discAmount - 48*(currentPage_discovery); ++i)
 	     {
 	    	 int dx = k + (22*(i/6)) + 12;
-	    	 if(i >= 24) dx += 128;
+	    	 if(i >= 24) dx += 40;
 	    	 int dy = l + (22*(i%6)) + 22;
 	    	 GuiButtonNoSound btnAdd = new GuiButtonNoSound(i + 3, dx, dy, 20, 20, "");
 	    	 this.buttonList.add(btnAdd);
@@ -185,15 +280,20 @@ public class GuiResearchBook extends GuiScreen{
 	    	 int id = btn.id;
 	    	 if(id == 0)
 	    	 {
-	    		 this.mc.renderEngine.bindTexture(gui);
-	    		 this.mc.renderEngine.bindTexture(gui);
+	    		 if(currentCategory == null || currentCategory.specificBookTextures == null)
+	    			 this.mc.renderEngine.bindTexture(gui);
+	    		 else
+	    			 this.mc.renderEngine.bindTexture(currentCategory.specificBookTextures);
 	    		 if(hover)
 	    			 GL11.glColor3f(1, 0.8F, 1);
 	    		 this.drawTexturedModalRect(btn.xPosition, btn.yPosition, 49, 238, 14, 18);
 	    	 }
 	    	 if(id == 1)
 	    	 {
-	    		 this.mc.renderEngine.bindTexture(gui);
+	    		 if(currentCategory == null || currentCategory.specificBookTextures == null)
+	    			 this.mc.renderEngine.bindTexture(gui);
+	    		 else
+	    			 this.mc.renderEngine.bindTexture(currentCategory.specificBookTextures);
 	    		 if(hover && btn.enabled)
 	    			 GL11.glColor3f(1, 0.8F, 1);
 	    		 if(!btn.enabled)
@@ -202,7 +302,10 @@ public class GuiResearchBook extends GuiScreen{
 	    	 }
 	    	 if(id == 2)
 	    	 {
-	    		 this.mc.renderEngine.bindTexture(gui);
+	    		 if(currentCategory == null || currentCategory.specificBookTextures == null)
+	    			 this.mc.renderEngine.bindTexture(gui);
+	    		 else
+	    			 this.mc.renderEngine.bindTexture(currentCategory.specificBookTextures);
 	    		 if(hover && btn.enabled)
 	    			 GL11.glColor3f(1, 0.8F, 1);
 	    		 if(!btn.enabled)
@@ -253,7 +356,7 @@ public class GuiResearchBook extends GuiScreen{
 	    	 {
 	    		 added = page.pageTitle;
 	    	 }
-	    	 this.fontRendererObj.drawStringWithShadow(added, k+6, l+10, 0xffffff);
+	    	 this.fontRendererObj.drawStringWithShadow(added, k+6, l+10, 0xaa88ff);
 	     }else
 	     {
 	    	 if(page.pageTitle != null && !page.pageTitle.isEmpty())
@@ -293,71 +396,467 @@ public class GuiResearchBook extends GuiScreen{
 	    	 
 	    	 l += page.displayedItems.length/4 * 20;
 	     }
-	     
+	     if(page.pageRecipe != null)
+	     {
+	    	 l += this.drawRecipe(mouseX, mouseY, k, l, page.pageRecipe);
+	     }
 	     if(page.pageText != null && !page.pageText.isEmpty())
 	     {
 	    	 List<String> display = parse(page.pageText);
 	    	 for(int i = 0; i < display.size(); ++i)
 	    	 {
-	    		 this.fontRendererObj.drawString(display.get(i), k+8, l+25+i*10, 0x222222);
+	    	     GL11.glColor3f(1, 1, 1);
+	             GL11.glEnable(GL11.GL_LIGHTING);
+	             GL11.glEnable(GL11.GL_DEPTH_TEST);
+	             RenderHelper.enableStandardItemLighting();
+	             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+	             //TODO f
+	             if(!Minecraft.getMinecraft().fontRenderer.getUnicodeFlag())
+	             {
+		             GL11.glScalef(0.8F, 0.8F, 0.8F);
+		    		 this.fontRendererObj.drawString(display.get(i), (int) ((k+18)*1.25F), (int) ((l+25+i*8)*1.25F), 0x222222);
+		    		 GL11.glScalef(1.25F, 1.25F, 1.25F);
+	             }else
+	             {
+	            	 this.fontRendererObj.drawString(display.get(i), (int) ((k+18)), (int) ((l+25+i*8)), 0x222222);
+	             }
 	    	 }
 	     }
 	 }
 	 
 	 public void drawPage_1(int mouseX, int mouseY)
 	 {
-		 PageEntry page = this.currentDiscovery.pages.get(currentPage+1);
-	     int k = (this.width - 256) / 2 + 128;
-	     int l = (this.height - 168) / 2;
-	     {
-	    	 if(page.pageTitle != null && !page.pageTitle.isEmpty())
-	    	 {
-	    		 this.fontRendererObj.drawStringWithShadow(page.pageTitle, k+6, l+10, 0xffffff);
-	    	 }
-	     }
-	     
-	     if(page.pageImgLink != null)
-	     {
-	    	 GL11.glDisable(GL11.GL_LIGHTING);
-	    	 GL11.glColor3f(1, 1, 1);
-	    	 this.mc.renderEngine.bindTexture(page.pageImgLink);
-	    	 this.func_152125_a(k+16, l+10, 0, 0, 256, 256, 100, 100, 256, 256);
-	    	 l += 86;
-	     }
-	     
-	     if(page.displayedItems != null)
-	     {
-	    	 for(int i = 0; i < page.displayedItems.length; ++i)
-	    	 {
-	    		 ItemStack is = page.displayedItems[i];
-	    		 if(is != null)
-	    		 {
-	    			 this.drawIS(is, k + 10 + (i%4*20), l + 10 + (i/4 * 20), mouseX, mouseY, 0);
-	    		 }
-	    	 }
-	    	 
-	    	 for(int i = 0; i < page.displayedItems.length; ++i)
-	    	 {
-	    		 ItemStack is = page.displayedItems[i];
-	    		 if(is != null)
-	    		 {
-	    			 this.drawIS(is, k + 10 + (i%4*20), l + 10 + (i/4 * 20), mouseX, mouseY, 1);
-	    		 }
-	    	 }
-	    	 
-	    	 l += page.displayedItems.length/4 * 20;
-	     }
-	     
-	     if(page.pageText != null && !page.pageText.isEmpty())
-	     {
-	    	 List<String> display = parse(page.pageText);
-	    	 for(int i = 0; i < display.size(); ++i)
-	    	 {
-	    		 this.fontRendererObj.drawString(display.get(i), k+8, l+25+i*10, 0x222222);
-	    	 }
-	     }
-	     
-	     
+		 if(this.currentDiscovery.pages.size() > currentPage+1)
+		 {
+			 PageEntry page = this.currentDiscovery.pages.get(currentPage+1);
+		     int k = (this.width - 256) / 2 + 128;
+		     int l = (this.height - 168) / 2;
+		     {
+		    	 if(page.pageTitle != null && !page.pageTitle.isEmpty())
+		    	 {
+		    		 this.fontRendererObj.drawStringWithShadow(page.pageTitle, k+6, l+10, 0xffffff);
+		    	 }
+		     }
+		     
+		     if(page.pageImgLink != null)
+		     {
+		    	 GL11.glDisable(GL11.GL_LIGHTING);
+		    	 GL11.glColor3f(1, 1, 1);
+		    	 this.mc.renderEngine.bindTexture(page.pageImgLink);
+		    	 this.func_152125_a(k+16, l+10, 0, 0, 256, 256, 100, 100, 256, 256);
+		    	 l += 86;
+		     }
+		     
+		     if(page.displayedItems != null)
+		     {
+		    	 for(int i = 0; i < page.displayedItems.length; ++i)
+		    	 {
+		    		 ItemStack is = page.displayedItems[i];
+		    		 if(is != null)
+		    		 {
+		    			 this.drawIS(is, k + 10 + (i%4*20), l + 10 + (i/4 * 20), mouseX, mouseY, 0);
+		    		 }
+		    	 }
+		    	 
+		    	 for(int i = 0; i < page.displayedItems.length; ++i)
+		    	 {
+		    		 ItemStack is = page.displayedItems[i];
+		    		 if(is != null)
+		    		 {
+		    			 this.drawIS(is, k + 10 + (i%4*20), l + 10 + (i/4 * 20), mouseX, mouseY, 1);
+		    		 }
+		    	 }
+		    	 
+		    	 l += page.displayedItems.length/4 * 20;
+		     }
+		     if(page.pageRecipe != null)
+		     {
+		    	 l += this.drawRecipe(mouseX, mouseY, k, l, page.pageRecipe);
+		     }
+		     if(page.pageText != null && !page.pageText.isEmpty())
+		     {
+		    	 List<String> display = parse(page.pageText);
+		    	 for(int i = 0; i < display.size(); ++i)
+		    	 {
+		    	     GL11.glColor3f(1, 1, 1);
+		             GL11.glEnable(GL11.GL_LIGHTING);
+		             GL11.glEnable(GL11.GL_DEPTH_TEST);
+		             RenderHelper.enableStandardItemLighting();
+		             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+		             if(!Minecraft.getMinecraft().fontRenderer.getUnicodeFlag())
+		             {
+			             GL11.glScalef(0.8F, 0.8F, 0.8F);
+			    		 this.fontRendererObj.drawString(display.get(i), (int) ((k+18)*1.25F), (int) ((l+25+i*8)*1.25F), 0x222222);
+			    		 GL11.glScalef(1.25F, 1.25F, 1.25F);
+		             }else
+		             {
+		            	 this.fontRendererObj.drawString(display.get(i), (int) ((k+18)), (int) ((l+25+i*8)), 0x222222);
+		             }
+		    	 }
+		     }
+
+		 }
+	 }
+	 
+	 public int drawRecipe(int mouseX, int mouseZ, int k, int l, IRecipe toDraw)
+	 {
+		 //2
+		 if(toDraw instanceof ShapedOreRecipe)
+		 {
+			 return drawShapedOreRecipe(mouseX,mouseZ,k,l,(ShapedOreRecipe) toDraw);
+		 }
+		 //3
+		 if(toDraw instanceof ShapelessOreRecipe)
+		 {
+			 return drawShapelessOreRecipe(mouseX,mouseZ,k,l,(ShapelessOreRecipe) toDraw);
+		 }
+		 //5
+		 if(toDraw instanceof RadiatingChamberRecipe)
+		 {
+			 return drawRadiatingChamberRecipe(mouseX,mouseZ,k,l,(RadiatingChamberRecipe) toDraw);
+		 }
+		 //6
+		 if(toDraw instanceof MagicianTableRecipe)
+		 {
+			 return drawMagicianTableRecipe(mouseX,mouseZ,k,l,(MagicianTableRecipe) toDraw);
+		 }
+		 //?7?
+		 if(toDraw instanceof StructureRecipe)
+		 {
+			 return drawStructureRecipe(mouseX,mouseZ,k,l,(StructureRecipe) toDraw);
+		 }
+		 return 0;
+	 }
+
+	 public int drawMagicianTableRecipe(int mouseX, int mouseZ, int k, int l, MagicianTableRecipe toDraw)
+	 {
+		 this.fontRendererObj.drawString(StatCollector.translateToLocal("ec3.txt.magicianRecipe"), k+24, l+12, 0x222222);
+		 this.fontRendererObj.drawString(StatCollector.translateToLocal("MRU Required: "+toDraw.mruRequired), k+26, l+83, 0x222222);
+		
+		 GL11.glDisable(GL11.GL_LIGHTING);
+		 RenderHelper.disableStandardItemLighting();
+		 RenderHelper.enableGUIStandardItemLighting();
+		 GL11.glColor3f(1, 1, 1);
+		 MiscUtils.bindTexture("essentialcraft", "textures/gui/mruStorage.png");
+		 MiscUtils.drawTexturedModalRect(k+7, l+20, 0, 0, 18, 72,1);
+		 int percentageScaled = MathUtils.pixelatedTextureSize((int) (toDraw.mruRequired), 5000, 72);
+		 IIcon icon = (IIcon) EssentialCraftCore.proxy.getClientIcon("mru");
+		 MiscUtils.drawTexture(k+8, l-1+(74-percentageScaled)+20, icon, 16, percentageScaled-2, 2);
+		 
+		 this.drawSlotInRecipe(k, l, 13, 8);
+		 this.drawSlotInRecipe(k, l, 13+36, 8);
+		 this.drawSlotInRecipe(k, l, 13, 8+36);
+		 this.drawSlotInRecipe(k, l, 13+36, 8+36);
+		 this.drawSlotInRecipe(k, l, 13+18, 8+18);
+		 this.drawSlotInRecipe(k, l, 13+74, 8+18);
+		 
+		 this.drawIS(toDraw.requiredItems[0], k+26+18, l+25+18, mouseX, mouseZ, 0);
+		 this.drawIS(toDraw.requiredItems[1], k+26, l+25, mouseX, mouseZ, 0);
+		 this.drawIS(toDraw.requiredItems[2], k+26+36, l+25, mouseX, mouseZ, 0);
+		 this.drawIS(toDraw.requiredItems[3], k+26, l+25+36, mouseX, mouseZ, 0);
+		 this.drawIS(toDraw.requiredItems[4], k+26+36, l+25+36, mouseX, mouseZ, 0);
+		 this.drawIS(toDraw.result, k+26+74, l+25+18, mouseX, mouseZ, 0);
+		 
+		 this.drawIS(toDraw.requiredItems[0], k+26+18, l+25+18, mouseX, mouseZ, 1);
+		 this.drawIS(toDraw.requiredItems[1], k+26, l+25, mouseX, mouseZ, 1);
+		 this.drawIS(toDraw.requiredItems[2], k+26+36, l+25, mouseX, mouseZ, 1);
+		 this.drawIS(toDraw.requiredItems[3], k+26, l+25+36, mouseX, mouseZ, 1);
+		 this.drawIS(toDraw.requiredItems[4], k+26+36, l+25+36, mouseX, mouseZ, 1);
+		 this.drawIS(toDraw.result, k+26+74, l+25+18, mouseX, mouseZ, 1);
+		 return 80;
+	 }
+	 
+	 public int drawRadiatingChamberRecipe(int mouseX, int mouseZ, int k, int l, RadiatingChamberRecipe toDraw)
+	 {
+		 this.fontRendererObj.drawString(StatCollector.translateToLocal("ec3.txt.radiatingRecipe"), k+8, l+12, 0x222222);
+		 this.fontRendererObj.drawString(StatCollector.translateToLocal("MRU Required: "+toDraw.mruRequired), k+26, l+83, 0x222222);
+		 EnumChatFormatting addeddCF = EnumChatFormatting.RESET;
+		 float upperBalance = toDraw.upperBalanceLine;
+		 if(upperBalance > 2.0F)upperBalance = 2.0F;
+		 if(upperBalance > 1.0F)
+			 addeddCF = EnumChatFormatting.RED;
+		 else if(upperBalance < 1.0F)
+			 addeddCF = EnumChatFormatting.BLUE;
+		 else
+			 addeddCF = EnumChatFormatting.AQUA;
+		 String balanceUpper = Float.toString(upperBalance);
+		 if(balanceUpper.length() > 4)
+			 balanceUpper = balanceUpper.substring(0, 4);
+		 this.fontRendererObj.drawString(StatCollector.translateToLocal(StatCollector.translateToLocal("ec3.txt.format.upperBalance")+addeddCF+balanceUpper), k+44, l+32, 0x222222);
+
+		 float lowerBalance = toDraw.lowerBalanceLine;
+		 if(lowerBalance < 0.001F)lowerBalance = 0.001F;
+		 if(lowerBalance > 1.0F)
+			 addeddCF = EnumChatFormatting.RED;
+		 else if(lowerBalance < 1.0F)
+			 addeddCF = EnumChatFormatting.BLUE;
+		 else
+			 addeddCF = EnumChatFormatting.AQUA;
+		 String balanceLower = Float.toString(lowerBalance);
+		 if(balanceLower.length() > 4)
+			 balanceLower = balanceLower.substring(0, 4);
+		 this.fontRendererObj.drawString(StatCollector.translateToLocal(StatCollector.translateToLocal("ec3.txt.format.lowerBalance")+addeddCF+balanceLower), k+44, l+32+36, 0x222222);
+
+		 this.fontRendererObj.drawString("MRU/t "+(int)toDraw.costModifier, k+44+18, l+32+18, 0x222222);
+		 
+		 GL11.glDisable(GL11.GL_LIGHTING);
+		 RenderHelper.disableStandardItemLighting();
+		 RenderHelper.enableGUIStandardItemLighting();
+		 GL11.glColor3f(1, 1, 1);
+		 MiscUtils.bindTexture("essentialcraft", "textures/gui/mruStorage.png");
+		 MiscUtils.drawTexturedModalRect(k+7, l+20, 0, 0, 18, 72,1);
+		 int percentageScaled = MathUtils.pixelatedTextureSize((int) (toDraw.mruRequired*toDraw.costModifier), 5000, 72);
+		 IIcon icon = (IIcon) EssentialCraftCore.proxy.getClientIcon("mru");
+		 MiscUtils.drawTexture(k+8, l-1+(74-percentageScaled)+20, icon, 16, percentageScaled-2, 2);
+		 int positionY = 8;
+		 this.drawSlotInRecipe(k, l, 13, 4+positionY);
+		 this.drawSlotInRecipe(k, l, 13+18, 22+positionY);
+		 this.drawSlotInRecipe(k, l, 13, 40+positionY);
+		 
+		 this.drawIS(toDraw.recipeItems[0], k+26, l+21+positionY, mouseX, mouseZ, 0);
+		 this.drawIS(toDraw.recipeItems[1], k+26, l+21+36+positionY, mouseX, mouseZ, 0);
+		 this.drawIS(toDraw.result, k+26+18, l+21+18+positionY, mouseX, mouseZ, 0);
+		 
+		 this.drawIS(toDraw.recipeItems[0], k+26, l+21+positionY, mouseX, mouseZ, 1);
+		 this.drawIS(toDraw.recipeItems[1], k+26, l+21+36+positionY, mouseX, mouseZ, 1);
+		 this.drawIS(toDraw.result, k+26+18, l+21+18+positionY, mouseX, mouseZ, 1);
+		 return 90;
+	 }
+	 
+	 public int drawStructureRecipe(int mouseX, int mouseZ, int k, int l, StructureRecipe toDraw)
+	 {
+		 try
+		 {
+		 this.fontRendererObj.drawString(StatCollector.translateToLocal("ec3.txt.structure"), k+8, l+12, 0x222222);
+		 l += 5;
+		 StructureRecipe recipe = (StructureRecipe) toDraw;
+		 int highestStructureBlk = 0;
+		 for(StructureBlock blk : recipe.structure)
+		 {
+			 if(blk.y > highestStructureBlk)
+				 highestStructureBlk = blk.y;
+		 }
+		 for(StructureBlock blk : recipe.structure)
+		 {
+			 this.drawSB(blk, k+52+blk.x*10-blk.z*10, l+32+highestStructureBlk*20-blk.y*20+blk.z*10+blk.x*10, mouseX, mouseZ, 0);
+		 }
+		 this.drawIS(recipe.referal, k+52, l+144, mouseX, mouseZ, 0);
+		 
+		 for(StructureBlock blk : recipe.structure)
+		 {
+			 this.drawSB(blk, k+52+blk.x*10-blk.z*10, l+32+highestStructureBlk*20-blk.y*20+blk.z*10+blk.x*10, mouseX, mouseZ, 1);
+		 }
+		 
+		 this.drawIS(recipe.referal, k+52, l+144, mouseX, mouseZ, 1);
+		 
+		 return 60+highestStructureBlk*20;
+		 }
+		 catch(Exception e)
+		 {
+			 e.printStackTrace();
+			 return 0;
+		 }
+	 }
+	 
+	 public int drawShapedOreRecipe(int mouseX, int mouseZ, int k, int l, ShapedOreRecipe toDraw)
+	 {
+		 this.fontRendererObj.drawString(StatCollector.translateToLocal("ec3.txt.shapedRecipe"), k+8, l+12, 0x222222);
+		 ShapedOreRecipe recipe = (ShapedOreRecipe) toDraw;
+		 for(int i = 0; i < 9; ++i)
+		 {
+			 drawSlotInRecipe(k,l+6,(i%3)*18,(i/3)*18);
+		 }
+		 drawSlotInRecipe(k,l+6,80,(1)*18);
+		 MiscUtils.bindTexture("minecraft", "textures/gui/container/crafting_table.png");
+		 
+		 GL11.glColor3f(1, 1, 1);
+		 this.drawTexturedModalRect(k+78-10, l+23+18, 90, 35, 22, 15);
+		 
+		 Random rnd = new Random(mc.theWorld.getWorldTime()/20);
+		 
+		 int[] drawingID = new int[9];
+		 
+		 for(int i = 0; i < 9; ++i)
+		 {
+			 Object drawable = recipe.getInput()[i];
+			 ItemStack needToDraw = null;
+			 if(drawable instanceof ItemStack)
+				 needToDraw = (ItemStack) drawable;
+			 if(drawable instanceof Item)
+				 needToDraw = new ItemStack((Item)drawable);
+			 if(drawable instanceof Block)
+				 needToDraw = new ItemStack((Block)drawable);
+			 if(drawable instanceof ItemStack[])
+			 {
+				 drawingID[i] = rnd.nextInt(((ItemStack[])drawable).length);
+				 needToDraw = ((ItemStack[])drawable)[drawingID[i]];
+			 }
+			 if(drawable instanceof String)
+			 {
+				 List<ItemStack> oreStacks = OreDictionary.getOres((String) drawable);
+				 drawingID[i] = rnd.nextInt(oreStacks.size());
+				 needToDraw = oreStacks.get(drawingID[i]);
+			 }
+			 if(drawable instanceof List)
+			 {
+				 List<ItemStack> oreStacks = (List<ItemStack>) drawable;
+				 drawingID[i] = rnd.nextInt(oreStacks.size());
+				 needToDraw = oreStacks.get(drawingID[i]);
+			 }
+			 if(needToDraw != null)
+			 {
+				 this.drawIS(needToDraw, k + 13 + (i%3*18), l + 23 + (i/3 * 18), mouseX, mouseZ, 0);
+			 }
+		 }
+		 
+		 this.drawIS(recipe.getRecipeOutput(), k + 93, l + 41, mouseX, mouseZ, 0);
+		 
+		 for(int i = 0; i < 9; ++i)
+		 {
+			 Object drawable = recipe.getInput()[i];
+			 ItemStack needToDraw = null;
+			 if(drawable instanceof ItemStack)
+				 needToDraw = (ItemStack) drawable;
+			 if(drawable instanceof Item)
+				 needToDraw = new ItemStack((Item)drawable);
+			 if(drawable instanceof Block)
+				 needToDraw = new ItemStack((Block)drawable);
+			 if(drawable instanceof ItemStack[])
+				 needToDraw = ((ItemStack[])drawable)[drawingID[i]];
+			 if(drawable instanceof String)
+			 {
+				 List<ItemStack> oreStacks = OreDictionary.getOres((String) drawable);
+				 needToDraw = oreStacks.get(drawingID[i]);
+			 }
+			 if(drawable instanceof List)
+			 {
+				 List<ItemStack> oreStacks = (List<ItemStack>) drawable;
+				 needToDraw = oreStacks.get(drawingID[i]);
+			 }
+			 if(needToDraw != null)
+			 {
+				 this.drawIS(needToDraw, k + 13 + (i%3*18), l + 23 + (i/3 * 18), mouseX, mouseZ, 1);
+			 }
+		 }
+		 
+		 this.drawIS(recipe.getRecipeOutput(), k + 93, l + 41, mouseX, mouseZ, 1);
+		 
+		 
+		 rnd = null;
+		 
+		 return (2)*18 + 20;
+	 }
+	 
+	 public int drawShapelessOreRecipe(int mouseX, int mouseZ, int k, int l, ShapelessOreRecipe toDraw)
+	 {
+		 this.fontRendererObj.drawString(StatCollector.translateToLocal("ec3.txt.shapelessRecipe"), k+8, l+12, 0x222222);
+		 l += 5;
+		 ArrayList<Object> input = ((ShapelessOreRecipe)toDraw).getInput();
+		 for(int i = 0; i < input.size(); ++i)
+		 {
+			 drawSlotInRecipe(k,l,(i%3)*18,(i/3)*18);
+		 }
+		 int defaultX = 80;
+		 int defaultY = (input.size()/3)*18;
+		 
+		 int defaultYDraw = defaultY;
+		 if(defaultYDraw > 1*18) defaultYDraw = 1*18;
+
+		 drawSlotInRecipe(k,l,defaultX,defaultYDraw);
+		 
+		 MiscUtils.bindTexture("minecraft", "textures/gui/container/crafting_table.png");
+		 
+		 GL11.glColor3f(1, 1, 1);
+		 this.drawTexturedModalRect(k+defaultX-10, l+defaultYDraw+18, 90, 35, 22, 15);
+		 
+		 Random rnd = new Random(mc.theWorld.getWorldTime()/20);
+		 
+		 int[] drawingID = new int[9];
+		 
+		 for(int i = 0; i < input.size(); ++i)
+		 {
+			 Object drawable = input.get(i);
+			 ItemStack needToDraw = null;
+			 if(drawable instanceof ItemStack)
+				 needToDraw = (ItemStack) drawable;
+			 if(drawable instanceof Item)
+				 needToDraw = new ItemStack((Item)drawable);
+			 if(drawable instanceof Block)
+				 needToDraw = new ItemStack((Block)drawable);
+			 if(drawable instanceof ItemStack[])
+			 {
+				 drawingID[i] = rnd.nextInt(((ItemStack[])drawable).length);
+				 needToDraw = ((ItemStack[])drawable)[drawingID[i]];
+			 }
+			 if(drawable instanceof String)
+			 {
+				 List<ItemStack> oreStacks = OreDictionary.getOres((String) drawable);
+				 drawingID[i] = rnd.nextInt(oreStacks.size());
+				 needToDraw = oreStacks.get(drawingID[i]);
+			 }
+			 if(drawable instanceof List)
+			 {
+				 List<ItemStack> oreStacks = (List<ItemStack>) drawable;
+				 drawingID[i] = rnd.nextInt(oreStacks.size());
+				 needToDraw = oreStacks.get(drawingID[i]);
+			 }
+			 if(needToDraw != null)
+			 {
+				 this.drawIS(needToDraw, k + 13 + (i%3*18), l + 17 + (i/3 * 18), mouseX, mouseZ, 0);
+			 }
+		 }
+		 
+		 this.drawIS(toDraw.getRecipeOutput(), k + defaultX + 13, l + defaultYDraw + 17, mouseX, mouseZ, 0);
+		 
+		 for(int i = 0; i < input.size(); ++i)
+		 {
+			 Object drawable = input.get(i);
+			 ItemStack needToDraw = null;
+			 if(drawable instanceof ItemStack)
+				 needToDraw = (ItemStack) drawable;
+			 if(drawable instanceof Item)
+				 needToDraw = new ItemStack((Item)drawable);
+			 if(drawable instanceof Block)
+				 needToDraw = new ItemStack((Block)drawable);
+			 if(drawable instanceof ItemStack[])
+				 needToDraw = ((ItemStack[])drawable)[drawingID[i]];
+			 if(drawable instanceof String)
+			 {
+				 List<ItemStack> oreStacks = OreDictionary.getOres((String) drawable);
+				 needToDraw = oreStacks.get(drawingID[i]);
+			 }
+			 if(drawable instanceof List)
+			 {
+				 List<ItemStack> oreStacks = (List<ItemStack>) drawable;
+				 needToDraw = oreStacks.get(drawingID[i]);
+			 }
+			 if(needToDraw != null)
+			 {
+				 this.drawIS(needToDraw, k + 13 + (i%3*18), l + 17 + (i/3 * 18), mouseX, mouseZ, 1);
+			 }
+			 
+			 this.drawIS(toDraw.getRecipeOutput(), k + defaultX + 13, l + defaultYDraw + 17, mouseX, mouseZ, 1);
+		 }
+		 
+		 
+		 
+		 rnd = null;
+		 
+		 return (input.size()/3)*18 + 20;
+	 }
+	 
+	 public void drawSlotInRecipe(int k, int l, int defaultX, int defaultY)
+	 {
+	     GL11.glColor3f(1, 1, 1);
+         GL11.glEnable(GL11.GL_LIGHTING);
+         GL11.glEnable(GL11.GL_DEPTH_TEST);
+         RenderHelper.enableStandardItemLighting();
+         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+		 this.drawGradientRect(k+12+defaultX, l+16+defaultY, k+12+18+defaultX, l+16+18+defaultY, 0x88ffaaff, 0x88886688);
+		 this.drawGradientRect(k+12+defaultX, l+16+defaultY, k+12+1+defaultX, l+16+18+defaultY, 0xff660066, 0xff330033);
+		 this.drawGradientRect(k+12+defaultX, l+16+17+defaultY, k+12+18+defaultX, l+16+18+defaultY, 0xff330033, 0xff110011);
+		 this.drawGradientRect(k+12+17+defaultX, l+16+defaultY, k+12+18+defaultX, l+16+18+defaultY, 0xff990099, 0xff110011);
+		 this.drawGradientRect(k+12+defaultX, l+16+defaultY, k+12+18+defaultX, l+16+1+defaultY, 0xff660066, 0xff990099);
 	 }
 	 
 	 public List<String> parse(String s)
@@ -418,15 +917,20 @@ public class GuiResearchBook extends GuiScreen{
 	    	 int id = btn.id;
 	    	 if(id == 0)
 	    	 {
-	    		 this.mc.renderEngine.bindTexture(gui);
-	    		 this.mc.renderEngine.bindTexture(gui);
+	    		 if(currentCategory == null || currentCategory.specificBookTextures == null)
+	    			 this.mc.renderEngine.bindTexture(gui);
+	    		 else
+	    			 this.mc.renderEngine.bindTexture(currentCategory.specificBookTextures);
 	    		 if(hover)
 	    			 GL11.glColor3f(1, 0.8F, 1);
 	    		 this.drawTexturedModalRect(btn.xPosition, btn.yPosition, 49, 238, 14, 18);
 	    	 }
 	    	 if(id == 1)
 	    	 {
-	    		 this.mc.renderEngine.bindTexture(gui);
+	    		 if(currentCategory == null || currentCategory.specificBookTextures == null)
+	    			 this.mc.renderEngine.bindTexture(gui);
+	    		 else
+	    			 this.mc.renderEngine.bindTexture(currentCategory.specificBookTextures);
 	    		 if(hover && btn.enabled)
 	    			 GL11.glColor3f(1, 0.8F, 1);
 	    		 if(!btn.enabled)
@@ -435,7 +939,10 @@ public class GuiResearchBook extends GuiScreen{
 	    	 }
 	    	 if(id == 2)
 	    	 {
-	    		 this.mc.renderEngine.bindTexture(gui);
+	    		 if(currentCategory == null || currentCategory.specificBookTextures == null)
+	    			 this.mc.renderEngine.bindTexture(gui);
+	    		 else
+	    			 this.mc.renderEngine.bindTexture(currentCategory.specificBookTextures);
 	    		 if(hover && btn.enabled)
 	    			 GL11.glColor3f(1, 0.8F, 1);
 	    		 if(!btn.enabled)
@@ -449,7 +956,10 @@ public class GuiResearchBook extends GuiScreen{
 	    		 RenderHelper.disableStandardItemLighting();
 	    		 RenderHelper.enableGUIStandardItemLighting();
 	    		 
-	    		 this.mc.renderEngine.bindTexture(gui);
+	    		 if(currentCategory == null || currentCategory.specificBookTextures == null)
+	    			 this.mc.renderEngine.bindTexture(gui);
+	    		 else
+	    			 this.mc.renderEngine.bindTexture(currentCategory.specificBookTextures);
 	    		 if(!hover)
 	    			 this.drawTexturedModalRect(btn.xPosition, btn.yPosition, 0, 222, 20, 20);
 	    		 else
@@ -503,6 +1013,7 @@ public class GuiResearchBook extends GuiScreen{
 	    				 discStr.add("\u00a7o"+StatCollector.translateToLocal("ec3book.discovery_"+disc.id+".desc"));
 	    			 else
 	    				 discStr.add(disc.shortDescription);
+	    			 discStr.add(StatCollector.translateToLocal("ec3.txt.contains")+disc.pages.size()+StatCollector.translateToLocal("ec3.txt.pages"));
 	    			 this.func_146283_a(discStr, mouseX, mouseZ);
 	    		 }
 	    	 }
@@ -522,7 +1033,7 @@ public class GuiResearchBook extends GuiScreen{
 			 this.fontRendererObj.drawStringWithShadow("\u00a77-\u00a7o" + StatCollector.translateToLocal("ec3.txt.book.tier_"+i), k+16, l+35+(i*10), 0xffffff);
 		 }
 		 this.fontRendererObj.drawStringWithShadow("\u00a76" + StatCollector.translateToLocal("ec3.txt.book.edition"), k+16, l+90, 0xffffff);
-		 this.fontRendererObj.drawString("\u00a72  " + FMLCommonHandler.instance().findContainerFor(EssentialCraftCore.core).getDisplayVersion(), k+16, l+100, 0xffffff);
+		 this.fontRendererObj.drawString("\u00a72" + FMLCommonHandler.instance().findContainerFor(EssentialCraftCore.core).getDisplayVersion()+"r", k+16, l+100, 0xffffff);
 		 k += 128;
 	     this.mc.renderEngine.bindTexture(gui);
 	     GL11.glColor3f(1, 1, 1);
@@ -578,6 +1089,7 @@ public class GuiResearchBook extends GuiScreen{
 	    				 catStr.add("\u00a7o"+StatCollector.translateToLocal("ec3book.category_"+cat.id+".desc"));
 	    			 else
 	    				 catStr.add(cat.shortDescription);
+	    			 catStr.add(StatCollector.translateToLocal("ec3.txt.contains")+cat.discoveries.size()+StatCollector.translateToLocal("ec3.txt.entries"));
 	    			 this.func_146283_a(catStr, mouseX, mouseZ);
 	    		 }
 	    	 }
@@ -586,6 +1098,70 @@ public class GuiResearchBook extends GuiScreen{
 	 
 	 public void drawIS(ItemStack toDraw, int pX, int pZ, int mX, int mZ, int phase)
 	 {
+		 if(toDraw != null)
+		 {
+			 if(phase == 0)
+			 {
+				 this.itemRender.renderItemAndEffectIntoGUI(fontRendererObj, this.mc.renderEngine, toDraw, pX, pZ);
+			 }else
+			 {
+				 boolean hover = mX >= pX && mZ >= pZ && mX < pX + 16 && mZ < pZ + 16;
+	    		 if(hover)
+	    		 {
+	    			  List<String> catStr = toDraw.getTooltip(this.mc.thePlayer, false);
+	    			  if(ApiCore.findDiscoveryByIS(toDraw) != null)
+	    			  {
+	    				  catStr.add(EnumChatFormatting.ITALIC + StatCollector.translateToLocal("ec3.txt.is.press"));
+	    				  if(Mouse.isButtonDown(0) && !isLeftMouseKeyPressed)
+	    				  {
+	    					  prevState.add(new Object[]{this.currentDiscovery,currentPage,currentPage_discovery});
+	    					  isLeftMouseKeyPressed = true;
+	    					  DiscoveryEntry switchTo = ApiCore.findDiscoveryByIS(toDraw);
+	    					  currentPage = 0;
+	    					  currentPage_discovery = 0;
+	    					  currentDiscovery = switchTo;
+	    					  if(switchTo != null)
+	    					  {
+	    						  f:for(int i = 0; i < switchTo.pages.size(); ++i)
+	    						  {
+	    							  PageEntry entry = switchTo.pages.get(i);
+	    							  if(entry != null)
+	    							  {
+	    								  if(entry.displayedItems != null && entry.displayedItems.length > 0)
+	    								  {
+	    									  for(ItemStack is : entry.displayedItems)
+	    									  {
+	    										  if(toDraw.isItemEqual(is))
+	    										  {
+	    											  currentPage = i - i%2;
+	    											  break f;
+	    										  }
+	    									  }
+	    								  }
+	    								  if(entry.pageRecipe != null)
+	    								  {
+	    									  ItemStack result = entry.pageRecipe.getRecipeOutput();
+	    									  if(result.isItemEqual(toDraw))
+	    									  {
+	   											  currentPage = i - i%2;
+												  break f;
+	    									  }
+	    								  }
+	    							  }
+	    						  }
+	    					  }
+	    					  initGui();
+	    				  }
+	    			  }
+	    			  this.func_146283_a(catStr, mX, mZ);
+	    		 }
+			 }
+		 }
+	 }
+	 
+	 public void drawSB(StructureBlock drawable, int pX, int pZ, int mX, int mZ, int phase)
+	 {
+		 ItemStack toDraw = new ItemStack(drawable.blk,0,drawable.metadata);
 		 if(phase == 0)
 		 {
 			 this.itemRender.renderItemAndEffectIntoGUI(fontRendererObj, this.mc.renderEngine, toDraw, pX, pZ);
@@ -595,16 +1171,51 @@ public class GuiResearchBook extends GuiScreen{
     		 if(hover)
     		 {
     			  List<String> catStr = toDraw.getTooltip(this.mc.thePlayer, false);
+    			  catStr.add(StatCollector.translateToLocal("ec3.txt.relativePosition"));
+    			  catStr.add("x: "+drawable.x);
+    			  catStr.add("y: "+drawable.y);
+    			  catStr.add("z: "+drawable.z);
     			  if(ApiCore.findDiscoveryByIS(toDraw) != null)
     			  {
     				  catStr.add(EnumChatFormatting.ITALIC + StatCollector.translateToLocal("ec3.txt.is.press"));
-    				  if(Mouse.isButtonDown(0))
+    				  if(Mouse.isButtonDown(0) && !this.isLeftMouseKeyPressed)
     				  {
+    					  prevState.add(new Object[]{this.currentDiscovery,currentPage,currentPage_discovery});
+    					  isLeftMouseKeyPressed = true;
     					  DiscoveryEntry switchTo = ApiCore.findDiscoveryByIS(toDraw);
     					  currentPage = 0;
     					  currentPage_discovery = 0;
     					  currentDiscovery = switchTo;
-    					  initGui();
+    					  if(switchTo != null)
+    					  {
+    						  f:for(int i = 0; i < switchTo.pages.size(); ++i)
+    						  {
+    							  PageEntry entry = switchTo.pages.get(i);
+    							  if(entry != null)
+    							  {
+    								  if(entry.displayedItems != null && entry.displayedItems.length > 0)
+    								  {
+    									  for(ItemStack is : entry.displayedItems)
+    									  {
+    										  if(toDraw.isItemEqual(is))
+    										  {
+    											  currentPage = i - i%2;
+    											  break f;
+    										  }
+    									  }
+    								  }
+    								  if(entry.pageRecipe != null)
+    								  {
+    									  ItemStack result = entry.pageRecipe.getRecipeOutput();
+    									  if(result.isItemEqual(toDraw))
+    									  {
+   											  currentPage = i - i%2;
+											  break f;
+    									  }
+    								  }
+    							  }
+    						  }
+    					  }
     				  }
     			  }
     			  this.func_146283_a(catStr, mX, mZ);
@@ -700,7 +1311,9 @@ public class GuiResearchBook extends GuiScreen{
 	 
 	 protected void func_146283_a(List p_146283_1_, int p_146283_2_, int p_146283_3_)
 	    {
-	        drawHoveringText(p_146283_1_, p_146283_2_, p_146283_3_, fontRendererObj);   
+		 //TODO listAdditions
+		 	this.hoveringText.add(new Object[]{p_146283_1_,p_146283_2_,p_146283_3_,fontRendererObj});
+	        //drawHoveringText(p_146283_1_, p_146283_2_, p_146283_3_, fontRendererObj);   
 	    }
 
 	    protected void drawHoveringText(List p_146283_1_, int p_146283_2_, int p_146283_3_, FontRenderer font)
@@ -745,8 +1358,8 @@ public class GuiResearchBook extends GuiScreen{
 	                k2 = this.height - i1 - 6;
 	            }
 
-	            this.zLevel = 300.0F;
-	            itemRender.zLevel = 300.0F;
+	            this.zLevel = 600.0F;
+	            itemRender.zLevel = 600.0F;
 	            int j1 = -267386872;
 	            this.drawGradientRect(j2 - 3, k2 - 4, j2 + k + 3, k2 - 3, j1, j1);
 	            this.drawGradientRect(j2 - 3, k2 + i1 + 3, j2 + k + 3, k2 + i1 + 4, j1, j1);
