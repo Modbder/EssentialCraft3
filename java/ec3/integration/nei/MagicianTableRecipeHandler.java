@@ -3,12 +3,14 @@ package ec3.integration.nei;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import org.lwjgl.opengl.GL11;
 
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
+import DummyCore.Utils.UnformedItemStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
@@ -32,12 +34,12 @@ public class MagicianTableRecipeHandler extends TemplateRecipeHandler{
         public MagicianTableCraftingPair(MagicianTableRecipe recipe)
         {
         	this.ingred = new PositionedStack[5];
-        	ItemStack[] craftMatrix = recipe.requiredItems;
+        	UnformedItemStack[] craftMatrix = recipe.requiredItems;
         	for(int t = 0; t < craftMatrix.length; ++t)
         	{
-        		if(craftMatrix[t]!=null)
+        		if(craftMatrix[t]!=null&&!craftMatrix[t].possibleStacks.isEmpty())
         		{
-        			this.ingred[t] = new PositionedStack(craftMatrix[t], 51+t*18, 6);
+        			this.ingred[t] = new PositionedStack(craftMatrix[t].possibleStacks, 51+t*18, 6);
         		}
         	}
             this.result = new PositionedStack(recipe.result, 109, 19);
@@ -46,7 +48,7 @@ public class MagicianTableRecipeHandler extends TemplateRecipeHandler{
             this.mruRequired = recipe.mruRequired;
         } 
         
-        public void setIngredients(Object[] items)
+        public void setIngredients(UnformedItemStack[] items)
         {
         	for(int i = 0; i < items.length; ++i)
         	{
@@ -87,9 +89,12 @@ public class MagicianTableRecipeHandler extends TemplateRecipeHandler{
 	             		break;
 	             	}
 	             }
-	             PositionedStack stack = new PositionedStack(items[i], 19+x*18, 1+y*18, false);
-	             stack.setMaxSize(1);
-	             ingredients.add(stack);
+	             if(items[i].possibleStacks != null && !items[i].possibleStacks.isEmpty())
+	             {
+		             PositionedStack stack = new PositionedStack(items[i].possibleStacks, 19+x*18, 1+y*18, false);
+		             stack.setMaxSize(1);
+		             ingredients.add(stack);
+	             }
         	}
         }
         
@@ -151,25 +156,12 @@ public class MagicianTableRecipeHandler extends TemplateRecipeHandler{
     		if(obj instanceof ItemStack)
     		{
     			ItemStack stk = (ItemStack) obj;
-    			ItemStack genStk = stk.copy();
-    			genStk.stackSize = 0;
-    			String searchPair = genStk.toString();
-    			genStk = null;
-    			for(int i = 0; i < MagicianTableRecipes.craftMatrixByID.size(); ++i)
+    			
+    			List<MagicianTableRecipe> recs = MagicianTableRecipes.getRecipiesByComponent(stk);
+    			for(int i = 0; i < recs.size(); ++i)
     			{
-    				String searchPairSecond = MagicianTableRecipes.craftMatrixByID.get(i);
-    				if(searchPairSecond != null && !searchPairSecond.isEmpty())
-    				{
-    					if(searchPairSecond.contains(searchPair))
-    					{
-    		    			MagicianTableRecipe rec = MagicianTableRecipes.recipes.get(searchPairSecond);
-    		    			if(rec != null)
-    		    			{
-    		    				MagicianTableCraftingPair pair = new MagicianTableCraftingPair(rec);
-    		    				arecipes.add(pair);
-    		    			}
-    					}
-    				}
+    		    	MagicianTableCraftingPair pair = new MagicianTableCraftingPair(recs.get(i));
+    		    	arecipes.add(pair);
     			}
     		}
     	}
@@ -177,6 +169,16 @@ public class MagicianTableRecipeHandler extends TemplateRecipeHandler{
     
     public void drawExtras(int recipe) 
     {
+    	if(this.cycleticks%30 == 0)
+    	{
+    		Random rng = new Random();
+	    	MagicianTableCraftingPair cp = (MagicianTableCraftingPair) this.arecipes.get(recipe);
+	    	for(int i = 0; i < cp.getIngredients().size(); ++i)
+	    	{
+	    		PositionedStack stack = cp.getIngredients().get(i);
+	    		stack.setPermutationToRender(rng.nextInt(stack.items.length));
+	    	}
+    	}
     	GL11.glPushMatrix();
     	int posX = 0;
     	int posY = 0;

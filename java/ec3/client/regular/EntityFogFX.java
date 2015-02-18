@@ -30,28 +30,32 @@ public class EntityFogFX extends EntityFX{
 	public EntityFogFX(World w, double x, double y,double z, double i, double j,double k) 
 	{
 		super(w, x, y, z, i, j,k);
-		this.motionX = MathUtils.randomDouble(w.rand);
-		this.motionY = MathUtils.randomDouble(w.rand);
-		this.motionZ = MathUtils.randomDouble(w.rand);
-        this.red = i;
-        this.green = j;
-        this.blue = k;
-        this.mruPosX = this.posX = x;
-        this.mruPosY = this.posY = y;
-        this.mruPosZ = this.posZ = z;
-        float f = this.rand.nextFloat() * 0.6F + 0.4F;
-        this.scale = this.particleScale = 1F;
-        this.particleRed = (float) red;
-        this.particleGreen = (float) green;
-        this.particleBlue = (float) blue;
-        this.particleMaxAge = (int)(Math.random() * 10.0D) + 100;
-        this.noClip = true;
-        this.setParticleTextureIndex((int)(Math.random() * 8.0D));
+		if(w != null && w.rand != null && this != null) //wat? this!=null? what code is this sh*t? o_O
+		{
+			this.motionX = MathUtils.randomDouble(w.rand);
+			this.motionY = MathUtils.randomDouble(w.rand);
+			this.motionZ = MathUtils.randomDouble(w.rand);
+	        this.red = i;
+	        this.green = j;
+	        this.blue = k;
+	        this.mruPosX = this.posX = x;
+	        this.mruPosY = this.posY = y;
+	        this.mruPosZ = this.posZ = z;
+	        float f = this.rand.nextFloat() * 0.6F + 0.4F;
+	        this.scale = this.particleScale = 1F;
+	        this.particleRed = (float) red;
+	        this.particleGreen = (float) green;
+	        this.particleBlue = (float) blue;
+	        this.particleMaxAge = (int)(Math.random() * 10.0D) + 100;
+	        this.noClip = true;
+	        this.setParticleTextureIndex((int)(Math.random() * 8.0D));
+		}
 	}
 
 
     public void renderParticle(Tessellator p_70539_1_, float p_70539_2_, float p_70539_3_, float p_70539_4_, float p_70539_5_, float p_70539_6_, float p_70539_7_)
     {
+    	p_70539_1_.draw();
     	Minecraft.getMinecraft().renderEngine.bindTexture(rec);
         float f6 = (float)2 / 16.0F;
         float f7 = f6 + 0.0624375F;
@@ -71,12 +75,15 @@ public class EntityFogFX extends EntityFX{
         float f11 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)p_70539_2_ - interpPosX);
         float f12 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)p_70539_2_ - interpPosY);
         float f13 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)p_70539_2_ - interpPosZ);
+        p_70539_1_.startDrawing(6);
         p_70539_1_.setColorRGBA_F(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha);
         p_70539_1_.addVertexWithUV((double)(f11 - p_70539_3_ * f10 - p_70539_6_ * f10), (double)(f12 - p_70539_4_ * f10), (double)(f13 - p_70539_5_ * f10 - p_70539_7_ * f10), (double)f7, (double)f9);
         p_70539_1_.addVertexWithUV((double)(f11 - p_70539_3_ * f10 + p_70539_6_ * f10), (double)(f12 + p_70539_4_ * f10), (double)(f13 - p_70539_5_ * f10 + p_70539_7_ * f10), (double)f7, (double)f8);
         p_70539_1_.addVertexWithUV((double)(f11 + p_70539_3_ * f10 + p_70539_6_ * f10), (double)(f12 + p_70539_4_ * f10), (double)(f13 + p_70539_5_ * f10 + p_70539_7_ * f10), (double)f6, (double)f8);
         p_70539_1_.addVertexWithUV((double)(f11 + p_70539_3_ * f10 - p_70539_6_ * f10), (double)(f12 - p_70539_4_ * f10), (double)(f13 + p_70539_5_ * f10 - p_70539_7_ * f10), (double)f6, (double)f9);
-        //Minecraft.getMinecraft().renderEngine.bindTexture(particleTextures);
+        p_70539_1_.draw();
+        Minecraft.getMinecraft().renderEngine.bindTexture(particleTextures);
+        p_70539_1_.startDrawingQuads();
     }
 
     public int getBrightnessForRender(float p_70070_1_)

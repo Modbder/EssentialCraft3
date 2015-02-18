@@ -1,3 +1,53 @@
+4.4.1710.37alpha
+	+API: now allows you to access player's UBMRUCU
+	+API: now allows you to mark discoveries as "new" - they will glow in yellow colour.
+	+API: now allows you to add blocks, which are not necessary MRU Storages, but still can be clicked by a Bound Gem
+	+API: IColdBlock and IHotBlock now give you coordinates and the world.
+	+API: IMRUPressence can now be set to generate corruption or not.
+	+API: Magician Table Recipes are now OreDictionary sensitive.
+	
+	+Added: Magician Table can be upgraded using different items.
+	+Added: Magical Assembler - a new way to craft bunch of stuff.
+	+Added: Literally anything can now be controlled in the config file.
+	+Added: Magical Inventory Manager.
+	+Added: Magical Mirrors.
+	+Added: Darkness Obelisk.
+	+Added: Ultra Natural Furnace.
+	+Added: Ultra Heat Generator.
+	+Enhanced visual effects(particles)
+	+MRU Beams between machines are now animated.
+	+Added: Any block with Connected textures is now paintable using any dye upon right-clicking.
+	+Added: Every device can now be controlled using redstone.
+	+Added: MRUCUEC Redstone Controller.
+	+Added: MRUCUEC Stabiliser.
+	+Added: Lots of different Fancy blocks, and the ability to add more via the config file.
+	+Added: new ores for the Magmatic Smaltery can now be added via config file.
+	+Added: Hoanna Portal.
+	+Added: All armours from EC3 now work as a Goggles of Revealing from Thaumcraft, and also give you a vis discount.
+	+Added: Chaos and Frozen biomes are now registered in the Biome Dictionary, so entities added by mods can now spawn within them.
+	+Added: Small Blood Magic Integration.
+	+Added: Paradox Potion Effect(and that one is nasty)
+	+Added: Mineshafts now generate in Hoanna, though they are different.
+	+Added: Tile Tracking system, which makes sure, that tiles are not beeing updated from the server to the client, if there is no need to(less network abuse)
+	
+	=Changed: Elemental Charms are now Baubles, so you can only wear 1 at a time.
+	=Changed: Magical Wings are now a Bauble, and have to be put in a belt slot. Give you flight, similar to the jetpacks.
+	=Changed: MRU Storages are now also Baubles, so you can wear them in a ring slot. However, this is not necessary.
+	=Changed: You no longer need to click 23 times with your Wind Tablet, it now automatically transforms the portal into Hoanna portal, if you know the wind's name.
+	=Changed: Radiation now needs 5 times the time required to get to the maximum level.
+	=Changed: Radiation now goes away 5 times faster in the overworld.
+	
+	
+	-Fixed: Crash with API trying to get recipes for items, such as redstone wires.
+	-Fixed: Various Book Of Knowledge related crashes.
+	-Fixed: The ability of player to see MRU particles without having any item, which could allow the player to see them.
+	-Fixed: Radiation can no longer permanently kill you.
+	-Fixed: Crystal Former now supports Ore Dictionary.
+	-Fixed: Hoanna will now still generate normally, even after world restart.(used to start generating weird)
+	-=Possible Fix: The ID for entities of EC3 Should now be found automatically, so there should be no more crashes with already existing Entity IDs.
+	
+	
+
 4.0.1710.534
     -Fixed: Crash on server with crystals
     -Fixed: Crash on server with corruption

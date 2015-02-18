@@ -5,6 +5,7 @@ import java.util.List;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import DummyCore.Utils.MiscUtils;
+import ec3.api.IBoundGemClickable;
 import ec3.api.ITEHasMRU;
 import ec3.api.ITERequiresMRU;
 import ec3.api.ITEStoresMRU;
@@ -49,6 +50,16 @@ public class ItemBoundGem extends Item {
     		if(t instanceof ITERequiresMRU || t instanceof ITETransfersMRU || t instanceof ITEStoresMRU && !world.isRemote)
     		{
     			ITEHasMRU t_1 = (ITEHasMRU) t;
+    			createTag(stack);
+    			MiscUtils.getStackTag(stack).setIntArray("pos", new int[]{x,y,z});
+    			MiscUtils.getStackTag(stack).setInteger("dim", player.dimension);
+    			world.playSoundAtEntity(player, "random.levelup", 1.0F, 2.0F);
+    			return true;
+    		}
+    	}else
+    	{
+    		if(world.getBlock(x, y, z) instanceof IBoundGemClickable)
+    		{
     			createTag(stack);
     			MiscUtils.getStackTag(stack).setIntArray("pos", new int[]{x,y,z});
     			MiscUtils.getStackTag(stack).setInteger("dim", player.dimension);

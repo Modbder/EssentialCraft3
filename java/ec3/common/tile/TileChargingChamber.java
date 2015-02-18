@@ -1,5 +1,6 @@
 package ec3.common.tile;
 
+import java.util.Arrays;
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
@@ -11,20 +12,28 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
+import net.minecraftforge.common.config.Configuration;
 import DummyCore.Utils.Coord3D;
+import DummyCore.Utils.DataStorage;
+import DummyCore.Utils.DummyData;
 import DummyCore.Utils.DummyDistance;
 import DummyCore.Utils.MathUtils;
 import ec3.api.ApiCore;
 import ec3.api.IItemRequiresMRU;
 import ec3.api.ITEHasMRU;
 import ec3.common.item.ItemBoundGem;
+import ec3.utils.cfg.Config;
 import ec3.utils.common.ECUtils;
 
 public class TileChargingChamber extends TileMRUGeneric{
 	
+	public static float cfgMaxMRU = (int) ApiCore.DEVICE_MAX_MRU_GENERIC;
+	public static float reqMRUModifier = 1.0F;
+	
 	public TileChargingChamber()
 	{
-		this.maxMRU = (int) ApiCore.DEVICE_MAX_MRU_GENERIC;
+		 super();
+		this.maxMRU = (int) cfgMaxMRU;
 		this.setSlotsNum(2);
 	}
 	
@@ -49,7 +58,8 @@ public class TileChargingChamber extends TileMRUGeneric{
     			}
     		}
 		}
-		tryChargeTools();
+		if(!this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord))
+			tryChargeTools();
 	}
 	
     public void tryChargeTools()
@@ -67,10 +77,10 @@ public class TileChargingChamber extends TileMRUGeneric{
     			{
     				if(mru+p < maxMRU)
     				{
-    					if(this.getMRU() > p)
+    					if(this.getMRU() > p*reqMRUModifier)
     					{
     						if(item.setMRU(_gen_var_0,p))
-    							this.setMRU(this.getMRU()-p);
+    							this.setMRU((int) (this.getMRU()-p*reqMRUModifier));
     					}else if(this.getMRU() > 0)
     					{
     						if(item.setMRU(_gen_var_0,this.getMRU()))
@@ -79,10 +89,10 @@ public class TileChargingChamber extends TileMRUGeneric{
     				}else
     				{
     					int k = maxMRU - mru;
-    					if(this.getMRU() > k)
+    					if(this.getMRU() > k*reqMRUModifier)
     					{
     						if(item.setMRU(_gen_var_0,k))
-    							this.setMRU(this.getMRU()-k);
+    							this.setMRU((int) (this.getMRU()-k*reqMRUModifier));
     					}else if(this.getMRU() > 0)
     					{
     						if(item.setMRU(_gen_var_0,this.getMRU()))
@@ -100,5 +110,26 @@ public class TileChargingChamber extends TileMRUGeneric{
     {
     	AxisAlignedBB bb = INFINITE_EXTENT_AABB;
     	return bb;
+    }
+    
+    public static void setupConfig(Configuration cfg)
+    {
+    	try
+    	{
+	    	cfg.load();
+	    	String[] cfgArrayString = cfg.getStringList("ChargingChamberSettings", "tileentities", new String[]{"Max MRU:"+ApiCore.DEVICE_MAX_MRU_GENERIC,"Charge cost Modifier:1.0"}, "Settings of the given Device.");
+	    	String dataString="";
+	    	
+	    	for(int i = 0; i < cfgArrayString.length; ++i)
+	    		dataString+="||"+cfgArrayString[i];
+	    	
+	    	DummyData[] data = DataStorage.parseData(dataString);
+	    	cfgMaxMRU = (int)Float.parseFloat(data[0].fieldValue);
+	    	reqMRUModifier=Float.parseFloat(data[1].fieldValue);
+	    	cfg.save();
+    	}catch(Exception e)
+    	{
+    		return;
+    	}
     }
 }

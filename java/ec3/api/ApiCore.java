@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
+import DummyCore.Utils.DummyDataUtils;
 import DummyCore.Utils.DummyDistance;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -14,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.FakePlayer;
 
 /**
  * 
@@ -33,6 +35,24 @@ public class ApiCore {
 	public static List<CategoryEntry> categories = new ArrayList();
 	
 	public static Hashtable<String, DiscoveryEntry> discoveriesByIS = new Hashtable();
+	
+	public static int getubmru(EntityPlayer p)
+	{
+		String currentEnergy = DummyDataUtils.getDataForPlayer(p.getCommandSenderName(), "essentialcraft", "ubmruEnergy");
+		if(currentEnergy != null && !currentEnergy.isEmpty() && !currentEnergy.equals("no data") && !currentEnergy.equals("empty string") && !currentEnergy.equals("empty"))
+		{
+			return Integer.parseInt(currentEnergy);
+		}
+		return 0;
+	}
+	
+	public static void setubmru(EntityPlayer p, int amount)
+	{
+		if(!(p instanceof FakePlayer))
+			DummyDataUtils.setDataForPlayer(p.getCommandSenderName(), "essentialcraft", "ubmruEnergy", Integer.toString(amount));
+	}
+	
+	
 	
 	public static void registerBlockInAStructure(EnumStructureType structure, Block registered)
 	{
@@ -68,6 +88,7 @@ public class ApiCore {
 	
 	public static DiscoveryEntry findDiscoveryByIS(ItemStack referal)
 	{
+		if(referal == null)return null;
 		int stk = referal.stackSize;
 		referal.stackSize = 0;
 		return ApiCore.discoveriesByIS.get(referal.toString());

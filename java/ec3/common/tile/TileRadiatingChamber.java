@@ -11,7 +11,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
+import net.minecraftforge.common.config.Configuration;
 import DummyCore.Utils.Coord3D;
+import DummyCore.Utils.DataStorage;
+import DummyCore.Utils.DummyData;
 import DummyCore.Utils.DummyDistance;
 import DummyCore.Utils.MathUtils;
 import ec3.api.ApiCore;
@@ -29,9 +32,14 @@ public class TileRadiatingChamber extends TileMRUGeneric{
 	
 	public int progressLevel;
 	public RadiatingChamberRecipe currentRecipe;
+	public static float cfgMaxMRU = ApiCore.DEVICE_MAX_MRU_GENERIC;
+	public static boolean generatesCorruption = true;
+	public static int genCorruption = 1;
+	public static float mruUsage = 1F;
 	
 	public TileRadiatingChamber()
 	{
+		 super();
 		this.maxMRU = (int) ApiCore.DEVICE_MAX_MRU_GENERIC;
 		this.setSlotsNum(4);
 	}
@@ -57,50 +65,53 @@ public class TileRadiatingChamber extends TileMRUGeneric{
     			}
     		}
 		}
-		
-		ItemStack[] craftMatrix = new ItemStack[2];
-		craftMatrix[0] = this.getStackInSlot(1);
-		craftMatrix[1] = this.getStackInSlot(2);
-		RadiatingChamberRecipe rec = RadiatingChamberRecipes.getRecipeByCPAndBalance(craftMatrix, getBalance());
-		if(currentRecipe == null && rec != null && this.progressLevel != 0)
+		if(!this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord))
 		{
-			if(canFunction(rec))
+			ItemStack[] craftMatrix = new ItemStack[2];
+			craftMatrix[0] = this.getStackInSlot(1);
+			craftMatrix[1] = this.getStackInSlot(2);
+			RadiatingChamberRecipe rec = RadiatingChamberRecipes.getRecipeByCPAndBalance(craftMatrix, getBalance());
+			if(currentRecipe == null && rec != null && this.progressLevel != 0)
 			{
-				this.currentRecipe = rec;
+				if(canFunction(rec))
+				{
+					this.currentRecipe = rec;
+				}
 			}
-		}
-		if(currentRecipe == null && rec != null && this.progressLevel == 0)
-		{
-			if(canFunction(rec))
+			if(currentRecipe == null && rec != null && this.progressLevel == 0)
 			{
-				this.currentRecipe = rec;
+				if(canFunction(rec))
+				{
+					this.currentRecipe = rec;
+				}
 			}
-		}
-		if(currentRecipe != null && rec == null)
-		{
-			progressLevel = 0;
-			currentRecipe = null;
-			return;
-		}
-		if(currentRecipe != null && rec != null)
-		{
-			if(!canFunction(rec))
+			if(currentRecipe != null && rec == null)
 			{
 				progressLevel = 0;
 				currentRecipe = null;
 				return;
 			}
-			int mruReq = (int) (1 * this.currentRecipe.costModifier);
-			if(this.getMRU() >= mruReq && this.progressLevel < this.currentRecipe.mruRequired)
+			if(currentRecipe != null && rec != null)
 			{
-				this.progressLevel += 1;
-				ECUtils.increaseCorruptionAt(worldObj, xCoord, yCoord, zCoord, this.worldObj.rand.nextInt(2));
-				this.setMRU(this.getMRU()-mruReq);
-				if(this.progressLevel >= this.currentRecipe.mruRequired)
+				if(!canFunction(rec))
 				{
 					progressLevel = 0;
-					craft();
 					currentRecipe = null;
+					return;
+				}
+				int mruReq = (int) (mruUsage * this.currentRecipe.costModifier);
+				if(this.getMRU() >= mruReq && this.progressLevel < this.currentRecipe.mruRequired)
+				{
+					this.progressLevel += 1;
+					if(generatesCorruption)
+						ECUtils.increaseCorruptionAt(worldObj, xCoord, yCoord, zCoord, this.worldObj.rand.nextInt(genCorruption));
+					this.setMRU(this.getMRU()-mruReq);
+					if(this.progressLevel >= this.currentRecipe.mruRequired)
+					{
+						progressLevel = 0;
+						craft();
+						currentRecipe = null;
+					}
 				}
 			}
 		}
@@ -155,6 +166,36 @@ public class TileRadiatingChamber extends TileMRUGeneric{
             {
             	this.decrStackSize(i, 1);
             }
+    	}
+    }
+    
+    public static void setupConfig(Configuration cfg)
+    {
+    	try
+    	{
+	    	cfg.load();
+	    	String[] cfgArrayString = cfg.getStringList("RadiatingChamberSettings", "tileentities", new String[]{
+	    			"Max MRU:"+ApiCore.DEVICE_MAX_MRU_GENERIC,
+	    			"MRU Usage Modifier:1.0",
+	    			"Can this device actually generate corruption:true",
+	    			"The amount of corruption generated each tick(do not set to 0!):1"
+	    			},"");
+	    	String dataString="";
+	    	
+	    	for(int i = 0; i < cfgArrayString.length; ++i)
+	    		dataString+="||"+cfgArrayString[i];
+	    	
+	    	DummyData[] data = DataStorage.parseData(dataString);
+	    	
+	    	mruUsage = Float.parseFloat(data[1].fieldValue);
+	    	cfgMaxMRU = Float.parseFloat(data[0].fieldValue);
+	    	generatesCorruption = Boolean.parseBoolean(data[2].fieldValue);
+	    	genCorruption = Integer.parseInt(data[3].fieldValue);
+	    	
+	    	cfg.save();
+    	}catch(Exception e)
+    	{
+    		return;
     	}
     }
 }

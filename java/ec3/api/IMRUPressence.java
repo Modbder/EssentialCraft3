@@ -15,8 +15,8 @@ public interface IMRUPressence {
 	public boolean getFlag();
 	
 	/**
-	 * You can change will the MRUPressence increase MRU in it by it's own or not
-	 * @param b : boolean - true if you want, false if you don't
+	 * You can change will the MRUPressence create corruption
+	 * @param b : boolean - true if you do not want, false if you do
 	 */
 	public void setFlag(boolean b);
 	

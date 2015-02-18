@@ -51,7 +51,7 @@ public class RenderSunRayAbsorber extends TileEntitySpecialRenderer
         GL11.glPushMatrix();
         GL11.glTranslatef((float)p_76986_2_+0.5F, (float)p_76986_4_, (float)p_76986_6_+0.5F);
         this.bindTexture(textures);
-        GL11.glScalef(0.01F, 0.01F, 0.01F);
+        //GL11.glScalef(0.01F, 0.01F, 0.01F);
         this.model.renderAll();
         GL11.glPopMatrix();
         RenderHelper.enableStandardItemLighting();

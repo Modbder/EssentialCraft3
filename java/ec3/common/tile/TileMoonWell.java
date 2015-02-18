@@ -1,12 +1,20 @@
 package ec3.common.tile;
 
+import net.minecraftforge.common.config.Configuration;
+import DummyCore.Utils.DataStorage;
+import DummyCore.Utils.DummyData;
 import ec3.api.ApiCore;
 
 public class TileMoonWell extends TileMRUGeneric{
 	
+	public static float cfgMaxMRU =  ApiCore.GENERATOR_MAX_MRU_GENERIC;
+	public static float cfgBalance = 1F;
+	public static float mruGenerated = 60;
+	
 	public TileMoonWell()
 	{
-		this.maxMRU = (int) ApiCore.GENERATOR_MAX_MRU_GENERIC;
+		 super();
+		this.maxMRU = (int)cfgMaxMRU;
 	}
 	
 	public boolean canGenerateMRU()
@@ -20,68 +28,98 @@ public class TileMoonWell extends TileMRUGeneric{
 	public void updateEntity()
 	{
 		super.updateEntity();
-		this.balance = 1.0F;
-		float mruGenerated = 60F;
-		int moonPhase = this.worldObj.provider.getMoonPhase(this.worldObj.getWorldTime());
-		float moonFactor = 1.0F;
-		switch(moonPhase)
+		this.balance = cfgBalance;
+		if(!this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord))
 		{
-			case 0:
+			int moonPhase = this.worldObj.provider.getMoonPhase(this.worldObj.getWorldTime());
+			float moonFactor = 1.0F;
+			switch(moonPhase)
 			{
-				moonFactor = 1.0F;
-				break;
+				case 0:
+				{
+					moonFactor = 1.0F;
+					break;
+				}
+				case 1:
+				{
+					moonFactor = 0.75F;
+					break;
+				}
+				case 7:
+				{
+					moonFactor = 0.75F;
+					break;
+				}
+				case 2:
+				{
+					moonFactor = 0.5F;
+					break;
+				}
+				case 6:
+				{
+					moonFactor = 0.5F;
+					break;
+				}
+				case 3:
+				{
+					moonFactor = 0.25F;
+					break;
+				}
+				case 5:
+				{
+					moonFactor = 0.25F;
+					break;
+				}
+				case 4:
+				{
+					moonFactor = 0.0F;
+					break;
+				}
 			}
-			case 1:
+			mruGenerated *= moonFactor;
+			float heightFactor = 1.0F;
+			if(yCoord > 80)
+				heightFactor = 0F;
+			else
 			{
-				moonFactor = 0.75F;
-				break;
+				heightFactor = 1.0F - (float)((float)yCoord/80F);
+				mruGenerated *= heightFactor;
 			}
-			case 7:
+			if(mruGenerated > 0 && canGenerateMRU() && !this.worldObj.isRemote)
 			{
-				moonFactor = 0.75F;
-				break;
-			}
-			case 2:
-			{
-				moonFactor = 0.5F;
-				break;
-			}
-			case 6:
-			{
-				moonFactor = 0.5F;
-				break;
-			}
-			case 3:
-			{
-				moonFactor = 0.25F;
-				break;
-			}
-			case 5:
-			{
-				moonFactor = 0.25F;
-				break;
-			}
-			case 4:
-			{
-				moonFactor = 0.0F;
-				break;
-			}
+				this.setMRU((int) (this.getMRU()+mruGenerated));
+				if(this.getMRU() > this.getMaxMRU())
+					this.setMRU(this.getMaxMRU());
+			}	
 		}
-		mruGenerated *= moonFactor;
-		float heightFactor = 1.0F;
-		if(yCoord > 80)
-			heightFactor = 0F;
-		else
-		{
-			heightFactor = 1.0F - (float)((float)yCoord/80F);
-			mruGenerated *= heightFactor;
-		}
-		if(mruGenerated > 0 && canGenerateMRU() && !this.worldObj.isRemote)
-		{
-			this.setMRU((int) (this.getMRU()+mruGenerated));
-			if(this.getMRU() > this.getMaxMRU())
-				this.setMRU(this.getMaxMRU());
-		}			
 	}
+	
+    public static void setupConfig(Configuration cfg)
+    {
+    	try
+    	{
+	    	cfg.load();
+	    	String[] cfgArrayString = cfg.getStringList("MoonWellSettings", "tileentities", new String[]{
+	    			"Max MRU:"+ApiCore.GENERATOR_MAX_MRU_GENERIC,
+	    			"Default balance:1.0",
+	    			"Max MRU generated per tick:60"
+	    			},"");
+	    	String dataString="";
+	    	
+	    	for(int i = 0; i < cfgArrayString.length; ++i)
+	    		dataString+="||"+cfgArrayString[i];
+	    	
+	    	DummyData[] data = DataStorage.parseData(dataString);
+	    	
+	    	cfgMaxMRU = Float.parseFloat(data[0].fieldValue);
+	    	cfgBalance = Float.parseFloat(data[1].fieldValue);
+	    	mruGenerated = Float.parseFloat(data[2].fieldValue);
+	    	
+	    	cfg.save();
+    	}catch(Exception e)
+    	{
+    		return;
+    	}
+    }
 
 }

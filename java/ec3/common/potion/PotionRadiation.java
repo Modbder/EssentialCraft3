@@ -30,10 +30,13 @@ public class PotionRadiation extends Potion{
     		int amplifier = p_76394_2_;
     		int maxHealth = (int) p_76394_1_.getMaxHealth()-(amplifier+1);
     		float currentHealth = p_76394_1_.getHealth();
+    		if(maxHealth < 1)
+    			maxHealth = 1;
     		if(currentHealth > maxHealth)
     		{
     			p_76394_1_.setHealth(maxHealth);
     		}
+
     	}
     }
     

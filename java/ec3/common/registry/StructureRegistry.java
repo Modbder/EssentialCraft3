@@ -7,7 +7,10 @@ import java.util.List;
 
 import ec3.api.EnumStructureType;
 import ec3.common.block.BlocksCore;
+import ec3.common.world.structure.MapGenModernShafts;
 import ec3.common.world.structure.MapGenTown;
+import ec3.common.world.structure.StructureModernShaftPieces;
+import ec3.common.world.structure.StructureModernShaftStart;
 import ec3.common.world.structure.StructureTownPieces;
 import ec3.utils.common.ECUtils;
 import net.minecraft.block.Block;
@@ -18,7 +21,9 @@ public class StructureRegistry {
 	public static void register()
 	{
 		MapGenStructureIO.registerStructure(MapGenTown.Start.class, "ec3.Town");
+		MapGenStructureIO.registerStructure(StructureModernShaftStart.class, "ec3.ModernShafts");
 		StructureTownPieces.registerVillagePieces();
+		StructureModernShaftPieces.registerStructurePieces();
 		List<Block> structureBlocks_mrucucc = new ArrayList();
 		structureBlocks_mrucucc.add(BlocksCore.fortifiedGlass);
 		structureBlocks_mrucucc.add(BlocksCore.magicPlating);
@@ -33,16 +38,30 @@ public class StructureRegistry {
 		structureBlocks_mrucucc.add(BlocksCore.voidGlass);
 		structureBlocks_mrucucc.add(BlocksCore.voidStone);
 		structureBlocks_mrucucc.add(BlocksCore.platingPale);
+		structureBlocks_mrucucc.add(BlocksCore.fancyBlocks.get(0));
+		structureBlocks_mrucucc.add(BlocksCore.fancyBlocks.get(2));
+		structureBlocks_mrucucc.add(BlocksCore.fancyBlocks.get(4));
+		structureBlocks_mrucucc.add(BlocksCore.fancyBlocks.get(5));
+		structureBlocks_mrucucc.add(BlocksCore.fancyBlocks.get(6));
 		allowedBlocks.put(EnumStructureType.MRUCUContaigementChamber, structureBlocks_mrucucc);
 		
 		List<Block> structureBlocks_mrucoil = new ArrayList();
 		structureBlocks_mrucoil.add(BlocksCore.platingPale);
 		structureBlocks_mrucoil.add(BlocksCore.magicPlating);
 		structureBlocks_mrucoil.add(BlocksCore.voidStone);
+		structureBlocks_mrucoil.add(BlocksCore.fancyBlocks.get(4));
+		structureBlocks_mrucoil.add(BlocksCore.fancyBlocks.get(5));
+		structureBlocks_mrucoil.add(BlocksCore.fancyBlocks.get(6));
 		
 		allowedBlocks.put(EnumStructureType.MRUCoil, structureBlocks_mrucoil);
 		
 		ECUtils.registerBlockResistance(BlocksCore.fortifiedGlass, 0, 3F);
+		ECUtils.registerBlockResistance(BlocksCore.fancyBlocks.get(0), -1, 8F);
+		ECUtils.registerBlockResistance(BlocksCore.fancyBlocks.get(2), -1, 3F);
+		ECUtils.registerBlockResistance(BlocksCore.fancyBlocks.get(4), -1, 5F);
+		ECUtils.registerBlockResistance(BlocksCore.fancyBlocks.get(5), -1, 10F);
+		ECUtils.registerBlockResistance(BlocksCore.fancyBlocks.get(6), -1, 18F);
+		
 		ECUtils.registerBlockResistance(BlocksCore.magicPlating, 0, 5F);
 		ECUtils.registerBlockResistance(BlocksCore.platingPale, 0, 10F);
 		ECUtils.registerBlockResistance(BlocksCore.ecController, 0, 100F);

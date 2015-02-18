@@ -9,9 +9,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import DummyCore.Utils.BlockPosition;
 import DummyCore.Utils.Coord3D;
+import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
 import DummyCore.Utils.MiscUtils;
 import DummyCore.Utils.Notifier;
+import ec3.api.ApiCore;
 import ec3.api.EnumStructureType;
 import ec3.api.IMRUPressence;
 import ec3.api.IStructurePiece;
@@ -25,6 +27,7 @@ import net.minecraft.network.play.INetHandlerPlayClient;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraftforge.common.config.Configuration;
 
 public class TileecController extends TileEntity implements ITEHasMRU{
 	
@@ -44,6 +47,9 @@ public class TileecController extends TileEntity implements ITEHasMRU{
 	public UUID uuid = UUID.randomUUID();
 	
 	public List<BlockPosition> blocksInStructure = new ArrayList();
+	
+	public static float cfgMaxMRU = 60000;
+	public static float cfgMRUPerStorage = 100000;
 	//===========================Functions=================================//
 	
 	@Override
@@ -116,7 +122,7 @@ public class TileecController extends TileEntity implements ITEHasMRU{
 	public boolean checkStructure()
 	{
 		resistance = 0F;
-		maxMRU = 60000;
+		maxMRU = (int) cfgMaxMRU;
 		blocksInStructure.clear(); //Clearing the list of blocks to reinitialise it
 		//Base variables setup//
 		int minX = 0;
@@ -423,7 +429,7 @@ public class TileecController extends TileEntity implements ITEHasMRU{
 									piece.setStructureController(this, EnumStructureType.MRUCUContaigementChamber);
 									if(this.worldObj.getTileEntity(xCoord+x, yCoord+y, zCoord+z) instanceof TileecHoldingChamber)
 									{
-										maxMRU += 100000;
+										maxMRU += cfgMRUPerStorage;
 									}
 								}
 							}else
@@ -482,5 +488,32 @@ public class TileecController extends TileEntity implements ITEHasMRU{
 		maxMRU = (int) f;
 		return true;
 	}
+	
+	
+    public static void setupConfig(Configuration cfg)
+    {
+    	try
+    	{
+	    	cfg.load();
+	    	String[] cfgArrayString = cfg.getStringList("EnrichmentChamberSettings", "tileentities", new String[]{
+	    			"Default Max MRU:60000",
+	    			"MRU Increasement per Storage:100000"
+	    			},"");
+	    	String dataString="";
+	    	
+	    	for(int i = 0; i < cfgArrayString.length; ++i)
+	    		dataString+="||"+cfgArrayString[i];
+	    	
+	    	DummyData[] data = DataStorage.parseData(dataString);
+	    	
+	    	cfgMaxMRU = Float.parseFloat(data[0].fieldValue);
+	    	cfgMRUPerStorage = Float.parseFloat(data[1].fieldValue);
+	    	
+	    	cfg.save();
+    	}catch(Exception e)
+    	{
+    		return;
+    	}
+    }
 
 }

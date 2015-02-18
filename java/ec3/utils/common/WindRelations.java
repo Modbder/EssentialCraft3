@@ -15,16 +15,19 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.util.FakePlayer;
 
 public class WindRelations {
 	
 	public static int getPlayerWindRelations(EntityPlayer player)
 	{
+		if((player instanceof FakePlayer)) return 0;
 		String str = DummyDataUtils.getDataForPlayer(player.getDisplayName(), "essentialcraft", "windRelations");
 		if(str == null || str.isEmpty() || str.equals("no data") || str.equals("empty string") || str.equals("empty"))
 		{
-			DummyDataUtils.setDataForPlayer(player.getDisplayName(), "essentialcraft", "windRelations", Integer.toString(0));
+				DummyDataUtils.setDataForPlayer(player.getDisplayName(), "essentialcraft", "windRelations", Integer.toString(0));
 		}
+		
 		str = DummyDataUtils.getDataForPlayer(player.getDisplayName(), "essentialcraft", "windRelations");
 		int retInt = Integer.parseInt(str);
 		return retInt;
@@ -49,6 +52,7 @@ public class WindRelations {
 	
 	public static int getPlayerRadiation(EntityPlayer player)
 	{
+		if((player instanceof FakePlayer)) return 0;
 		String str = DummyDataUtils.getDataForPlayer(player.getDisplayName(), "essentialcraft", "radiation");
 		if(str == null || str.isEmpty() || str.equals("no data") || str.equals("empty string") || str.equals("empty"))
 		{
@@ -61,12 +65,14 @@ public class WindRelations {
 	
 	public static void setPlayerWindRelations(EntityPlayer player, int amount)
 	{
-		DummyDataUtils.setDataForPlayer(player.getDisplayName(), "essentialcraft", "windRelations", Integer.toString(amount));
+		if(!(player instanceof FakePlayer))
+			DummyDataUtils.setDataForPlayer(player.getDisplayName(), "essentialcraft", "windRelations", Integer.toString(amount));
 	}
 	
 	public static void setPlayerRadiation(EntityPlayer player, int amount)
 	{
-		DummyDataUtils.setDataForPlayer(player.getDisplayName(), "essentialcraft", "radiation", Integer.toString(amount));
+		if(!(player instanceof FakePlayer))
+			DummyDataUtils.setDataForPlayer(player.getDisplayName(), "essentialcraft", "radiation", Integer.toString(amount));
 	}
 	
 	public static void increasePlayerWindRelations(EntityPlayer e, int amount)
@@ -74,7 +80,7 @@ public class WindRelations {
 		int current = getPlayerWindRelations(e);
 		amount *= getPlayerWindRevModifier(e);
 		setPlayerWindRelations(e, current+amount);
-		e.addPotionEffect(new PotionEffect(PotionRegistry.windTouch.id,1000,0));
+		e.addPotionEffect(new PotionEffect(PotionRegistry.windTouch.id,1000,0,true));
 	}
 	
 	public static void increasePlayerRadiation(EntityPlayer e, int amount)
@@ -85,6 +91,7 @@ public class WindRelations {
 	
 	public static void playerTick(EntityPlayer player)
 	{
+		if((player instanceof FakePlayer)) return;
 		int dimID = player.dimension;
 		if(dimID == 53)
 		{
@@ -109,19 +116,22 @@ public class WindRelations {
 		{
 			int amount = getPlayerRadiation(player);
 			if(amount > 0)
-				increasePlayerRadiation(player,-1);
+				if(player.dimension == 53)
+					increasePlayerRadiation(player,-1);
+				else
+					increasePlayerRadiation(player,-5);
 			if(amount > 0)
 			{
 				boolean hasEffect = player.getActivePotionEffect(PotionRegistry.radiation) != null;
 				if(hasEffect)
 				{
 					int currentDuration = amount;
-					int newModifier = currentDuration/2000;
+					int newModifier = currentDuration/10000;
 					player.removePotionEffect(PotionRegistry.radiation.id);
-					player.addPotionEffect(new PotionEffect(PotionRegistry.radiation.id,currentDuration,newModifier));
+					player.addPotionEffect(new PotionEffect(PotionRegistry.radiation.id,currentDuration,newModifier,true));
 				}else
 				{
-					player.addPotionEffect(new PotionEffect(PotionRegistry.radiation.id,200,0));
+					player.addPotionEffect(new PotionEffect(PotionRegistry.radiation.id,200,0,true));
 				}
 			}
 		}

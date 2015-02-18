@@ -2,6 +2,8 @@ package ec3.common.tile;
 
 import java.util.Random;
 
+import DummyCore.Utils.DataStorage;
+import DummyCore.Utils.DummyData;
 import DummyCore.Utils.MiscUtils;
 import ec3.utils.common.ECUtils;
 import net.minecraft.block.Block;
@@ -11,10 +13,14 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.INetHandlerPlayClient;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.config.Configuration;
 
 public class TileElementalCrystal extends TileEntity{
 	public int syncTick;
 	public float size,fire,water,earth,air;
+	
+	public static float mutatuinChance = 0.001F;
+	public static float growthModifier = 1.0F;
 	
 	@Override
     public void readFromNBT(NBTTagCompound i)
@@ -67,7 +73,7 @@ public class TileElementalCrystal extends TileEntity{
     public void randomlyMutate()
     {
     	Random r = this.worldObj.rand;
-    	if(r.nextFloat() <= .001F)
+    	if(r.nextFloat() <= mutatuinChance)
     	{
     		this.mutate(r.nextInt(4), r.nextInt(3)-r.nextInt(3));
     	}
@@ -172,7 +178,7 @@ public class TileElementalCrystal extends TileEntity{
 			this.worldObj.spawnParticle("enchantmenttable", this.xCoord+this.worldObj.rand.nextFloat(),this.yCoord+1,this.zCoord+this.worldObj.rand.nextFloat(), 0, 0, 0);
 			if(!this.worldObj.isRemote)
 			{
-	    		this.size += 0.002F;
+	    		this.size += 0.002F*growthModifier;
 	    			randomlyMutate();
 			}
 		}
@@ -200,5 +206,31 @@ public class TileElementalCrystal extends TileEntity{
 		if(net.getNetHandler() instanceof INetHandlerPlayClient)
 			if(pkt.func_148853_f() == -10)
 				this.readFromNBT(pkt.func_148857_g());
+    }
+	
+    public static void setupConfig(Configuration cfg)
+    {
+    	try
+    	{
+	    	cfg.load();
+	    	String[] cfgArrayString = cfg.getStringList("ElementalCrystalSettings", "tileentities", new String[]{
+	    			"Chance to mutate per tick:0.001",
+	    			"Growth per tick modifier(crystal grows at 0.2% per tick):1.0"
+	    			},"");
+	    	String dataString="";
+	    	
+	    	for(int i = 0; i < cfgArrayString.length; ++i)
+	    		dataString+="||"+cfgArrayString[i];
+	    	
+	    	DummyData[] data = DataStorage.parseData(dataString);
+	    	
+	    	mutatuinChance = Float.parseFloat(data[0].fieldValue);
+	    	growthModifier = Float.parseFloat(data[1].fieldValue);
+	    	
+	    	cfg.save();
+    	}catch(Exception e)
+    	{
+    		return;
+    	}
     }
 }

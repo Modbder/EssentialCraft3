@@ -1,5 +1,6 @@
 package ec3.common.item;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
@@ -42,11 +43,15 @@ public class ItemSoulStone extends Item {
 	@Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
-    	if(par1ItemStack.getTagCompound() == null && !par2World.isRemote && !par3EntityPlayer.isSneaking())
+    	if(!par2World.isRemote && !par3EntityPlayer.isSneaking())
     	{
-    		NBTTagCompound playerTag = new NBTTagCompound();
+    		NBTTagCompound playerTag = MiscUtils.getStackTag(par1ItemStack);
     		playerTag.setString("playerName", par3EntityPlayer.getDisplayName());
     		par1ItemStack.setTagCompound(playerTag);
+    	}
+    	if(par1ItemStack.getTagCompound() != null && !par2World.isRemote && par3EntityPlayer.isSneaking())
+    	{
+    		MiscUtils.getStackTag(par1ItemStack).removeTag("playerName");
     	}
         return par1ItemStack;
     }
@@ -105,7 +110,38 @@ public class ItemSoulStone extends Item {
 			{
 				par3List.add(EnumChatFormatting.DARK_GRAY+"The MRU Matrix of the owner is too pale to track...");
 			}
+			this.addBloodMagicDescription(par1ItemStack, par2EntityPlayer, par3List, par4);
     	}
+    }
+    
+    public void addBloodMagicDescription(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+    {
+    	if(par1ItemStack.getTagCompound() != null && MiscUtils.getStackTag(par1ItemStack).getBoolean("bloodInfused"))
+    	{
+    		String username = par1ItemStack.getTagCompound().getString("playerName");
+			
+			try
+			{
+				Class energyItems = Class.forName("WayofTime.alchemicalWizardry.common.items.EnergyItems");
+				Method getCurrentEssence = energyItems.getMethod("getCurrentEssence", String.class);
+				int currentEssence = Integer.parseInt(getCurrentEssence.invoke(null, username).toString());
+				par3List.add(EnumChatFormatting.DARK_GRAY+"Detected "+EnumChatFormatting.DARK_RED+currentEssence+EnumChatFormatting.DARK_GRAY+" Life Essence.");
+			}catch(Exception e)
+			{
+				par3List.add(EnumChatFormatting.DARK_GRAY+"The owner's life network is pure and untouched...");
+			}
+    	}
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public int getColorFromItemStack(ItemStack p_82790_1_, int p_82790_2_)
+    {
+    	if(p_82790_1_.getTagCompound() != null && MiscUtils.getStackTag(p_82790_1_).getBoolean("bloodInfused"))
+    	{
+    		return 0xff0000;
+    	}
+        return 16777215;
+        
     }
     
     @Override

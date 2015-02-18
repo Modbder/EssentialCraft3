@@ -21,7 +21,7 @@ public class WorldProviderFirstWorld extends WorldProvider{
 	
     protected void registerWorldChunkManager()
     {
-        this.worldChunkMgr = new WorldChunkManager_FirstWorld(this.worldObj.rand.nextLong(),this.terrainType);
+        this.worldChunkMgr = new WorldChunkManager_FirstWorld(this.worldObj.getSeed(),this.terrainType);
         this.isHellWorld = false;
         this.hasNoSky = false;
         this.dimensionId = 53;

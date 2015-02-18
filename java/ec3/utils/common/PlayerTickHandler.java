@@ -52,6 +52,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.sound.SoundLoadEvent;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
@@ -261,7 +262,8 @@ public class PlayerTickHandler{
 						String attunement = DummyDataUtils.getDataForPlayer(player.getDisplayName(), "essentialcraft", "attunement");
 						if(attunement == null || attunement.isEmpty() || attunement.equals("no data") || attunement.equals("empty string") || attunement.equals("empty"))
 						{
-							DummyDataUtils.setDataForPlayer(player.getDisplayName(), "essentialcraft", "attunement", Integer.toString(0));
+							if(!(player instanceof FakePlayer))
+								DummyDataUtils.setDataForPlayer(player.getDisplayName(), "essentialcraft", "attunement", Integer.toString(0));
 						}
 						World wrd = player.worldObj;
 						List itemList = wrd.getEntitiesWithinAABB(EntityItem.class,AxisAlignedBB.getBoundingBox(player.posX-0.5D, player.posY-0.5D, player.posZ-0.5D, player.posX+0.5D, player.posY+0.5D, player.posZ+0.5D).expand(4, 2, 4));
@@ -291,7 +293,7 @@ public class PlayerTickHandler{
 						Block b_check_b3 = item.worldObj.getBlock((int)item.posX+x, (int)item.posY-1, (int)item.posZ+z+1);
 						Block b_check_b4 = item.worldObj.getBlock((int)item.posX+x, (int)item.posY-1, (int)item.posZ+z-1);
 						Block b_check_air = item.worldObj.getBlock((int)item.posX+x, (int)item.posY, (int)item.posZ+z);
-						if(b_check_air == Blocks.air && b_check_b1.getMaterial() == Material.lava && b_check_b4.getMaterial() == Material.lava && b_check_b2.getMaterial() == Material.lava && b_check_b3.getMaterial() == Material.lava)
+						if(b_check_air.isAir(item.worldObj,(int)item.posX+x, (int)item.posY, (int)item.posZ+z) && b_check_b1.getMaterial() == Material.lava && b_check_b4.getMaterial() == Material.lava && b_check_b2.getMaterial() == Material.lava && b_check_b3.getMaterial() == Material.lava)
 						{
 							if(item.getEntityItem().stackSize == 1)
 							item.lifespan = 0;
@@ -324,7 +326,7 @@ public class PlayerTickHandler{
 							Block b_check_b3 = item.worldObj.getBlock((int)item.posX+x, (int)item.posY-1, (int)item.posZ+z+1);
 							Block b_check_b4 = item.worldObj.getBlock((int)item.posX+x, (int)item.posY-1, (int)item.posZ+z-1);
 							Block b_check_air = item.worldObj.getBlock((int)item.posX+x, (int)item.posY, (int)item.posZ+z);
-							if(b_check_air == Blocks.air && b_check_b1.getMaterial() == Material.water && b_check_b4.getMaterial() == Material.water && b_check_b2.getMaterial() == Material.water && b_check_b3.getMaterial() == Material.water)
+							if(b_check_air.isAir(item.worldObj,(int)item.posX+x, (int)item.posY, (int)item.posZ+z) && b_check_b1.getMaterial() == Material.water && b_check_b4.getMaterial() == Material.water && b_check_b2.getMaterial() == Material.water && b_check_b3.getMaterial() == Material.water)
 							{
 								if(item.getEntityItem().stackSize == 1)
 								item.lifespan = 0;
@@ -357,7 +359,7 @@ public class PlayerTickHandler{
 							Block b_check_b3 = item.worldObj.getBlock((int)item.posX+x, (int)item.posY-1, (int)item.posZ+z+1);
 							Block b_check_b4 = item.worldObj.getBlock((int)item.posX+x, (int)item.posY-1, (int)item.posZ+z-1);
 							Block b_check_air = item.worldObj.getBlock((int)item.posX+x, (int)item.posY, (int)item.posZ+z);
-							if(b_check_air == Blocks.air && b_check_b1 == Blocks.mossy_cobblestone && b_check_b4 == Blocks.mossy_cobblestone && b_check_b2 == Blocks.mossy_cobblestone && b_check_b3 == Blocks.mossy_cobblestone)
+							if(b_check_air.isAir(item.worldObj,(int)item.posX+x, (int)item.posY, (int)item.posZ+z) && b_check_b1 == Blocks.mossy_cobblestone && b_check_b4 == Blocks.mossy_cobblestone && b_check_b2 == Blocks.mossy_cobblestone && b_check_b3 == Blocks.mossy_cobblestone)
 							{
 								if(item.getEntityItem().stackSize == 1)
 								item.lifespan = 0;
@@ -390,7 +392,7 @@ public class PlayerTickHandler{
 								Block b_check_b3 = item.worldObj.getBlock((int)item.posX+x, (int)item.posY-1, (int)item.posZ+z+1);
 								Block b_check_b4 = item.worldObj.getBlock((int)item.posX+x, (int)item.posY-1, (int)item.posZ+z-1);
 								Block b_check_air = item.worldObj.getBlock((int)item.posX+x, (int)item.posY, (int)item.posZ+z);
-								if(b_check_air == Blocks.air && b_check_b1 == Blocks.sand && b_check_b4 == Blocks.sand && b_check_b2 == Blocks.sand && b_check_b3 == Blocks.sand)
+								if(b_check_air.isAir(item.worldObj,(int)item.posX+x, (int)item.posY, (int)item.posZ+z) && b_check_b1 == Blocks.sand && b_check_b4 == Blocks.sand && b_check_b2 == Blocks.sand && b_check_b3 == Blocks.sand)
 								{
 									if(item.getEntityItem().stackSize == 1)
 									item.lifespan = 0;
@@ -420,7 +422,7 @@ public class PlayerTickHandler{
 								if(b == Blocks.emerald_block)
 								{
 									Block b_check_air = item.worldObj.getBlock((int)item.posX+x, (int)item.posY, (int)item.posZ+z);
-									if(b_check_air == Blocks.air)
+									if(b_check_air.isAir(item.worldObj,(int)item.posX+x, (int)item.posY, (int)item.posZ+z))
 									{
 										if(item.getEntityItem().stackSize == 1)
 										item.lifespan = 0;
@@ -450,7 +452,7 @@ public class PlayerTickHandler{
 									if(b == Blocks.emerald_block)
 									{
 										Block b_check_air = item.worldObj.getBlock((int)item.posX+x, (int)item.posY, (int)item.posZ+z);
-										if(b_check_air == Blocks.air)
+										if(b_check_air.isAir(item.worldObj, (int)item.posX+x, (int)item.posY, (int)item.posZ+z))
 										{
 											if(item.getEntityItem().stackSize == 1)
 											item.lifespan = 0;

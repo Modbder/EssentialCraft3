@@ -8,6 +8,7 @@ import java.util.List;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
+import ec3.api.ApiCore;
 import ec3.api.ITEHasMRU;
 import ec3.common.block.BlocksCore;
 import ec3.common.item.ItemBoundGem;
@@ -49,13 +50,18 @@ import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.config.Configuration;
 
 public class TileEmberForge extends TileMRUGeneric
 {
 	 public int progressLevel, soundArray;
 	 
+	 public static boolean nightRequired = true;
+	 public static int timeRequired = 500;
+	 
 	 public TileEmberForge()
 	 {
+		 super();
 		 this.setSlotsNum(0);
 	 }
 	 
@@ -159,7 +165,7 @@ public class TileEmberForge extends TileMRUGeneric
     			}
     		}
     		--soundArray;
-    		if(ember_0 != null && ember_1 != null && ember_2 != null && ember_3 != null && focus_0 != null && focus_1 != null && focus_2 != null && focus_3 != null && !this.worldObj.isDaytime())
+    		if(ember_0 != null && ember_1 != null && ember_2 != null && ember_3 != null && focus_0 != null && focus_1 != null && focus_2 != null && focus_3 != null && (!this.worldObj.isDaytime() || !nightRequired))
     		{
     			if(soundArray <= 0)
     			{
@@ -167,7 +173,7 @@ public class TileEmberForge extends TileMRUGeneric
     				soundArray = 50;
     			}
     			++progressLevel;
-    			if(progressLevel >= 500)
+    			if(progressLevel >= timeRequired)
     				{
     					progressLevel = 0;
     					ember_0.setDead();
@@ -187,7 +193,6 @@ public class TileEmberForge extends TileMRUGeneric
     					swordTag.setString("focus_1", focus_1.getEntityItem().getItem().getUnlocalizedName(focus_1.getEntityItem()));
     					swordTag.setString("focus_2", focus_2.getEntityItem().getItem().getUnlocalizedName(focus_2.getEntityItem()));
     					swordTag.setString("focus_3", focus_3.getEntityItem().getItem().getUnlocalizedName(focus_3.getEntityItem()));
-    					System.out.println(swordTag);
     					ItemStack eSword = new ItemStack(ItemsCore.elementalSword,1,0);
     					eSword.setTagCompound(swordTag);
     					ItemElementalSword.setPrimaryAttribute(eSword);
@@ -348,6 +353,32 @@ public class TileEmberForge extends TileMRUGeneric
     		{
     			EssentialCraftCore.proxy.spawnParticle("cSpellFX", xCoord+0.5F+MathUtils.randomFloat(this.worldObj.rand)*3, yCoord, zCoord+0.5F+MathUtils.randomFloat(this.worldObj.rand)*3, 0,2, 0);
     		}
+    	}
+    }
+    
+    public static void setupConfig(Configuration cfg)
+    {
+    	try
+    	{
+	    	cfg.load();
+	    	String[] cfgArrayString = cfg.getStringList("EmberForgeSettings", "tileentities", new String[]{
+	    			"Is night time required:true",
+	    			"Required time to craft a sword:500"
+	    			},"");
+	    	String dataString="";
+	    	
+	    	for(int i = 0; i < cfgArrayString.length; ++i)
+	    		dataString+="||"+cfgArrayString[i];
+	    	
+	    	DummyData[] data = DataStorage.parseData(dataString);
+	    	
+	    	timeRequired = Integer.parseInt(data[1].fieldValue);
+	    	nightRequired = Boolean.parseBoolean(data[0].fieldValue);
+	    	
+	    	cfg.save();
+    	}catch(Exception e)
+    	{
+    		return;
     	}
     }
 	

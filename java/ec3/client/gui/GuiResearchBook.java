@@ -21,6 +21,7 @@ import ec3.api.DiscoveryEntry;
 import ec3.api.MagicianTableRecipe;
 import ec3.api.PageEntry;
 import ec3.api.RadiatingChamberRecipe;
+import ec3.api.ShapedAssemblerRecipe;
 import ec3.api.StructureBlock;
 import ec3.api.StructureRecipe;
 import ec3.common.item.ItemsCore;
@@ -143,8 +144,8 @@ public class GuiResearchBook extends GuiScreen{
 			 if(!this.prevState.isEmpty())
 			 {
 				  Object[] tryArray = this.prevState.get(this.prevState.size()-1);
-				  currentPage = (int) tryArray[1];
-				  currentPage_discovery = (int) tryArray[2];
+				  currentPage = Integer.parseInt(tryArray[1].toString());
+				  currentPage_discovery = Integer.parseInt(tryArray[2].toString());
 				  currentDiscovery = (DiscoveryEntry) tryArray[0];
 				  this.prevState.remove(this.prevState.size()-1);
 				  this.initGui();
@@ -189,8 +190,8 @@ public class GuiResearchBook extends GuiScreen{
 			 {
 				 Object[] drawable = (Object[]) obj;
 				 List<String> listToDraw = (List<String>) drawable[0];
-				 int x = (int) drawable[1];
-				 int y = (int) drawable[2];
+				 int x = Integer.parseInt(drawable[1].toString());
+				 int y = Integer.parseInt(drawable[2].toString());
 				 FontRenderer renderer = (FontRenderer) drawable[3];
 				 this.drawHoveringText(listToDraw, x, y, renderer);
 			 }
@@ -233,17 +234,21 @@ public class GuiResearchBook extends GuiScreen{
 		 currentPage_discovery = 0;
 	     int k = (this.width - 256) / 2 + 128;
 	     int l = (this.height - 168) / 2;
-	     for(int i = 0; i < ApiCore.categories.size(); ++i)
-	     {
-	    	 CategoryEntry cat = ApiCore.categories.get(i);
-	    	 GuiButtonNoSound added = new GuiButtonNoSound(i, k + (30*(i/5)) + 8, l + (30*(i%5)) + 28, 20, 20, "");
-	    	 added.enabled = false;
-	    	 int reqTier = cat.reqTier;
-	    	 int tier = bookTag.getInteger("tier");
-	    	 if(tier >= reqTier)
-	    		 added.enabled = true;
-	    	 this.buttonList.add(added);
-	     }
+	     if(ApiCore.categories != null)
+		     for(int i = 0; i < ApiCore.categories.size(); ++i)
+		     {
+		    	 CategoryEntry cat = ApiCore.categories.get(i);
+		    	 if(cat != null)
+		    	 {
+			    	 GuiButtonNoSound added = new GuiButtonNoSound(i, k + (30*(i/5)) + 8, l + (30*(i%5)) + 28, 20, 20, "");
+			    	 added.enabled = false;
+			    	 int reqTier = cat.reqTier;
+			    	 int tier = bookTag.getInteger("tier");
+			    	 if(tier >= reqTier)
+			    		 added.enabled = true;
+			    	 this.buttonList.add(added);
+		    	 }
+		     }
 	 }
 	 
 	 public void initPage()
@@ -398,6 +403,10 @@ public class GuiResearchBook extends GuiScreen{
 	     }
 	     if(page.pageRecipe != null)
 	     {
+		     if(page.displayedItems != null)
+		     {
+		    	 l += page.displayedItems.length/4 * 20;
+		     }
 	    	 l += this.drawRecipe(mouseX, mouseY, k, l, page.pageRecipe);
 	     }
 	     if(page.pageText != null && !page.pageText.isEmpty())
@@ -471,6 +480,10 @@ public class GuiResearchBook extends GuiScreen{
 		     }
 		     if(page.pageRecipe != null)
 		     {
+			     if(page.displayedItems != null)
+			     {
+			    	 l += page.displayedItems.length/4 * 20;
+			     }
 		    	 l += this.drawRecipe(mouseX, mouseY, k, l, page.pageRecipe);
 		     }
 		     if(page.pageText != null && !page.pageText.isEmpty())
@@ -500,6 +513,7 @@ public class GuiResearchBook extends GuiScreen{
 	 
 	 public int drawRecipe(int mouseX, int mouseZ, int k, int l, IRecipe toDraw)
 	 {
+		 
 		 //2
 		 if(toDraw instanceof ShapedOreRecipe)
 		 {
@@ -524,6 +538,11 @@ public class GuiResearchBook extends GuiScreen{
 		 if(toDraw instanceof StructureRecipe)
 		 {
 			 return drawStructureRecipe(mouseX,mouseZ,k,l,(StructureRecipe) toDraw);
+		 }
+		 //8
+		 if(toDraw instanceof ShapedAssemblerRecipe)
+		 {
+			 return drawShapedAssemblerRecipe(mouseX,mouseZ,k,l,(ShapedAssemblerRecipe) toDraw);
 		 }
 		 return 0;
 	 }
@@ -550,18 +569,18 @@ public class GuiResearchBook extends GuiScreen{
 		 this.drawSlotInRecipe(k, l, 13+18, 8+18);
 		 this.drawSlotInRecipe(k, l, 13+74, 8+18);
 		 
-		 this.drawIS(toDraw.requiredItems[0], k+26+18, l+25+18, mouseX, mouseZ, 0);
-		 this.drawIS(toDraw.requiredItems[1], k+26, l+25, mouseX, mouseZ, 0);
-		 this.drawIS(toDraw.requiredItems[2], k+26+36, l+25, mouseX, mouseZ, 0);
-		 this.drawIS(toDraw.requiredItems[3], k+26, l+25+36, mouseX, mouseZ, 0);
-		 this.drawIS(toDraw.requiredItems[4], k+26+36, l+25+36, mouseX, mouseZ, 0);
+		 this.drawIS(toDraw.requiredItems[0].getISToDraw(Minecraft.getMinecraft().theWorld.getWorldTime()), k+26+18, l+25+18, mouseX, mouseZ, 0);
+		 this.drawIS(toDraw.requiredItems[1].getISToDraw(Minecraft.getMinecraft().theWorld.getWorldTime()), k+26, l+25, mouseX, mouseZ, 0);
+		 this.drawIS(toDraw.requiredItems[2].getISToDraw(Minecraft.getMinecraft().theWorld.getWorldTime()), k+26+36, l+25, mouseX, mouseZ, 0);
+		 this.drawIS(toDraw.requiredItems[3].getISToDraw(Minecraft.getMinecraft().theWorld.getWorldTime()), k+26, l+25+36, mouseX, mouseZ, 0);
+		 this.drawIS(toDraw.requiredItems[4].getISToDraw(Minecraft.getMinecraft().theWorld.getWorldTime()), k+26+36, l+25+36, mouseX, mouseZ, 0);
 		 this.drawIS(toDraw.result, k+26+74, l+25+18, mouseX, mouseZ, 0);
 		 
-		 this.drawIS(toDraw.requiredItems[0], k+26+18, l+25+18, mouseX, mouseZ, 1);
-		 this.drawIS(toDraw.requiredItems[1], k+26, l+25, mouseX, mouseZ, 1);
-		 this.drawIS(toDraw.requiredItems[2], k+26+36, l+25, mouseX, mouseZ, 1);
-		 this.drawIS(toDraw.requiredItems[3], k+26, l+25+36, mouseX, mouseZ, 1);
-		 this.drawIS(toDraw.requiredItems[4], k+26+36, l+25+36, mouseX, mouseZ, 1);
+		 this.drawIS(toDraw.requiredItems[0].getISToDraw(Minecraft.getMinecraft().theWorld.getWorldTime()), k+26+18, l+25+18, mouseX, mouseZ, 1);
+		 this.drawIS(toDraw.requiredItems[1].getISToDraw(Minecraft.getMinecraft().theWorld.getWorldTime()), k+26, l+25, mouseX, mouseZ, 1);
+		 this.drawIS(toDraw.requiredItems[2].getISToDraw(Minecraft.getMinecraft().theWorld.getWorldTime()), k+26+36, l+25, mouseX, mouseZ, 1);
+		 this.drawIS(toDraw.requiredItems[3].getISToDraw(Minecraft.getMinecraft().theWorld.getWorldTime()), k+26, l+25+36, mouseX, mouseZ, 1);
+		 this.drawIS(toDraw.requiredItems[4].getISToDraw(Minecraft.getMinecraft().theWorld.getWorldTime()), k+26+36, l+25+36, mouseX, mouseZ, 1);
 		 this.drawIS(toDraw.result, k+26+74, l+25+18, mouseX, mouseZ, 1);
 		 return 80;
 	 }
@@ -656,6 +675,101 @@ public class GuiResearchBook extends GuiScreen{
 			 e.printStackTrace();
 			 return 0;
 		 }
+	 }
+	 
+	 public int drawShapedAssemblerRecipe(int mouseX, int mouseZ, int k, int l, ShapedAssemblerRecipe toDraw)
+	 {
+		 this.fontRendererObj.drawString(StatCollector.translateToLocal("ec3.txt.assemblerRecipe"), k+8, l+12, 0x222222);
+		 ShapedAssemblerRecipe recipe = (ShapedAssemblerRecipe) toDraw;
+		 
+		 RenderHelper.disableStandardItemLighting();
+		 RenderHelper.enableGUIStandardItemLighting();
+		 GL11.glColor3f(1, 1, 1);
+		 this.fontRendererObj.drawString(StatCollector.translateToLocal("MRU Required: "+toDraw.mruRequired), k+16, l+83, 0x222222);
+		 
+		 for(int i = 0; i < 9; ++i)
+		 {
+			 drawSlotInRecipe(k,l+6,(i%3)*18,(i/3)*18);
+		 }
+		 drawSlotInRecipe(k,l+6,80,(1)*18);
+		 MiscUtils.bindTexture("minecraft", "textures/gui/container/crafting_table.png");
+		 
+		 GL11.glColor3f(1, 1, 1);
+		 this.drawTexturedModalRect(k+78-10, l+23+18, 90, 35, 22, 15);
+		 
+		 Random rnd = new Random(mc.theWorld.getWorldTime()/20);
+		 
+		 int[] drawingID = new int[9];
+		 
+		 for(int i = 0; i < 9; ++i)
+		 {
+			 Object drawable = recipe.getInput()[i];
+			 ItemStack needToDraw = null;
+			 if(drawable instanceof ItemStack)
+				 needToDraw = (ItemStack) drawable;
+			 if(drawable instanceof Item)
+				 needToDraw = new ItemStack((Item)drawable);
+			 if(drawable instanceof Block)
+				 needToDraw = new ItemStack((Block)drawable);
+			 if(drawable instanceof ItemStack[])
+			 {
+				 drawingID[i] = rnd.nextInt(((ItemStack[])drawable).length);
+				 needToDraw = ((ItemStack[])drawable)[drawingID[i]];
+			 }
+			 if(drawable instanceof String)
+			 {
+				 List<ItemStack> oreStacks = OreDictionary.getOres((String) drawable);
+				 drawingID[i] = rnd.nextInt(oreStacks.size());
+				 needToDraw = oreStacks.get(drawingID[i]);
+			 }
+			 if(drawable instanceof List)
+			 {
+				 List<ItemStack> oreStacks = (List<ItemStack>) drawable;
+				 drawingID[i] = rnd.nextInt(oreStacks.size());
+				 needToDraw = oreStacks.get(drawingID[i]);
+			 }
+			 if(needToDraw != null)
+			 {
+				 this.drawIS(needToDraw, k + 13 + (i%3*18), l + 23 + (i/3 * 18), mouseX, mouseZ, 0);
+			 }
+		 }
+		 
+		 this.drawIS(recipe.getRecipeOutput(), k + 93, l + 41, mouseX, mouseZ, 0);
+		 
+		 for(int i = 0; i < 9; ++i)
+		 {
+			 Object drawable = recipe.getInput()[i];
+			 ItemStack needToDraw = null;
+			 if(drawable instanceof ItemStack)
+				 needToDraw = (ItemStack) drawable;
+			 if(drawable instanceof Item)
+				 needToDraw = new ItemStack((Item)drawable);
+			 if(drawable instanceof Block)
+				 needToDraw = new ItemStack((Block)drawable);
+			 if(drawable instanceof ItemStack[])
+				 needToDraw = ((ItemStack[])drawable)[drawingID[i]];
+			 if(drawable instanceof String)
+			 {
+				 List<ItemStack> oreStacks = OreDictionary.getOres((String) drawable);
+				 needToDraw = oreStacks.get(drawingID[i]);
+			 }
+			 if(drawable instanceof List)
+			 {
+				 List<ItemStack> oreStacks = (List<ItemStack>) drawable;
+				 needToDraw = oreStacks.get(drawingID[i]);
+			 }
+			 if(needToDraw != null)
+			 {
+				 this.drawIS(needToDraw, k + 13 + (i%3*18), l + 23 + (i/3 * 18), mouseX, mouseZ, 1);
+			 }
+		 }
+		 
+		 this.drawIS(recipe.getRecipeOutput(), k + 93, l + 41, mouseX, mouseZ, 1);
+		 
+		 
+		 rnd = null;
+		 
+		 return 80;
 	 }
 	 
 	 public int drawShapedOreRecipe(int mouseX, int mouseZ, int k, int l, ShapedOreRecipe toDraw)
@@ -960,10 +1074,13 @@ public class GuiResearchBook extends GuiScreen{
 	    			 this.mc.renderEngine.bindTexture(gui);
 	    		 else
 	    			 this.mc.renderEngine.bindTexture(currentCategory.specificBookTextures);
+	    		 if(disc.isNew)
+	    			 GL11.glColor3f(1, 1, 0);
 	    		 if(!hover)
 	    			 this.drawTexturedModalRect(btn.xPosition, btn.yPosition, 0, 222, 20, 20);
 	    		 else
 	    			 this.drawTexturedModalRect(btn.xPosition, btn.yPosition, 28, 222, 20, 20); 
+	    		 GL11.glColor3f(1, 1, 1);
 	    		 if(disc.displayStack != null)
 	    		 {
 	    			 GL11.glPushMatrix();
@@ -1013,6 +1130,8 @@ public class GuiResearchBook extends GuiScreen{
 	    				 discStr.add("\u00a7o"+StatCollector.translateToLocal("ec3book.discovery_"+disc.id+".desc"));
 	    			 else
 	    				 discStr.add(disc.shortDescription);
+	    			 if(disc.isNew)
+	    				 discStr.add("\u00a76"+"New");
 	    			 discStr.add(StatCollector.translateToLocal("ec3.txt.contains")+disc.pages.size()+StatCollector.translateToLocal("ec3.txt.pages"));
 	    			 this.func_146283_a(discStr, mouseX, mouseZ);
 	    		 }

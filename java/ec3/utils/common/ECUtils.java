@@ -16,20 +16,24 @@ import java.util.UUID;
 
 import org.lwjgl.opengl.GL11;
 
+import scala.collection.mutable.Stack;
 import baubles.api.BaublesApi;
 import codechicken.core.ReflectionManager;
 
 import com.mojang.authlib.GameProfile;
 
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import DummyCore.Core.CoreInitialiser;
 import DummyCore.Utils.Coord3D;
 import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
 import DummyCore.Utils.DummyDataUtils;
 import DummyCore.Utils.DummyDistance;
+import DummyCore.Utils.DummyPacketIMSG;
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
 import ec3.api.ApiCore;
@@ -40,6 +44,7 @@ import ec3.api.IMRUStorage;
 import ec3.api.ISpell;
 import ec3.api.ITEHasMRU;
 import ec3.api.IWorldEvent;
+import ec3.api.MagicalAssemblerRecipes;
 import ec3.api.MagicianTableRecipe;
 import ec3.api.MagicianTableRecipes;
 import ec3.api.RadiatingChamberRecipe;
@@ -47,8 +52,10 @@ import ec3.api.RadiatingChamberRecipes;
 import ec3.api.ShapedFurnaceRecipe;
 import ec3.api.WorldEventLibrary;
 import ec3.common.entity.EntityMRUPresence;
+import ec3.common.inventory.InventoryMagicFilter;
 import ec3.common.item.ItemBaublesWearable;
 import ec3.common.item.ItemBoundGem;
+import ec3.common.item.ItemFilter;
 import ec3.common.mod.EssentialCraftCore;
 import ec3.common.registry.PotionRegistry;
 import ec3.common.tile.TileMRUReactor;
@@ -88,9 +95,11 @@ public class ECUtils {
 	public static Hashtable<String, Float> mruResistance = new Hashtable();
 	public static Hashtable<String, Boolean> ignoreMeta = new Hashtable();
 	public static List<SpellEntry> spells = new ArrayList();
-
+	public static Hashtable<Object,Integer> inPortalTime = new Hashtable();
+	
 	public static void createNBTTag(ItemStack stack)
 	{
+		
 		if(stack.hasTagCompound())
 		{
 			return;
@@ -173,6 +182,21 @@ public class ECUtils {
 		if(player.capabilities.isCreativeMode)
 		{
 			return true;
+		}
+		IInventory _gen_var_0_0 = BaublesApi.getBaubles(player);
+		for(int _gen_int_0 = 0; _gen_int_0 < _gen_var_0_0.getSizeInventory(); ++_gen_int_0)
+		{
+			ItemStack _gen_var_1 = _gen_var_0_0.getStackInSlot(_gen_int_0);
+			if(_gen_var_1 != null)
+			{
+				if(_gen_var_1.getItem() instanceof IMRUStorage)
+				{
+					if(((IMRUStorage)(_gen_var_1.getItem())).setMRU(_gen_var_1, amount))
+					{
+						return true;
+					}
+				}
+			}
 		}
 		InventoryPlayer _gen_var_0 = player.inventory;
 		for(int _gen_int_0 = 0; _gen_int_0 < _gen_var_0.mainInventory.length; ++_gen_int_0)
@@ -456,7 +480,7 @@ public class ECUtils {
 					{
 		    			if(p_76986_1_.getWorldObj().getTileEntity(o[0], o[1], o[2]) != null && p_76986_1_.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof ITEHasMRU)
 		    			{
-		    		        float f21 = (float)0 + p_76986_9_;
+		    		        float f21 = 0 + p_76986_9_;
 		    		        float f31 = MathHelper.sin(f21 * 0.2F) / 2.0F + 0.5F;
 		    		        f31 = (f31 * f31 + f31) * 0.2F;
 		    		        float f4;
@@ -522,15 +546,15 @@ public class ECUtils {
 		    		        GL11.glRotatef((float)(-Math.atan2((double)f7, (double)f5)) * 180.0F / (float)Math.PI - 90.0F, 1.0F, 0.0F, 0.0F);
 		    		        Tessellator tessellator = Tessellator.instance;
 		    		        RenderHelper.disableStandardItemLighting();
-		    		        GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
 		    		        GL11.glDisable(GL11.GL_CULL_FACE);
 		    		        MiscUtils.bindTexture("essentialcraft","textures/special/mru_beam.png");
 		    		        GL11.glShadeModel(GL11.GL_SMOOTH);
 		    		        GL11.glEnable(GL11.GL_BLEND);
-		    		        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+		    		        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		    		        GL11.glDisable(GL11.GL_ALPHA_TEST);
-		    	            float f9 = 1;
-		    	            float f10 = MathHelper.sqrt_float(f4 * f4 + f5 * f5 + f6 * f6) / 32.0F - (PlayerTickHandler.tickAmount + p_76986_9_) * 0.01F;
+		    		        GL11.glDisable(GL11.GL_LIGHTING);
+		    	            float f9 = 0.0F - ((float)Minecraft.getMinecraft().thePlayer.ticksExisted + p_76986_9_) * 0.01F;
+		    	            float f10 = MathHelper.sqrt_float(f4 * f4 + f5 * f5 + f6 * f6) / 32.0F - ((float)Minecraft.getMinecraft().thePlayer.ticksExisted + p_76986_9_) * 0.01F;
 		    		        tessellator.startDrawing(5);
 		    		        byte b0 = 8;
 		
@@ -539,9 +563,9 @@ public class ECUtils {
 		    		            float f11 = MathHelper.sin((float)(i % b0) * (float)Math.PI * 2.0F / (float)b0) * 0.75F * 0.2F;
 		    		            float f12 = MathHelper.cos((float)(i % b0) * (float)Math.PI * 2.0F / (float)b0) * 0.75F * 0.2F;
 		    		            float f13 = (float)(i % b0) * 1.0F / (float)b0;
-		    		            tessellator.setColorRGBA_F(colorRRender, colorGRender, colorBRender, 10F);
+		    		            tessellator.setColorRGBA_F(colorRRender, colorGRender, colorBRender, 1);
 		    		            tessellator.addVertexWithUV((double)(f11), (double)(f12), 0.0D, (double)f13, (double)f10);
-		    		            tessellator.setColorRGBA_F(colorRRender, colorGRender, colorBRender, 10F);
+		    		            tessellator.setColorRGBA_F(colorRRender, colorGRender, colorBRender, 1);
 		    		            tessellator.addVertexWithUV((double)f11, (double)f12, (double)f8, (double)f13, (double)f9);
 		    		        }
 		
@@ -550,6 +574,7 @@ public class ECUtils {
 		    		        GL11.glDisable(GL11.GL_BLEND);
 		    		        GL11.glShadeModel(GL11.GL_FLAT);
 		    		        GL11.glEnable(GL11.GL_ALPHA_TEST);
+		    		        GL11.glEnable(GL11.GL_LIGHTING);
 		    		        RenderHelper.enableStandardItemLighting();
 		    		        GL11.glPopMatrix();
 		    			}
@@ -651,7 +676,8 @@ public class ECUtils {
 	 * 4 - ShapedFurnaceRecipe
 	 * 5 - RadiatingChamberRecipe
 	 * 6 - MagicianTableRecipe
-	 * 7 - StructureRecipe
+	 * 7 - ?StructureRecipe
+	 * 8 - Assembler Recipe
 	 * @param searched The IS you want to find
 	 * @param recipeType ID
 	 * @return The actual recipe or null if none found
@@ -701,6 +727,8 @@ public class ECUtils {
 						return copyShapelessOreRecipe(mRecipe);
 				}
 			}
+			//A compathability patch
+			return !MagicalAssemblerRecipes.findRecipes(searched).isEmpty() ? MagicalAssemblerRecipes.findRecipes(searched).get(0) : null;
 		}
 		if(recipeType == 4)
 		{
@@ -736,6 +764,10 @@ public class ECUtils {
 		if(recipeType == 6)
 		{
 			return new MagicianTableRecipe(MagicianTableRecipes.getRecipeByResult(searched));
+		}
+		if(recipeType == 8)
+		{
+			return !MagicalAssemblerRecipes.findRecipes(searched).isEmpty() ? MagicalAssemblerRecipes.findRecipes(searched).get(0) : null;
 		}
 		return null;
 	}
@@ -790,6 +822,93 @@ public class ECUtils {
 			return null;
 		}
 		return ret;
+	}
+	
+	public static boolean canFilterAcceptItem(IInventory filterInventory, ItemStack is, ItemStack filter)
+	{
+		if(filter.getItemDamage() == 0)
+		{
+			for(int i = 0; i < filterInventory.getSizeInventory(); ++i)
+			{
+				ItemStack f = filterInventory.getStackInSlot(i);
+				if(f != null)
+				{
+					if(f.getItem() instanceof ItemFilter)
+					{
+						if(canFilterAcceptItem(new InventoryMagicFilter(f),is,f))return true;
+					}else
+					{
+						if(f.isItemEqual(is) && ItemStack.areItemStackTagsEqual(f, is))
+							return true;
+					}
+				}
+			}
+		}else
+		{
+			boolean ignoreMeta = MiscUtils.getStackTag(filter).getBoolean("ignoreMeta");
+			boolean ignoreNBT = MiscUtils.getStackTag(filter).getBoolean("ignoreNBT");
+			boolean ignoreOreDict = MiscUtils.getStackTag(filter).getBoolean("ignoreOreDict");
+			for(int i = 0; i < filterInventory.getSizeInventory(); ++i)
+			{
+				ItemStack f = filterInventory.getStackInSlot(i);
+				if(f != null)
+				{
+					if(f.getItem() instanceof ItemFilter)
+					{
+						if(canFilterAcceptItem(new InventoryMagicFilter(f),is,f))return true;
+					}else
+					{
+						List oreDictConversion = Arrays.asList(OreDictionary.getOreIDs(is));
+						List oreDictConversion_Filter = Arrays.asList(OreDictionary.getOreIDs(f));
+						if(oreDictConversion_Filter.toString().equals(oreDictConversion.toString()) || ignoreOreDict)
+						{
+							 if(ItemStack.areItemStackTagsEqual(f, is) || ignoreNBT)
+							 {
+								 return true;
+							 }
+						}else
+						{
+							 if(ItemStack.areItemStackTagsEqual(f, is) || ignoreNBT)
+							 {
+								 if(is.getItem() == f.getItem() && (is.getItemDamage() == f.getItemDamage() || ignoreMeta))
+									 return true;
+							 }
+						}
+					}
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	public static void spawnItemFX(TileEntity source, TileEntity destination)
+	{
+		double sX = source.xCoord + 0.5D;
+		double sY = source.yCoord + 0.5D;
+		double sZ = source.zCoord + 0.5D;
+		double mX = destination.xCoord+0.5D - sX;
+		double mY = destination.yCoord+0.5D - sY;
+		double mZ = destination.zCoord+0.5D - sZ;
+		String dataString = new String();
+		dataString += "||mod:EC3.Particle.Item";
+		dataString += "||x:"+sX+"||y:"+sY+"||z:"+sZ;
+		dataString += "||mX:"+mX+"||mY:"+mY+"||mZ:"+mZ;
+		DummyPacketIMSG pkt = new DummyPacketIMSG(dataString);
+		CoreInitialiser.packetHandler.sendToAll(pkt);
+	}
+	
+	public static void spawnItemFX(double sX, double sY, double sZ, double dX, double dY, double dZ)
+	{
+		double mX = dX - sX;
+		double mY = dY - sY;
+		double mZ = dZ - sZ;
+		String dataString = new String();
+		dataString += "||mod:EC3.Particle.Item";
+		dataString += "||x:"+sX+"||y:"+sY+"||z:"+sZ;
+		dataString += "||mX:"+mX+"||mY:"+mY+"||mZ:"+mZ;
+		DummyPacketIMSG pkt = new DummyPacketIMSG(dataString);
+		CoreInitialiser.packetHandler.sendToAll(pkt);
 	}
 	
 	public static GameProfile EC3FakePlayerProfile = new GameProfile(UUID.fromString("5cd89d0b-e9ba-0000-89f4-b5dbb05963da"), "[EC3]");

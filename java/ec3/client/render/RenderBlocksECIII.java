@@ -4,7 +4,10 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -17,17 +20,25 @@ import ec3.common.block.BlockCorruption_Light;
 import ec3.common.block.BlockCrystalController;
 import ec3.common.block.BlockCrystalExtractor;
 import ec3.common.block.BlockCrystalFormer;
+import ec3.common.block.BlockDarknessObelisk;
 import ec3.common.block.BlockDrops;
 import ec3.common.block.BlockEnderGenerator;
+import ec3.common.block.BlockFancy;
 import ec3.common.block.BlockFlowerBurner;
 import ec3.common.block.BlockHeatGenerator;
+import ec3.common.block.BlockMIM;
+import ec3.common.block.BlockMINEjector;
+import ec3.common.block.BlockMINInjector;
 import ec3.common.block.BlockMRUCoil_Coil;
 import ec3.common.block.BlockMRUCoil_Hardener;
 import ec3.common.block.BlockMRULevitator;
 import ec3.common.block.BlockMRUReactor;
 import ec3.common.block.BlockMRUSpreader;
+import ec3.common.block.BlockMagicalAssemblerCore;
+import ec3.common.block.BlockMagicalDisplay;
 import ec3.common.block.BlockMagicalEnchanter;
 import ec3.common.block.BlockMagicalJukebox;
+import ec3.common.block.BlockMagicalMirror;
 import ec3.common.block.BlockMagicalQuarry;
 import ec3.common.block.BlockMagicalRepairer;
 import ec3.common.block.BlockMagicianTable;
@@ -41,6 +52,8 @@ import ec3.common.block.BlockRadiatingChamber;
 import ec3.common.block.BlockRayTower;
 import ec3.common.block.BlockReactorSupport;
 import ec3.common.block.BlockSunRayAbsorber;
+import ec3.common.block.BlockUltraFlowerBurner;
+import ec3.common.block.BlockUltraHeatGenerator;
 import ec3.common.block.BlocksCore;
 import ec3.common.tile.TileMRUReactor;
 
@@ -65,12 +78,126 @@ public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 	        RenderChargingChamber.model.renderAll();
 	        GL11.glPopMatrix();
 		}
+		if(block instanceof BlockMagicalMirror)
+		{
+	        GL11.glPushMatrix();
+	        GL11.glTranslatef(0.5F,-0.5F,0.5F);
+	        Minecraft.getMinecraft().renderEngine.bindTexture(RenderMagicalMirror.textures);
+	        RenderMagicalMirror.model.renderPart("pCube2");
+	        Minecraft.getMinecraft().renderEngine.bindTexture(RenderMagicalMirror.glass);
+	        RenderMagicalMirror.model.renderPart("pPlane1");
+	        GL11.glPopMatrix();
+		}
+		if(block instanceof BlockMagicalAssemblerCore)
+		{
+	        GL11.glPushMatrix();
+	        GL11.glTranslatef(0F,-0.5F,0F);
+	        Minecraft.getMinecraft().renderEngine.bindTexture(RenderMagicalAssembler.textures);
+	        RenderMagicalAssembler.model.renderPart("pCube1");
+	        Minecraft.getMinecraft().renderEngine.bindTexture(RenderMagicalAssembler.texturesMRU);
+	        RenderMagicalAssembler.model.renderPart("pCube2");
+	        RenderMagicalAssembler.model.renderPart("pCube3");
+	        RenderMagicalAssembler.model.renderPart("pCube4");
+	        RenderMagicalAssembler.model.renderPart("pCylinder1");
+	        RenderMagicalAssembler.model.renderPart("pCylinder2");
+	        RenderMagicalAssembler.model.renderPart("pCylinder3");
+	        RenderMagicalAssembler.model.renderPart("pCylinder4");
+	        RenderMagicalAssembler.model.renderPart("pCylinder5");
+	        RenderMagicalAssembler.model.renderPart("pCylinder6");
+	        GL11.glPopMatrix();
+		}
+		if(block instanceof BlockMINEjector)
+		{
+			int x = 0;
+			int y = 0;
+			int z = 0;
+			float scaleindex = 1.0F;
+			boolean advanced = metadata > 5;
+			TextureManager render = Minecraft.getMinecraft().renderEngine;
+			GL11.glPushMatrix();
+			RenderHelper.disableStandardItemLighting();
+			GL11.glEnable(GL11.GL_BLEND);
+	        GL11.glDisable(GL11.GL_LIGHTING);
+	        GL11.glDisable(GL11.GL_CULL_FACE);
+	        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+			
+			GL11.glTranslated(x, y-0.5F, z);
+			GL11.glScalef(scaleindex, scaleindex, scaleindex);
+			render.bindTexture(RenderMINEjector.glass);
+			RenderMINEjector.model.renderPart("pPipe1");
+			if(!advanced)
+				render.bindTexture(RenderMINEjector.overlay);
+			else
+				render.bindTexture(RenderMINEjector.overlayA);
+			RenderMINEjector.model.renderPart("pCube2");
+			if(!advanced)
+				render.bindTexture(RenderMINEjector.rings);
+			else
+				render.bindTexture(RenderMINEjector.ringsA);
+			RenderMINEjector.model.renderPart("pTorus1");
+			RenderMINEjector.model.renderPart("pTorus2");
+			RenderMINEjector.model.renderPart("pTorus3");
+			RenderMINEjector.model.renderPart("pTorus4");
+			
+			GL11.glEnable(GL11.GL_LIGHTING);
+			GL11.glDisable(GL11.GL_BLEND);
+			RenderHelper.enableStandardItemLighting();
+			GL11.glPopMatrix();
+		}
+		if(block instanceof BlockMINInjector)
+		{
+			int x = 0;
+			int y = 0;
+			int z = 0;
+			float scaleindex = 1.0F;
+			boolean advanced = metadata > 5;
+			TextureManager render = Minecraft.getMinecraft().renderEngine;
+			GL11.glPushMatrix();
+			RenderHelper.disableStandardItemLighting();
+			GL11.glEnable(GL11.GL_BLEND);
+	        GL11.glDisable(GL11.GL_LIGHTING);
+	        GL11.glDisable(GL11.GL_CULL_FACE);
+	        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+			
+			GL11.glTranslated(x, y-0.5F, z);
+			GL11.glScalef(scaleindex, scaleindex, scaleindex);
+			render.bindTexture(RenderMINInjector.glass);
+			RenderMINInjector.model.renderPart("pPipe1");
+			if(!advanced)
+				render.bindTexture(RenderMINInjector.glass);
+			else
+				render.bindTexture(RenderMINInjector.glass);
+			RenderMINInjector.model.renderPart("pSphere1");
+			if(!advanced)
+				render.bindTexture(RenderMINInjector.rings);
+			else
+				render.bindTexture(RenderMINInjector.ringsA);
+			RenderMINInjector.model.renderPart("pTorus1");
+			RenderMINInjector.model.renderPart("pTorus2");
+			RenderMINInjector.model.renderPart("pTorus3");
+			RenderMINInjector.model.renderPart("pTorus4");
+			
+			GL11.glEnable(GL11.GL_LIGHTING);
+			GL11.glDisable(GL11.GL_BLEND);
+			RenderHelper.enableStandardItemLighting();
+			GL11.glPopMatrix();
+		}
 		if(block instanceof BlockCrystalController)
 		{
 	        GL11.glPushMatrix();
 	        GL11.glTranslatef(0F,-0.5F,0F);
 	        Minecraft.getMinecraft().renderEngine.bindTexture(RenderCrystalController.textures);
 	        RenderCrystalController.model.renderAll();
+	        GL11.glPopMatrix();
+		}
+		if(block instanceof BlockDarknessObelisk)
+		{
+	        GL11.glPushMatrix();
+	        GL11.glTranslatef(0F,-0.5F,0F);
+	        float f = 0.5F;
+	        GL11.glScalef(f, f, f);
+	        Minecraft.getMinecraft().renderEngine.bindTexture(RenderDarknessObelisk.obelisk);
+	        RenderDarknessObelisk.model.renderPart("pCube1");
 	        GL11.glPopMatrix();
 		}
 		if(block instanceof BlockCrystalFormer)
@@ -109,7 +236,7 @@ public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 		{
 	        GL11.glPushMatrix();
 	        GL11.glTranslatef(0F,-0.5F,0F);
-	        float scale = 0.5F;
+	        float scale = 1F;
 	        GL11.glScalef(scale, scale, scale);
 	        Minecraft.getMinecraft().renderEngine.bindTexture(RenderMatrixAbsorber.textures);
 	        RenderMatrixAbsorber.model.renderAll();
@@ -155,6 +282,14 @@ public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 	        RenderFlowerBurner.model.renderAll();
 	        GL11.glPopMatrix();
 		}
+		if(block instanceof BlockUltraFlowerBurner)
+		{
+	        GL11.glPushMatrix();
+	        GL11.glTranslatef(0F,-0.5F,0F);
+	        Minecraft.getMinecraft().renderEngine.bindTexture(RenderUltraFlowerBurner.textures);
+	        RenderUltraFlowerBurner.model.renderAll();
+	        GL11.glPopMatrix();
+		}
 		if(block instanceof BlockMagicianTable)
 		{
 	        GL11.glPushMatrix();
@@ -179,12 +314,20 @@ public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 	        RenderHeatGenerator.model.renderAll();
 	        GL11.glPopMatrix();
 		}
+		if(block instanceof BlockUltraHeatGenerator)
+		{
+	        GL11.glPushMatrix();
+	        GL11.glTranslatef(0F,-0.5F,0F);
+	        Minecraft.getMinecraft().renderEngine.bindTexture(RenderUltraHeatGenerator.textures);
+	        RenderUltraHeatGenerator.model.renderAll();
+	        GL11.glPopMatrix();
+		}
 		if(block instanceof BlockSunRayAbsorber)
 		{
 	        GL11.glPushMatrix();
 	        GL11.glTranslatef(0F,-0.6F,0F);
 	        Minecraft.getMinecraft().renderEngine.bindTexture(RenderSunRayAbsorber.textures);
-	        GL11.glScalef(0.01F, 0.01F, 0.01F);
+	        //GL11.glScalef(0.01F, 0.01F, 0.01F);
 	        RenderSunRayAbsorber.model.renderAll();
 	        GL11.glPopMatrix();
 		}
@@ -273,6 +416,16 @@ public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.moonWell.getIcon(0, 0),0.9F,0.9F,0.1F,0,0F,-0.45F);
 			renderInventoryBlockWithSize(renderer,Blocks.glass,Blocks.stained_glass.getIcon(0, 2),0.9F,0.7F,0.9F,0,-0.17F,0F);
 		}
+		if(block instanceof BlockMIM)
+		{
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.mim.getIcon(0, 0),1F,0.1F,1F,0,-0.5F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.mim.getIcon(0, 0),0.1F,1F,0.1F,0,0F,0);
+		}
+		if(block instanceof BlockMagicalDisplay)
+		{
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicalDisplay.getIcon(0, 0),1F,1F,0.1F,0,0F,0);
+		}
+		
 		if(block instanceof BlockMagicalQuarry)
 		{
 			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.fortifiedGlass.getIcon(0, 0),1F,1F,1F,0,0,0);
@@ -371,7 +524,11 @@ public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicPlating.getIcon(1, 0),0.9F,0.1F,0.1F,0F,0.6F,-0.4F);
 		}
 		
-		
+		if(block instanceof BlockFancy)
+		{
+			renderInventoryBlockWithSize(renderer,Blocks.glass,block.getIcon(1, 0),0.99F,0.99F,0.99F,0.0F,0.0F,0);
+			renderInventoryBlockWithSize(renderer,Blocks.glass,((BlockFancy)block).overlayIcons[metadata],1,1,1,0.0F,0.0F,0);
+		}
 		renderer.clearOverrideBlockTexture();
 	}
 	
@@ -428,6 +585,44 @@ public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 			renderer.renderStandardBlockWithColorMultiplier(Block.getBlockFromName("minecraft:glass"), x, y, z, 1.0F, 1.0F, 1.0F);
 			renderer.setRenderBounds(0.3D, 0, 0.5D, 0.5D, 0.1D, 0.7D);
 			renderer.renderStandardBlockWithColorMultiplier(Block.getBlockFromName("minecraft:glass"), x, y, z, 1.0F, 1.0F, 1.0F);
+		}
+		if(block instanceof BlockMagicalDisplay)
+		{
+			renderer.setOverrideBlockTexture(block.getBlockTextureFromSide(0));
+			switch(metadata)
+			{
+				case 0:
+				{
+					renderer.setRenderBounds(0, 0.95D, 0, 1, 1D, 1);
+					break;
+				}
+				case 1:
+				{
+					renderer.setRenderBounds(0, 0D, 0, 1, 0.05D, 1);
+					break;
+				}
+				case 2:
+				{
+					renderer.setRenderBounds(0, 0D, 0.95D, 1, 1D, 1);
+					break;
+				}
+				case 3:
+				{
+					renderer.setRenderBounds(0, 0D, 0D, 1, 1D, 0.05D);
+					break;
+				}
+				case 4:
+				{
+					renderer.setRenderBounds(0.95D, 0D, 0D, 1, 1D, 1);
+					break;
+				}
+				case 5:
+				{
+					renderer.setRenderBounds(0D, 0D, 0D, 0.05D, 1D, 1);
+					break;
+				}
+			}
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
 		}
 		if(block instanceof BlockRayTower)
 		{
@@ -814,7 +1009,24 @@ public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 			renderer.renderAllFaces = false;
 		}
 		
+		if(block instanceof BlockFancy)
+		{
+			renderer.setOverrideBlockTexture(block.getIcon(0, metadata));
+			renderer.setRenderBounds(0.00D,0.00D,0.0D, 1D,1D,1D);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			renderer.setOverrideBlockTexture(((BlockFancy)block).overlayIcons[metadata]);
+			renderer.setRenderBounds(-0.001D,-0.001D,-0.001D, 1.001D,1.001D,1.001D);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+		}
 		
+		if(block instanceof BlockMIM)
+		{
+			renderer.setOverrideBlockTexture(block.getIcon(0, metadata));
+			renderer.setRenderBounds(0, 0, 0, 1, 0.1, 1);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+			renderer.setRenderBounds(0.45, 0, 0.45, 0.55, 1, 0.55);
+			renderer.renderStandardBlock(Blocks.glass, x, y, z);
+		}
 		renderer.clearOverrideBlockTexture();
 		return true;
 	}

@@ -22,7 +22,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.config.Configuration;
 import DummyCore.Utils.Coord3D;
+import DummyCore.Utils.DataStorage;
+import DummyCore.Utils.DummyData;
 import DummyCore.Utils.DummyDistance;
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
@@ -46,10 +49,17 @@ public class TileMagicalEnchanter extends TileMRUGeneric{
     public float field_145925_p;
     public float field_145924_q;
     private static Random field_145923_r = new Random();
+    
+	public static float cfgMaxMRU = ApiCore.DEVICE_MAX_MRU_GENERIC;
+	public static boolean generatesCorruption = false;
+	public static int genCorruption = 2;
+	public static int mruUsage = 100;
+	public static int maxEnchantmentLevel = 60;
 	
 	public TileMagicalEnchanter()
 	{
-		this.maxMRU = (int) ApiCore.DEVICE_MAX_MRU_GENERIC;
+		 super();
+		this.maxMRU = (int)cfgMaxMRU;
 		this.setSlotsNum(3);
 	}
 	
@@ -74,8 +84,8 @@ public class TileMagicalEnchanter extends TileMRUGeneric{
     			}
     		}
 		}
-		
-		this.tryEnchant();
+		if(!this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord))
+			this.tryEnchant();
 		
         this.field_145927_n = this.field_145930_m;
         this.field_145925_p = this.field_145928_o;
@@ -194,8 +204,10 @@ public class TileMagicalEnchanter extends TileMRUGeneric{
     {
     	if(this.canItemBeEnchanted() && !this.worldObj.isRemote)
     	{
-    		if(this.setMRU(this.getMRU()-100))
+    		if(this.setMRU(this.getMRU()-mruUsage))
     		{
+				if(generatesCorruption)
+					ECUtils.increaseCorruptionAt(worldObj, xCoord, yCoord, zCoord, this.worldObj.rand.nextInt(genCorruption));
 	    		++this.progressLevel;
 	    		if(this.progressLevel >= this.getRequiredTimeToAct())
 	    		{
@@ -269,8 +281,8 @@ public class TileMagicalEnchanter extends TileMRUGeneric{
             	}
         	}
     	}
-    	if(l > 60)
-    		l = 60;
+    	if(l > maxEnchantmentLevel)
+    		l = maxEnchantmentLevel;
     	return l;
     }
     
@@ -278,7 +290,7 @@ public class TileMagicalEnchanter extends TileMRUGeneric{
     {
     	try {
 			ItemStack s = this.getStackInSlot(1);
-			if(s != null && this.getMaxPower() > 0 && this.getMRU() > 100 && this.getStackInSlot(2) == null)
+			if(s != null && this.getMaxPower() > 0 && this.getMRU() > mruUsage && this.getStackInSlot(2) == null)
 			{
 				if(s.isItemEnchantable() && this.getEnchantmentsForStack(s) != null && !this.getEnchantmentsForStack(s).isEmpty())
 				{
@@ -289,6 +301,38 @@ public class TileMagicalEnchanter extends TileMRUGeneric{
 		} catch (Exception e) {
 			return false;
 		}
+    }
+    
+    public static void setupConfig(Configuration cfg)
+    {
+    	try
+    	{
+	    	cfg.load();
+	    	String[] cfgArrayString = cfg.getStringList("MagicalEnchanterSettings", "tileentities", new String[]{
+	    			"Max MRU:"+ApiCore.DEVICE_MAX_MRU_GENERIC,
+	    			"MRU Usage:100",
+	    			"Max level of enchantment:60",
+	    			"Can this device actually generate corruption:false",
+	    			"The amount of corruption generated each tick(do not set to 0!):2"
+	    			},"");
+	    	String dataString="";
+	    	
+	    	for(int i = 0; i < cfgArrayString.length; ++i)
+	    		dataString+="||"+cfgArrayString[i];
+	    	
+	    	DummyData[] data = DataStorage.parseData(dataString);
+	    	
+	    	mruUsage = Integer.parseInt(data[1].fieldValue);
+	    	maxEnchantmentLevel = Integer.parseInt(data[2].fieldValue);
+	    	cfgMaxMRU = Float.parseFloat(data[0].fieldValue);
+	    	generatesCorruption = Boolean.parseBoolean(data[3].fieldValue);
+	    	genCorruption = Integer.parseInt(data[4].fieldValue);
+	    	
+	    	cfg.save();
+    	}catch(Exception e)
+    	{
+    		return;
+    	}
     }
 
 }

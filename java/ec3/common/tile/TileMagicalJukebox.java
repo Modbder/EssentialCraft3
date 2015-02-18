@@ -44,6 +44,7 @@ public class TileMagicalJukebox extends TileMRUGeneric{
 	
 	public TileMagicalJukebox()
 	{
+		 super();
 		this.maxMRU = (int) ApiCore.DEVICE_MAX_MRU_GENERIC;
 		this.setSlotsNum(2);
 	}

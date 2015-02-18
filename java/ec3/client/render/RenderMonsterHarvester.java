@@ -61,9 +61,6 @@ public class RenderMonsterHarvester extends TileEntitySpecialRenderer
     public void doRender(TileEntity p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_)
     {
     	RenderHelper.disableStandardItemLighting();
-    	GL11.glPushMatrix(); 
-    	ECUtils.renderMRUBeam(p_76986_1_, 0, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
-    	GL11.glPopMatrix();
     	
         GL11.glPushMatrix();
         GL11.glTranslatef((float)p_76986_2_+0.5F, (float)p_76986_4_, (float)p_76986_6_+0.5F);
@@ -94,6 +91,10 @@ public class RenderMonsterHarvester extends TileEntitySpecialRenderer
     	MiscUtils.renderItemStack_Full(tile.getStackInSlot(5),p_76986_1_.xCoord+0.5D,p_76986_1_.yCoord+10D , p_76986_1_.zCoord+0.5D, p_76986_2_, p_76986_4_, p_76986_6_, rotation,0F, 1, 1, 1, 0.7F, 1.15F,0.7F);
     	GL11.glPopMatrix();
     	RenderHelper.enableStandardItemLighting();
+    	
+    	GL11.glPushMatrix(); 
+    	ECUtils.renderMRUBeam(p_76986_1_, 0, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
+    	GL11.glPopMatrix();
     }
 
     /**

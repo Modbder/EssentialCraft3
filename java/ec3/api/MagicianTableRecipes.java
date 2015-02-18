@@ -12,47 +12,77 @@ import cpw.mods.fml.relauncher.Side;
 import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
 import DummyCore.Utils.Notifier;
+import DummyCore.Utils.UnformedItemStack;
 
 public class MagicianTableRecipes {
 	
-	public static final Hashtable<String,MagicianTableRecipe> recipes = new Hashtable<String,MagicianTableRecipe>();
+	public static final Hashtable<List<UnformedItemStack>,MagicianTableRecipe> recipes = new Hashtable<List<UnformedItemStack>,MagicianTableRecipe>();
 	public static final Hashtable<String,MagicianTableRecipe> recipesByIS = new Hashtable<String,MagicianTableRecipe>();
-	public static final List<String> craftMatrixByID = new ArrayList<String>();
+	public static final List<List<UnformedItemStack>> craftMatrixByID = new ArrayList<List<UnformedItemStack>>();
+	
+	public static List<MagicianTableRecipe> getRecipiesByComponent(ItemStack component)
+	{
+		List<MagicianTableRecipe> retLst = new ArrayList();
+		for(List<UnformedItemStack> lst : craftMatrixByID)
+		{
+			for(UnformedItemStack stk : lst)
+			{
+				if(stk.itemStackMatches(component))
+					retLst.add(recipes.get(lst));
+			}
+		}
+		return retLst;
+	}
 	
 	public static MagicianTableRecipe getRecipeByResult(ItemStack result)
 	{
-		ItemStack req = result.copy();
-		req.stackSize = 0;
-		String searchStr = req.toString();
-		req = null;
+		ItemStack search = result.copy();
+		search.stackSize = 0;
+		String searchStr = search.toString();
+		search = null;
 		return recipesByIS.get(searchStr);
 	}
 	
+	public static List<UnformedItemStack> getUnformedStkByItemStacks(ItemStack[] pair)
+	{
+		boolean allNull = true;
+		for(int i = 0; i < pair.length; ++i)
+		{
+			if(pair[i] != null)
+				allNull = false;
+		}
+		if(allNull)return new ArrayList();
+		ForLST:for(List<UnformedItemStack> lst : craftMatrixByID)
+		{
+			ForSize:for(int i = 0; i < lst.size(); ++i)
+			{
+				UnformedItemStack stack = lst.get(i);
+				{
+					if((stack == null || stack.possibleStacks.isEmpty()) && pair[i] == null)
+					{
+						continue ForSize;
+					}
+					if(!stack.itemStackMatches(pair[i]))
+						continue ForLST;
+				}
+			}
+			return lst;
+		}
+		return new ArrayList();
+	}
+
+	
 	public static MagicianTableRecipe getRecipeByCP(ItemStack[] craftingPair)
 	{
-		ItemStack[] req = new ItemStack[craftingPair.length];
-		for(int i = 0; i < req.length;++i)
-		{
-			if(craftingPair[i] != null)
-				req[i] = craftingPair[i].copy();
-			else
-				req[i] = null;
-		}
-		for(int i = 0; i < req.length; ++i)
-		{
-			if(req[i] != null)
-				req[i].stackSize = 0;
-		}
-		String searchStr = Arrays.toString(req);
-		req = null;
-		return recipes.get(searchStr);
+		List<UnformedItemStack> lst = getUnformedStkByItemStacks(craftingPair);
+		return recipes.get(lst);
 	}
 	
 	public static boolean addRecipe(MagicianTableRecipe rec)
 	{
 		try
 		{
-			ItemStack[] req = new ItemStack[rec.requiredItems.length];
+			UnformedItemStack[] req = new UnformedItemStack[rec.requiredItems.length];
 			for(int i = 0; i < req.length;++i)
 			{
 				if(rec.requiredItems[i] != null)
@@ -60,18 +90,13 @@ public class MagicianTableRecipes {
 				else
 					req[i] = null;
 			}
-			for(int i = 0; i < req.length; ++i)
-			{
-				if(req[i] != null)
-					req[i].stackSize = 0;
-			}
-			recipes.put(Arrays.toString(req), rec);
+			recipes.put(Arrays.asList(req), rec);
 			ItemStack result = rec.result.copy();
 			result.stackSize = 0;
 			String searchStr = result.toString();
 			result = null;
 			recipesByIS.put(searchStr, rec);
-			craftMatrixByID.add(Arrays.toString(req));
+			craftMatrixByID.add(Arrays.asList(req));
 			req = null;
 			return true;
 		}catch(Exception e)
@@ -86,6 +111,25 @@ public class MagicianTableRecipes {
 	{
 		try
 		{
+			UnformedItemStack[] unformedStacks = new UnformedItemStack[craftingPair.length];
+			for(int i = 0; i < craftingPair.length; ++i)
+			{
+				unformedStacks[i] = new UnformedItemStack(craftingPair[i]);
+			}
+			MagicianTableRecipe addedRecipe = new MagicianTableRecipe(unformedStacks, result, mruRequired);
+			return addRecipe(addedRecipe);
+		}catch(Exception e)
+		{
+			Side side = FMLCommonHandler.instance().getEffectiveSide();
+			Notifier.notifyCustomMod("EssentialCraftAPI","Unable to add ore recipe "+Arrays.toString(craftingPair)+" with the result "+result+" on side "+side);
+			return false;
+		}
+	}
+	
+	public static boolean addRecipeIS(UnformedItemStack[] craftingPair, ItemStack result, int mruRequired)
+	{
+		try
+		{
 			MagicianTableRecipe addedRecipe = new MagicianTableRecipe(craftingPair, result, mruRequired);
 			return addRecipe(addedRecipe);
 		}catch(Exception e)
@@ -96,44 +140,17 @@ public class MagicianTableRecipes {
 		}
 	}
 	
-	public static boolean addRecipeOreDict(String[] craftingPair, String result, int mruRequired)
+	public static boolean addRecipeOreDict(String[] craftingPair, ItemStack result, int mruRequired)
 	{
 		try
 		{
-			List<ItemStack>[] stkLists = new List[6];
-			for(int i = 0; i < 5; ++i)
+			UnformedItemStack[] unformedStack = new UnformedItemStack[craftingPair.length];
+			for(int i = 0; i < unformedStack.length; ++i)
 			{
-				List<ItemStack> stkHoldList = OreDictionary.getOres(craftingPair[i]);
-				stkLists[i].addAll(stkHoldList);
+				unformedStack[i] = new UnformedItemStack(craftingPair[i]);
 			}
-			List<ItemStack> stkHoldList = OreDictionary.getOres(result);
-			stkLists[5].addAll(stkHoldList);
-			for(int i = 0; i < stkLists[0].size(); ++i)
-			{
-				for(int i1 = 0; i1 < stkLists[1].size(); ++i1)
-				{
-					for(int i2 = 0; i2 < stkLists[2].size(); ++i2)
-					{
-						for(int i3 = 0; i3 < stkLists[3].size(); ++i3)
-						{
-							for(int i4 = 0; i4 < stkLists[4].size(); ++i4)
-							{
-								for(int i5 = 0; i5 < stkLists[5].size(); ++i5)
-								{
-									ItemStack[] c = new ItemStack[5];
-									c[0] = stkLists[0].get(i);
-									c[1] = stkLists[1].get(i1);
-									c[2] = stkLists[2].get(i2);
-									c[3] = stkLists[3].get(i3);
-									c[4] = stkLists[4].get(i4);
-									addRecipeIS(c,stkLists[5].get(i),mruRequired);
-								}
-							}
-						}
-					}
-				}
-			}
-			return true;
+			MagicianTableRecipe addedRecipe = new MagicianTableRecipe(unformedStack, result, mruRequired);
+			return addRecipe(addedRecipe);
 		}catch(Exception e)
 		{
 			Side side = FMLCommonHandler.instance().getEffectiveSide();

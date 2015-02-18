@@ -11,6 +11,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ec3.common.block.BlocksCore;
 import ec3.common.registry.PotionRegistry;
 import ec3.network.proxy.ClientProxy;
+import ec3.utils.common.ECUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.Gui;
@@ -162,7 +163,6 @@ public class RenderHandlerEC3 {
 			if(event.entityLiving instanceof EntityClientPlayerMP)
 			{
 				EntityClientPlayerMP player = (EntityClientPlayerMP) event.entityLiving;
-				/*
 			    if(mc.thePlayer.getActivePotionEffect(PotionRegistry.paradox) != null)
 			    {
 			    	int duration = mc.thePlayer.getActivePotionEffect(PotionRegistry.paradox).getDuration();
@@ -188,7 +188,7 @@ public class RenderHandlerEC3 {
 			    	currentParadoxTicks = 0;
 		    		paradoxID = -1;
 		    		isParadoxActive = false;
-			    }*/
+			    }
 			}
 	}
 	
@@ -223,9 +223,9 @@ public class RenderHandlerEC3 {
 			    
 			    if(mc.thePlayer.getActivePotionEffect(PotionRegistry.chaosInfluence) != null)
 			    {
-			        GL11.glDisable(GL11.GL_ALPHA_TEST);
 			        GL11.glDisable(GL11.GL_DEPTH_TEST);
 			        GL11.glDepthMask(false);
+			    	GL11.glEnable(GL11.GL_BLEND);
 			        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
 			        GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.3F);
 			        IIcon iicon = BlocksCore.lightCorruption[0].getIcon(0, 7);
@@ -243,17 +243,16 @@ public class RenderHandlerEC3 {
 			        tessellator.draw();
 			        GL11.glDepthMask(true);
 			        GL11.glEnable(GL11.GL_DEPTH_TEST);
-			        GL11.glEnable(GL11.GL_ALPHA_TEST);
 			        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			    }
 			    
-			    if(mc.thePlayer.getActivePotionEffect(PotionRegistry.windTouch) != null && mc.thePlayer.getActivePotionEffect(PotionRegistry.windTouch).getAmplifier() > 1)
+			    if(ECUtils.inPortalTime.containsKey(Minecraft.getMinecraft().thePlayer))
 			    {
-			        GL11.glDisable(GL11.GL_ALPHA_TEST);
+			    	int i = ECUtils.inPortalTime.get(Minecraft.getMinecraft().thePlayer);
 			        GL11.glDisable(GL11.GL_DEPTH_TEST);
 			        GL11.glDepthMask(false);
-			        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-			        GL11.glColor4f(0F, 10F, 0F, ((float)mc.thePlayer.getActivePotionEffect(PotionRegistry.windTouch).getAmplifier()/23F));
+			    	GL11.glEnable(GL11.GL_BLEND);
+			        GL11.glColor4f(0F, 10F, 0F, ((float)i)/200);
 			        IIcon iicon = Blocks.lava.getBlockTextureFromSide(0);
 			        mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
 			        float f1 = iicon.getMinU();
@@ -269,15 +268,14 @@ public class RenderHandlerEC3 {
 			        tessellator.draw();
 			        GL11.glDepthMask(true);
 			        GL11.glEnable(GL11.GL_DEPTH_TEST);
-			        GL11.glEnable(GL11.GL_ALPHA_TEST);
 			        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			    }
 			    
 			    if(mc.thePlayer.getActivePotionEffect(PotionRegistry.frozenMind) != null)
 			    {
-			        GL11.glDisable(GL11.GL_ALPHA_TEST);
 			        GL11.glDisable(GL11.GL_DEPTH_TEST);
 			        GL11.glDepthMask(false);
+			    	GL11.glEnable(GL11.GL_BLEND);
 			        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
 			        GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.3F);
 			        IIcon iicon = BlocksCore.lightCorruption[1].getIcon(0, 7);
@@ -295,7 +293,6 @@ public class RenderHandlerEC3 {
 			        tessellator.draw();
 			        GL11.glDepthMask(true);
 			        GL11.glEnable(GL11.GL_DEPTH_TEST);
-			        GL11.glEnable(GL11.GL_ALPHA_TEST);
 			        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			    }
 			    /*

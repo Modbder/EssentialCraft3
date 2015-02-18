@@ -2,10 +2,14 @@ package ec3.common.tile;
 
 import java.util.List;
 
+import ec3.api.ApiCore;
 import ec3.common.block.BlocksCore;
+import ec3.common.mod.EssentialCraftCore;
 import ec3.common.registry.BiomeRegistry;
 import ec3.common.registry.PotionRegistry;
 import ec3.utils.common.ECUtils;
+import DummyCore.Utils.DataStorage;
+import DummyCore.Utils.DummyData;
 import DummyCore.Utils.MiscUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,9 +24,13 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.config.Configuration;
 
 public class TileCorruption extends TileEntity
 {
+	
+	public static boolean canChangeBiome = true, canDestroyBlocks = true;
+	
 	@Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
     {
@@ -37,11 +45,14 @@ public class TileCorruption extends TileEntity
 	
 	public void changeBiomeAtPos(int biomeID)
 	{
-		MiscUtils.changeBiome(worldObj, BiomeGenBase.getBiomeGenArray()[biomeID], xCoord, zCoord);
-        NBTTagCompound nbttagcompound = new NBTTagCompound();
-        nbttagcompound.setInteger("biomeID", biomeID);
-        S35PacketUpdateTileEntity pkt = new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, -11, nbttagcompound);
-        MiscUtils.sendPacketToAllAround(worldObj, pkt, xCoord, yCoord, zCoord, worldObj.provider.dimensionId, 32);
+		if(canChangeBiome)
+		{
+			MiscUtils.changeBiome(worldObj, BiomeGenBase.getBiomeGenArray()[biomeID], xCoord, zCoord);
+	        NBTTagCompound nbttagcompound = new NBTTagCompound();
+	        nbttagcompound.setInteger("biomeID", biomeID);
+	        S35PacketUpdateTileEntity pkt = new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, -11, nbttagcompound);
+	        MiscUtils.sendPacketToAllAround(worldObj, pkt, xCoord, yCoord, zCoord, worldObj.provider.dimensionId, 32);
+		}
 	}
 	
     public void addPotionEffectAtEntity(EntityLivingBase e, PotionEffect p)
@@ -99,7 +110,7 @@ public class TileCorruption extends TileEntity
 					changeBiomeAtPos(biomeId);
 			}
 			int metadata = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-			if(metadata >= 7)
+			if(metadata >= 7 && canDestroyBlocks)
 			{
 				if(this.worldObj.getBlock(xCoord+1, yCoord, zCoord).isBlockSolid(worldObj, xCoord+1, yCoord, zCoord, 0))
 				{
@@ -132,5 +143,26 @@ public class TileCorruption extends TileEntity
 			e.printStackTrace();
 			return;
 		}
+    }
+    
+    public static void setupConfig(Configuration cfg)
+    {
+    	try
+    	{
+	    	cfg.load();
+	    	String[] cfgArrayString = cfg.getStringList("CorruptionSettings", "tileentities", new String[]{"Change Biome:true","Destroy Blocks if grown:true"}, "Settings of the given Device.");
+	    	String dataString="";
+	    	
+	    	for(int i = 0; i < cfgArrayString.length; ++i)
+	    		dataString+="||"+cfgArrayString[i];
+	    	
+	    	DummyData[] data = DataStorage.parseData(dataString);
+	    	canChangeBiome = Boolean.parseBoolean(data[0].fieldValue);
+	    	canDestroyBlocks = Boolean.parseBoolean(data[1].fieldValue);
+	    	cfg.save();
+    	}catch(Exception e)
+    	{
+    		return;
+    	}
     }
 }

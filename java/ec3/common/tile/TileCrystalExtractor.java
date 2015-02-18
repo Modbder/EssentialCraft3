@@ -13,8 +13,11 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.FakePlayer;
 import DummyCore.Utils.Coord3D;
+import DummyCore.Utils.DataStorage;
+import DummyCore.Utils.DummyData;
 import DummyCore.Utils.DummyDistance;
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
@@ -29,10 +32,14 @@ import ec3.utils.common.ECUtils;
 public class TileCrystalExtractor extends TileMRUGeneric{
 	
 	public int progressLevel;
+	public static float cfgMaxMRU = ApiCore.DEVICE_MAX_MRU_GENERIC;
+	public static int mruUsage = 100;
+	public static int requiredTime = 1000;
 	
 	public TileCrystalExtractor()
 	{
-		this.maxMRU = (int) ApiCore.DEVICE_MAX_MRU_GENERIC;
+		 super();
+		this.maxMRU = (int)cfgMaxMRU;
 		this.setSlotsNum(13);
 	}
 	
@@ -57,7 +64,8 @@ public class TileCrystalExtractor extends TileMRUGeneric{
     			}
     		}
 		}
-		this.doWork();
+		if(!this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord))
+			this.doWork();
     	this.spawnParticles();
     	
 	}
@@ -66,13 +74,13 @@ public class TileCrystalExtractor extends TileMRUGeneric{
     {
     	if(canWork())
     	{
-    		if(this.getMRU() > 100)
+    		if(this.getMRU() > mruUsage)
     		{
     			if(!this.worldObj.isRemote)
     			{
-    				if(this.setMRU(this.getMRU()-100))
+    				if(this.setMRU(this.getMRU()-mruUsage))
     				++this.progressLevel;
-        			if(this.progressLevel >= 1000)
+        			if(this.progressLevel >= requiredTime)
         			{
         				this.progressLevel = 0;
         				this.createItems();
@@ -209,5 +217,33 @@ public class TileCrystalExtractor extends TileMRUGeneric{
     {
     	AxisAlignedBB bb = INFINITE_EXTENT_AABB;
     	return bb;
+    }
+    
+    public static void setupConfig(Configuration cfg)
+    {
+    	try
+    	{
+	    	cfg.load();
+	    	String[] cfgArrayString = cfg.getStringList("CrystalExtractorSettings", "tileentities", new String[]{
+	    			"Max MRU:"+ApiCore.DEVICE_MAX_MRU_GENERIC,
+	    			"MRU Usage:100",
+	    			"Ticks required to get an essence:1000"
+	    			},"");
+	    	String dataString="";
+	    	
+	    	for(int i = 0; i < cfgArrayString.length; ++i)
+	    		dataString+="||"+cfgArrayString[i];
+	    	
+	    	DummyData[] data = DataStorage.parseData(dataString);
+	    	
+	    	mruUsage = Integer.parseInt(data[1].fieldValue);
+	    	requiredTime = Integer.parseInt(data[2].fieldValue);
+	    	cfgMaxMRU = Float.parseFloat(data[0].fieldValue);
+	    	
+	    	cfg.save();
+    	}catch(Exception e)
+    	{
+    		return;
+    	}
     }
 }

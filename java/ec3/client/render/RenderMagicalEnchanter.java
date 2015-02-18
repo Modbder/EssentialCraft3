@@ -64,9 +64,6 @@ public class RenderMagicalEnchanter extends TileEntitySpecialRenderer
     {
     	RenderHelper.disableStandardItemLighting();
     	TileMagicalEnchanter p_147500_1_ = (TileMagicalEnchanter) p_76986_1_;
-    	GL11.glPushMatrix(); 
-    	ECUtils.renderMRUBeam(p_76986_1_, 0, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
-    	GL11.glPopMatrix();
     	
         GL11.glPushMatrix();
         GL11.glTranslatef((float)p_76986_2_+0.5F, (float)p_76986_4_, (float)p_76986_6_+0.5F);
@@ -124,6 +121,8 @@ public class RenderMagicalEnchanter extends TileEntitySpecialRenderer
         this.book.render((Entity)null, f1, f4, f5, f6, 0.0F, 0.0625F);
         GL11.glPopMatrix();
         RenderHelper.enableStandardItemLighting();
+
+    	ECUtils.renderMRUBeam(p_76986_1_, 0, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
     }
 
     /**

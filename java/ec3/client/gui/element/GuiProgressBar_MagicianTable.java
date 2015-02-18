@@ -32,8 +32,8 @@ public class GuiProgressBar_MagicianTable extends GuiTextField{
 	@Override
 	public void draw(int posX, int posY) {
 		MiscUtils.bindTexture("essentialcraft", "textures/gui/gui_magicianTable.png");
-		int current = tile.progressLevel;
-		int max = tile.progressRequired;
+		int current = (int) tile.progressLevel;
+		int max = (int) tile.progressRequired;
 		int progress = MathUtils.pixelatedTextureSize(current, max, 18);
 		this.drawTexturedModalRect(posX, posY, 0, 0, 54, 54);
 		this.drawTexturedModalRect(posX, posY+18, 54, 18, progress, 18);

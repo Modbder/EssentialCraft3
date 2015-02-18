@@ -54,6 +54,12 @@ public class PotionRegistry {
         	radiation = new PotionRadiation(pStart, true, 0x660066);
         }
         
+        pStart = getNextPotionId(pStart);
+        if(pStart >= 0)
+        {
+        	paradox = new PotionMindfoldParadox(pStart, true, 0xffffff);
+        }
+        
 	}
 	
     static int getNextPotionId(int start)

@@ -13,8 +13,11 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.FakePlayer;
 import DummyCore.Utils.Coord3D;
+import DummyCore.Utils.DataStorage;
+import DummyCore.Utils.DummyData;
 import DummyCore.Utils.DummyDistance;
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
@@ -25,12 +28,18 @@ import ec3.common.item.ItemGenericEC3;
 import ec3.utils.common.ECUtils;
 
 public class TileMonsterHarvester extends TileMRUGeneric{
-	public float rad = 12F;
+	public static float rad = 12F;
 	public float rotation = 0F;
+	public static float cfgMaxMRU = ApiCore.DEVICE_MAX_MRU_GENERIC;
+	public static boolean generatesCorruption = false;
+	public static int genCorruption = 10;
+	public static int mruUsage = 100;
+	public static int mobDestructionTimer = 1440;
 	
 	public TileMonsterHarvester()
 	{
-		this.maxMRU = (int) ApiCore.DEVICE_MAX_MRU_GENERIC;
+		 super();
+		this.maxMRU = (int)cfgMaxMRU;
 		this.setSlotsNum(6);
 	}
 	
@@ -55,32 +64,37 @@ public class TileMonsterHarvester extends TileMRUGeneric{
     			}
     		}
 		}
-    	List<EntityLivingBase> lst = tile.getWorldObj().getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(tile.xCoord-16, tile.yCoord-16, tile.zCoord-16, tile.xCoord+16, tile.yCoord+16, tile.zCoord+16));
-    	if(!lst.isEmpty() && !this.worldObj.isRemote)
-    	{
-    		for(int i = 0; i < lst.size(); ++i)
-    		{
-    			EntityLivingBase e = lst.get(i);
-    			if(!(e instanceof EntityPlayer))
-    			{
-    				if(getMRU() > 100 && this.worldObj.getWorldTime() % 1440 == 0)
-    				{
-    					EntityLivingBase copy = (EntityLivingBase) MiscUtils.cloneEntity(e);
-    					this.worldObj.spawnEntityInWorld(copy);
-    					FakePlayer player = new FakePlayer((WorldServer) e.worldObj, ECUtils.EC3FakePlayerProfile);
-    					ItemStack stk = this.getStackInSlot(2);
-    					if(stk != null)
-    						player.inventory.setInventorySlotContents(player.inventory.currentItem, stk.copy());
-    					copy.setHealth(0.1F);
-    					player.attackTargetEntityWithCurrentItem(copy);
-    					player.setDead();
-    					this.setMRU(this.getMRU()-100);
-    					if(copy.getHealth() > 0)
-    						copy.setDead();
-    				}
-    			}
-    		}
-    	}
+		if(!this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord))
+		{
+	    	List<EntityLivingBase> lst = tile.getWorldObj().getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(tile.xCoord-16, tile.yCoord-16, tile.zCoord-16, tile.xCoord+16, tile.yCoord+16, tile.zCoord+16));
+	    	if(!lst.isEmpty() && !this.worldObj.isRemote)
+	    	{
+	    		for(int i = 0; i < lst.size(); ++i)
+	    		{
+	    			EntityLivingBase e = lst.get(i);
+	    			if(!(e instanceof EntityPlayer))
+	    			{
+	    				if(getMRU() > mruUsage && this.worldObj.getWorldTime() % mobDestructionTimer == 0)
+	    				{
+	    					EntityLivingBase copy = (EntityLivingBase) MiscUtils.cloneEntity(e);
+	    					this.worldObj.spawnEntityInWorld(copy);
+	    					FakePlayer player = new FakePlayer((WorldServer) e.worldObj, ECUtils.EC3FakePlayerProfile);
+	    					ItemStack stk = this.getStackInSlot(2);
+	    					if(stk != null)
+	    						player.inventory.setInventorySlotContents(player.inventory.currentItem, stk.copy());
+	    					copy.setHealth(0.1F);
+	    					player.attackTargetEntityWithCurrentItem(copy);
+	    					player.setDead();
+	    					this.setMRU(this.getMRU()-mruUsage);
+	    					if(copy.getHealth() > 0)
+	    						copy.setDead();
+	    	    			if(generatesCorruption)
+	    	    				ECUtils.increaseCorruptionAt(worldObj, xCoord, yCoord, zCoord, this.worldObj.rand.nextInt(genCorruption));
+	    				}
+	    			}
+	    		}
+	    	}
+		}
 	}
 	
     @SideOnly(Side.CLIENT)
@@ -89,5 +103,39 @@ public class TileMonsterHarvester extends TileMRUGeneric{
     {
     	AxisAlignedBB bb = INFINITE_EXTENT_AABB;
     	return bb;
+    }
+    
+    public static void setupConfig(Configuration cfg)
+    {
+    	try
+    	{
+	    	cfg.load();
+	    	String[] cfgArrayString = cfg.getStringList("MonsterDuplicatorSettings", "tileentities", new String[]{
+	    			"Max MRU:"+ApiCore.DEVICE_MAX_MRU_GENERIC,
+	    			"MRU Usage Per Mob:100",
+	    			"Can this device actually generate corruption:false",
+	    			"The amount of corruption generated each tick(do not set to 0!):10",
+	    			"Radius to duplicate mobs within:12.0",
+	    			"Ticks required to duplicate mobs:1440"
+	    			},"");
+	    	String dataString="";
+	    	
+	    	for(int i = 0; i < cfgArrayString.length; ++i)
+	    		dataString+="||"+cfgArrayString[i];
+	    	
+	    	DummyData[] data = DataStorage.parseData(dataString);
+	    	
+	    	mruUsage = Integer.parseInt(data[1].fieldValue);
+	    	cfgMaxMRU = Float.parseFloat(data[0].fieldValue);
+	    	generatesCorruption = Boolean.parseBoolean(data[2].fieldValue);
+	    	genCorruption = Integer.parseInt(data[3].fieldValue);
+	    	rad = Float.parseFloat(data[4].fieldValue);
+	    	mobDestructionTimer = Integer.parseInt(data[5].fieldValue);
+	    	
+	    	cfg.save();
+    	}catch(Exception e)
+    	{
+    		return;
+    	}
     }
 }

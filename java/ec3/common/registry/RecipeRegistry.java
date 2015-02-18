@@ -15,9 +15,12 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import DummyCore.Core.CoreInitialiser;
 import DummyCore.Utils.MiscUtils;
+import DummyCore.Utils.UnformedItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
+import ec3.api.MagicalAssemblerRecipes;
 import ec3.api.MagicianTableRecipes;
 import ec3.api.RadiatingChamberRecipes;
+import ec3.api.ShapedAssemblerRecipe;
 import ec3.common.block.BlocksCore;
 import ec3.common.item.ItemsCore;
 
@@ -113,11 +116,14 @@ public class RecipeRegistry {
 	
 	public void registerRecipes()
 	{
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ItemsCore.drops,1,4), new Object[]{
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ItemsCore.drops,4,4), new Object[]{
 			"shardFire","shardWater","shardEarth","shardAir"
 		}));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ItemsCore.mruMover1,1,0), new Object[]{
 			"shardElemental","stickWood"
+		}));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ItemsCore.magicalChisel,1,0), new Object[]{
+			"shardElemental","shardElemental","shardElemental","shardElemental","stickWood"
 		}));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ItemsCore.bound_gem,1,0), new Object[]{
 			"shardElemental","gemQuartz"
@@ -276,18 +282,61 @@ public class RecipeRegistry {
 			'E',getItemByNameEC3("genericItem",23),
 			'C',"elementalCore"
 		}));
-		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsCore.controlRod,1,0), new Object[]{
+			"DII",
+			" CI",
+			"I D",
+			'I',"ingotIron",
+			'C',"elementalCore",
+			'D',"waterMagic"
+		}));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksCore.magicalMirror,3,0), new Object[]{
+			" P ",
+			"PGP",
+			" P ",
+			'P',"plateMagic",
+			'G',"plateGlass"
+		}));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsCore.filter,1,0), new Object[]{
+			" P ",
+			"PGP",
+			" P ",
+			'P',"plateFortified",
+			'G',Blocks.crafting_table
+		}));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsCore.filter,1,1), new Object[]{
+			" P ",
+			"PGP",
+			" P ",
+			'P',"plateVoid",
+			'G',ItemsCore.filter
+		}));
 		addRecipe(new ItemStack(BlocksCore.ecStateChecker,1,0),new Object[]{
 			"frameMagic","screenMagic","frameMagic",
 			"mruCatcher","elementalCore","conversionMatrix",
 			"plateMagic","mruLink","plateMagic",
+		});
+		addRecipe(new ItemStack(BlocksCore.assembler,1,0),new Object[]{
+			"plateMagic","screenMagic","plateMagic",
+			"conversionMatrix","elementalCore","conversionMatrix",
+			"plateMagic","mruLink","plateMagic",
+		});
+		addRecipe(new ItemStack(BlocksCore.ecBalancer,1,0),new Object[]{
+			"plateMagic","alloysMagical","plateMagic",
+			"conversionMatrix","elementalCore","conversionMatrix",
+			"plateMagic","mruCatcher","plateMagic",
+		});
+		addRecipe(new ItemStack(BlocksCore.ecRedstoneController,1,0),new Object[]{
+			"plateMagic","plateRedstone","plateMagic",
+			"conversionMatrix","elementalCore","conversionMatrix",
+			"plateMagic","plateRedstone","plateMagic",
 		});
 		addRecipe(new ItemStack(BlocksCore.ecHoldingChamber,1,0),new Object[]{
 			"frameMagic","mruCatcher","frameMagic",
 			getItemByNameEC3("storage",2),"plateGlass",getItemByNameEC3("storage",2),
 			"plateMagic","mruLink","plateMagic",
 		});
-		addRecipe(new ItemStack(BlocksCore.rayTower,1,0),new Object[]{
+		addRecipe(new ItemStack(BlocksCore.rayTower,4,0),new Object[]{
 			"magicWater","conversionMatrix","magicWater",
 			"plateFortified","mruCatcher","plateFortified",
 			new ItemStack(BlocksCore.fortifiedStone,1,0),"screenMagic",new ItemStack(BlocksCore.fortifiedStone,1,0),
@@ -299,32 +348,53 @@ public class RecipeRegistry {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(BlocksCore.platingPale,16,0), new Object[]{
 			getItemByNameEC3("genericItem",41),getItemByNameEC3("genericItem",41),getItemByNameEC3("genericItem",41),getItemByNameEC3("genericItem",41)
 		}));
-		addRecipe(new ItemStack(BlocksCore.potionSpreader,1,0),new Object[]{
+		addRecipe(new ItemStack(BlocksCore.potionSpreader,1,0),1000,new Object[]{
 			"worldInteractor","frameMagic","worldInteractor",
 			"mruCatcher","elementalCore","screenMagic",
 			"plateMagic","conversionMatrix","plateMagic",
 		});
-		addRecipe(new ItemStack(BlocksCore.magicalEnchanter,1,0),new Object[]{
+		addRecipe(new ItemStack(BlocksCore.magicalEnchanter,1,0),5000,new Object[]{
 			"screenMagic",new ItemStack(Items.enchanted_book,1,0),"mruCatcher",
 			"worldInteractor",new ItemStack(Blocks.enchanting_table,1,0),"conversionMatrix",
 			"plateMagic","elementalCore","plateMagic",
 		});
-		addRecipe(new ItemStack(BlocksCore.monsterHarvester,1,0),new Object[]{
+		addRecipe(new ItemStack(BlocksCore.monsterHarvester,1,0),10000,new Object[]{
 			"plateMagic","screenMagic","mruCatcher",
 			new ItemStack(ItemsCore.staffOfLife,1,0),"elementalCore","conversionMatrix",
 			"worldInteractor","frameMagic","worldInteractor",
 		});
-		addRecipe(new ItemStack(BlocksCore.magicalRepairer,1,0),new Object[]{
+		addRecipe(new ItemStack(BlocksCore.magicalRepairer,1,0),2000,new Object[]{
 			"frameMagic","screenMagic","mruCatcher",
 			"conversionMatrix","elementalCore","conversionMatrix",
 			"plateMagic","mruLink","worldInteractor",
 		});
+		addRecipe(new ItemStack(BlocksCore.minEjector,2,0),2000,new Object[]{
+			"frameMagic","screenMagic","frameMagic",
+			"frameMagic","elementalCore","frameMagic",
+			getItemByNameEC3("genericItem",34),"conversionMatrix",getItemByNameEC3("genericItem",34),
+		});
+		addRecipe(new ItemStack(BlocksCore.minEjector,1,6),10000,new Object[]{
+			"frameMagic","screenMagic","frameMagic",
+			"frameMagic","elementalCore","frameMagic",
+			getItemByNameEC3("genericItem",41),"conversionMatrix",getItemByNameEC3("genericItem",41),
+		});
+		addRecipe(new ItemStack(BlocksCore.minInjector,2,0),2000,new Object[]{
+			"screenMagic","screenMagic","screenMagic",
+			"frameMagic","elementalCore","frameMagic",
+			getItemByNameEC3("genericItem",34),"conversionMatrix",getItemByNameEC3("genericItem",34),
+		});
+		addRecipe(new ItemStack(BlocksCore.minInjector,1,6),10000,new Object[]{
+			"screenMagic","screenMagic","screenMagic",
+			"frameMagic","elementalCore","frameMagic",
+			getItemByNameEC3("genericItem",41),"conversionMatrix",getItemByNameEC3("genericItem",41),
+		});
+		
 		addRecipe(new ItemStack(BlocksCore.ecAcceptor,1,0),new Object[]{
 			"frameMagic","mruCatcher","frameMagic",
 			"screenMagic","elementalCore","conversionMatrix",
 			"plateMagic","mruLink","plateMagic",
 		});
-		addRecipe(new ItemStack(BlocksCore.solarPrism,1,0),new Object[]{
+		addRecipe(new ItemStack(BlocksCore.solarPrism,1,0),1200,new Object[]{
 			"alloysMagical",getItemByNameEC3("genericItem",32),"alloysMagical",
 			getItemByNameEC3("genericItem",32),getItemByNameEC3("genericItem",32),getItemByNameEC3("genericItem",32),
 			"alloysMagical",getItemByNameEC3("genericItem",32),"alloysMagical",
@@ -344,27 +414,27 @@ public class RecipeRegistry {
 			new ItemStack(Blocks.snow,1,0),new ItemStack(Blocks.glowstone,1,0),new ItemStack(Blocks.snow,1,0),
 			new ItemStack(Blocks.ice,1,0),new ItemStack(Blocks.snow,1,0),new ItemStack(Blocks.ice,1,0),
 		});
-		addRecipe(new ItemStack(BlocksCore.coldDistillator,1,0),new Object[]{
+		addRecipe(new ItemStack(BlocksCore.coldDistillator,1,0),1000,new Object[]{
 			"screenMagic","mruCatcher","conversionMatrix",
 			new ItemStack(BlocksCore.coldStone),"elementalCore",new ItemStack(BlocksCore.coldStone),
 			"plateMagic",new ItemStack(ItemsCore.matrixProj,1,2),"worldInteractor",
 		});
-		addRecipe(new ItemStack(BlocksCore.magmaticSmeltery,1,0),new Object[]{
+		addRecipe(new ItemStack(BlocksCore.magmaticSmeltery,1,0),8000,new Object[]{
 			"mruCatcher","screenMagic","alloysMagical",
 			"conversionMatrix","elementalCore","conversionMatrix",
 			"rodHeat","worldInteractor","rodHeat",
 		});
-		addRecipe(new ItemStack(BlocksCore.magicalJukebox,1,0),new Object[]{
+		addRecipe(new ItemStack(BlocksCore.magicalJukebox,1,0),404,new Object[]{
 			"plateMagic","mruCatcher","worldInteractor",
 			"elementalCore",new ItemStack(Blocks.jukebox,1,0),"shardElemental",
 			"plateRedstone","screenMagic","plateRedstone",
 		});
-		addRecipe(new ItemStack(BlocksCore.crystalFormer,1,0),new Object[]{
+		addRecipe(new ItemStack(BlocksCore.crystalFormer,1,0),1200,new Object[]{
 			"screenMagic","mruCatcher","plateMagic",
 			"dustCrystal","elementalCore","dustCrystal",
 			"plateObsidian","conversionMatrix","plateObsidian",
 		});
-		addRecipe(new ItemStack(BlocksCore.crystalController,1,0),new Object[]{
+		addRecipe(new ItemStack(BlocksCore.crystalController,1,0),3000,new Object[]{
 			"screenMagic","mruCatcher","plateMagic",
 			"dustCrystal","elementalCore","dustCrystal",
 			"plateFortified","conversionMatrix","plateFortified",
@@ -389,17 +459,17 @@ public class RecipeRegistry {
 			"plateEmerald","elementalCore","plateEmerald",
 			"plateObsidian","frameIron","plateObsidian",
 		});
-		addRecipe(new ItemStack(BlocksCore.magicalQuarry,1,0),new Object[]{
+		addRecipe(new ItemStack(BlocksCore.magicalQuarry,1,0),5000,new Object[]{
 			"plateFortified","frameMagic","plateFortified",
 			"screenMagic",new ItemStack(ItemsCore.magicalDigger,1,0),"mruCatcher",
 			"worldInteractor","elementalCore","worldInteractor",
 		});
-		addRecipe(new ItemStack(BlocksCore.monsterClinger,1,0),new Object[]{
+		addRecipe(new ItemStack(BlocksCore.monsterClinger,1,0),8000,new Object[]{
 			"worldInteractor","elementalCore","worldInteractor",
 			"screenMagic","conversionMatrix","mruCatcher",
 			"frameMagic","plateFortified","frameMagic",
 		});
-		addRecipe(new ItemStack(BlocksCore.crystalExtractor,1,0),new Object[]{
+		addRecipe(new ItemStack(BlocksCore.crystalExtractor,1,0),1000,new Object[]{
 			"screenMagic","dustCrystal","alloysMagical",
 			"conversionMatrix","elementalCore","conversionMatrix",
 			"plateFortified","dustCrystal","plateFortified",
@@ -419,54 +489,54 @@ public class RecipeRegistry {
 			"plateObsidian","ttitanite","plateObsidian",
 			"titanite","plateObsidian","titanite",
 		});
-		addRecipe(new ItemStack(BlocksCore.sunRayAbsorber,1,0),new Object[]{
+		addRecipe(new ItemStack(BlocksCore.sunRayAbsorber,1,0),10000,new Object[]{
 			"screenMagic",new ItemStack(ItemsCore.genericItem,1,32),"mruCatcher",
 			"worldInteractor","elementalCore","conversionMatrix",
 			"plateMagic",new ItemStack(ItemsCore.matrixProj,1,1),"plateMagic",
 		});
-		addRecipe(new ItemStack(BlocksCore.moonWell,1,0),new Object[]{
+		addRecipe(new ItemStack(BlocksCore.moonWell,1,0),10000,new Object[]{
 			"screenMagic",new ItemStack(BlocksCore.elementalCrystal,1,0),"mruCatcher",
 			"worldInteractor","elementalCore","conversionMatrix",
 			"plateMagic",new ItemStack(ItemsCore.matrixProj,1,3),"plateMagic",
 		});
-		
+		//TODO assembler Recipes
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsCore.elemental_hoe,1,0), new Object[]{
 			"DD ",
 			" S ",
 			" S ",
-			'D',"shardElemental",
+			'D',"resonatingCrystal",
 			'S',"stickWood"
 		}));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsCore.elemental_axe,1,0), new Object[]{
 			"DD ",
 			"DS ",
 			" S ",
-			'D',"shardElemental",
+			'D',"resonatingCrystal",
 			'S',"stickWood"
 		}));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsCore.elemental_pick,1,0), new Object[]{
 			"DDD",
 			" S ",
 			" S ",
-			'D',"shardElemental",
+			'D',"resonatingCrystal",
 			'S',"stickWood"
 		}));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsCore.elemental_shovel,1,0), new Object[]{
 			" D ",
 			" S ",
 			" S ",
-			'D',"shardElemental",
+			'D',"resonatingCrystal",
 			'S',"stickWood"
 		}));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsCore.elemental_sword,1,0), new Object[]{
 			" D ",
 			" D ",
 			" S ",
-			'D',"shardElemental",
+			'D',"resonatingCrystal",
 			'S',"stickWood"
 		}));
 		
-		addRecipe(new ItemStack(ItemsCore.biomeWand,1,0),new Object[]{
+		addRecipe(new ItemStack(ItemsCore.biomeWand,1,0),1200,new Object[]{
 			"redSoulMatter","focusFire","focusAir",
 			"plateEmerald","ingotThaumium","focusWater",
 			"focusEarth","plateEmerald","redSoulMatter",
@@ -479,72 +549,6 @@ public class RecipeRegistry {
 			'D',new ItemStack(ItemsCore.genericItem,1,10),
 			'S',"plateGlass"
 		}));
-		
-		addRecipe(new ItemStack(ItemsCore.spell,1,0),new Object[]{
-			"plateFortified",getItemByNameEC3("genericItem",15),"plateFortified",
-			getItemByNameEC3("genericItem",15),getItemByNameEC3("soulStone",0),getItemByNameEC3("genericItem",15),
-			"plateFortified",getItemByNameEC3("genericItem",15),"plateFortified",
-		});
-		
-		addRecipe(new ItemStack(ItemsCore.spell,1,1),new Object[]{
-			"gemEmerald","dustMagic","gemEmerald",
-			"dustMagic",getItemByNameEC3("spell",0),"dustMagic",
-			"gemEmerald","dustMagic","gemEmerald",
-		});
-		
-		addRecipe(new ItemStack(ItemsCore.spell,1,2),new Object[]{
-			"plateDiamond","dustCrystal","plateDiamond",
-			"dustCrystal",getItemByNameEC3("spell",1),"dustCrystal",
-			"plateDiamond","dustCrystal","plateDiamond",
-		});
-		
-		addRecipe(new ItemStack(ItemsCore.spell,1,3),new Object[]{
-			"alloysMagical",getItemByNameEC3("spell",2),"alloysMagical",
-			getItemByNameEC3("spell",2),"gemNetherStar",getItemByNameEC3("spell",2),
-			"alloysMagical",getItemByNameEC3("spell",2),"alloysMagical",
-		});
-		
-		addRecipe(new ItemStack(ItemsCore.spell,1,4),new Object[]{
-			"alloysMagical",getItemByNameEC3("genericItem",16),"alloysMagical",
-			getItemByNameEC3("genericItem",16),new ItemStack(BlocksCore.elementalCrystal,1,0),getItemByNameEC3("genericItem",16),
-			"alloysMagical",getItemByNameEC3("genericItem",16),"alloysMagical",
-		});
-		
-		addRecipe(new ItemStack(ItemsCore.spell,1,5),new Object[]{
-			getItemByNameEC3("genericItem",23),"dustCrystal",getItemByNameEC3("genericItem",23),
-			"dustCrystal",getItemByNameEC3("spell",4),"dustCrystal",
-			getItemByNameEC3("genericItem",23),"dustCrystal",getItemByNameEC3("genericItem",23),
-		});
-		
-		addRecipe(new ItemStack(ItemsCore.spell,1,6),new Object[]{
-			getItemByNameEC3("matrixProj",3),getItemByNameEC3("spell",5),getItemByNameEC3("matrixProj",3),
-			getItemByNameEC3("spell",5),"gemNetherStar",getItemByNameEC3("spell",5),
-			getItemByNameEC3("matrixProj",3),getItemByNameEC3("spell",5),getItemByNameEC3("matrixProj",3),
-		});
-		
-		addRecipe(new ItemStack(ItemsCore.spell,1,7),new Object[]{
-			"alloysMagical","focusAir","alloysMagical",
-			"focusFire","soulShard","focusFire",
-			"alloysMagical",getItemByNameEC3("genericItem",23),"alloysMagical",
-		});
-		
-		addRecipe(new ItemStack(ItemsCore.spell,1,8),new Object[]{
-			getItemByNameEC3("matrixProj",3),getItemByNameEC3("spell",7),getItemByNameEC3("matrixProj",3),
-			getItemByNameEC3("spell",7),"gemNetherStar",getItemByNameEC3("spell",7),
-			getItemByNameEC3("matrixProj",3),getItemByNameEC3("spell",7),getItemByNameEC3("matrixProj",3),
-		});
-		
-		addRecipe(new ItemStack(ItemsCore.staff,1,0),new Object[]{
-			"ingotMagic",getItemByNameEC3("genericItem",16),getItemByNameEC3("genericItem",4),
-			"plateMagic","ingotMagic",getItemByNameEC3("genericItem",16),
-			"ingotMagic","plateMagic","ingotMagic",
-		});
-		
-		addRecipe(new ItemStack(ItemsCore.staff,1,1),new Object[]{
-			new ItemStack(ItemsCore.chaosFork,1,0),"titanite","ttitanite",
-			"plateMagic",new ItemStack(ItemsCore.staff,1,0),"titanite",
-			"matterOfEternity","plateMagic",new ItemStack(ItemsCore.frozenMace,1,0),
-		});
 		
 		addRecipe(new ItemStack(ItemsCore.genericItem,1,17),new Object[]{
 			"alloysMagical","plateGlass","alloysMagical",
@@ -564,137 +568,157 @@ public class RecipeRegistry {
 			"alloysMagical","plateEnder","alloysMagical",
 		});
 		
-		addRecipe(new ItemStack(ItemsCore.spawnerCollector,1,0),new Object[]{
+		addRecipe(new ItemStack(ItemsCore.spawnerCollector,1,0),10000,new Object[]{
 			"dustCrystal","focusWater","focusWater",
 			"ingotMagic","redSoulMatter","focusWater",
 			"plateMagic","ingotMagic","dustCrystal",
 		});
 		
-		addRecipe(new ItemStack(ItemsCore.magicalDigger,1,0),new Object[]{
+		addRecipe(new ItemStack(ItemsCore.magicalDigger,1,0),10000,new Object[]{
 			Blocks.tnt,"focusEarth","redSoulMatter",
 			"focusFire",ItemsCore.elemental_pick,"focusEarth",
 			"plateMagic","focusFire",Blocks.tnt,
 		});
 		
-		addRecipe(new ItemStack(ItemsCore.staffOfLife,1,0),new Object[]{
+		addRecipe(new ItemStack(ItemsCore.staffOfLife,1,0),1000,new Object[]{
 			ItemsCore.elemental_hoe,"focusEarth",new ItemStack(ItemsCore.genericItem,1,4),
 			"focusEarth","redSoulMatter","focusEarth",
 			"plateMagic","focusEarth",ItemsCore.elemental_hoe,
 		});
 		
-		addRecipe(new ItemStack(ItemsCore.emeraldHeart,1,0),new Object[]{
+		addRecipe(new ItemStack(ItemsCore.emeraldHeart,1,0),5000,new Object[]{
 			"focusEarth","gemEmerald","focusEarth",
 			"magicWater","redSoulMatter","magicWater",
 			"focusWater",Items.apple,"focusWater",
 		});
-		addRecipe(new ItemStack(ItemsCore.magicalShield,1,0),new Object[]{
+		addRecipe(new ItemStack(ItemsCore.magicalShield,1,0),5000,new Object[]{
 			"plateObsidian","alloysMagical","plateObsidian",
 			"focusEarth","redSoulMatter","focusEarth",
 			"dustCrystal","plateObsidian","dustCrystal",
 		});
-		addRecipe(new ItemStack(ItemsCore.spikyShield,1,0),new Object[]{
+		addRecipe(new ItemStack(ItemsCore.spikyShield,1,0),10000,new Object[]{
 			ItemsCore.elemental_sword,"gemNetherStar",ItemsCore.elemental_sword,
 			"alloysMagical",ItemsCore.magicalShield,"alloysMagical",
 			"alloysMagical","matterOfEternity","alloysMagical",
 		});
-		addRecipe(new ItemStack(ItemsCore.magicWaterBottle,1,0),new Object[]{
+		addRecipe(new ItemStack(ItemsCore.magicWaterBottle,1,0),5000,new Object[]{
 			"focusAir","magicWater","focusEarth",
 			"plateDiamond","redSoulMatter","plateDiamond",
 			"focusWater","magicWater","focusWater",
 		});
-		addRecipe(new ItemStack(ItemsCore.magicalPorkchop,1,0),new Object[]{
+		addRecipe(new ItemStack(ItemsCore.magicalPorkchop,1,0),5000,new Object[]{
 			"focusEarth",Items.porkchop,"focusEarth",
 			"dustCrystal","redSoulMatter","dustCrystal",
 			"focusWater","dustCrystal","focusWater",
 		});
-		addRecipe(new ItemStack(ItemsCore.magicalWings,1,0),new Object[]{
+		addRecipe(new ItemStack(ItemsCore.magicalWings,1,0),5000,new Object[]{
 			"plateMagic","focusAir","focusAir",
 			"plateMagic",Items.feather,Items.feather,
 			"redSoulMatter",Items.feather,Items.feather,
 		});
-		addRecipe(new ItemStack(ItemsCore.holyMace,1,0),new Object[]{
+		addRecipe(new ItemStack(ItemsCore.holyMace,1,0),1000,new Object[]{
 			"redSoulMatter","focusAir",new ItemStack(ItemsCore.genericItem,1,4),
 			"ingotMagic",ItemsCore.elemental_sword,"focusAir",
 			"focusEarth","ingotMagic","redSoulMatter",
 		});
-		addRecipe(new ItemStack(ItemsCore.chaosFork,1,0),new Object[]{
+		addRecipe(new ItemStack(ItemsCore.chaosFork,1,0),10000,new Object[]{
 			"ingotMagic","focusFire","matterOfEternity",
 			"ingotMagic",ItemsCore.elemental_sword,"focusFire",
 			new ItemStack(ItemsCore.matrixProj,1,1),"ingotMagic","ingotMagic",
 		});
-		addRecipe(new ItemStack(ItemsCore.frozenMace,1,0),new Object[]{
+		addRecipe(new ItemStack(ItemsCore.frozenMace,1,0),10000,new Object[]{
 			"ingotMagic","focusWater","matterOfEternity",
 			"ingotMagic",ItemsCore.elemental_sword,"focusWater",
 			new ItemStack(ItemsCore.matrixProj,1,2),"ingotMagic","ingotMagic",
 		});
 		
-		addRecipe(new ItemStack(ItemsCore.windTablet,1,0),new Object[]{
+		addRecipe(new ItemStack(ItemsCore.windTablet,1,0),10000,new Object[]{
 			"focusAir","plateFortified","focusAir",
 			"plateFortified",ItemsCore.windKeeper,"plateFortified",
 			"focusAir","plateFortified","focusAir",
 		});
 		
-		addRecipe(new ItemStack(BlocksCore.magicalTeleporter,1,0),new Object[]{
+		addRecipe(new ItemStack(BlocksCore.magicalTeleporter,1,0),10000,new Object[]{
 			"screenMagic","voidMRU","worldInteractor",
 			"plateMagic","voidCore","plateMagic",
 			"plateVoid","matterOfEternity","plateVoid",
 		});
+		addRecipe(new ItemStack(BlocksCore.mim,1,0),10000,new Object[]{
+			"screenMagic","voidMRU","screenMagic",
+			"plateVoid","voidCore","plateVoid",
+			"plateVoid","plateVoid","plateVoid",
+		});
+		addRecipe(new ItemStack(BlocksCore.darknessObelisk,1,0),1000,new Object[]{
+			"plateVoid","voidMRU","plateVoid",
+			"plateVoid","matterOfEternity","plateVoid",
+			"plateVoid","voidMRU","plateVoid",
+		});
+		addRecipe(new ItemStack(BlocksCore.ultraHeatGen,1,0),5000,new Object[]{
+			"plateVoid","voidMRU","plateVoid",
+			"voidCore",new ItemStack(BlocksCore.heatGenerator),"voidCore",
+			"plateVoid","voidMRU","plateVoid",
+		});
+		addRecipe(new ItemStack(BlocksCore.ultraFlowerBurner,1,0),5000,new Object[]{
+			"plateVoid","voidMRU","plateVoid",
+			"voidCore",new ItemStack(BlocksCore.naturalFurnace),"voidCore",
+			"plateVoid","voidMRU","plateVoid",
+		});
 		
-		addRecipe(new ItemStack(BlocksCore.magicalFurnace,1,0),new Object[]{
+		addRecipe(new ItemStack(BlocksCore.magicalFurnace,1,0),10000,new Object[]{
 			"screenMagic","voidMRU","worldInteractor",
 			"plateFortified","voidCore","plateFortified",
 			"plateVoid","matterOfEternity","plateVoid",
 		});
 		
-		addRecipe(new ItemStack(BlocksCore.emberForge,1,0),new Object[]{
+		addRecipe(new ItemStack(BlocksCore.emberForge,1,0),10000,new Object[]{
 			"screenMagic","voidMRU","plateEnder",
 			"plateFortified","voidCore","plateFortified",
 			"plateVoid","matterOfEternity","plateVoid",
 		});
 		
-		addRecipe(new ItemStack(ItemsCore.magicArmorItems[0],1,0),new Object[]{
+		addRecipe(new ItemStack(ItemsCore.magicArmorItems[0],1,0),2000,new Object[]{
 			"alloysMagical","worldInteractor","alloysMagical",
 			"plateMagic","plateGlass","plateMagic",
 			"dustCrystal","dustCrystal","dustCrystal",
 		});
 		
-		addRecipe(new ItemStack(ItemsCore.magicArmorItems[1],1,0),new Object[]{
+		addRecipe(new ItemStack(ItemsCore.magicArmorItems[1],1,0),5000,new Object[]{
 			"worldInteractor","dustCrystal","worldInteractor",
 			"plateMagic","alloysMagical","plateMagic",
 			"plateMagic","alloysMagical","plateMagic",
 		});
 		
-		addRecipe(new ItemStack(ItemsCore.magicArmorItems[2],1,0),new Object[]{
+		addRecipe(new ItemStack(ItemsCore.magicArmorItems[2],1,0),3500,new Object[]{
 			"alloysMagical","worldInteractor","alloysMagical",
 			"plateMagic","dustCrystal","plateMagic",
 			"plateMagic","dustCrystal","plateMagic",
 		});
 		
-		addRecipe(new ItemStack(ItemsCore.magicArmorItems[3],1,0),new Object[]{
+		addRecipe(new ItemStack(ItemsCore.magicArmorItems[3],1,0),2000,new Object[]{
 			"dustCrystal","worldInteractor","dustCrystal",
 			"plateMagic","dustCrystal","plateMagic",
 			"alloysMagical","dustCrystal","alloysMagical",
 		});
 		
-		addRecipe(new ItemStack(ItemsCore.magicArmorItems[4],1,0),new Object[]{
+		addRecipe(new ItemStack(ItemsCore.magicArmorItems[4],1,0),10000,new Object[]{
 			"gemNetherStar","voidMRU","gemNetherStar",
 			"voidCore",new ItemStack(ItemsCore.magicArmorItems[0],1,0),"voidCore",
 			"plateVoid","matterOfEternity","plateVoid",
 		});
 		
-		addRecipe(new ItemStack(ItemsCore.magicArmorItems[5],1,0),new Object[]{
+		addRecipe(new ItemStack(ItemsCore.magicArmorItems[5],1,0),10000,new Object[]{
 			"voidMRU","gemNetherStar","voidMRU",
 			"voidCore",new ItemStack(ItemsCore.magicArmorItems[1],1,0),"voidCore",
 			"plateVoid","matterOfEternity","plateVoid",
 		});
 		
-		addRecipe(new ItemStack(ItemsCore.magicArmorItems[6],1,0),new Object[]{
+		addRecipe(new ItemStack(ItemsCore.magicArmorItems[6],1,0),10000,new Object[]{
 			"gemNetherStar","voidMRU","gemNetherStar",
 			"voidCore",new ItemStack(ItemsCore.magicArmorItems[2],1,0),"voidCore",
 			"plateVoid","matterOfEternity","plateVoid",
 		});
 		
-		addRecipe(new ItemStack(ItemsCore.magicArmorItems[7],1,0),new Object[]{
+		addRecipe(new ItemStack(ItemsCore.magicArmorItems[7],1,0),10000,new Object[]{
 			"gemNetherStar","voidMRU","gemNetherStar",
 			"voidCore",new ItemStack(ItemsCore.magicArmorItems[3],1,0),"voidCore",
 			"plateVoid","matterOfEternity","plateVoid",
@@ -721,49 +745,49 @@ public class RecipeRegistry {
 			'D',BlocksCore.fortifiedStone
 		}));
 		
-		addRecipe(new ItemStack(ItemsCore.magmaticStaff,1,0),new Object[]{
+		addRecipe(new ItemStack(ItemsCore.magmaticStaff,1,0),1000,new Object[]{
 			"focusFire","focusFire",BlocksCore.magmaticSmeltery,
 			"dustCrystal","matterOfEternity","focusFire",
 			"plateMagic","dustCrystal","focusFire",
 		});
 		
-		addRecipe(new ItemStack(ItemsCore.magicalLantern,1,0),new Object[]{
+		addRecipe(new ItemStack(ItemsCore.magicalLantern,1,0),1000,new Object[]{
 			"focusAir","focusFire","redSoulMatter",
 			ItemsCore.magicalSlag,"plateMagic","focusFire",
 			"plateMagic",ItemsCore.magicalSlag,"focusAir",
 		});
 		
-		addRecipe(new ItemStack(ItemsCore.magnetizingStaff,1,0),new Object[]{
+		addRecipe(new ItemStack(ItemsCore.magnetizingStaff,1,0),1000,new Object[]{
 			"focusAir","orbGold","darkSoulMatter",
 			ItemsCore.magicalSlag,"plateMagic","orbGold",
 			"plateMagic",ItemsCore.magicalSlag,"focusAir",
 		});
 		
-		addRecipe(new ItemStack(BlocksCore.mruCoilHardener,1,0),new Object[]{
+		addRecipe(new ItemStack(BlocksCore.mruCoilHardener,3,0),1000,new Object[]{
 			"plateMagic","elementalCore","plateMagic",
 			"plateMagic","magnet","plateMagic",
 			"plateMagic","mruLink","plateMagic",
 		});
 		
-		addRecipe(new ItemStack(BlocksCore.mruCoil,1,0),new Object[]{
+		addRecipe(new ItemStack(BlocksCore.mruCoil,1,0),10000,new Object[]{
 			"worldInteractor","resonatingCrystal","screenMagic",
 			"plateMagic","magnet","plateMagic",
 			"mruLink",new ItemStack(ItemsCore.matrixProj,1,3),"mruLink",
 		});
 		
-		addRecipe(new ItemStack(BlocksCore.corruptionCleaner,1,0),new Object[]{
+		addRecipe(new ItemStack(BlocksCore.corruptionCleaner,1,0),1000,new Object[]{
 			"screenMagic","elementalCore","plateFortified",
 			"plateRedstone","resonatingCrystal","plateEnder",
 			"plateFortified","worldInteractor","plateFortified",
 		});
 		
-		addRecipe(new ItemStack(BlocksCore.reactorSupport,2,0),new Object[]{
+		addRecipe(new ItemStack(BlocksCore.reactorSupport,2,0),10000,new Object[]{
 			"magnet","resonatingCrystal","magnet",
 			"plateMagic","elementalCore","plateMagic",
 			"plateMagic","plateEnder","plateMagic",
 		});
 		
-		addRecipe(new ItemStack(BlocksCore.reactor,1,0),new Object[]{
+		addRecipe(new ItemStack(BlocksCore.reactor,1,0),10000,new Object[]{
 			new ItemStack(ItemsCore.matrixProj,1,3),"gemNetherStar",new ItemStack(ItemsCore.matrixProj,1,3),
 			"resonatingCrystal","magnet","resonatingCrystal",
 			"plateMagic","plateMagic","plateMagic",
@@ -821,6 +845,24 @@ public class RecipeRegistry {
 		}));
 	}
 	
+	public void addRecipe(ItemStack output,int mruReq, Object... recipe)
+	{
+		MagicalAssemblerRecipes.recipes.add(new ShapedAssemblerRecipe(output,mruReq, new Object[]{
+			"123",
+			"456",
+			"789",
+			'1',recipe[0],
+			'2',recipe[1],
+			'3',recipe[2],
+			'4',recipe[3],
+			'5',recipe[4],
+			'6',recipe[5],
+			'7',recipe[6],
+			'8',recipe[7],
+			'9',recipe[8],
+		}));
+	}
+	
 	public void registerRadiatingChamber()
 	{
 		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Blocks.stone),new ItemStack(Items.iron_ingot)}, getItemByNameEC3("fortifiedStone",0), 10, new float[]{Float.MAX_VALUE,Float.MIN_VALUE});
@@ -846,8 +888,7 @@ public class RecipeRegistry {
 		MagicianTableRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Items.ender_pearl),getItemByNameEC3("genericItem",10),getItemByNameEC3("genericItem",10),getItemByNameEC3("genericItem",10),getItemByNameEC3("genericItem",10)},getItemByNameEC3("genericItem",4), 5000);
 		MagicianTableRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Items.iron_ingot),null,null,null,null},getItemByNameEC3("genericItem",5), 50);
 		MagicianTableRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Items.potionitem),null,null,null,null},getItemByNameEC3("genericItem",6), 250);
-		for(int i = 0; i < 16; ++i)
-			MagicianTableRecipes.addRecipeIS(new ItemStack[]{getItemByNameEC3("fortifiedStone",i),null,null,null,null},getItemByNameEC3("genericItem",7), 10);
+		MagicianTableRecipes.addRecipeIS(new ItemStack[]{getItemByNameEC3("fortifiedStone",OreDictionary.WILDCARD_VALUE),null,null,null,null},getItemByNameEC3("genericItem",7), 10);
 		MagicianTableRecipes.addRecipeIS(new ItemStack[]{getItemByNameEC3("genericItem",7),new ItemStack(Items.ender_pearl),new ItemStack(Items.ender_pearl),new ItemStack(Items.ender_pearl),new ItemStack(Items.ender_pearl)},getItemByNameEC3("genericItem",8), 1000);
 		MagicianTableRecipes.addRecipeIS(new ItemStack[]{getItemByNameEC3("genericItem",7),new ItemStack(Blocks.glass),new ItemStack(Blocks.glass),new ItemStack(Blocks.glass),new ItemStack(Blocks.glass)},getItemByNameEC3("genericItem",9), 1000);
 		MagicianTableRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Items.gold_ingot),new ItemStack(Items.gold_nugget),new ItemStack(Items.gold_nugget),new ItemStack(Items.gold_nugget),new ItemStack(Items.gold_nugget)},getItemByNameEC3("genericItem",10), 250);
@@ -860,7 +901,7 @@ public class RecipeRegistry {
 		MagicianTableRecipes.addRecipeIS(new ItemStack[]{getItemByNameEC3("genericItem",3),null,null,null,null},getItemByNameEC3("genericItem",20), 3000);
 		MagicianTableRecipes.addRecipeIS(new ItemStack[]{getItemByNameEC3("genericItem",9),getItemByNameEC3("genericItem",21),getItemByNameEC3("genericItem",22),getItemByNameEC3("genericItem",22),getItemByNameEC3("genericItem",21)},getItemByNameEC3("genericItem",32), 10000);
 		MagicianTableRecipes.addRecipeIS(new ItemStack[]{getItemByNameEC3("genericItem",9),getItemByNameEC3("genericItem",22),getItemByNameEC3("genericItem",21),getItemByNameEC3("genericItem",21),getItemByNameEC3("genericItem",22)},getItemByNameEC3("genericItem",32), 10000);
-		MagicianTableRecipes.addRecipeIS(new ItemStack[]{getItemByNameEC3("genericItem",7),getItemByNameEC3("genericItem",5),getItemByNameEC3("genericItem",5),getItemByNameEC3("genericItem",5),getItemByNameEC3("genericItem",5)},getItemByNameEC3("genericItem",34), 100);
+		MagicianTableRecipes.addRecipeIS(new UnformedItemStack[]{new UnformedItemStack(getItemByNameEC3("genericItem",7)),new UnformedItemStack("ingotThaumium"),new UnformedItemStack("ingotThaumium"),new UnformedItemStack("ingotThaumium"),new UnformedItemStack("ingotThaumium")},getItemByNameEC3("genericItem",34), 100);
 		MagicianTableRecipes.addRecipeIS(new ItemStack[]{getItemByNameEC3("genericItem",7),getItemByNameEC3("genericItem",39),getItemByNameEC3("genericItem",39),getItemByNameEC3("genericItem",39),getItemByNameEC3("genericItem",39)},getItemByNameEC3("genericItem",41), 100);
 		MagicianTableRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Items.quartz),getItemByNameEC3("genericItem",12),getItemByNameEC3("genericItem",12),getItemByNameEC3("genericItem",12),getItemByNameEC3("genericItem",12)},getItemByNameEC3("storage",0), 100);
 		MagicianTableRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Items.emerald),getItemByNameEC3("genericItem",13),getItemByNameEC3("genericItem",13),getItemByNameEC3("genericItem",13),getItemByNameEC3("genericItem",13)},getItemByNameEC3("storage",1), 500);

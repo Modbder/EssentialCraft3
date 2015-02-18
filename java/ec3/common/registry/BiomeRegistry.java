@@ -12,6 +12,7 @@ import ec3.common.world.BiomeGenFirstWorld_Dreadlands;
 import ec3.utils.cfg.Config;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenBase.Height;
+import net.minecraftforge.common.BiomeDictionary;
 
 public class BiomeRegistry {
 	public static BiomeRegistry core;
@@ -23,6 +24,8 @@ public class BiomeRegistry {
 		shadowCorruption = new BiomeGenCorruption_Shadow(Config.biomeID[2]);
 		magicCorruption = new BiomeGenCorruption_Magic(Config.biomeID[3]);
 		registerFirstWorldBiomes();
+		BiomeDictionary.registerBiomeType(chaosCorruption, BiomeDictionary.Type.SANDY);
+		BiomeDictionary.registerBiomeType(frozenCorruption, BiomeDictionary.Type.SANDY);
 	}
 	
 	public void registerFirstWorldBiomes()
@@ -37,11 +40,6 @@ public class BiomeRegistry {
 		firstWorldBiomeArray[7] = chaosCorruption;
 		firstWorldBiomeArray[8] = new BiomeGenFirstWorld_Desert(Config.biomeID[4]).setBiomeName("desert").setColor(16421912).setDisableRain().setTemperatureRainfall(2.0F, 0.0F).setHeight(new Height(0.125F, 0.05F));
 		firstWorldBiomeArray[9] = frozenCorruption;
-		//firstWorldBiomeArray[3] = new BiomeGenFirstWorld(Config.biomeID[4]);
-		//firstWorldBiomeArray[3] = new BiomeGenFirstWorld(Config.biomeID[4]);
-		//firstWorldBiomeArray[3] = new BiomeGenFirstWorld(Config.biomeID[4]);
-		//firstWorldBiomeArray[3] = new BiomeGenFirstWorld(Config.biomeID[4]);
-		//firstWorldBiomeArray[3] = new BiomeGenFirstWorld(Config.biomeID[4]);
 		
 	}
 	

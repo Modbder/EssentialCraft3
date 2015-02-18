@@ -2,6 +2,8 @@ package ec3.common.item;
 
 import java.util.List;
 
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
 import DummyCore.Utils.MathUtils;
 import ec3.api.IItemRequiresMRU;
 import ec3.api.IMRUStorage;
@@ -9,13 +11,14 @@ import ec3.utils.common.ECUtils;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-public class ItemMRUStorageNBTTag extends Item implements IMRUStorage, IItemRequiresMRU {
+public class ItemMRUStorageNBTTag extends Item implements IMRUStorage, IItemRequiresMRU, IBauble {
 	int[] maxMRU = new int[5];
 	IIcon[] itemIcon = new IIcon[5];
 	int[] colors = new int[]{0x555555,0x665555,0x775555,0x885555,0x995555,0xaa5555,0xbb5555,0xcc5555,0xdd5555,0xee6666,0xff6666};
@@ -107,4 +110,38 @@ public class ItemMRUStorageNBTTag extends Item implements IMRUStorage, IItemRequ
     	}
         return 16777215;
     }
+    
+	@Override
+	public BaubleType getBaubleType(ItemStack itemstack) {
+		// TODO Auto-generated method stub
+		return BaubleType.RING;
+	}
+
+	@Override
+	public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
+	}
+
+	@Override
+	public void onEquipped(ItemStack itemstack, EntityLivingBase player) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onUnequipped(ItemStack itemstack, EntityLivingBase player) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean canEquip(ItemStack itemstack, EntityLivingBase player) {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean canUnequip(ItemStack itemstack, EntityLivingBase player) {
+		// TODO Auto-generated method stub
+		return true;
+	}
 }

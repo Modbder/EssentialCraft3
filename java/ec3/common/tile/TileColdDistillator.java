@@ -2,6 +2,8 @@ package ec3.common.tile;
 
 import java.util.List;
 
+import DummyCore.Utils.DataStorage;
+import DummyCore.Utils.DummyData;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,15 +12,21 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraftforge.common.config.Configuration;
 import ec3.api.ApiCore;
 import ec3.api.IColdBlock;
 import ec3.common.entity.EntitySolarBeam;
 
 public class TileColdDistillator extends TileMRUGeneric{
 	
+	public static float balanceProduced = 0F;
+	public static float cfgMaxMRU = ApiCore.GENERATOR_MAX_MRU_GENERIC*10;
+	public static boolean harmEntities = true;
+	
 	public TileColdDistillator()
 	{
-		this.maxMRU = (int) ApiCore.GENERATOR_MAX_MRU_GENERIC*10;
+		 super();
+		this.maxMRU = (int) cfgMaxMRU;
 	}
 	
 	public boolean canGenerateMRU()
@@ -30,14 +38,18 @@ public class TileColdDistillator extends TileMRUGeneric{
 	public void updateEntity()
 	{
 		super.updateEntity();
-		this.balance = 0.0F;
+		this.balance = balanceProduced;
 		if(!this.worldObj.isRemote)
 		{
-			int mruGenerated = CgetMru();
-			this.setMRU((int) (this.getMRU()+mruGenerated));
-			if(this.getMRU() > this.getMaxMRU())
-				this.setMRU(this.getMaxMRU());
-			CdamageAround();
+			if(!this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord))
+			{
+				int mruGenerated = CgetMru();
+				this.setMRU((int) (this.getMRU()+mruGenerated));
+				if(this.getMRU() > this.getMaxMRU())
+					this.setMRU(this.getMaxMRU());
+				if(harmEntities)
+					CdamageAround();
+			}
 		}
 	}
 	
@@ -98,12 +110,36 @@ public class TileColdDistillator extends TileMRUGeneric{
         			Block b = this.worldObj.getBlock(xCoord+x, yCoord+y, zCoord+z);
         			if(b != null && b instanceof IColdBlock)
         			{
-        				i += ((IColdBlock)b).getColdModifier(this.worldObj.getBlockMetadata(xCoord+x, yCoord+y, zCoord+z));
+        				i += ((IColdBlock)b).getColdModifier(this.worldObj,xCoord+x, yCoord+y, zCoord+z,this.worldObj.getBlockMetadata(xCoord+x, yCoord+y, zCoord+z));
         			}
         		}
     		}
 		}
     	return (int) i;
+    }
+    
+    public static void setupConfig(Configuration cfg)
+    {
+    	try
+    	{
+	    	cfg.load();
+	    	
+	    	String[] cfgArrayString = cfg.getStringList("ColdDistillatorSettings", "tileentities", new String[]{"Produced Balance:0.0","Max MRU:"+ApiCore.GENERATOR_MAX_MRU_GENERIC*10,"Damage Entities Around:true"}, "Settings of the given Device.");
+	    	String dataString="";
+	    	
+	    	for(int i = 0; i < cfgArrayString.length; ++i)
+	    		dataString+="||"+cfgArrayString[i];
+	    	
+	    	DummyData[] data = DataStorage.parseData(dataString);
+	    	balanceProduced = Float.parseFloat(data[0].fieldValue);
+	    	cfgMaxMRU = (int)Float.parseFloat(data[1].fieldValue);
+	    	harmEntities=Boolean.parseBoolean(data[2].fieldValue);
+	    	
+	    	cfg.save();
+    	}catch(Exception e)
+    	{
+    		return;
+    	}
     }
 
 }

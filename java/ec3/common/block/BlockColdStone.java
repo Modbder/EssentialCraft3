@@ -3,6 +3,7 @@ package ec3.common.block;
 import ec3.api.IColdBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.world.World;
 
 public class BlockColdStone extends Block implements IColdBlock{
 
@@ -15,7 +16,8 @@ public class BlockColdStone extends Block implements IColdBlock{
 	}
 
 	@Override
-	public float getColdModifier(int meta) {
+	public float getColdModifier(World w, int x, int y, int z,int meta) 
+	{
 		// TODO Auto-generated method stub
 		return 0.5F;
 	}

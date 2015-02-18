@@ -8,6 +8,7 @@ import java.util.List;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
+import ec3.api.ApiCore;
 import ec3.api.ITEHasMRU;
 import ec3.common.block.BlocksCore;
 import ec3.common.item.ItemBoundGem;
@@ -45,13 +46,20 @@ import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.config.Configuration;
 
 public class TileMagicalFurnace extends TileMRUGeneric
 {
 	 public int progressLevel;
+	 public static float cfgMaxMRU = ApiCore.DEVICE_MAX_MRU_GENERIC*10;
+	 public static int mruUsage = 25;
+	 public static int smeltingTime = 20;
+	 public static float chanceToDoubleOutput = 0.3F;
+	 public static float chanceToDoubleSlags = 0.1F;
 	 
 	 public TileMagicalFurnace()
 	 {
+		 super();
 		 this.setSlotsNum(1);
 	 }
 	 
@@ -72,11 +80,12 @@ public class TileMagicalFurnace extends TileMRUGeneric
     @Override
     public void updateEntity() 
     {
-    	this.maxMRU = 50000;
+    	this.maxMRU = (int) cfgMaxMRU;
     	super.updateEntity();
     	this.spawnParticles();
 		ECUtils.mruIn(this, 0);
 		ECUtils.spawnMRUParticles(this, 0);
+		if(!this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord))
 		smelt();
 		IInventory inv = this;
 		int slotNum = 0;
@@ -131,8 +140,8 @@ public class TileMagicalFurnace extends TileMRUGeneric
     			this.worldObj.playSoundEffect(xCoord+0.5, yCoord+0.5, zCoord+0.5, "fire.fire", 1.0F, 1);
     		ItemStack mainSmelting = smeltingStack.copy();
     		++this.progressLevel;
-    		this.setMRU(this.getMRU() - 25);
-    		if(this.progressLevel >= 20)
+    		this.setMRU(this.getMRU() - mruUsage);
+    		if(this.progressLevel >= smeltingTime)
     		{
     			this.progressLevel = 0;
     			this.worldObj.playSoundEffect(xCoord+0.5, yCoord+0.5, zCoord+0.5, "liquid.lavapop", 1.0F, 1);
@@ -147,7 +156,7 @@ public class TileMagicalFurnace extends TileMRUGeneric
     					smeltingItem.setDead();
     				}
     			}
-    			if(!this.worldObj.isRemote && this.worldObj.rand.nextFloat() <= 0.3F)
+    			if(!this.worldObj.isRemote && this.worldObj.rand.nextFloat() <= chanceToDoubleOutput)
     			{
         			EntityItem smelted = new EntityItem(this.worldObj,this.xCoord-1.5,this.yCoord+2.15,this.zCoord-1.5,s.copy());
     				this.worldObj.spawnEntityInWorld(smelted);
@@ -161,7 +170,7 @@ public class TileMagicalFurnace extends TileMRUGeneric
 				smelted.motionX = 0;
 				smelted.motionY = 0;
 				smelted.motionZ = 0;
-    			if(!this.worldObj.isRemote && this.worldObj.rand.nextFloat() <= 0.1F)
+    			if(!this.worldObj.isRemote && this.worldObj.rand.nextFloat() <= chanceToDoubleSlags)
     			{
         			EntityItem slag = new EntityItem(this.worldObj,this.xCoord-1.5,this.yCoord+2.15,this.zCoord+2.5,new ItemStack(ItemsCore.magicalSlag));
         				this.worldObj.spawnEntityInWorld(slag);
@@ -232,6 +241,38 @@ public class TileMagicalFurnace extends TileMRUGeneric
     		{
     			EssentialCraftCore.proxy.spawnParticle("cSpellFX", xCoord+0.5F+MathUtils.randomFloat(this.worldObj.rand)*3, yCoord, zCoord+0.5F+MathUtils.randomFloat(this.worldObj.rand)*3, 0,2, 0);
     		}
+    	}
+    }
+    
+    public static void setupConfig(Configuration cfg)
+    {
+    	try
+    	{
+	    	cfg.load();
+	    	String[] cfgArrayString = cfg.getStringList("MagicalFurnaceSettings", "tileentities", new String[]{
+	    			"Max MRU:"+ApiCore.DEVICE_MAX_MRU_GENERIC*10,
+	    			"MRU Usage:25",
+	    			"Ticks required to smelt 1 item:20",
+	    			"Chance to double the outcome:0.3",
+	    			"Chance to double slags outcome:0.1"
+	    			},"");
+	    	String dataString="";
+	    	
+	    	for(int i = 0; i < cfgArrayString.length; ++i)
+	    		dataString+="||"+cfgArrayString[i];
+	    	
+	    	DummyData[] data = DataStorage.parseData(dataString);
+	    	
+	    	mruUsage = Integer.parseInt(data[1].fieldValue);
+	    	smeltingTime = Integer.parseInt(data[2].fieldValue);
+	    	cfgMaxMRU = Float.parseFloat(data[0].fieldValue);
+	    	chanceToDoubleOutput = Float.parseFloat(data[3].fieldValue);
+	    	chanceToDoubleSlags = Float.parseFloat(data[4].fieldValue);
+	    	
+	    	cfg.save();
+    	}catch(Exception e)
+    	{
+    		return;
     	}
     }
 	

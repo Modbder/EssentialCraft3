@@ -1,7 +1,15 @@
 package ec3.common.item;
 
+import java.util.List;
+
 import org.lwjgl.opengl.GL11;
 
+import thaumcraft.api.IGoggles;
+import thaumcraft.api.IRepairable;
+import thaumcraft.api.IRunicArmor;
+import thaumcraft.api.IVisDiscountGear;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.nodes.IRevealer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ec3.common.mod.EssentialCraftCore;
@@ -13,14 +21,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
-public class ItemArmorMod extends ItemArmor{
+public class ItemArmorMod extends ItemArmor implements IRepairable, IVisDiscountGear, IRevealer, IGoggles{
 	public String armorTexture;
+	public int aType;
 	
 	public ItemArmorMod(ArmorMaterial p_i45325_1_, int p_i45325_2_,
-			int p_i45325_3_) {
+			int p_i45325_3_, int it) {
 		super(p_i45325_1_, p_i45325_2_, p_i45325_3_);
-		// TODO Auto-generated constructor stub
+		aType = it;
 	}
 	
 	public Item setArmorTexture(String path)
@@ -28,6 +39,13 @@ public class ItemArmorMod extends ItemArmor{
 		armorTexture = path;
 		return this;
 	}
+	
+    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
+    {
+        super.addInformation(stack, player, list, par4);
+        list.add((new StringBuilder()).append(EnumChatFormatting.DARK_PURPLE).append(StatCollector.translateToLocal("tc.visdiscount")).append(": ").append(getVisDiscount(stack, player, null)).append("%").toString());
+    }
+    
 	
 	@Override 
 	public String getArmorTexture(ItemStack itemstack, Entity entity, int slot, String type)
@@ -87,5 +105,27 @@ public class ItemArmorMod extends ItemArmor{
     		return armorModel;
     	}
     }
+
+	@Override
+	public boolean showIngamePopups(ItemStack itemstack, EntityLivingBase player) {
+		int type = ((ItemArmor)itemstack.getItem()).armorType;
+		return type == 0;
+	}
+
+	@Override
+	public boolean showNodes(ItemStack itemstack, EntityLivingBase player) {
+		int type = ((ItemArmor)itemstack.getItem()).armorType;
+		return type == 0;
+	}
+
+	@Override
+	public int getVisDiscount(ItemStack stack, EntityPlayer player,
+			Aspect aspect) {
+		int type = ((ItemArmor)stack.getItem()).armorType;
+		
+		return discount[aType][type];
+	}
+	
+	public static int[][] discount = new int[][]{{5,5,3,2},{8,10,7,5},{10,15,8,7},{2,3,2,1}};
 
 }

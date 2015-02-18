@@ -26,6 +26,8 @@ public class DiscoveryEntry {
 	
 	public ResourceLocation displayTexture;
 	
+	public boolean isNew = false;
+	
 	public DiscoveryEntry(String i)
 	{
 		id = i;
@@ -34,6 +36,12 @@ public class DiscoveryEntry {
 	public DiscoveryEntry setName(String s)
 	{
 		name = s;
+		return this;
+	}
+	
+	public DiscoveryEntry setNew()
+	{
+		isNew = true;
 		return this;
 	}
 	

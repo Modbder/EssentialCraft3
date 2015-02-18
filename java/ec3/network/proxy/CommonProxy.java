@@ -16,19 +16,34 @@ import net.minecraft.world.World;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.network.IGuiHandler;
 import ec3.client.gui.GuiCorruptionCleaner;
+import ec3.client.gui.GuiDarknessObelisk;
+import ec3.client.gui.GuiFilter;
+import ec3.client.gui.GuiMIM;
+import ec3.client.gui.GuiMINEjector;
+import ec3.client.gui.GuiMagicalAssembler;
+import ec3.client.gui.GuiUltraFlowerBurner;
+import ec3.client.gui.GuiUltraHeatGenerator;
 import ec3.common.entity.EntityMRUPresence;
+import ec3.common.inventory.ContainerAMINEjector;
+import ec3.common.inventory.ContainerAMINInjector;
 import ec3.common.inventory.ContainerChargingChamber;
 import ec3.common.inventory.ContainerColdDistillator;
 import ec3.common.inventory.ContainerCorruptionCleaner;
 import ec3.common.inventory.ContainerCrystalController;
 import ec3.common.inventory.ContainerCrystalExtractor;
 import ec3.common.inventory.ContainerCrystalFormer;
+import ec3.common.inventory.ContainerDarknessObelisk;
 import ec3.common.inventory.ContainerEnderGenerator;
+import ec3.common.inventory.ContainerFilter;
 import ec3.common.inventory.ContainerFlowerBurner;
 import ec3.common.inventory.ContainerHeatGenerator;
+import ec3.common.inventory.ContainerMIM;
+import ec3.common.inventory.ContainerMINEjector;
+import ec3.common.inventory.ContainerMINInjector;
 import ec3.common.inventory.ContainerMRUAcceptor;
 import ec3.common.inventory.ContainerMRUCoil;
 import ec3.common.inventory.ContainerMRUInfo;
+import ec3.common.inventory.ContainerMagicalAssembler;
 import ec3.common.inventory.ContainerMagicalEnchanter;
 import ec3.common.inventory.ContainerMagicalFurnace;
 import ec3.common.inventory.ContainerMagicalJukebox;
@@ -45,16 +60,26 @@ import ec3.common.inventory.ContainerPotionSpreader;
 import ec3.common.inventory.ContainerRadiatingChamber;
 import ec3.common.inventory.ContainerRayTower;
 import ec3.common.inventory.ContainerSunRayAbsorber;
+import ec3.common.inventory.ContainerUltraFlowerBurner;
+import ec3.common.inventory.ContainerUltraHeatGenerator;
+import ec3.common.inventory.InventoryMagicFilter;
+import ec3.common.tile.TileAMINEjector;
+import ec3.common.tile.TileAMINInjector;
 import ec3.common.tile.TileChargingChamber;
 import ec3.common.tile.TileColdDistillator;
 import ec3.common.tile.TileCorruptionCleaner;
 import ec3.common.tile.TileCrystalController;
 import ec3.common.tile.TileCrystalExtractor;
 import ec3.common.tile.TileCrystalFormer;
+import ec3.common.tile.TileDarknessObelisk;
 import ec3.common.tile.TileEnderGenerator;
 import ec3.common.tile.TileFlowerBurner;
 import ec3.common.tile.TileHeatGenerator;
+import ec3.common.tile.TileMIM;
+import ec3.common.tile.TileMINEjector;
+import ec3.common.tile.TileMINInjector;
 import ec3.common.tile.TileMRUCoil;
+import ec3.common.tile.TileMagicalAssembler;
 import ec3.common.tile.TileMagicalEnchanter;
 import ec3.common.tile.TileMagicalFurnace;
 import ec3.common.tile.TileMagicalJukebox;
@@ -71,6 +96,8 @@ import ec3.common.tile.TilePotionSpreader;
 import ec3.common.tile.TileRadiatingChamber;
 import ec3.common.tile.TileRayTower;
 import ec3.common.tile.TileSunRayAbsorber;
+import ec3.common.tile.TileUltraFlowerBurner;
+import ec3.common.tile.TileUltraHeatGenerator;
 import ec3.common.tile.TileecAcceptor;
 import ec3.common.tile.TileecStateChecker;
 import ec3.utils.cfg.Config;
@@ -83,6 +110,15 @@ public class CommonProxy implements IGuiHandler{
 		if(ID == Config.guiID[0])
 		{
 			TileEntity tile = world.getTileEntity(x, y, z);
+			if(tile == null)
+			{
+				//Item:filter
+				if(x == 0 && y == -1 && z == 0)
+				{
+					InventoryMagicFilter inventory = new InventoryMagicFilter(player.getCurrentEquippedItem());
+					return new ContainerFilter(player, inventory);
+				}
+			}
 			if(tile instanceof TileRayTower)
 			{
 				return new ContainerRayTower(player.inventory, tile);
@@ -195,6 +231,42 @@ public class CommonProxy implements IGuiHandler{
 			{
 				return new ContainerCorruptionCleaner(player.inventory, tile);
 			}
+			if(tile instanceof TileAMINEjector)
+			{
+				return new ContainerAMINEjector(player.inventory, tile);
+			}
+			if(tile instanceof TileMINEjector)
+			{
+				return new ContainerMINEjector(player.inventory, tile);
+			}
+			if(tile instanceof TileAMINInjector)
+			{
+				return new ContainerAMINInjector(player.inventory, tile);
+			}
+			if(tile instanceof TileMINInjector)
+			{
+				return new ContainerMINInjector(player.inventory, tile);
+			}
+			if(tile instanceof TileMIM)
+			{
+				return new ContainerMIM(player.inventory, tile);
+			}
+			if(tile instanceof TileDarknessObelisk)
+			{
+				return new ContainerDarknessObelisk(player.inventory, tile);
+			}
+			if(tile instanceof TileUltraHeatGenerator)
+			{
+				return new ContainerUltraHeatGenerator(player.inventory, tile);
+			}
+			if(tile instanceof TileUltraFlowerBurner)
+			{
+				return new ContainerUltraFlowerBurner(player.inventory, tile);
+			}
+			if(tile instanceof TileMagicalAssembler)
+			{
+				return new ContainerMagicalAssembler(player.inventory, tile);
+			}
 		}
 		return null;
 	}
@@ -259,5 +331,25 @@ public class CommonProxy implements IGuiHandler{
 	public EntityPlayer getClientPlayer()
 	{
 		return null;
+	}
+	
+	public void ItemFX(double... ds)
+	{
+		
+	}
+	
+	public void FlameFX(double... ds)
+	{
+		
+	}
+	
+	public void SmokeFX(double... ds)
+	{
+		
+	}
+	
+	public void wingsAction(EntityPlayer e, ItemStack s)
+	{
+		
 	}
 }

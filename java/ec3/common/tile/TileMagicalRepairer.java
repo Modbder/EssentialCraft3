@@ -11,7 +11,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
+import net.minecraftforge.common.config.Configuration;
 import DummyCore.Utils.Coord3D;
+import DummyCore.Utils.DataStorage;
+import DummyCore.Utils.DummyData;
 import DummyCore.Utils.DummyDistance;
 import DummyCore.Utils.MathUtils;
 import ec3.api.ApiCore;
@@ -21,9 +24,15 @@ import ec3.utils.common.ECUtils;
 
 public class TileMagicalRepairer extends TileMRUGeneric{
 	
+	public static float cfgMaxMRU = ApiCore.DEVICE_MAX_MRU_GENERIC;
+	public static boolean generatesCorruption = true;
+	public static int genCorruption = 3;
+	public static int mruUsage = 70;
+	
 	public TileMagicalRepairer()
 	{
-		this.maxMRU = (int) ApiCore.DEVICE_MAX_MRU_GENERIC;
+		 super();
+		this.maxMRU = (int)cfgMaxMRU;
 		this.setSlotsNum(2);
 	}
 	
@@ -48,6 +57,7 @@ public class TileMagicalRepairer extends TileMRUGeneric{
     			}
     		}
 		}
+		if(!this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord))
     	repare();
     	spawnParticles();
 	}
@@ -57,17 +67,18 @@ public class TileMagicalRepairer extends TileMRUGeneric{
     	ItemStack repareItem = this.getStackInSlot(1);
     	if(canRepare(repareItem))
     	{
-    		if(this.setMRU(this.getMRU()-70))
+    		if(this.setMRU(this.getMRU()-mruUsage))
     		{
     			repareItem.setItemDamage(repareItem.getItemDamage()-1);
-    			ECUtils.increaseCorruptionAt(worldObj, xCoord, yCoord, zCoord, this.worldObj.rand.nextInt(3));
+    			if(generatesCorruption)
+    				ECUtils.increaseCorruptionAt(worldObj, xCoord, yCoord, zCoord, this.worldObj.rand.nextInt(genCorruption));
     		}
     	}
     }
     
     public boolean canRepare(ItemStack s)
     {
-    	return s != null && s.getItemDamage() != 0 && s.getItem().isRepairable()&& this.getMRU() >= 70;
+    	return s != null && s.getItemDamage() != 0 && s.getItem().isRepairable()&& this.getMRU() >= mruUsage;
     }
     
     public void spawnParticles()
@@ -87,5 +98,35 @@ public class TileMagicalRepairer extends TileMRUGeneric{
     {
     	AxisAlignedBB bb = INFINITE_EXTENT_AABB;
     	return bb;
+    }
+    
+    public static void setupConfig(Configuration cfg)
+    {
+    	try
+    	{
+	    	cfg.load();
+	    	String[] cfgArrayString = cfg.getStringList("MagicalRepairerSettings", "tileentities", new String[]{
+	    			"Max MRU:"+ApiCore.DEVICE_MAX_MRU_GENERIC,
+	    			"MRU Usage:70",
+	    			"Can this device actually generate corruption:true",
+	    			"The amount of corruption generated each tick(do not set to 0!):3"
+	    			},"");
+	    	String dataString="";
+	    	
+	    	for(int i = 0; i < cfgArrayString.length; ++i)
+	    		dataString+="||"+cfgArrayString[i];
+	    	
+	    	DummyData[] data = DataStorage.parseData(dataString);
+	    	
+	    	mruUsage = Integer.parseInt(data[1].fieldValue);
+	    	cfgMaxMRU = Float.parseFloat(data[0].fieldValue);
+	    	generatesCorruption = Boolean.parseBoolean(data[2].fieldValue);
+	    	genCorruption = Integer.parseInt(data[3].fieldValue);
+	    	
+	    	cfg.save();
+    	}catch(Exception e)
+    	{
+    		return;
+    	}
     }
 }

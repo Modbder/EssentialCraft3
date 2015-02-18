@@ -1,15 +1,26 @@
 package ec3.common.block;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import ec3.common.item.ItemBlockElementalCrystal;
+import ec3.common.item.ItemBlockFancy;
 import ec3.common.item.ItemBlockGeneric;
+import ec3.common.item.ItemsCore;
 import ec3.common.mod.EssentialCraftCore;
 import DummyCore.Blocks.BlocksRegistry;
 import DummyCore.Items.ItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 import static ec3.utils.cfg.Config.getIdForBlock;
 import static ec3.utils.cfg.Config.getIdForItem;
 
@@ -123,6 +134,32 @@ public class BlocksCore {
 		air = registerBlockSimple(Block.class,Material.rock,air,"air","glass",-1,-1,0);
 		air.setBlockName("air");
 		air.setBlockTextureName("cauldron_top");
+		minEjector = registerBlockSimple(BlockMINEjector.class,Material.rock,minEjector,"minEjector","fortifiedStone",1,1,0);
+		minInjector = registerBlockSimple(BlockMINInjector.class,Material.rock,minInjector,"minInjector","fortifiedStone",1,1,0);
+		mim = registerBlockSimple(BlockMIM.class,Material.rock,mim,"mim","voidStone",1,1,0);
+		//Its 8ack!
+		darknessObelisk = registerBlockSimple(BlockDarknessObelisk.class,Material.rock,darknessObelisk,"darknessObelisk","voidStone",1,1,0);
+		
+		ultraHeatGen = registerBlockSimple(BlockUltraHeatGenerator.class,Material.rock,ultraHeatGen,"ultraHeatGen","voidStone",1,1,0);
+		ultraFlowerBurner = registerBlockSimple(BlockUltraFlowerBurner.class,Material.rock,ultraFlowerBurner,"ultraFlowerBurner","voidStone",1,1,0);
+		
+		assembler = registerBlockSimple(BlockMagicalAssemblerCore.class,Material.rock,assembler,"assembler","fortifiedStone",1,1,0);
+		magicalMirror = registerBlockSimple(BlockMagicalMirror.class,Material.rock,magicalMirror,"magicalMirror","magicPlatingBlock",1,1,0);
+		magicalDisplay = registerBlockSimple(BlockMagicalDisplay.class,Material.rock,magicalDisplay,"magicalDisplay","magicalDisplay",1,1,0);
+		portal = registerBlockSimple(BlockPortal.class,Material.rock,portal,"portal","portal",-1,-1,1);
+	}
+	
+	public static void postInitLoad()
+	{
+		
+		
+		createFancyBlock(Material.rock,"mru","mru",1,100,new ItemStack(ItemsCore.magicalSlag));
+		createFancyBlock(Material.rock,"concrete","concrete",1,5,new ItemStack(concrete));
+		createFancyBlock(Material.rock,"fortifiedStone","fortifiedStone",1.5F,8,new ItemStack(fortifiedStone));
+		createFancyBlock(Material.glass,"coldStone","coldStone",0.7F,1,new ItemStack(coldStone));
+		createFancyBlock(Material.rock,"magicPlating","magicPlating",2F,8,new ItemStack(magicPlating));
+		createFancyBlock(Material.rock,"palePlating","palePlating",2F,8,new ItemStack(platingPale));
+		createFancyBlock(Material.rock,"voidStone","voidStone",3F,28,new ItemStack(voidStone));
 	}
 	
 	public static Block registerBlockSimple(Class<? extends Block> c,Material m,Block b, String name, String texture, float hardness, float resistance, int opacity)
@@ -143,6 +180,7 @@ public class BlocksCore {
 					return b;
 				}else
 				{
+					c.getConstructor(Material.class).setAccessible(true);
 					b = c.getConstructor(Material.class).newInstance(m).setBlockName("essentialcraft:"+name).setBlockTextureName("essentialcraft:"+texture).setResistance(resistance).setHardness(hardness).setLightOpacity(opacity);
 					BlocksRegistry.registerBlock(b, name, EssentialCraftCore.class, ItemBlockGeneric.class);
 					return b;
@@ -154,6 +192,226 @@ public class BlocksCore {
 			}
 		}
 	}
+	
+	public static void createFancyBlock(Material m, String name, String texture, float hardness, float resistance, ItemStack createdFrom)
+	{
+		Block fancy = new BlockFancy(m).setBlockName("essentialcraft.fancyBlock."+name).setBlockTextureName("essentialcraft:fancyBlocks/"+texture).setResistance(resistance).setHardness(hardness);
+		BlocksRegistry.registerBlock(fancy, "fancyBlock."+name, EssentialCraftCore.class, ItemBlockFancy.class);
+		fancyBlocks.add(fancy);
+		
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(fancy,4,1), new Object[]{
+			createdFrom,new ItemStack(ItemsCore.magicalChisel,1,OreDictionary.WILDCARD_VALUE)
+		}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,4,2), new Object[]{
+			"## ",
+			"## ",
+			"   ",
+			'#',new ItemStack(fancy,1,1)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,4,7), new Object[]{
+			" # ",
+			"# #",
+			" # ",
+			'#',new ItemStack(fancy,1,2)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,4,0), new Object[]{
+			"# #",
+			"   ",
+			"# #",
+			'#',new ItemStack(fancy,1,1)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,9,3), new Object[]{
+			"###",
+			"###",
+			"###",
+			'#',new ItemStack(fancy,1,1)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,8,4), new Object[]{
+			"###",
+			"# #",
+			"###",
+			'#',new ItemStack(fancy,1,2)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,4,5), new Object[]{
+			"## ",
+			"## ",
+			"   ",
+			'#',new ItemStack(fancy,1,7)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,9,6), new Object[]{
+			"###",
+			"@$@",
+			"###",
+			'#',new ItemStack(fancy,1,1),
+			'@',new ItemStack(fancy,1,3),
+			'$',new ItemStack(fancy,1,0)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,4,8), new Object[]{
+			" # ",
+			"#@#",
+			" # ",
+			'#',new ItemStack(fancy,1,0),
+			'@',new ItemStack(fancy,1,3)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,8,9), new Object[]{
+			"###",
+			"#@#",
+			"###",
+			'#',new ItemStack(fancy,1,8),
+			'@',new ItemStack(Items.redstone,1,0)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,8,10), new Object[]{
+			"###",
+			"#@#",
+			"###",
+			'#',new ItemStack(fancy,1,1),
+			'@',new ItemStack(ItemsCore.genericItem,1,3)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,8,11), new Object[]{
+			"###",
+			"#@#",
+			"###",
+			'#',new ItemStack(fancy,1,1),
+			'@',new ItemStack(ItemsCore.genericItem,1,12)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,8,12), new Object[]{
+			"###",
+			"#@#",
+			"###",
+			'#',new ItemStack(fancy,1,1),
+			'@',new ItemStack(Items.iron_ingot)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,8,13), new Object[]{
+			"###",
+			"#@#",
+			"###",
+			'#',new ItemStack(fancy,1,1),
+			'@',new ItemStack(Items.leather)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,4,14), new Object[]{
+			"## ",
+			"## ",
+			"   ",
+			'#',new ItemStack(fancy,1,13)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,4,15), new Object[]{
+			"## ",
+			"## ",
+			"   ",
+			'#',new ItemStack(fancy,1,12)
+		}));
+	}
+	
+	
+	public static void createFancyBlock(Block b, String name, int meta)
+	{
+		Block fancy = new BlockFancy(b,meta).setBlockName("essentialcraft.fancyBlock."+name).setResistance(1).setHardness(1);
+		BlocksRegistry.registerBlock(fancy, "fancyBlock."+name, EssentialCraftCore.class, ItemBlockFancy.class);
+		fancyBlocks.add(fancy);
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(fancy,4,1), new Object[]{
+			new ItemStack(b,1,meta),new ItemStack(ItemsCore.magicalChisel,1,OreDictionary.WILDCARD_VALUE)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,4,2), new Object[]{
+			"## ",
+			"## ",
+			"   ",
+			'#',new ItemStack(fancy,1,1)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,4,7), new Object[]{
+			" # ",
+			"# #",
+			" # ",
+			'#',new ItemStack(fancy,1,2)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,4,8), new Object[]{
+			" # ",
+			"#@#",
+			" # ",
+			'#',new ItemStack(fancy,1,0),
+			'@',new ItemStack(fancy,1,3)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,4,0), new Object[]{
+			"# #",
+			"   ",
+			"# #",
+			'#',new ItemStack(fancy,1,1)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,9,3), new Object[]{
+			"###",
+			"###",
+			"###",
+			'#',new ItemStack(fancy,1,1)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,8,4), new Object[]{
+			"###",
+			"# #",
+			"###",
+			'#',new ItemStack(fancy,1,2)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,4,5), new Object[]{
+			"## ",
+			"## ",
+			"   ",
+			'#',new ItemStack(fancy,1,7)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,9,6), new Object[]{
+			"###",
+			"@$@",
+			"###",
+			'#',new ItemStack(fancy,1,1),
+			'@',new ItemStack(fancy,1,3),
+			'$',new ItemStack(fancy,1,0)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,8,9), new Object[]{
+			"###",
+			"#@#",
+			"###",
+			'#',new ItemStack(fancy,1,8),
+			'@',new ItemStack(Items.redstone,1,0)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,8,10), new Object[]{
+			"###",
+			"#@#",
+			"###",
+			'#',new ItemStack(fancy,1,1),
+			'@',new ItemStack(ItemsCore.genericItem,1,3)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,8,11), new Object[]{
+			"###",
+			"#@#",
+			"###",
+			'#',new ItemStack(fancy,1,1),
+			'@',new ItemStack(ItemsCore.genericItem,1,12)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,8,12), new Object[]{
+			"###",
+			"#@#",
+			"###",
+			'#',new ItemStack(fancy,1,1),
+			'@',new ItemStack(Items.iron_ingot)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,8,13), new Object[]{
+			"###",
+			"#@#",
+			"###",
+			'#',new ItemStack(fancy,1,1),
+			'@',new ItemStack(Items.leather)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,4,14), new Object[]{
+			"## ",
+			"## ",
+			"   ",
+			'#',new ItemStack(fancy,1,13)
+		}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancy,4,15), new Object[]{
+			"## ",
+			"## ",
+			"   ",
+			'#',new ItemStack(fancy,1,12)
+		}));
+	}
+	
 	
 	public static Block drops;
 	public static Block magicPlating;
@@ -222,6 +480,19 @@ public class BlocksCore {
 	public static Block reactor;
 	
 	public static Block air;
+	
+	public static Block minEjector;
+	public static Block minInjector;
+	public static Block mim;
+	public static Block darknessObelisk;
+	public static Block ultraHeatGen;
+	public static Block ultraFlowerBurner;
+	public static Block assembler;
+	public static Block magicalMirror;
+	public static Block magicalDisplay;
+	public static Block portal;
+	
+	public static List<Block> fancyBlocks = new ArrayList<Block>();
 	
 	public static Block[] lightCorruption = new Block[4];
 }

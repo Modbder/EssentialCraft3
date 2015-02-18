@@ -20,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.oredict.OreDictionary;
 import ec3.api.ApiCore;
 import ec3.common.block.BlocksCore;
@@ -33,12 +34,18 @@ public class TileMRUReactor extends TileMRUGeneric{
 	
 	public boolean isStructureCorrect, cycle;
 	
+	public static float cfgMaxMRU = ApiCore.GENERATOR_MAX_MRU_GENERIC;
+	public static float cfgBalance = -1F;
+	public static float mruGenerated = 50;
+	public static boolean damage = true;
+	
 	public List<Lightning> lightnings = new ArrayList();
 	
 	public TileMRUReactor()
 	{
+		 super();
 		this.balance = 0;
-		this.maxMRU = (int) ApiCore.GENERATOR_MAX_MRU_GENERIC;
+		this.maxMRU = (int)cfgMaxMRU;
 	}
 	
 	
@@ -209,7 +216,7 @@ public class TileMRUReactor extends TileMRUGeneric{
 		if(this.isStructureCorrect())
 		{
 	    	List<EntityLivingBase> lst = getWorldObj().getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(xCoord-3, yCoord-3, zCoord-3, xCoord+3, yCoord+3, zCoord+3));
-	    	if(!lst.isEmpty())
+	    	if(!lst.isEmpty() && damage)
 	    	{
 	    		for(int i = 0; i < lst.size(); ++i)
 	    		{
@@ -217,7 +224,6 @@ public class TileMRUReactor extends TileMRUGeneric{
 	    			e.attackEntityFrom(DamageSource.magic, 5);
 	    		}
 	    	}
-			int mruGenerated = 50;
 			this.setMRU((int) (this.getMRU()+mruGenerated));
 			if(this.getMRU() > this.getMaxMRU())
 				this.setMRU(this.getMaxMRU());
@@ -232,6 +238,8 @@ public class TileMRUReactor extends TileMRUGeneric{
 				if(this.getBalance() < 0.01F)
 					cycle = true;
 			}
+			if(cfgBalance != -1)
+				this.setBalance(cfgBalance);
 			if(this.worldObj.isRemote)
 			{
 				if(this.worldObj.rand.nextFloat() < 0.05F)
@@ -251,6 +259,34 @@ public class TileMRUReactor extends TileMRUGeneric{
 		}
 	}
 	
-	
+    public static void setupConfig(Configuration cfg)
+    {
+    	try
+    	{
+	    	cfg.load();
+	    	String[] cfgArrayString = cfg.getStringList("MRUReactorSettings", "tileentities", new String[]{
+	    			"Max MRU:"+ApiCore.GENERATOR_MAX_MRU_GENERIC,
+	    			"Default balance(-1 is random):-1.0",
+	    			"MRU generated per tick:50",
+	    			"Damage Entities around:true"
+	    			},"");
+	    	String dataString="";
+	    	
+	    	for(int i = 0; i < cfgArrayString.length; ++i)
+	    		dataString+="||"+cfgArrayString[i];
+	    	
+	    	DummyData[] data = DataStorage.parseData(dataString);
+	    	
+	    	cfgMaxMRU = Float.parseFloat(data[0].fieldValue);
+	    	cfgBalance = Float.parseFloat(data[1].fieldValue);
+	    	mruGenerated = Float.parseFloat(data[2].fieldValue);
+	    	damage = Boolean.parseBoolean(data[3].fieldValue);
+	    	
+	    	cfg.save();
+    	}catch(Exception e)
+    	{
+    		return;
+    	}
+    }
 
 }

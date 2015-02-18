@@ -2,9 +2,13 @@ package ec3.common.item;
 
 import java.util.List;
 
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
 import DummyCore.Utils.MathUtils;
+import DummyCore.Utils.MiscUtils;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
+import ec3.common.mod.EssentialCraftCore;
 import ec3.utils.common.ECUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -12,6 +16,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
@@ -22,7 +27,7 @@ import net.minecraft.stats.StatList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
-public class ItemMagicalWings extends ItemStoresMRUInNBT {
+public class ItemMagicalWings extends ItemStoresMRUInNBT implements IBauble{
 
 	public ItemMagicalWings() {
 		super();
@@ -64,5 +69,51 @@ public class ItemMagicalWings extends ItemStoresMRUInNBT {
 			}
 		}
 		
+	}
+	
+	@Override
+	public BaubleType getBaubleType(ItemStack itemstack) {
+		// TODO Auto-generated method stub
+		return BaubleType.BELT;
+	}
+
+	@Override
+	public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
+		if(player instanceof EntityPlayer)
+		{
+			EntityPlayer e = (EntityPlayer) player;
+			if(e.motionY < -.2F && !e.isSneaking() && (ECUtils.tryToDecreaseMRUInStorage(e, -1) || this.setMRU(itemstack, -1)))
+			{
+				e.motionY = -.2F;
+				e.fallDistance = 0F;
+				e.worldObj.spawnParticle("reddust", e.posX+MathUtils.randomDouble(e.worldObj.rand)/2, e.posY-1+MathUtils.randomDouble(e.worldObj.rand), e.posZ+MathUtils.randomDouble(e.worldObj.rand)/2, 0, 1, 1);
+				
+			}
+			if(this.getMRU(itemstack) >= 1)
+				EssentialCraftCore.proxy.wingsAction(e, itemstack);
+			MiscUtils.applyPlayerModifier((EntityPlayer)player, SharedMonsterAttributes.movementSpeed, "EC300", 0.1F, false, 0, "bauble");
+		}
+	}
+
+	@Override
+	public void onEquipped(ItemStack itemstack, EntityLivingBase player) {
+	}
+
+	@Override
+	public void onUnequipped(ItemStack itemstack, EntityLivingBase player) {
+		MiscUtils.applyPlayerModifier((EntityPlayer)player, SharedMonsterAttributes.movementSpeed, "EC300", 0.1F, true, 0, "bauble");
+		
+	}
+
+	@Override
+	public boolean canEquip(ItemStack itemstack, EntityLivingBase player) {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean canUnequip(ItemStack itemstack, EntityLivingBase player) {
+		// TODO Auto-generated method stub
+		return true;
 	}
 }

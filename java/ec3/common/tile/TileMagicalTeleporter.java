@@ -7,6 +7,7 @@ import java.util.List;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
+import ec3.api.ApiCore;
 import ec3.api.ITEHasMRU;
 import ec3.common.block.BlocksCore;
 import ec3.common.item.ItemBoundGem;
@@ -41,13 +42,21 @@ import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.config.Configuration;
 
 public class TileMagicalTeleporter extends TileMRUGeneric
 {
 	 public int progressLevel;
+		public static float cfgMaxMRU = ApiCore.DEVICE_MAX_MRU_GENERIC*10;
+		public static boolean generatesCorruption = false;
+		public static int genCorruption = 5;
+		public static int mruUsage = 500;
+		public static int teleportTime = 250;
+		public static boolean allowDimensionalTeleportation = true;
 	 
 	 public TileMagicalTeleporter()
 	 {
+		 super();
 		 this.setSlotsNum(2);
 	 }
 	 
@@ -68,9 +77,10 @@ public class TileMagicalTeleporter extends TileMRUGeneric
     @Override
     public void updateEntity() 
     {
-    	this.maxMRU = 50000;
+    	this.maxMRU = (int) cfgMaxMRU;
     	super.updateEntity();
     	this.spawnParticles();
+    	if(!this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord))
     	this.tryTeleport();
 		ECUtils.mruIn(this, 0);
 		ECUtils.spawnMRUParticles(this, 0);
@@ -140,9 +150,11 @@ public class TileMagicalTeleporter extends TileMRUGeneric
     	{
     		EntityPlayer player = this.getPlayer();
     		++this.progressLevel;
-    		this.worldObj.playSoundAtEntity(player, "minecart.base", 0.1F, 0.8F+((float)this.progressLevel/250));
-    		if(this.progressLevel >= 250)
+    		this.worldObj.playSoundAtEntity(player, "minecart.base", 0.1F, 0.8F+((float)this.progressLevel/teleportTime));
+    		if(this.progressLevel >= teleportTime)
     		{
+				if(generatesCorruption)
+					ECUtils.increaseCorruptionAt(worldObj, xCoord, yCoord, zCoord, this.worldObj.rand.nextInt(genCorruption));
     			int[] tpCoords = this.getCoordsToTP();
     			if(!this.worldObj.isRemote)
     			{
@@ -153,7 +165,7 @@ public class TileMagicalTeleporter extends TileMRUGeneric
     				}
     				int currentPlayerDim = player.dimension;
     				int newDim = this.getDimensionToTP();
-    				if(currentPlayerDim != newDim && !player.worldObj.isRemote)
+    				if(currentPlayerDim != newDim && !player.worldObj.isRemote && allowDimensionalTeleportation)
     				{
     					MinecraftServer mcServer = MinecraftServer.getServer();
     					EntityPlayerMP p_72356_1_ = (EntityPlayerMP) player;
@@ -259,10 +271,10 @@ public class TileMagicalTeleporter extends TileMRUGeneric
     	int diffY = (int) MathUtils.getDifference(yCoord, tpCoords[1]);
     	int diffZ = (int) MathUtils.getDifference(zCoord, tpCoords[2]);
     	float mainDiff = (diffX+diffY+diffZ)/3;
-    	int ret = (int)(500*mainDiff);
-    	if(ret > 50000) ret = 50000;
+    	int ret = (int)(mruUsage*mainDiff);
+    	if(ret > cfgMaxMRU) ret = (int) cfgMaxMRU;
     	if(this.worldObj.provider.dimensionId != dim)
-    		ret = 50000;
+    		ret = (int) cfgMaxMRU;
     	return ret;
     }
     
@@ -329,6 +341,40 @@ public class TileMagicalTeleporter extends TileMRUGeneric
     		{
     			EssentialCraftCore.proxy.spawnParticle("cSpellFX", xCoord+0.5F+MathUtils.randomFloat(this.worldObj.rand)*3, yCoord+1, zCoord+0.5F+MathUtils.randomFloat(this.worldObj.rand)*3, 0,2, 0);
     		}
+    	}
+    }
+    
+    public static void setupConfig(Configuration cfg)
+    {
+    	try
+    	{
+	    	cfg.load();
+	    	String[] cfgArrayString = cfg.getStringList("MagicalTeleporterSettings", "tileentities", new String[]{
+	    			"Max MRU:"+ApiCore.DEVICE_MAX_MRU_GENERIC*10,
+	    			"MRU Usage per block:500",
+	    			"Can this device actually generate corruption:false",
+	    			"The amount of corruption generated each tick(do not set to 0!):5",
+	    			"Ticks required for the teleporter to teleport an entity:250",
+	    			"Allow teleportation between dimensions:true"
+	    			},"");
+	    	String dataString="";
+	    	
+	    	for(int i = 0; i < cfgArrayString.length; ++i)
+	    		dataString+="||"+cfgArrayString[i];
+	    	
+	    	DummyData[] data = DataStorage.parseData(dataString);
+	    	
+	    	mruUsage = Integer.parseInt(data[1].fieldValue);
+	    	cfgMaxMRU = Float.parseFloat(data[0].fieldValue);
+	    	generatesCorruption = Boolean.parseBoolean(data[2].fieldValue);
+	    	genCorruption = Integer.parseInt(data[3].fieldValue);
+	    	teleportTime = Integer.parseInt(data[4].fieldValue);
+	    	allowDimensionalTeleportation = Boolean.parseBoolean(data[5].fieldValue);
+	    	
+	    	cfg.save();
+    	}catch(Exception e)
+    	{
+    		return;
     	}
     }
 	

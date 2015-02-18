@@ -3,9 +3,12 @@ package ec3.common.item;
 import java.util.List;
 
 import DummyCore.Utils.MathUtils;
+import ec3.common.block.BlocksCore;
 import ec3.common.registry.PotionRegistry;
 import ec3.utils.common.ECUtils;
 import ec3.utils.common.WindRelations;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockPortal;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -18,6 +21,7 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -31,6 +35,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
@@ -77,49 +82,116 @@ public class ItemWindTablet extends ItemStoresMRUInNBT {
     {
         if((ECUtils.tryToDecreaseMRUInStorage(p_77659_3_, -500) || this.setMRU(p_77659_1_, -500)))
         {
-        	boolean hasEffect = p_77659_3_.getActivePotionEffect(PotionRegistry.windTouch)!=null;
-        	if(!hasEffect)
-        	{
-        		p_77659_3_.addPotionEffect(new PotionEffect(PotionRegistry.windTouch.id,20*60,0));
-        		if(!p_77659_3_.worldObj.isRemote)
-        		{
-        			p_77659_3_.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA+""+EnumChatFormatting.ITALIC+windMessages[0]));
-        		}
-        	}else
-        	{
         		boolean readd = true;
         		int currentWindRev = WindRelations.getPlayerWindRelations(p_77659_3_);
         		int maxWindRev = 3500;
         		String windName = "Owethanna Else Hugaida";
         		int revPos = MathUtils.pixelatedTextureSize(currentWindRev, maxWindRev, windName.length());
-        		int amplifier = p_77659_3_.getActivePotionEffect(PotionRegistry.windTouch).getAmplifier();
-        		if(amplifier < revPos)
-        			amplifier+=1;
-        		if(!p_77659_3_.worldObj.isRemote)
+        		if(!p_77659_3_.worldObj.isRemote && revPos >= 22)
         		{
-        			if(amplifier+1 < 23)
-        				p_77659_3_.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA+""+EnumChatFormatting.ITALIC+windMessages[amplifier+1]));
-        			if(amplifier+1 == 23 && p_77659_3_.isInsideOfMaterial(Material.portal))
-        			{
         				readd = false;
-        				p_77659_3_.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA+""+EnumChatFormatting.ITALIC+windMessages[amplifier+1]));
-        				p_77659_3_.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA+""+EnumChatFormatting.ITALIC+"§lOwethanna Else Hugaida!"));
-        				p_77659_3_.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA+""+EnumChatFormatting.ITALIC+"§lOwethanna Else Hugaida!!"));
-        				p_77659_3_.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA+""+EnumChatFormatting.ITALIC+"§lOwethanna Else Hugaida!!!!"));
         				MinecraftServer server = MinecraftServer.getServer();
         				if(p_77659_3_.capabilities.isCreativeMode)
         					p_77659_3_.capabilities.isCreativeMode = false;
-        	            server.getConfigurationManager().transferPlayerToDimension((EntityPlayerMP) p_77659_3_, 53);
+        				Block b = p_77659_3_.worldObj.getBlock(MathHelper.floor_double(p_77659_3_.posX), MathHelper.floor_double(p_77659_3_.posY), MathHelper.floor_double(p_77659_3_.posZ));
+        				
+        				if(b instanceof BlockPortal)
+        				{
+        					int x = MathHelper.floor_double(p_77659_3_.posX);
+        					int y = MathHelper.floor_double(p_77659_3_.posY);
+        					int z = MathHelper.floor_double(p_77659_3_.posZ);
+        					int i = 0;
+        					
+        					while(p_77659_3_.worldObj.getBlock(x+i, y, z) instanceof BlockPortal)
+        					{
+        						int j = 0;
+            					while(p_77659_3_.worldObj.getBlock(x+i, y+j, z) instanceof BlockPortal)
+            					{
+            						int k = 0;
+                					while(p_77659_3_.worldObj.getBlock(x+i, y+j, z+k) instanceof BlockPortal)
+                					{
+                						int metadata = p_77659_3_.worldObj.getBlockMetadata(x+i, y+j, z+k);
+                						p_77659_3_.worldObj.setBlock(x+i, y+j, z+k, BlocksCore.portal, metadata, 2);
+                						++k;
+                					}
+                					k = 0;
+                					while(p_77659_3_.worldObj.getBlock(x+i, y+j, z-k) instanceof BlockPortal)
+                					{
+                						int metadata = p_77659_3_.worldObj.getBlockMetadata(x+i, y+j, z-k);
+                						p_77659_3_.worldObj.setBlock(x+i, y+j, z-k, BlocksCore.portal, metadata, 2);
+                						++k;
+                					}
+                					++j;
+            					}
+            					j = 0;
+            					while(p_77659_3_.worldObj.getBlock(x+i, y-j, z) instanceof BlockPortal)
+            					{
+            						int k = 0;
+                					while(p_77659_3_.worldObj.getBlock(x+i, y-j, z+k) == Blocks.portal)
+                					{
+                						int metadata = p_77659_3_.worldObj.getBlockMetadata(x+i, y-j, z+k);
+                						p_77659_3_.worldObj.setBlock(x+i, y-j, z+k, BlocksCore.portal, metadata, 2);
+                						++k;
+                					}
+                					k = 0;
+                					while(p_77659_3_.worldObj.getBlock(x+i, y-j, z-k) == Blocks.portal)
+                					{
+                						int metadata = p_77659_3_.worldObj.getBlockMetadata(x+i, y+j, z-k);
+                						p_77659_3_.worldObj.setBlock(x+i, y-j, z-k, BlocksCore.portal, metadata, 2);
+                						++k;
+                					}
+                					++j;
+            					}
+            					++i;
+        					}
+        					i = 0;
+        					while(p_77659_3_.worldObj.getBlock(x-i, y, z) instanceof BlockPortal)
+        					{
+        						int j = 0;
+            					while(p_77659_3_.worldObj.getBlock(x-i, y+j, z) instanceof BlockPortal)
+            					{
+            						int k = 0;
+                					while(p_77659_3_.worldObj.getBlock(x-i, y+j, z+k) instanceof BlockPortal)
+                					{
+                						int metadata = p_77659_3_.worldObj.getBlockMetadata(x-i, y+j, z+k);
+                						p_77659_3_.worldObj.setBlock(x-i, y+j, z+k, BlocksCore.portal, metadata, 2);
+                						++k;
+                					}
+                					k = 0;
+                					while(p_77659_3_.worldObj.getBlock(x-i, y+j, z-k) instanceof BlockPortal)
+                					{
+                						int metadata = p_77659_3_.worldObj.getBlockMetadata(x-i, y+j, z-k);
+                						p_77659_3_.worldObj.setBlock(x-i, y+j, z-k, BlocksCore.portal, metadata, 2);
+                						++k;
+                					}
+                					++j;
+            					}
+            					j = 0;
+            					while(p_77659_3_.worldObj.getBlock(x-i, y-j, z) instanceof BlockPortal)
+            					{
+            						int k = 0;
+                					while(p_77659_3_.worldObj.getBlock(x-i, y-j, z+k) instanceof BlockPortal)
+                					{
+                						int metadata = p_77659_3_.worldObj.getBlockMetadata(x-i, y-j, z+k);
+                						p_77659_3_.worldObj.setBlock(x-i, y-j, z+k, BlocksCore.portal, metadata, 2);
+                						++k;
+                					}
+                					k = 0;
+                					while(p_77659_3_.worldObj.getBlock(x-i, y-j, z-k) instanceof BlockPortal)
+                					{
+                						int metadata = p_77659_3_.worldObj.getBlockMetadata(x-i, y-j, z-k);
+                						p_77659_3_.worldObj.setBlock(x-i, y-j, z-k, BlocksCore.portal, metadata, 2);
+                						++k;
+                					}
+                					++j;
+            					}
+            					++i;
+        					}
+        				}
+        	            //server.getConfigurationManager().transferPlayerToDimension((EntityPlayerMP) p_77659_3_, 53);
         	            p_77659_3_.worldObj.playSoundAtEntity(p_77659_3_, "portal.trigger", 10, 0.01F);
         			}
-        		}
-        		{
-	        		p_77659_3_.removePotionEffect(PotionRegistry.windTouch.id);
-	        		if(readd)
-	        		p_77659_3_.addPotionEffect(new PotionEffect(PotionRegistry.windTouch.id,20*60,amplifier));
-        		}
         	}
-        }
         return p_77659_1_;
     }
     

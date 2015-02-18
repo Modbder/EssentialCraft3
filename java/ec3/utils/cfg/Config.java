@@ -1,8 +1,18 @@
 package ec3.utils.cfg;
 
+import net.minecraft.block.Block;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.util.EnumHelper;
 import DummyCore.Utils.IDummyConfig;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.ModContainer;
+import cpw.mods.fml.common.ModContainerFactory;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
+import ec3.common.block.BlocksCore;
+import ec3.common.registry.TileRegistry;
+import ec3.utils.common.EnumOreColoring;
 
 public class Config implements IDummyConfig{
 	
@@ -20,6 +30,7 @@ public class Config implements IDummyConfig{
 	//TODO Blocks
 	public void loadBlocks()
 	{
+		
 	}
 	
 	//TODO Items
@@ -53,24 +64,30 @@ public class Config implements IDummyConfig{
 		biomeID[4] = config.get("Biomes", "DesertID", 138).getInt();
 		biomeID[5] = config.get("Biomes", "DreadLandsID", 139).getInt();
 		enablePersonalityShatter = config.getBoolean("EnablePersonalityShatter", "Misc", true, "");
+		String[] cfgCustomOreParsing = config.getStringList("CustomMagmaticAlloys", "Misc", new String[]{"oreSaltpeter:10065301|5?dustSaltpeter","oreSulfur:16777113|5?dustSulfur"}, "Allows to add custom ores to Magmatic Alloys, where this is an array list, where first part is the ore name in OreDictionary, int after : is the color, int after | is the amount of drops you get from the ore and String after ? is the OreDictionary name of the result.");
+		for(String s : cfgCustomOreParsing)
+		{
+			int index_0 = s.indexOf(":");
+			int index_1 = s.indexOf("|");
+			int index_2 = s.indexOf("?");
+			if(index_0 == -1 || index_1 == -1 || index_2 == -1)continue;
+			String oredOreName = s.substring(0, index_0);
+			int oreColor = Integer.parseInt(s.substring(index_0+1, index_1));
+			int oreOutput = Integer.parseInt(s.substring(index_1+1, index_2));
+			String oredResultName = s.substring(index_2+1, s.length());
+			
+			EnumHelper.addEnum(EnumOreColoring.class, oredOreName.toUpperCase(), new Class[]{String.class,String.class,int.class,int.class}, new Object[]{oredOreName,oredResultName,oreColor,oreOutput});
+		}
 	}
 	
 	public static int getIdForBlock(String name)
 	{
-		config.load();
-		int cfgBlockID = config.get("Blocks", name, genericBlockIDS+blocksCount).getInt();
-		++blocksCount;
-		config.save();
-		return cfgBlockID;
+		return ++blocksCount;
 	}
 	
 	public static int getIdForItem(String name)
 	{
-		config.load();
-		int cfgItemID = config.get("Items",name, genericItemIDS+itemsCount).getInt();
-		++itemsCount;
-		config.save();
-		return cfgItemID;
+		return ++itemsCount;
 	}
 	
 	
@@ -89,6 +106,10 @@ public class Config implements IDummyConfig{
 	public static int magicianID;
 	public static boolean enablePersonalityShatter = true;
 	public static net.minecraftforge.common.config.Configuration config;
+	
+	public static String[] data_addedOresNames;
+	public static int[] data_addedOreColors;
+	public static int[] data_addedOreAmount;
 
 	@Override
 	public void load(Configuration config) {
@@ -100,6 +121,45 @@ public class Config implements IDummyConfig{
 		this.loadMobs();
 		this.loadMisc();
 		this.loatEnchants();
+		config.save();
+		this.loadTiles();
+	}
+	
+	public void loadTiles()
+	{
+		try
+		{
+		for(Class<? extends TileEntity> tile : TileRegistry.cfgDependant)
+		{
+			if(tile.getMethod("setupConfig", Configuration.class) != null)
+			{
+				tile.getMethod("setupConfig", Configuration.class).invoke(null, Config.config);
+			}
+		}
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void postInitParseDecorativeBlocks()
+	{
+		config.load();
+		String[] cfgCustomFancy = config.getStringList("Custom Fancy Blocks", "Misc", new String[]{"Thaumcraft:blockCosmeticOpaque?0","Thaumcraft:blockCosmeticSolid?1"}, "Allows to add custom Fancy Blocks to the game, where string before : is the modname, String after :, but before ? is the block name, and int after ? is metadata.");
+		for(String s : cfgCustomFancy)
+		{
+			int index_0 = s.indexOf(":");
+			int index_1 = s.indexOf("?");
+			if(index_0 == -1 || index_1 == -1)continue;
+			String modname = s.substring(0,index_0);
+			String blockname = s.substring(index_0+1,index_1);
+			int metadata = Integer.parseInt(s.substring(index_1+1));
+			Block added = GameRegistry.findBlock(modname, blockname);
+			if(added != null)
+			{
+				BlocksCore.createFancyBlock(added, blockname, metadata);
+			}
+		}
 		config.save();
 	}
 

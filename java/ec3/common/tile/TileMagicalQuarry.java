@@ -24,6 +24,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.oredict.OreDictionary;
 import ec3.api.ApiCore;
 import ec3.api.ITEHasMRU;
@@ -43,9 +44,18 @@ public class TileMagicalQuarry extends TileMRUGeneric{
 	 public int miningZ;
 	 public boolean flag;
 	
+	 public static float cfgMaxMRU = ApiCore.DEVICE_MAX_MRU_GENERIC;
+	 public static boolean generatesCorruption = true;
+	public static int genCorruption = 2;
+	public static boolean ignoreLiquids = true;
+	public static float mruUsage = 8;
+	public static float efficencyPerUpgrade = 0.5F;
+	public static float blockHardnessModifier = 9F;
+	 
 	public TileMagicalQuarry()
 	{
-		this.maxMRU = (int) ApiCore.DEVICE_MAX_MRU_GENERIC*10;
+		 super();
+		this.maxMRU = (int)cfgMaxMRU;
 		this.setSlotsNum(4);
 	}
 	
@@ -60,6 +70,7 @@ public class TileMagicalQuarry extends TileMRUGeneric{
 		if(this.syncTick == 10)
 			this.syncTick = 0;
 		super.updateEntity();
+		if(!this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord))
     	mine();
     	if(!this.worldObj.isRemote)
     		collectItems();
@@ -166,13 +177,13 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     
     public float getEfficency()
     {
-    	float f = 0.5F;
+    	float f = efficencyPerUpgrade;
     	ItemStack s = ItemGenericEC3.getStkByName("efficencyUpgrade");
     	for(int i = 0; i < this.getSizeInventory(); ++i)
     	{
     		if(this.getStackInSlot(i) != null && this.getStackInSlot(i).isItemEqual(s))
     		{
-    			f += (float)this.getStackInSlot(i).stackSize*0.5F;
+    			f += (float)this.getStackInSlot(i).stackSize*efficencyPerUpgrade;
     		}
     	}
     	return f;
@@ -203,7 +214,7 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     
     public boolean shouldInstaMine(Block b)
     {
-    	return b instanceof BlockLiquid || b == null || b == Blocks.air;
+    	return (b instanceof BlockLiquid || ignoreLiquids) || b == null || b == Blocks.air;
     }
     
     public boolean mineBlock(Block b)
@@ -216,8 +227,8 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     			return true;
     		}else
     		{
-    			float required = b.getBlockHardness(worldObj, miningX, miningY, miningZ)*9F;
-    			if(this.setMRU((int)(this.getMRU()-(2*this.getEfficency()))))
+    			float required = b.getBlockHardness(worldObj, miningX, miningY, miningZ)*blockHardnessModifier;
+    			if(this.setMRU((int)(this.getMRU()-(mruUsage/4*this.getEfficency()))))
     				this.progressLevel += this.getEfficency();
     			if(this.progressLevel >= required)
     			{
@@ -226,7 +237,8 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     				b.onBlockDestroyedByPlayer(worldObj, miningX, miningY, miningZ, 0);
     				b.dropBlockAsItem(worldObj, miningX, miningY, miningZ, this.worldObj.getBlockMetadata(miningX, miningY, miningZ), 0);
     				this.worldObj.setBlock(miningX, miningY, miningZ, Blocks.air, 0, 3);
-    				ECUtils.increaseCorruptionAt(worldObj, xCoord, yCoord, zCoord, this.worldObj.rand.nextInt(2));
+    				if(generatesCorruption)
+    					ECUtils.increaseCorruptionAt(worldObj, xCoord, yCoord, zCoord, this.worldObj.rand.nextInt(genCorruption));
     			}
     		}
     		
@@ -240,7 +252,7 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     	while(--r >= 0)
     	{
     		Block b = worldObj.getBlock(xCoord, r, zCoord);
-    		if((b != null && b != Blocks.air && !(b instanceof BlockLiquid) && this.canMineBlock(b)) && this.canMineBlock(b))
+    		if((b != null && b != Blocks.air && !(b instanceof BlockLiquid || ignoreLiquids) && this.canMineBlock(b)) && this.canMineBlock(b))
     		{
     			return false;
     		}
@@ -254,7 +266,7 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     	while(--r >= 0)
     	{
     		Block b = worldObj.getBlock(xCoord, r, zCoord);
-    		if((b != null && b != Blocks.air && !(b instanceof BlockLiquid) && this.canMineBlock(b)) && this.canMineBlock(b))
+    		if((b != null && b != Blocks.air && !(b instanceof BlockLiquid || ignoreLiquids) && this.canMineBlock(b)) && this.canMineBlock(b))
     		{
     			return r;
     		}
@@ -270,7 +282,7 @@ public class TileMagicalQuarry extends TileMRUGeneric{
         	for(int z = -rad; z <= rad; ++z)
         	{
         		Block b = worldObj.getBlock(xCoord+x, miningY, zCoord+z);
-        		if(b != null && b != Blocks.air && !(b instanceof BlockLiquid) && this.canMineBlock(b))
+        		if(b != null && b != Blocks.air && !(b instanceof BlockLiquid || ignoreLiquids) && this.canMineBlock(b))
         		{
         			return false;
         		}
@@ -281,7 +293,7 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     
     public boolean canWork()
     {
-    	return this.getEfficency() > 0 && this.getMRU()>8;
+    	return this.getEfficency() > 0 && this.getMRU()>mruUsage;
     }
     
     public void mine()
@@ -375,6 +387,42 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     	}else
     	{
     		this.splitItem(s);
+    	}
+    }
+    
+    public static void setupConfig(Configuration cfg)
+    {
+    	try
+    	{
+	    	cfg.load();
+	    	String[] cfgArrayString = cfg.getStringList("MagicalQuarrySettings", "tileentities", new String[]{
+	    			"Max MRU:"+ApiCore.DEVICE_MAX_MRU_GENERIC,
+	    			"MRU Usage:8",
+	    			"Should not mine liquids:true",
+	    			"Can this device actually generate corruption:true",
+	    			"The amount of corruption generated each tick(do not set to 0!):2",
+	    			"Efficency added to the device per upgrade:0.5",
+	    			"Block hardness modifier:9.0"
+	    			},"");
+	    	String dataString="";
+	    	
+	    	for(int i = 0; i < cfgArrayString.length; ++i)
+	    		dataString+="||"+cfgArrayString[i];
+	    	
+	    	DummyData[] data = DataStorage.parseData(dataString);
+	    	
+	    	cfgMaxMRU = Float.parseFloat(data[0].fieldValue);
+	    	mruUsage = Integer.parseInt(data[1].fieldValue);
+	    	ignoreLiquids = Boolean.parseBoolean(data[2].fieldValue);
+	    	generatesCorruption = Boolean.parseBoolean(data[3].fieldValue);
+	    	genCorruption = Integer.parseInt(data[4].fieldValue);
+	    	efficencyPerUpgrade = Float.parseFloat(data[5].fieldValue);
+	    	blockHardnessModifier = Float.parseFloat(data[6].fieldValue);
+	    	
+	    	cfg.save();
+    	}catch(Exception e)
+    	{
+    		return;
     	}
     }
 

@@ -11,6 +11,8 @@ public class NEIEssentialCraftConfig implements IConfigureNEI{
 		API.registerUsageHandler(new MagicianTableRecipeHandler());
 		API.registerRecipeHandler(new RadiatingChamberRecipeHandler());
 		API.registerUsageHandler(new RadiatingChamberRecipeHandler());
+		API.registerRecipeHandler(new MagicalAssemblerRecipeHandler());
+		API.registerUsageHandler(new MagicalAssemblerRecipeHandler());
 	}
 
 	@Override

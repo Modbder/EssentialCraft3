@@ -16,12 +16,12 @@ ec3.text.desc.secret_1_3=Maybe it can be used with items?
 
 tile.essentialcraft.ecStateChecker.name=Enrichment Chamber State Checker
 tile.essentialcraft.sunRayAbsorber.name=Sun Ray Absorber
-tile.essentialcraft.ecRedstoneController.name=[NYI]
+tile.essentialcraft.ecRedstoneController.name=Enrichment Chamber Redstone Controller
 tile.essentialcraft.ecHoldingChamber.name=Enrichment Chamber Holding Block
 tile.essentialcraft.magicPlatingBlock.name=Magic Plating Block
 tile.essentialcraft.rayTower.name=Ray Tower
 tile.essentialcraft.ecAcceptor.name=Enrichment Chamber MRU Acceptor
-tile.essentialcraft.ecBalance.name=[NYI]
+tile.essentialcraft.ecBalancer.name=Enrichment Chamber Stabilizer
 tile.essentialcraft.corruption.frozen.name=Frozen Corruption
 tile.essentialcraft.corruption.chaos.name=Chaos Corruption
 tile.essentialcraft.corruption.shade.name=The SHADE
@@ -250,6 +250,7 @@ ec3.txt.shapedRecipe=Shaped Crafting
 ec3.txt.furnaceRecipe=Smelting
 ec3.txt.radiatingRecipe=Radiating Chamber
 ec3.txt.magicianRecipe=Magician Table
+ec3.txt.assemblerRecipe=Magical Assembler
 ec3.txt.structure=Structure
 ec3.txt.is.press=Goto Page
 ec3.text.button.back=Go Back
@@ -284,6 +285,8 @@ ec3book.discovery_ec3.disc.mru.name=MRU And MRUCUs
 ec3book.discovery_ec3.disc.mru.desc=Industrial or Magical?
 ec3book.discovery_ec3.disc.book.name=Book Of Knowledge
 ec3book.discovery_ec3.disc.book.desc=The ultimate guide!
+ec3book.discovery_ec3.disc.decorations.name=Decorative Blocks
+ec3book.discovery_ec3.disc.decorations.desc=Fancy it all up!
 
 ec3.page.wind_0.txt=Magical wind. What is it? We all know it, we all had met it at some point in our lives, but what it actually is? Well, the answer is pretty simple!|The wind is somewhat of a living creature, that likes to observe people with unique fate!
 ec3.page.wind_1.txt=This effect you can get randomly just by doing random stuff in the world. It does nothing on it's own.
@@ -296,7 +299,7 @@ ec3.page.drops_1.txt=Fire Drops can be used as Fire Shards in Thaumcraft. To cra
 ec3.page.drops_2.txt=Water Drops can be used as Water Shards in Thaumcraft. To craft them use Clay.
 ec3.page.drops_3.txt=Earth Drops can be used as Earth Shards in Thaumcraft. To craft them use Slime.
 ec3.page.drops_4.txt=Air Drops can be used as Air Shards in Thaumcraft. To craft them use Gunpowder.
-ec3.page.drops_5.txt=You can craft elemental drops. They are used in lots of crafts. They can also be used to create tools, just as diamonds. The tools are a little bit better, than diamond.
+ec3.page.drops_5.txt=You can craft elemental drops. They are used in lots of crafts. You can also craft different tools, but that will come later.
 ec3.page.miscCrafts_0.txt=All items and devices you want to craft are really complicated, and can't be crafted from simpliest resources. This means, that you have to use some advanced items to make the devices. And here they are!
 ec3.page.mru_0.txt=Now we are getting close to the bases. What is MRU? Is this some kind of energy? In fact, here lies the answer to this question. It may be kinda complicated, so I warn you!
 ec3.page.mru_1.txt=First of all, as we all know everything consists of so called 'molecules'. And those molecules are created from bunch of even smaller particles - atoms. The atoms are not the smallest objects - they are made from some electrons, neutrons and protons.
@@ -320,6 +323,7 @@ ec3.page.soulStone_2.txt=To make the soul stone read information bound it to you
 ec3.page.soulStone_3.txt=Now, the lines represent your matrix. The second line represents the amount of MRU stored in your matrix. The last line represents the balance of your matrix, and the first one represents the player the stone is boundd to. You will need this stone later on, so keep it!
 ec3.page.soulStone_4.txt=You can increase the amount of MRU in your matrix by killing living creatures. Every time a creature dies you get a chance to absorb some of it's matrix energy. The more maxhealth the mob had, the more MRU you will get as a result.
 ec3.page.soulStone_5.txt=It is worth mentioning, that if you die you loose ALL of MRU energy in your matrix, and have to start allover again. On the other hand, if a player kills another player ALL MRU energy from the victim will go to the killer.
+ec3.page.soulStone_6.txt=If you have BloodMagic installed, you can imbue the SoulStone with blood using altar(tier 1 is enough), and the result will be the same soul stone, that is able to tell your Life Network!
 ec3.page.book_0.txt=Welcome to EssentialCraft3, and to the amazing and long-wated Book Of Knowledge! Here I will tell you almost all you need to know to play with EssentialCraft3!
 ec3.page.book_1.txt=And the most important thing is of course the book! 
 ec3.page.book_2.txt=The book is pretty easy to navigate. It is divided by categories. The book itself has a tier based system, so you will need to update it using specific crafts and rituals. Every new tier unlocks you a new category.
@@ -336,7 +340,7 @@ ec3.page.book_12.txt=If you want to lookup a quick recipe/information about a bl
 ec3.page.book_13.txt=The same rule applies to items - if an item lays on the ground you can look it up using the book.
 ec3.page.book_14.txt=You can lookup recipes/info about blocks and items even if you do not have the required tier of a book.
 ec3.page.book_15.txt=This is how you upgrade your book to tier 2. Thanks and have fun!
- 
+ec3.page.decorations_0.txt=You can create lots of decorative blocks using the Magical Chisel! There are some variations, and you can create your own, using the config file! It is also possible to use those blocks in the corresponding structures, just like before chiselling.
  
 #MRU and Matrix
 ec3book.discovery_ec3.disc.boundGem.name=Bound Gemstone
@@ -377,6 +381,14 @@ ec3book.discovery_ec3.disc.rayTower.name=Ray Tower
 ec3book.discovery_ec3.disc.rayTower.desc=High-radiation beams!
 ec3book.discovery_ec3.disc.book_t2.name=Upgrading the Book
 ec3book.discovery_ec3.disc.book_t2.desc=Industry time!
+ec3book.discovery_ec3.disc.mrucuec.balancer.name=MRUCUEC Balancer
+ec3book.discovery_ec3.disc.mrucuec.balancer.desc=Balance the Magic!
+ec3book.discovery_ec3.disc.mrucuec.redstone.name=MRUCUEC Redstone Controller
+ec3book.discovery_ec3.disc.mrucuec.redstone.desc=Magical Logics.
+ec3book.discovery_ec3.disc.magicalMirrors.name=Magical Mirrors
+ec3book.discovery_ec3.disc.magicalMirrors.desc=Item Teleportation
+ec3book.discovery_ec3.disc.magicalAssembler.name=Magical Assembler
+ec3book.discovery_ec3.disc.magicalAssembler.desc=Magical Factory?
 
 ec3.page.boundGem_0.txt=Machines in EssentialCraft3 can generate or transfer MRU energy. We are talking about transfering right now. Every machine that can accept MRU will have a special slot with a gray gem icon in it. This slot is for the bound gem.
 ec3.page.boundGem_1.txt=There are no wires or pipes in ec3. There are no tubes and/or golems. No robots. Any device can accept MRU energy on it's own. Basically, the Bound Gem serves as a location storage for the machine.
@@ -396,6 +408,7 @@ ec3.page.miscRadiation_0.txt=You will certainly need some items to use in crafts
 ec3.page.magicianTable_0.txt=Usually most of items in ec3 come from combining 5 different items and some MRU. Or just radiating 1 item with MRU. This is like an infusion in Thaumcraft - but you inject not the aspects, but MRU into the item.
 ec3.page.magicianTable_1.txt=Magician Table can do the exact requested thing! It is, basically, another crafting table of the mod. It needs a supply of MRU and some items. It does not care about the balance you give to it.
 ec3.page.magicianTable_2.txt=It is worth saying, that while this device works it generates some unstable MRU in the world - it means, that it will create and empower MRUCU around itself. It will also put a nasty potion effect on you.
+ec3.page.magicianTable_4.txt=The device can be upgraded using items, listed above. Each upgrade will icrease the speed of the device, but will also increase the MRU usage. The more expensive the upgrade is, the more effect it will have on the device.
 ec3.page.magicianCrafts_0.txt=As said previously lots of items are made using the Magician Table. And here they are - full list! Just please, do not get too scared
 ec3.page.paleItems_0.txt=If you manage to apply MRU to certain items you can make them 'pale'. They will be able to mimicrite certain items and blocks in certain conditions. However, this process requires LOTS of MRU.
 ec3.page.magicMonocle_0.txt=You need a way to see MRUCUs and MRU rays. Here it is - this item, while held in your hand will show you all MRUCUs and MRU rays!
@@ -412,10 +425,18 @@ ec3.page.mrucuec.storage_0.txt=You can increase the amount of MRU the structure 
 ec3.page.naturalFurnace_0.txt=Everything living has an MRU matrix. Including grass, saplings and, most importantly, flowers.You are able to create a device, that will burn grass, saplings and flowers around it in 8 block radius on the same Y.
 ec3.page.naturalFurnace_1.txt=This device only generates 10 MRU/tick, and it generates different amounts of energy from different plants.
 ec3.page.heatGenerator_0.txt=You can generate MRU from items, burning under extreme temperature, and the more temperature - the more MRU!
-ec3.page.corruptionCleaner_0.txt=Tired of brealing those corruption blocks inside the MRUCUEC? Here is the soultion! This device will slowly remove all corruption blocks in a radius of 8 blocks with a cost of 20MRU/tick!
+ec3.page.corruptionCleaner_0.txt=Tired of breaking those corruption blocks inside the MRUCUEC? Here is the soultion! This device will slowly remove all corruption blocks in a radius of 8 blocks with a cost of 20MRU/tick!
 ec3.page.book_t2_0.txt=You now know all about the MRU and Matrix, time to see, how can you implement this into some industry?
 ec3.page.rayTower_0.txt=If you need to transfer MRU energy farther than 16 blocks you can use this. They have a slot for a bound gem, and they are pretty cheap.
-
+ec3.page.mrucuec.balancer_0.txt=This device is able to decrease the amount of corruption produced by MRUCUs. It is not powerful enough to completely stop the creation of corruption, but it will decrease the chance of MRUCU to create it by 95%! These do not stack with eachother.
+ec3.page.mrucuec.redstone_0.txt=This device is able to output the redstone signal based on the percentage of MRU you have in the structure. You can change the settings by shift-clicking the device with an empty hand.
+ec3.page.magicalMirrors_0.txt=Using that Magic Purified Glass and Magical Plates you can create Magical Mirrors. They can be used to teleport items between inventories. You need to place a mirror above any inventory, and it will extract items from that inventory. Mirrors do not need MRU to work.
+ec3.page.magicalMirrors_1.txt=However, before using those mirrors you need to tell them, where to send items. You will need a Control Rod. Right-click a mirror you want to link, and then the inventory you want the linked mirror to transfer items to. The inventory must be located within 8 block from the mirror.
+ec3.page.magicalAssembler_0.txt=To create advanced devices you need a way to assemble materials into the device - and this is what the magical assembler is used for. You need to supply this device with MRU, place one of the COMPONENTS of the recipe into the bottom slot and then the list of recipes will appear.
+ec3.page.magicalAssembler_1.txt=If you mouse over any recipe in the list you will see the components. Left-clicking the recipe will lock it. To browse through the list you can use your mouse wheel, or just hold the left mouse button and move your mouse up or down.
+ec3.page.magicalAssembler_2.txt=If you've selected your recipe, just press set, and the recipe will be locked into the device. You should always use shift-click to put or remove bound gem or the recipe component, because, otherwise it is kinda hard to insert the item into the device.
+ec3.page.magicalAssembler_3.txt=If you are ready, you can pump the required items in this device using Magical Mirrors - just select the assembler as the inventory. You can also pull the result out using those magical mirrors - just place one above. The order in which you put the required items in does not matter.
+ec3.page.magicalAssembler_4.txt=The assembler is not only able to craft items, that require the assembler itself to be crafted, but can also serve as the Radiating Chamber, Magician table and your regular workbench, though not all the recipes will be available. 
 
 #Engineer's
 ec3book.discovery_ec3.disc.crystals.name=Crystal Machinery
@@ -587,9 +608,9 @@ ec3.page.hoanna_3.txt=The legend mentions, that the man called the wind by it's 
 ec3.page.hoanna_4.txt=This tablet serves the only purpose - to translate the blows of wind into normal human language.
 ec3.page.hoanna_5.txt=The description should have some question marks or just letters. You need to make sure, that there are no quiestion marks, and therefore - that you know the full name of the wind!
 ec3.page.hoanna_6.txt=The process of visiting Hoanna should not be hard. First of all, have a supply of MRU in your inventory - the tablet may require lots of MRU energy to encode the wind's messages.
-ec3.page.hoanna_7.txt=Now - start right-clicking the tablet in your hand. In your inventory there will be an effect - the usuall Wind Touch, but this time the LEVEL of the effect will grow with each click. The numbers under the icon indicate the level.
+ec3.page.hoanna_7.txt=If you know the full name of the wind - you can proceed further.
 ec3.page.hoanna_8.txt=A basic form or shape for a portal shall be done - build a nether portal, and - LIGHT IT UP. Yep, create a regular nether portal. Do not step inside it yet.
-ec3.page.hoanna_9.txt=Keep on activating the tablet, untill you see nothing, and the level is 22-23. After that step into the portal and activate the tablet one last time. The Hoanna waits! You are sure, that the materials from that world will help the book to get new information...
+ec3.page.hoanna_9.txt=Step into the portal and activate the tablet one time. The portal blocks will transform into Hoanna Portal Blocks. The Hoanna waits! You are sure, that the materials from that world will help the book to get new information...
 
 
 #Hoanna's
@@ -607,6 +628,14 @@ ec3book.discovery_ec3.disc.magicalFurnace.name=Magical Furnace
 ec3book.discovery_ec3.disc.magicalFurnace.desc=Not an Infernal one
 ec3book.discovery_ec3.disc.emberForge.name=Ember Forge
 ec3book.discovery_ec3.disc.emberForge.desc=So shiny... So warm...
+ec3book.discovery_ec3.disc.mim.name=Magical Inventory Management
+ec3book.discovery_ec3.disc.mim.desc=No pipes needed.
+ec3book.discovery_ec3.disc.o8elisk.name=Darkness O8elisk
+ec3book.discovery_ec3.disc.o8elisk.desc=It is 8ack and gr8 as always!
+ec3book.discovery_ec3.disc.ultraHeat.name=Ultra Heat Generator
+ec3book.discovery_ec3.disc.ultraHeat.desc=Pyromaniac!
+ec3book.discovery_ec3.disc.ultraFlower.name=Ultra Natural Furnace
+ec3book.discovery_ec3.disc.ultraFlower.desc=Self-sustainable!
 
 ec3.page.radiation_0.txt=Not looking so hot, eh? It was all a lie, after all. The "world of great opportunities", the "place of technology and magic mixed, combined and fully functional", the "land of dreams"... Is a NUCLEAR DESERT. What happened? Who knows, but this place is, for sure, a dangerous one!
 ec3.page.radiation_1.txt=Scorching sun, empty destroyed cities and underground catacombs - this place is a terrible one. The air itself is poisoned, and if you breath it for too long - you will die FOREVER. No "respawn magic" can save you. The Hoanna is a land of reality, there is no "respawn". 
@@ -631,7 +660,16 @@ ec3.page.emberForge_0.txt=This structure allows the production of so called "Ele
 ec3.page.emberForge_2.txt=Raw 0. A 5x5 layer of Void Stone.
 ec3.page.emberForge_3.txt=Raw 1. Raw 1 means that it is higher than row 0 by 1 on Y axis.
 ec3.page.emberForge_4.txt=Raw 2. Raw 2 means that it is higher than row 0 by 2 on Y axis.
- 
+ec3.page.mim_0.txt=You can create a system, that will allow you to manage the inventories all among your base. This system consists of some devices, each serves it's functionalities.
+ec3.page.mim_2.txt=Filter. This filter can be opened by right-clicking it in your hand. In the GUI you have 9 slots. In each you can put any item, and it will be filtered by other devices in the system. Putting a filter in a filter will allow you to specify more items.
+ec3.page.mim_4.txt=Advanced Filter. This filter functions the same way as the previous one does, except, that you can specify, if you want to ignore Metadata, NBTData, or you can check items by Ore Dictionary, and not their IDs.
+ec3.page.mim_7.txt=Ejection Nodes - you can use this to eject items out of inventories. If you use the basic one you need to attach this to the side you want to extract the items from. Putting a filter in the top slot will make the ejector to eject only items, which are stated in the filter.
+ec3.page.mim_8.txt=Advanced Ejection Node allows you to specify the slot to pull items from. The side you are attaching this device to does not matter. It is also possible to eject items from slots, from which items can't normally be ejected.
+ec3.page.mim_11.txt=Injection Nodes - work the same way as the ejection ones, but they Insert items into slots, instead of ejecting them.
+ec3.page.mim_13.txt=The manager itself is a core of the system. You need to supply it with MRU, and then, you need to link every device in your systems(nodes) with bound gems. After that put your bound gems in this device in the order, you want them to be accessed.
+ec3.page.o8elisk_0.txt=This device forces monsters to spawn near8y. It will spawn 8iome-specific monsters too! If you place a spawner in it's 8ottom slot, it will instead function just like that spawner! It does not requires players to 8e near8y to function, which is gr8 for your spawning systems! 
+ec3.page.ultraHeat_0.txt=This is a straight upgrade over the Heat Generator. It functions just the same way, except for the fact, that it requires time to heat up, and the more it is heated up, the more MRU it produces. There is no heat limit too! The more it's heated, the less fuel it will consume.
+ec3.page.ultraFlower_0.txt=This is a straight upgrade over the Natural Furnace. This device functions the same way as the regular Natural Furnace does, except for the fact, that it creates much more MRU, does not burn saplings, but burns leaves and logs, and automatically replants all the saplings dropped by burned leaves!
  
  
 #4.3
@@ -660,4 +698,57 @@ tile.essentialcraft.reactor.name=MRU Tesla Reactor Core
 
 #4.4
 tile.air.name=Air
+tile.essentialcraft.minEjector.name=Magical Inventory Node: Ejection
+tile.essentialcraft.minInjector.name=Magical Inventory Node: Injection
+tile.essentialcraft.mim.name=Magical Inventory Manager
+tile.essentialcraft.darknessObelisk.name=Darkness O8elisk
+tile.essentialcraft.ultraHeatGen.name=Ultra Heat Generator
+tile.essentialcraft.ultraFlowerBurner.name=Ultra Natural Furnace
+tile.essentialcraft.assembler.name=Magical Assembler
+tile.essentialcraft.magicalMirror.name=Magical Mirror
+tile.essentialcraft.fancyBlock.mru.name=Fancy MRU Tile
+tile.essentialcraft.fancyBlock.concrete.name=Fancy Concrete Tile
+tile.essentialcraft.fancyBlock.fortifiedStone.name=Fancy Fortified Stone Tile
+tile.essentialcraft.fancyBlock.coldStone.name=Fancy Cold Stone Tile
+tile.essentialcraft.fancyBlock.magicPlating.name=Fancy Magic Plating Tile
+tile.essentialcraft.fancyBlock.palePlating.name=Fancy Pale Plating Tile
+tile.essentialcraft.fancyBlock.voidStone.name=Fancy Void Stone Tile
+tile.essentialcraft.fancyBlock.blockCosmeticOpaque.name=[TC]Fancy Amber Tile
+tile.essentialcraft.fancyBlock.blockCosmeticSolid.name=[TC]Fancy Obsidian Tile
+tile.essentialcraft.magicalDisplay.name=[NYI]Magical Display
+tile.essentialcraft.portal.name=Portal To Hoanna
+
 item.essentialcraft:research_book.name=Research Book
+item.essentialcraft:itemFilter.name=Magical Inventory Node Filter
+item.essentialcraft:magicalChisel.name=Magical Chisel
+item.essentialcraft:controlRod.name=Control Rod
+
+ec3.desc.fancy.ancientTile=Ancient Big Tile
+ec3.desc.fancy.bigTile=Big Tile
+ec3.desc.fancy.brick=Brick
+ec3.desc.fancy.fancyTile=Fancy Tile
+ec3.desc.fancy.pressuredTile=Pressure Plate Tile
+ec3.desc.fancy.smallTiles=Small Tiles
+ec3.desc.fancy.temple=Creepy
+ec3.desc.fancy.tiles=Tiles
+ec3.desc.fancy.futuristicTile=Futuristic Tile
+ec3.desc.fancy.machine=Tile With Gear
+ec3.desc.fancy.runic=Runic Tile
+ec3.desc.fancy.netherStar=Star Tile
+ec3.desc.fancy.plate=Plated Tile
+ec3.desc.fancy.packedPlate=Packet Plated Tile
+ec3.desc.fancy.doublePlate=Double Packet Plated Tile
+ec3.desc.fancy.gem=Tile With Gem
+
+ec3.txt.redstone_0=Redstone Output Enabled: Always
+ec3.txt.redstone_1=Redstone Output Enabled: Above 10% MRU
+ec3.txt.redstone_2=Redstone Output Enabled: Above 20% MRU
+ec3.txt.redstone_3=Redstone Output Enabled: Above 30% MRU
+ec3.txt.redstone_4=Redstone Output Enabled: Above 40% MRU
+ec3.txt.redstone_5=Redstone Output Enabled: Above 50% MRU
+ec3.txt.redstone_6=Redstone Output Enabled: Above 60% MRU
+ec3.txt.redstone_7=Redstone Output Enabled: Above 70% MRU
+ec3.txt.redstone_8=Redstone Output Enabled: Above 80% MRU
+ec3.txt.redstone_9=Redstone Output Enabled: Above 90% MRU
+ec3.txt.redstone_10=Redstone Output Enabled: If MRU is full
+ec3.txt.desc.advanced=Advanced

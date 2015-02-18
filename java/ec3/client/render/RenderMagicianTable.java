@@ -23,9 +23,11 @@ import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 
 import ec3.api.ITEHasMRU;
+import ec3.api.MagicianTableUpgrades;
 import ec3.client.model.ModelFloatingCube;
 import ec3.client.model.ModelSolarPrism;
 import ec3.common.item.ItemBoundGem;
+import ec3.common.tile.TileMagicianTable;
 import ec3.common.tile.TileRayTower;
 import ec3.utils.common.ECUtils;
 
@@ -34,6 +36,7 @@ public class RenderMagicianTable extends TileEntitySpecialRenderer
 {
     public static final ResourceLocation textures = new ResourceLocation("essentialcraft:textures/special/models/magicianTable.png");
     public static final IModelCustom model = AdvancedModelLoader.loadModel(new ResourceLocation("essentialcraft:textures/special/models/MagicianTable.obj"));
+    public static final IModelCustom cube = AdvancedModelLoader.loadModel(new ResourceLocation("essentialcraft:textures/special/models/Cube.obj"));
 
     public RenderMagicianTable()
     {
@@ -49,9 +52,18 @@ public class RenderMagicianTable extends TileEntitySpecialRenderer
     {
     	RenderHelper.disableStandardItemLighting();
         GL11.glPushMatrix();
-        GL11.glTranslatef((float)p_76986_2_+0.5F, (float)p_76986_4_, (float)p_76986_6_+0.5F);
-        this.bindTexture(textures);
-        this.model.renderAll();
+	        GL11.glTranslatef((float)p_76986_2_+0.5F, (float)p_76986_4_, (float)p_76986_6_+0.5F);
+	        this.bindTexture(textures);
+	        this.model.renderAll();
+	        TileMagicianTable table = (TileMagicianTable) p_76986_1_;
+	        if(table.upgrade != -1)
+	        {
+	        	this.bindTexture(MagicianTableUpgrades.upgradeTextures.get(table.upgrade));
+	        	float scale = 0.99F;
+	        	GL11.glTranslatef(0, 0.005F, 0);
+	        	GL11.glScalef(scale, scale, scale);
+	        	this.cube.renderAll();
+	        }
         GL11.glPopMatrix();
         ECUtils.renderMRUBeam(p_76986_1_, 0, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
         RenderHelper.enableStandardItemLighting();

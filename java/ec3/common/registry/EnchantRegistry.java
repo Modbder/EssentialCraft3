@@ -8,6 +8,7 @@ public class EnchantRegistry {
 	
 	public static void register()
 	{
+		
 		int[] id = Config.instance.enchantID;
 	}
 	

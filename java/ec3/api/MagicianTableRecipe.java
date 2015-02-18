@@ -1,5 +1,6 @@
 package ec3.api;
 
+import DummyCore.Utils.UnformedItemStack;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -7,11 +8,11 @@ import net.minecraft.world.World;
 
 public class MagicianTableRecipe implements IRecipe{
 
-	public ItemStack[] requiredItems = new ItemStack[5];
+	public UnformedItemStack[] requiredItems = new UnformedItemStack[5];
 	public ItemStack result;
 	public int mruRequired;
 	
-	public MagicianTableRecipe(ItemStack[] i, ItemStack j, int k)
+	public MagicianTableRecipe(UnformedItemStack[] i, ItemStack j, int k)
 	{
 		requiredItems = i;
 		result = j;
@@ -29,11 +30,11 @@ public class MagicianTableRecipe implements IRecipe{
 		if(p_77569_1_.getSizeInventory() >= 5)
 		{
 			boolean ret = true;
-			if(!p_77569_1_.getStackInSlot(0).isItemEqual(requiredItems[0]))
+			if(!requiredItems[0].itemStackMatches(p_77569_1_.getStackInSlot(0)))
 				ret = false;
 			for(int i = 1; i < 5; ++i)
 			{
-				if(!p_77569_1_.getStackInSlot(i).isItemEqual(requiredItems[i]))
+				if(!requiredItems[i].itemStackMatches(p_77569_1_.getStackInSlot(i)))
 				{
 					ret = false;
 				}

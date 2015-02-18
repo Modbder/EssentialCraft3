@@ -2,6 +2,8 @@ package ec3.common.item;
 
 import java.util.List;
 
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
 import ec3.utils.common.ECUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -20,7 +22,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
-public class ItemCharm extends ItemStoresMRUInNBT {
+public class ItemCharm extends ItemStoresMRUInNBT implements IBauble{
 
 	public IIcon[] icon = new IIcon[10];
 	public String[] name = new String[]{"Fire","Water","Earth","Air","Steam","Magma","Lightning","Life","Rain","Dust"};
@@ -34,9 +36,8 @@ public class ItemCharm extends ItemStoresMRUInNBT {
 	}
 	
 	@Override
-	public void onUpdate(ItemStack s, World world, Entity entity, int indexInInventory, boolean isCurrentItem)
+	public void onWornTick(ItemStack s, EntityLivingBase entity)
 	{
-		super.onUpdate(s, world, entity, indexInInventory, isCurrentItem);
 		if(entity instanceof EntityPlayer)
 		{
 			EntityPlayer e = (EntityPlayer) entity;
@@ -213,4 +214,34 @@ public class ItemCharm extends ItemStoresMRUInNBT {
     {
     	return "Charm Of "+name[par1ItemStack.getItemDamage()];
     }
+
+	@Override
+	public BaubleType getBaubleType(ItemStack itemstack) {
+		// TODO Auto-generated method stub
+		return BaubleType.AMULET;
+	}
+
+	@Override
+	public void onEquipped(ItemStack itemstack, EntityLivingBase player) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onUnequipped(ItemStack itemstack, EntityLivingBase player) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean canEquip(ItemStack itemstack, EntityLivingBase player) {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean canUnequip(ItemStack itemstack, EntityLivingBase player) {
+		// TODO Auto-generated method stub
+		return true;
+	}
 }

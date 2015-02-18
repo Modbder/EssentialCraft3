@@ -13,8 +13,11 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.FakePlayer;
 import DummyCore.Utils.Coord3D;
+import DummyCore.Utils.DataStorage;
+import DummyCore.Utils.DummyData;
 import DummyCore.Utils.DummyDistance;
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
@@ -27,9 +30,15 @@ import ec3.utils.common.ECUtils;
 
 public class TileCrystalController extends TileMRUGeneric{
 	
+	public static float cfgMaxMRU = ApiCore.DEVICE_MAX_MRU_GENERIC;
+	public static int mruUsage = 100;
+	public static int chanceToUseMRU = 20;
+	public static float mutateModifier = .001F;
+	
 	public TileCrystalController()
 	{
-		this.maxMRU = (int) ApiCore.DEVICE_MAX_MRU_GENERIC;
+		 super();
+		this.maxMRU = (int)cfgMaxMRU;
 		this.setSlotsNum(2);
 	}
 	
@@ -54,11 +63,13 @@ public class TileCrystalController extends TileMRUGeneric{
     			}
     		}
 		}
-    	if(!this.worldObj.isRemote && this.worldObj.rand.nextInt(20) == 0 && this.getMRU() >= 100)
-    	{
-    		this.setMRU(this.getMRU()-100);
-    	}
+		if(!this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord))
+	    	if(!this.worldObj.isRemote && this.worldObj.rand.nextInt(chanceToUseMRU) == 0 && this.getMRU() >= mruUsage)
+	    	{
+	    		this.setMRU(this.getMRU()-mruUsage);
+	    	}
     	this.spawnParticles();
+    	if(!this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord))
     	this.mutateToElement();
 	}
 	
@@ -80,13 +91,13 @@ public class TileCrystalController extends TileMRUGeneric{
     		ItemStack e = this.getStackInSlot(1);
     		TileElementalCrystal c = this.getCrystal();
     		int rarity = (int)((float)e.getItemDamage()/4);
-    		float chance = (float) (.001*(rarity+1));
+    		float chance = (float) (mutateModifier*(rarity+1));
     		if(this.worldObj.rand.nextFloat() <= chance)
     		{
     			int type = ItemEssence.convertDamageToIntBefore4(e.getItemDamage());
     			c.mutate(type, this.worldObj.rand.nextInt((rarity+1)*2));
     			this.decrStackSize(1, 1);
-    			this.setMRU(this.getMRU()-20);
+    			this.setMRU(this.getMRU()-mruUsage*10);
     		}
     	}
     }
@@ -144,5 +155,35 @@ public class TileCrystalController extends TileMRUGeneric{
     {
     	AxisAlignedBB bb = INFINITE_EXTENT_AABB;
     	return bb;
+    }
+    
+    public static void setupConfig(Configuration cfg)
+    {
+    	try
+    	{
+	    	cfg.load();
+	    	String[] cfgArrayString = cfg.getStringList("CrystalControllerSettings", "tileentities", new String[]{
+	    			"Max MRU:"+ApiCore.DEVICE_MAX_MRU_GENERIC,
+	    			"MRU Usage:100",
+	    			"Chance to NOT use MRU(do not set to 0!):20",
+	    			"Crystal mutation chance modifier:0.001"
+	    			},"");
+	    	String dataString="";
+	    	
+	    	for(int i = 0; i < cfgArrayString.length; ++i)
+	    		dataString+="||"+cfgArrayString[i];
+	    	
+	    	DummyData[] data = DataStorage.parseData(dataString);
+	    	
+	    	mutateModifier = Float.parseFloat(data[3].fieldValue);
+	    	mruUsage = Integer.parseInt(data[1].fieldValue);
+	    	chanceToUseMRU = Integer.parseInt(data[2].fieldValue);
+	    	cfgMaxMRU = Float.parseFloat(data[0].fieldValue);
+	    	
+	    	cfg.save();
+    	}catch(Exception e)
+    	{
+    		return;
+    	}
     }
 }

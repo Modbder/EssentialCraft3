@@ -33,4 +33,17 @@ public class TileecBalancer extends TileEntity implements IStructurePiece{
 		
 	}
 
+	
+	@Override
+	public void updateEntity() 
+	{
+		super.updateEntity();
+		if(this.controller != null)
+		{
+			if(this.controller.getMRUCU() != null)
+			{
+				this.controller.getMRUCU().setFlag(true);
+			}
+		}
+	}
 }
