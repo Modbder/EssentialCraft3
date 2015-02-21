@@ -155,7 +155,7 @@ public class TileMIM extends TileMRUGeneric{
 						{
 							TileEntity tile = this.worldObj.getTileEntity(coords[0], coords[1], coords[2]);
 							//System.out.println(tile);
-							if(tile != null && this.getMRU() - 3 > 0)
+							if(tile != null && this.getMRU() - 3 > 0 && !this.worldObj.isBlockIndirectlyGettingPowered(coords[0], coords[1], coords[2]))
 							{
 								this.setMRU(this.getMRU()-3);
 								this.action(tile);

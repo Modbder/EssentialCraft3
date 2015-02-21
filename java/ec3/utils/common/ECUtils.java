@@ -404,22 +404,59 @@ public class ECUtils {
 				{
 	    			if(tile.getWorldObj().getTileEntity(o[0], o[1], o[2]) != null && tile.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof ITEHasMRU)
 	    			{
+	    				float balance = ((ITEHasMRU)tile.getWorldObj().getTileEntity(o[0], o[1], o[2])).getBalance();
+	    		        float colorRRender = 0.0F;
+	    		        float colorGRender = 1.0F;
+	    		        float colorBRender = 1.0F;
+	    		        
+	    		        float colorRNormal = 0.0F;
+	    		        float colorGNormal = 1.0F;
+	    		        float colorBNormal = 1.0F;
+	    		        
+	    		        float colorRChaos = 1.0F;
+	    		        float colorGChaos = 0.0F;
+	    		        float colorBChaos = 0.0F;
+	    		        
+	    		        float colorRFrozen = 0.0F;
+	    		        float colorGFrozen = 0.0F;
+	    		        float colorBFrozen = 1.0F;
+	    		        if(balance!=1.0F)
+	    		        {
+	    		        	if(balance<1.0F)
+	    		        	{
+	    		            	float diff = balance;
+	    		            	if(diff < 0.01F)
+	    		            		diff = 0.0F;
+	    		            	colorRRender = (colorRNormal*diff) + (colorRFrozen*(1.0F-diff));
+	    		            	colorGRender = (colorGNormal*diff) + (colorGFrozen*(1.0F-diff));
+	    		            	colorBRender = (colorBNormal*diff) + (colorBFrozen*(1.0F-diff));
+	    		        	}
+	    		        	if(balance>1.0F)
+	    		        	{
+	    		            	float diff = 2.0F-balance;
+	    		            	if(diff < 0.01F)
+	    		            		diff = 0.0F;
+	    		            	colorRRender = (colorRNormal*diff) + (colorRChaos*(1.0F-diff));
+	    		            	colorGRender = (colorGNormal*diff) + (colorGChaos*(1.0F-diff));
+	    		            	colorBRender = (colorBNormal*diff) + (colorBChaos*(1.0F-diff));
+	    		        	}
+	    		        }
 	    				if(tile instanceof TileRayTower)
 	    				{
 		    				if(tile.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof TileRayTower)
-		    					EssentialCraftCore.proxy.spawnParticle("mruFX", (float) (o[0]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), (float) (o[1]+1.85D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), (float) (o[2]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), tile.xCoord-o[0]+MathUtils.randomDouble(tile.getWorldObj().rand)/5, tile.yCoord-o[1]+0.25D+MathUtils.randomDouble(tile.getWorldObj().rand)/5, tile.zCoord-o[2]+MathUtils.randomDouble(tile.getWorldObj().rand)/5);
+		    					EssentialCraftCore.proxy.MRUFX((float) (o[0]+0.5D), (float) (o[1]+1.85D), (float) (o[2]+0.5D), tile.xCoord-o[0], tile.yCoord-o[1]+0.25D, tile.zCoord-o[2],colorRRender,colorGRender,colorBRender);
 		    				else if(tile.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof TileMRUReactor)
-		    					EssentialCraftCore.proxy.spawnParticle("mruFX", (float) (o[0]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), (float) (o[1]+1.1D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), (float) (o[2]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), tile.xCoord-o[0]+MathUtils.randomDouble(tile.getWorldObj().rand)/5, tile.yCoord-o[1]+0.8D+MathUtils.randomDouble(tile.getWorldObj().rand)/5, tile.zCoord-o[2]+MathUtils.randomDouble(tile.getWorldObj().rand)/5);
+		    					EssentialCraftCore.proxy.MRUFX((float) (o[0]+0.5D), (float) (o[1]+1.1D), (float) (o[2]+0.5D), tile.xCoord-o[0], tile.yCoord-o[1]+0.8D, tile.zCoord-o[2],colorRRender,colorGRender,colorBRender);
 		    				else
-		    					EssentialCraftCore.proxy.spawnParticle("mruFX", (float) (o[0]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), (float) (o[1]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), (float) (o[2]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), tile.xCoord-o[0]+MathUtils.randomDouble(tile.getWorldObj().rand)/5, tile.yCoord-o[1]+1.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5, tile.zCoord-o[2]+MathUtils.randomDouble(tile.getWorldObj().rand)/5);
+		    					EssentialCraftCore.proxy.MRUFX((float) (o[0]+0.5D), (float) (o[1]+0.5D), (float) (o[2]+0.5D), tile.xCoord-o[0], tile.yCoord-o[1]+1.5D, tile.zCoord-o[2],colorRRender,colorGRender,colorBRender);
 	    				}else
 	    				{
 	    					if(tile.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof TileRayTower)
-		    					EssentialCraftCore.proxy.spawnParticle("mruFX", (float) (o[0]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), (float) (o[1]+1.85D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), (float) (o[2]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), tile.xCoord-o[0]+MathUtils.randomDouble(tile.getWorldObj().rand)/5, tile.yCoord-o[1]-1.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5, tile.zCoord-o[2]+MathUtils.randomDouble(tile.getWorldObj().rand)/5);
+		    					EssentialCraftCore.proxy.MRUFX((float) (o[0]+0.5D), (float) (o[1]+1.85D), (float) (o[2]+0.5D), tile.xCoord-o[0], tile.yCoord-o[1]-1.5D, tile.zCoord-o[2],colorRRender,colorGRender,colorBRender);
 	    					else if(tile.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof TileMRUReactor)
-	    						EssentialCraftCore.proxy.spawnParticle("mruFX", (float) (o[0]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), (float) (o[1]+1.1D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), (float) (o[2]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), tile.xCoord-o[0]+MathUtils.randomDouble(tile.getWorldObj().rand)/5, tile.yCoord-o[1]-0.6D+MathUtils.randomDouble(tile.getWorldObj().rand)/5, tile.zCoord-o[2]+MathUtils.randomDouble(tile.getWorldObj().rand)/5);
+	    						EssentialCraftCore.proxy.MRUFX((float) (o[0]+0.5D), (float) (o[1]+1.1D), (float) (o[2]+0.5D), tile.xCoord-o[0], tile.yCoord-o[1]-0.6D, tile.zCoord-o[2],colorRRender,colorGRender,colorBRender);
 	    					else
-	    						EssentialCraftCore.proxy.spawnParticle("mruFX", (float) (o[0]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), (float) (o[1]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), (float) (o[2]+0.5D+MathUtils.randomDouble(tile.getWorldObj().rand)/5), tile.xCoord-o[0]+MathUtils.randomDouble(tile.getWorldObj().rand)/5, tile.yCoord-o[1]+MathUtils.randomDouble(tile.getWorldObj().rand)/5, tile.zCoord-o[2]+MathUtils.randomDouble(tile.getWorldObj().rand)/5);
+	    						EssentialCraftCore.proxy.MRUFX((float) (o[0]+0.5D), (float) (o[1]+0.5D), (float) (o[2]+0.5D), tile.xCoord-o[0], tile.yCoord-o[1], tile.zCoord-o[2],colorRRender,colorGRender,colorBRender);
 	    				}
 	    			}
 				}
@@ -430,7 +467,7 @@ public class ECUtils {
 	@SideOnly(Side.CLIENT)
 	public static void renderMRUBeam(TileEntity p_76986_1_, int slotNum, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_)
 	{
-	    	if(canPlayerSeeMRU(Minecraft.getMinecraft().thePlayer))
+	    	if(false)
 	    	{
 		        float stability = ((ITEHasMRU)p_76986_1_).getBalance();
 		        int color = 0x00ffff;

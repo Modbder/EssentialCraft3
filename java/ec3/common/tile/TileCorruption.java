@@ -25,6 +25,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileCorruption extends TileEntity
 {
@@ -112,29 +113,13 @@ public class TileCorruption extends TileEntity
 			int metadata = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
 			if(metadata >= 7 && canDestroyBlocks)
 			{
-				if(this.worldObj.getBlock(xCoord+1, yCoord, zCoord).isBlockSolid(worldObj, xCoord+1, yCoord, zCoord, 0))
+				for(int i = 0; i < 6; ++i)
 				{
-					this.worldObj.setBlock(xCoord+1, yCoord, zCoord, blk, 0, 3);
-				}
-				if(this.worldObj.getBlock(xCoord-1, yCoord, zCoord).isBlockSolid(worldObj, xCoord-1, yCoord, zCoord, 0))
-				{
-					this.worldObj.setBlock(xCoord-1, yCoord, zCoord, blk, 0, 3);
-				}
-				if(this.worldObj.getBlock(xCoord, yCoord+1, zCoord).isBlockSolid(worldObj, xCoord, yCoord+1, zCoord, 0))
-				{
-					this.worldObj.setBlock(xCoord, yCoord+1, zCoord, blk, 0, 3);
-				}
-				if(this.worldObj.getBlock(xCoord, yCoord-1, zCoord).isBlockSolid(worldObj, xCoord, yCoord-1, zCoord, 0))
-				{
-					this.worldObj.setBlock(xCoord, yCoord-1, zCoord, blk, 0, 3);
-				}
-				if(this.worldObj.getBlock(xCoord, yCoord, zCoord+1).isBlockSolid(worldObj, xCoord, yCoord, zCoord+1, 0))
-				{
-					this.worldObj.setBlock(xCoord, yCoord, zCoord+1, blk, 0, 3);
-				}
-				if(this.worldObj.getBlock(xCoord, yCoord, zCoord-1).isBlockSolid(worldObj, xCoord, yCoord, zCoord-1, 0))
-				{
-					this.worldObj.setBlock(xCoord, yCoord, zCoord-1, blk, 0, 3);
+					ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[i];
+					if(this.worldObj.getTileEntity(xCoord+dir.offsetX, yCoord+dir.offsetY, zCoord+dir.offsetZ) == null && this.worldObj.getBlock(xCoord+dir.offsetX, yCoord+dir.offsetY, zCoord+dir.offsetZ).isBlockSolid(worldObj, xCoord+dir.offsetX, yCoord+dir.offsetY, zCoord+dir.offsetZ, dir.getOpposite().ordinal()))
+					{
+						this.worldObj.setBlock(xCoord+dir.offsetX, yCoord+dir.offsetY, zCoord+dir.offsetZ, blk, 0, 3);
+					}
 				}
 				this.worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.air, 0, 3);
 			}

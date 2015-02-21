@@ -1,19 +1,24 @@
 package ec3.utils.common;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Set;
 
+import org.lwjgl.opengl.GL11;
+
 import baubles.api.BaublesApi;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
+import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -40,9 +45,16 @@ import DummyCore.Utils.DummyDataUtils;
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
@@ -50,8 +62,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.terraingen.BiomeEvent;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
@@ -277,6 +291,8 @@ public class ECEventHandler {
 			lastTickLanguage = FMLClientHandler.instance().getCurrentLanguage();
 		}
 	}
+	
+
 	
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent

@@ -1,3 +1,18 @@
+4.4.1710.45a
+	+Added: You now can look at the ID of slots by holding CTRL.
+
+	=Changed: Magical Inventory Manager nodes now have their buttons changed from top-bottom to left-right
+	=Changed: MRU particles now act as MRU rays, and have their colour changed according to balance.
+	=Changed: Ray towers now have a little bigger model
+	=Changed: Magical Inventory Manager no longer ticks nodes, if they are supplied with redstone signal.
+	
+	-Fixed: Various display bugs with particles.
+	-Fixed: Hoanna's portal no longer makes your screen permanently green on the client-side.
+	-Fixed: Magical Mirror flying item position sync bug.
+	-Fixed: Underground catacombs in Hoanna can no longer make holes in Bedrock.
+	
+	-Removed: MRU rays no longer exist. May add them later.
+
 4.4.1710.37alpha
 	+API: now allows you to access player's UBMRUCU
 	+API: now allows you to mark discoveries as "new" - they will glow in yellow colour.

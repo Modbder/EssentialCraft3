@@ -348,6 +348,11 @@ public class CommonProxy implements IGuiHandler{
 		
 	}
 	
+	public void MRUFX(double... ds)
+	{
+		
+	}
+	
 	public void wingsAction(EntityPlayer e, ItemStack s)
 	{
 		

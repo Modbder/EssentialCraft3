@@ -1,31 +1,47 @@
 package ec3.client.render;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+
 import org.lwjgl.opengl.GL11;
 
 import DummyCore.Utils.Coord3D;
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ec3.common.block.BlocksCore;
+import ec3.common.mod.EssentialCraftCore;
 import ec3.common.registry.PotionRegistry;
 import ec3.network.proxy.ClientProxy;
 import ec3.utils.common.ECUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.inventory.Slot;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 
 public class RenderHandlerEC3 {
@@ -43,6 +59,8 @@ public class RenderHandlerEC3 {
 	public static IRenderHandler skyRenderer;
 	
 	public static boolean isMouseInverted;
+	
+	public static Hashtable<IInventory, Hashtable<Integer,List<ForgeDirection>>> slotsTable = new Hashtable();
 	
 	public void renderParadox()
 	{
@@ -151,6 +169,121 @@ public class RenderHandlerEC3 {
 			{
 				MiscUtils.setShaders(-1);
 				renderImage(whitebox, k, l, 1,1,1,1);
+			}
+		}
+	}
+	
+	public static IInventory getInventoryFromContainer(GuiContainer gc)
+	{
+		for(int i = 0; i < gc.inventorySlots.inventorySlots.size(); ++i)
+		{
+	        Slot slt = (Slot) gc.inventorySlots.inventorySlots.get(i);
+	        if(slt != null)
+	        	return slt.inventory;
+		}
+		return null;
+	}
+	
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
+	public void clientGUIRenderTickEvent(RenderTickEvent event)
+	{
+		EntityPlayer player = EssentialCraftCore.proxy.getClientPlayer();
+		if(player != null)
+		{
+			World w = player.worldObj;
+			if(w != null)
+			{
+				GuiScreen currentScreen = Minecraft.getMinecraft().currentScreen;
+				if(currentScreen != null && currentScreen instanceof GuiContainer && currentScreen.isCtrlKeyDown())
+				{
+					GuiContainer gc = (GuiContainer) currentScreen;
+					try
+					{
+						Class gcClass = GuiContainer.class;
+						Field FguiLeft = gcClass.getDeclaredFields()[4];
+						Field FguiTop = gcClass.getDeclaredFields()[5];
+						FguiLeft.setAccessible(true);
+						FguiTop.setAccessible(true);
+						int guiLeft = FguiLeft.getInt(gc);
+						int guiTop = FguiTop.getInt(gc);
+				        int k = guiLeft;
+				        int l = guiTop;
+				        
+				        IInventory inv = getInventoryFromContainer(gc);
+				        if(inv != null && inv instanceof ISidedInventory)
+				        {
+				        	ISidedInventory sided = (ISidedInventory) inv;
+				        	if(this.slotsTable.isEmpty() || !this.slotsTable.containsKey(inv))
+				        	{
+				        		this.slotsTable.clear();
+								Hashtable<Integer, List<ForgeDirection>> accessibleSlots = new Hashtable();
+								for(int j = 0; j < 6; ++j)
+								{
+									ForgeDirection d = ForgeDirection.VALID_DIRECTIONS[j];
+									int[] slots = sided.getAccessibleSlotsFromSide(d.ordinal());
+									if(slots != null)
+									{
+										for(int i1 = 0; i1 < slots.length; ++i1)
+										{
+											int slotN = slots[i1];
+											if(accessibleSlots.containsKey(slotN))
+											{
+												List<ForgeDirection> lst = accessibleSlots.get(slotN);
+												if(!lst.contains(d))
+													lst.add(d);
+												accessibleSlots.put(slotN, lst);
+											}else
+											{
+												List<ForgeDirection> lst = new ArrayList();
+												lst.add(d);
+												accessibleSlots.put(slotN, lst);
+											}
+										}
+									}
+								}
+								this.slotsTable.put(inv, accessibleSlots);
+				        	}
+				        }
+				       
+						for(int i = 0; i < gc.inventorySlots.inventorySlots.size(); ++i)
+						{
+					        Slot slt = (Slot) gc.inventorySlots.inventorySlots.get(i);
+							if((slt.inventory instanceof TileEntity) || (slt.inventory instanceof InventoryBasic))
+							{
+								
+								GL11.glPushMatrix();
+									GL11.glScalef(0.5F, 0.5F, 0.5F);
+									Minecraft.getMinecraft().fontRenderer.drawString(""+slt.slotNumber, (k+slt.xDisplayPosition)*2, (l+slt.yDisplayPosition)*2, 0x000000);
+								GL11.glPopMatrix();
+								if(slt.inventory instanceof ISidedInventory)
+								{
+									ISidedInventory sided = (ISidedInventory) slt.inventory;
+									if(this.slotsTable.containsKey(inv))
+									{
+										Hashtable<Integer, List<ForgeDirection>> accessibleSlots = this.slotsTable.get(inv);
+										if(accessibleSlots.containsKey(slt.slotNumber))
+										{
+											List<ForgeDirection> lst = accessibleSlots.get(slt.slotNumber);
+											if(lst != null && !lst.isEmpty())
+											{
+												ForgeDirection d = lst.get((int) (w.getWorldTime()/20%lst.size()));
+												GL11.glPushMatrix();
+													GL11.glScalef(0.5F, 0.5F, 0.5F);
+													Minecraft.getMinecraft().fontRenderer.drawString(""+d, (k+slt.xDisplayPosition)*2, (l+slt.yDisplayPosition+12)*2, 0x000000);
+												GL11.glPopMatrix();
+											}
+										}
+									}
+								}
+							}
+							GL11.glColor3f(1, 1, 1);
+						}
+					}catch(Exception e)
+					{
+						e.printStackTrace();
+					}
+				}
 			}
 		}
 	}

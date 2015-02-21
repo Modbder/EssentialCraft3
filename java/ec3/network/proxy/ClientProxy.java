@@ -415,6 +415,7 @@ ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/
 		RenderingRegistry.registerEntityRenderingHandler(EntityPoisonFume.class, new RenderPoisonFume());
 		RenderingRegistry.registerBlockHandler(new RenderBlocksECIII());
 		FMLCommonHandler.instance().bus().register(new ClientRenderHandler());
+		FMLCommonHandler.instance().bus().register(new RenderHandlerEC3());
 		MinecraftForge.EVENT_BUS.register(new RenderHandlerEC3());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlocksCore.elementalCrystal), new RenderElementalCrystalAsItem());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlocksCore.solarPrism), new RenderSolarPrismAsItem());
@@ -584,6 +585,16 @@ ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/
 		Minecraft.getMinecraft().effectRenderer.addEffect(new ec3.client.regular.SmokeFX(
 				Minecraft.getMinecraft().theWorld, ds[0], ds[1], ds[2], ds[3], ds[4], ds[5], (float) ds[6]
 				));
+	}
+	
+	@Override
+	public void MRUFX(double... ds)
+	{
+		if(ds.length <= 6)
+		{
+			Minecraft.getMinecraft().effectRenderer.addEffect(new EntityMRUFX(getClientWorld(), ds[0], ds[1], ds[2], ds[3], ds[4], ds[5]));
+		}else
+			Minecraft.getMinecraft().effectRenderer.addEffect(new EntityMRUFX(getClientWorld(), ds[0], ds[1], ds[2], ds[3], ds[4], ds[5], ds[6], ds[7], ds[8]));
 	}
 	
 	@Override

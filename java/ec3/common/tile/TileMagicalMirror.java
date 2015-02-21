@@ -70,7 +70,8 @@ public class TileMagicalMirror extends TileMRUGeneric{
 						{
 							if(this.transferingStack == null)
 								this.transferingStack = is;
-							++this.transferTime;
+							if(this.transferTime < 60)
+								++this.transferTime;
 							double sX = this.xCoord + 0.5D + MathUtils.randomDouble(worldObj.rand)/6;
 							double sY = this.yCoord + 0.5D + MathUtils.randomDouble(worldObj.rand)/6;
 							double sZ = this.zCoord + 0.5D + MathUtils.randomDouble(worldObj.rand)/6;
@@ -118,7 +119,8 @@ public class TileMagicalMirror extends TileMRUGeneric{
 							{
 								if(this.transferingStack == null)
 									this.transferingStack = is;
-								++this.transferTime;
+								if(this.transferTime < 60)
+									++this.transferTime;
 								double sX = this.xCoord + 0.5D + MathUtils.randomDouble(worldObj.rand)/6;
 								double sY = this.yCoord + 0.5D + MathUtils.randomDouble(worldObj.rand)/6;
 								double sZ = this.zCoord + 0.5D + MathUtils.randomDouble(worldObj.rand)/6;
@@ -198,7 +200,7 @@ public class TileMagicalMirror extends TileMRUGeneric{
 	{
 		if(this.worldObj.isRemote)
 		{
-			if(this.pulsing)
+			if(this.pulsing && this.transferTime < 60)
 				++this.transferTime;
 		}
 		super.updateEntity();
@@ -235,7 +237,7 @@ public class TileMagicalMirror extends TileMRUGeneric{
 						if(is1 == null || (is1.isItemEqual(is) && is1.stackSize+1 < is1.getMaxStackSize()+1))
 						{
 							this.pulsing = true;
-							if(!this.worldObj.isRemote)
+							if(!this.worldObj.isRemote && this.transferTime <= 60)
 								++this.transferTime;
 							this.transferingStack = assembler.getStackInSlot(17);
 							double sX = this.xCoord + 0.5D + MathUtils.randomDouble(worldObj.rand)/6;
@@ -292,7 +294,7 @@ public class TileMagicalMirror extends TileMRUGeneric{
 								{
 									this.pulsing = true;
 									this.syncTick = 0;
-									if(!this.worldObj.isRemote)
+									if(!this.worldObj.isRemote && this.transferTime <= 60)
 										++this.transferTime;
 									this.transferingStack = assembler.getStackInSlot(w);
 									double sX = this.xCoord + 0.5D + MathUtils.randomDouble(worldObj.rand)/6;

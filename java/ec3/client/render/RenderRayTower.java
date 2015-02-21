@@ -51,7 +51,7 @@ public class RenderRayTower extends TileEntitySpecialRenderer
         this.bindTexture(enderCrystalTextures);
         float f3 = MathHelper.sin(f2 * 0.2F) / 2.0F + 0.5F;
         f3 += f3 * f3;
-        GL11.glScalef(0.2F, 0.2F, 0.2F);
+        GL11.glScalef(0.4F, 0.4F, 0.4F);
         this.field_76995_b.render(p_76986_1_, 0.0F, f2 * 3.0F, 0.35F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();
         ECUtils.renderMRUBeam(p_76986_1_, 0, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);

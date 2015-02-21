@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL11;
 
 import ec3.common.entity.EntityMRUPresence;
 import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.World;
 
@@ -34,19 +35,13 @@ public class EntityItemFX extends EntityFX{
         float f11 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)x - interpPosX);
         float f12 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)x - interpPosY);
         float f13 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)x - interpPosZ);
-    	var3.addVertex(0.0D, 0.0D, 0.0D);
-    	var3.addVertex(0.0D, 0.0D, 0.0D);
-    	var3.addVertex(0.0D, 0.0D, 0.0D);
-    	var3.addVertex(0.0D, 0.0D, 0.0D);
     	var3.draw();
+    	
     	Random var6 = new Random((long) (this.posX*100+this.posY*100+this.posZ*100));
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glShadeModel(GL11.GL_SMOOTH);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-        GL11.glDisable(GL11.GL_ALPHA_TEST);
-        GL11.glEnable(GL11.GL_CULL_FACE);
-        GL11.glDepthMask(false);
         GL11.glPushMatrix();
         GL11.glTranslated(f11, f12, f13);
         int mru = 200;
@@ -62,7 +57,7 @@ public class EntityItemFX extends EntityFX{
             var3.startDrawing(6);
             float var8 = var6.nextFloat() * 20.0F + 5.0F + 1 * 10.0F;
             float var9 = var6.nextFloat() * 2.0F + 1.0F + 1 * 2.0F;
-            var3.setBrightness(Integer.MAX_VALUE);
+            var3.setBrightness(127);
             var3.setColorOpaque_F((float)red, (float)green, (float)blue);
             var3.addVertex(0.0D, 0.0D, 0.0D);
             var3.setColorOpaque_F((float)red, (float)green, (float)blue);
@@ -74,13 +69,11 @@ public class EntityItemFX extends EntityFX{
         }
 
         GL11.glPopMatrix();
-        GL11.glDepthMask(true);
-        GL11.glDisable(GL11.GL_CULL_FACE);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glShadeModel(GL11.GL_FLAT);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
+        
         var3.startDrawingQuads();
     }
 	

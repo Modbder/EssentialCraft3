@@ -60,7 +60,7 @@ public class ChunkProviderFirstWorld extends ChunkProviderGenerate{
     	}
 
         int y = this.rand.nextInt(256);
-        if(y < 32 && this.rand.nextFloat() < 0.1F)
+        if(y > 6 && y < 32 && this.rand.nextFloat() < 0.1F)
         {
             int l1 = k + this.rand.nextInt(16) + 8;
             int j2 = l + this.rand.nextInt(16) + 8;

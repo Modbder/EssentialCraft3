@@ -27,8 +27,8 @@ public class GuiAMINInjector extends GuiCommon{
         super.initGui();
 	    int k = (this.width - this.xSize) / 2;
 	    int l = (this.height - this.ySize) / 2;
-        this.buttonList.add(new GuiButton(0,k+82,l+29,12,12,"+"));
-        this.buttonList.add(new GuiButton(1,k+82,l+47,12,12,"-"));
+        this.buttonList.add(new GuiButton(0,k+60,l+34,20,20,"<"));
+        this.buttonList.add(new GuiButton(1,k+95,l+34,20,20,">"));
     }
     
     public void drawScreen(int p_73863_1_, int p_73863_2_, float p_73863_3_)

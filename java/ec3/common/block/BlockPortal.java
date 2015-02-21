@@ -40,18 +40,21 @@ public class BlockPortal extends net.minecraft.block.BlockPortal{
     
     public void onEntityCollidedWithBlock(World p_149670_1_, int p_149670_2_, int p_149670_3_, int p_149670_4_, Entity p_149670_5_)
     {
-    	if(ECUtils.inPortalTime.containsKey(p_149670_5_))
-    	{
-    		int i = ECUtils.inPortalTime.get(p_149670_5_);
-    		if(i >= 200 && !p_149670_1_.isRemote)
-    		{
-    			i = 0;
-    			p_149670_5_.travelToDimension(53);
-    		}
-    		ECUtils.inPortalTime.put(p_149670_5_, i+=1);
-    	}else
-    	{
-    		ECUtils.inPortalTime.put(p_149670_5_, 2);
+    	if(!p_149670_1_.isRemote)
+	    {
+	    	if(ECUtils.inPortalTime.containsKey(p_149670_5_))
+	    	{
+	    		int i = ECUtils.inPortalTime.get(p_149670_5_);
+	    		if(i >= 200 && !p_149670_1_.isRemote)
+	    		{
+	    			i = 0;
+	    			p_149670_5_.travelToDimension(53);
+	    		}
+	    		ECUtils.inPortalTime.put(p_149670_5_, i+=1);
+	    	}else
+	    	{
+	    		ECUtils.inPortalTime.put(p_149670_5_, 2);
+	    	}
     	}
     }
     

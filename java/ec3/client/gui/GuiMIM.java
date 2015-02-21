@@ -13,6 +13,7 @@ import ec3.client.gui.element.GuiMRUState;
 import ec3.client.gui.element.GuiMRUStorage;
 import ec3.client.gui.element.GuiMoonState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.tileentity.TileEntity;
@@ -44,6 +45,13 @@ public class GuiMIM extends GuiCommon{
 		{
 			Slot slt = (Slot) this.inventorySlots.inventorySlots.get(i);
 			renderSlot(slt);
+			if(slt.slotNumber != 0 && !(slt.inventory instanceof InventoryPlayer))
+			{
+				GL11.glPushMatrix();
+					GL11.glScalef(0.5F, 0.5F, 0.5F);
+					this.fontRendererObj.drawString(""+slt.slotNumber, (k+slt.xDisplayPosition)*2, (l+slt.yDisplayPosition)*2, 0x000000);
+				GL11.glPopMatrix();
+			}
 			GL11.glColor3f(1, 1, 1);
 		}
 		for(int i = 0; i < this.elementList.size(); ++i)
