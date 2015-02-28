@@ -78,6 +78,8 @@ public class Config implements IDummyConfig{
 			
 			EnumHelper.addEnum(EnumOreColoring.class, oredOreName.toUpperCase(), new Class[]{String.class,String.class,int.class,int.class}, new Object[]{oredOreName,oredResultName,oreColor,oreOutput});
 		}
+		oreGenAttempts = config.getInt("oreGenAttempts", "Misc", 4, 0, Integer.MAX_VALUE, "The amount of tries to generate the elemental ore cluster in a chunk. Set to 0 to disable worldgen.");
+		eMRUCUGenAttempts = config.getInt("eMRUCUGenAttempts", "Misc", 1, 0, Integer.MAX_VALUE, "The amount of tries to generate the Elder MRUCU Structure in a chunk. Set to 0 to disable worldgen.");
 	}
 	
 	public static int getIdForBlock(String name)
@@ -110,6 +112,8 @@ public class Config implements IDummyConfig{
 	public static String[] data_addedOresNames;
 	public static int[] data_addedOreColors;
 	public static int[] data_addedOreAmount;
+	public static int oreGenAttempts;
+	public static int eMRUCUGenAttempts;
 
 	@Override
 	public void load(Configuration config) {

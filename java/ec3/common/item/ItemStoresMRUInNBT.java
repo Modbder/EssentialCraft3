@@ -1,5 +1,6 @@
 package ec3.common.item;
 
+import java.util.Iterator;
 import java.util.List;
 
 import baubles.api.BaubleType;
@@ -7,6 +8,7 @@ import baubles.api.IBauble;
 import DummyCore.Utils.MiscUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ec3.api.ApiCore;
 import ec3.api.IItemRequiresMRU;
 import ec3.common.world.WorldGenElderMRUCC;
 import ec3.network.proxy.ClientProxy;
@@ -22,7 +24,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 public class ItemStoresMRUInNBT extends Item implements IItemRequiresMRU{
-	int maxMRU;
+	int maxMRU = 5000;
 	
 	public ItemStoresMRUInNBT()
 	{
@@ -62,6 +64,11 @@ public class ItemStoresMRUInNBT extends Item implements IItemRequiresMRU{
     	par3List.add(ECUtils.getStackTag(par1ItemStack).getInteger("mru") + "/" + ECUtils.getStackTag(par1ItemStack).getInteger("maxMRU") + " MRU");
     }
     
+	public void aFunc(ItemStack stack, World world, Entity entity, int par4, boolean par5)
+	{
+		
+	}
+	
     @Override
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
     {

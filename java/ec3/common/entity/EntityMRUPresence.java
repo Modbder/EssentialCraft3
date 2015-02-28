@@ -143,7 +143,7 @@ public class EntityMRUPresence extends Entity implements IMRUPressence
 					id = BlocksCore.lightCorruption[0];
 					diff = getBalance()-1F;
 				}
-				float mainMRUState = (diff*getMRU()/20000F)*100F;
+				float mainMRUState = (diff*getMRU()/20000F)*10F;
 				Vec3 vec = Vec3.createVectorHelper(1, 0, 0);
 				vec.rotateAroundX(this.worldObj.rand.nextFloat()*360);
 				vec.rotateAroundY(this.worldObj.rand.nextFloat()*360);
@@ -229,7 +229,8 @@ public class EntityMRUPresence extends Entity implements IMRUPressence
 	
 	public void setMRU(int i)
 	{
-		this.dataWatcher.updateObject(16, i);
+		if(this != null && !this.isDead)
+			this.dataWatcher.updateObject(16, i);
 	}
 	
 	public int getMRU()
@@ -256,7 +257,8 @@ public class EntityMRUPresence extends Entity implements IMRUPressence
 	
 	public void setBalance(float f)
 	{
-		this.dataWatcher.updateObject(15, (int)(f*1000000));
+		if(this != null && !this.isDead)
+			this.dataWatcher.updateObject(15, (int)(f*1000000));
 	}
 	
 	public boolean canAlwaysStay()
@@ -268,10 +270,12 @@ public class EntityMRUPresence extends Entity implements IMRUPressence
 	{
 		if(b)
 		{
-			this.dataWatcher.updateObject(17, 0);
+			if(this != null && !this.isDead)
+				this.dataWatcher.updateObject(17, 0);
 		}else
 		{
-			this.dataWatcher.updateObject(17, 1);
+			if(this != null && !this.isDead)
+				this.dataWatcher.updateObject(17, 1);
 		}
 	}
 	
@@ -291,10 +295,12 @@ public class EntityMRUPresence extends Entity implements IMRUPressence
 	{
 		if(b)
 		{
-			this.dataWatcher.updateObject(18, 0);
+			if(this != null && !this.isDead)
+				this.dataWatcher.updateObject(18, 0);
 		}else
 		{
-			this.dataWatcher.updateObject(18, 1);
+			if(this != null && !this.isDead)
+				this.dataWatcher.updateObject(18, 1);
 		}
 	}
 	

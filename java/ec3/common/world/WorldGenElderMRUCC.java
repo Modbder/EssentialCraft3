@@ -6,18 +6,32 @@ import java.util.Random;
 
 import DummyCore.Utils.Coord3D;
 import DummyCore.Utils.MathUtils;
+import ec3.utils.cfg.Config;
 import ec3.utils.common.ECUtils;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.DungeonHooks;
 
 public class WorldGenElderMRUCC extends WorldGenerator{
 	public int type;
+	
+	public static void handleGeneration(Random random, int chunkX, int chunkZ, World world,IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
+	{
+		for(int i = 0; i < Config.eMRUCUGenAttempts; ++i)
+		{
+			int rndX = chunkX*16 + random.nextInt(16);
+			int rndY = random.nextInt(128);
+			int rndZ = chunkZ*16 + random.nextInt(16);
+			new WorldGenElderMRUCC(random.nextInt(4)).generate(world, random, rndX, rndY, rndZ);
+		}
+	}
 	
 	public WorldGenElderMRUCC(int i)
 	{
@@ -26,7 +40,7 @@ public class WorldGenElderMRUCC extends WorldGenerator{
 	@Override
 	public boolean generate(World var1, Random var2, int var3, int var4,
 			int var5) {
-		if(type == 0)
+		if(type == 0 && canGenerateAt(var3-2,var5-2,var3+2,var5+2,var4,true,var1))
 		{
 			for(int x = -2; x<= 2; ++x)
 			{
@@ -45,7 +59,7 @@ public class WorldGenElderMRUCC extends WorldGenerator{
 				}
 			}
 		}
-		if(type == 1)
+		if(type == 1 && canGenerateAt(var3-4,var5-4,var3+4,var5+4,var4,true,var1))
 		{
 			for(int x = -4; x<= 4; ++x)
 			{
@@ -74,7 +88,7 @@ public class WorldGenElderMRUCC extends WorldGenerator{
 				}
 			}
 		}
-		if(type == 2)
+		if(type == 2 && canGenerateAt(var3-4,var5-4,var3+4,var5+4,var4,true,var1))
 		{
 			for(int x = -4; x<= 4; ++x)
 			{
@@ -102,7 +116,7 @@ public class WorldGenElderMRUCC extends WorldGenerator{
 				}
 			}
 		}
-		if(type == 3)
+		if(type == 3 && canGenerateAt(var3-4,var5-4,var3+4,var5+4,var4,false,var1))
 		{
 			for(int x = -4; x<= 4; ++x)
 			{
@@ -153,4 +167,31 @@ public class WorldGenElderMRUCC extends WorldGenerator{
 		return false;
 	}
 
+	public boolean canGenerateAt(int minX, int minZ, int maxX, int maxZ, int y, boolean requiresSolidBlocks, World w)
+	{
+		for(int dx = minX; dx <= maxX; ++dx)
+		{
+			for(int dz = minZ; dz <= maxZ; ++dz)
+			{
+				Block b = w.getBlock(dx, y, dz);
+				if(!b.isAir(w, dx, y, dz) && b.isNormalCube(w, dx, y, dz))
+				{
+					if(requiresSolidBlocks)
+					{
+						if(!w.getBlock(dx, y+1, dz).isNormalCube(w, dx, y, dz) || w.getBlock(dx, y+1, dz).isAir(w, dx, y+1, dz)){}
+						else
+							return false;
+					}else
+					{
+						if(w.getBlock(dx, y, dz).isReplaceableOreGen(w, dx, y, dz, Blocks.stone)){}
+						else
+							return false;
+					}
+						
+				}else
+					return false;
+			}
+		}
+		return true;
+	}
 }

@@ -15,8 +15,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 public class ItemDrop extends Item{
-	public static String[] dropNames = new String[]{"flame","water","earth","air","elemental"};
-	public static IIcon[] itemIcons = new IIcon[5];
+	public static String[] dropNames = new String[]{"flame","water","earth","air","elemental","unknown"};
+	public static IIcon[] itemIcons = new IIcon[15];
 	
 	public ItemDrop()
 	{

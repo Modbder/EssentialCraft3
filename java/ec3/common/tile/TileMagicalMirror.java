@@ -279,7 +279,7 @@ public class TileMagicalMirror extends TileMRUGeneric{
 			if(this.inventoryPos != null)
 			{
 				TileEntity tile1 = this.worldObj.getTileEntity(MathHelper.floor_double(this.inventoryPos.x), MathHelper.floor_double(this.inventoryPos.y), MathHelper.floor_double(this.inventoryPos.z));
-				if(tile1 != null && tile1 instanceof IInventory && !(tile1 instanceof TileMagicalAssembler))
+				if(assembler != null && tile1 != null && tile1 instanceof IInventory && !(tile1 instanceof TileMagicalAssembler))
 				{
 					IInventory inv = (IInventory) tile1;
 					CycleF:for(int w = 0; w < assembler.getSizeInventory(); ++w)

@@ -24,8 +24,6 @@ public class BiomeRegistry {
 		shadowCorruption = new BiomeGenCorruption_Shadow(Config.biomeID[2]);
 		magicCorruption = new BiomeGenCorruption_Magic(Config.biomeID[3]);
 		registerFirstWorldBiomes();
-		BiomeDictionary.registerBiomeType(chaosCorruption, BiomeDictionary.Type.SANDY);
-		BiomeDictionary.registerBiomeType(frozenCorruption, BiomeDictionary.Type.SANDY);
 	}
 	
 	public void registerFirstWorldBiomes()

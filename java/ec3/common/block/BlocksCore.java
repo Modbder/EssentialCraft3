@@ -147,6 +147,7 @@ public class BlocksCore {
 		magicalMirror = registerBlockSimple(BlockMagicalMirror.class,Material.rock,magicalMirror,"magicalMirror","magicPlatingBlock",1,1,0);
 		magicalDisplay = registerBlockSimple(BlockMagicalDisplay.class,Material.rock,magicalDisplay,"magicalDisplay","magicalDisplay",1,1,0);
 		portal = registerBlockSimple(BlockPortal.class,Material.rock,portal,"portal","portal",-1,-1,1);
+		oreDrops = registerBlockSimple(BlockDropsOre.class,Material.rock,oreDrops,"oreDrops","fortifiedStone",1,1,1);
 	}
 	
 	public static void postInitLoad()
@@ -491,6 +492,7 @@ public class BlocksCore {
 	public static Block magicalMirror;
 	public static Block magicalDisplay;
 	public static Block portal;
+	public static Block oreDrops;
 	
 	public static List<Block> fancyBlocks = new ArrayList<Block>();
 	

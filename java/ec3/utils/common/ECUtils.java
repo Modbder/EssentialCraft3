@@ -127,7 +127,20 @@ public class ECUtils {
 	
 	public static void initMRUTag(ItemStack stack, int maxMRU)
 	{
-		if(!getStackTag(stack).hasKey("maxMRU"))
+		if(maxMRU == 0)
+		{
+			try
+			{
+				Class itemClz = stack.getItem().getClass();
+				Field f = itemClz.getField("maxMRU");
+				f.setInt(stack.getItem(), 5000);
+				maxMRU = 5000;
+			}catch(Exception e)
+			{
+				e.printStackTrace();
+				return;
+			}
+		}
 		getStackTag(stack).setInteger("maxMRU", maxMRU);
 		if(!getStackTag(stack).hasKey("mru"))
 		getStackTag(stack).setInteger("mru", 0);
@@ -467,8 +480,8 @@ public class ECUtils {
 	@SideOnly(Side.CLIENT)
 	public static void renderMRUBeam(TileEntity p_76986_1_, int slotNum, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_)
 	{
-	    	if(false)
 	    	{
+	    		/*
 		        float stability = ((ITEHasMRU)p_76986_1_).getBalance();
 		        int color = 0x00ffff;
 		        
@@ -617,7 +630,9 @@ public class ECUtils {
 		    			}
 					}
 				}
+				*/
 			}
+			
     	}
 	
 	public static float getGenResistance(int index, EntityPlayer p)

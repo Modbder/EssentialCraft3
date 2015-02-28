@@ -1,5 +1,6 @@
 package ec3.common.tile;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
@@ -79,6 +80,7 @@ public class TileChargingChamber extends TileMRUGeneric{
     				{
     					if(this.getMRU() > p*reqMRUModifier)
     					{
+    						System.out.println(item.setMRU(_gen_var_0, p));
     						if(item.setMRU(_gen_var_0,p))
     							this.setMRU((int) (this.getMRU()-p*reqMRUModifier));
     					}else if(this.getMRU() > 0)

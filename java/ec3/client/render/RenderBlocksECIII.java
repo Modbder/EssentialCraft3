@@ -7,11 +7,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import ec3.common.block.BlockChargingChamber;
 import ec3.common.block.BlockColdDistillator;
@@ -22,6 +25,7 @@ import ec3.common.block.BlockCrystalExtractor;
 import ec3.common.block.BlockCrystalFormer;
 import ec3.common.block.BlockDarknessObelisk;
 import ec3.common.block.BlockDrops;
+import ec3.common.block.BlockDropsOre;
 import ec3.common.block.BlockEnderGenerator;
 import ec3.common.block.BlockFancy;
 import ec3.common.block.BlockFlowerBurner;
@@ -306,6 +310,50 @@ public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 	        RenderEnderGenerator.model.renderAll();
 	        GL11.glPopMatrix();
 		}
+		if(block instanceof BlockDropsOre)
+		{
+	        GL11.glPushMatrix();
+	        BlockDropsOre dr = (BlockDropsOre) block;
+	        
+	        renderer.setOverrideBlockTexture(metadata < 5 ? dr.icons[0] : metadata >= 5 && metadata < 10 ? dr.icons[1] : dr.icons[2]);
+	        renderer.renderBlockAsItem(Blocks.glass, 1, 1);
+	        renderer.useInventoryTint = false;
+	        float s = 0.999F;
+	        GL11.glScalef(s, s, s);
+	        switch(metadata % 5)
+	        {
+	        	case 0:
+	        	{
+	        		GL11.glColor3f(1, 0, 1);
+	        		break;
+	        	}
+	        	case 1:
+	        	{
+	        		GL11.glColor3f(1, 0, 0);
+	        		break;
+	        	}
+	        	case 2:
+	        	{
+	        		GL11.glColor3f(0, 0, 1);
+	        		break;
+	        	}
+	        	case 3:
+	        	{
+	        		GL11.glColor3f(0.4F, 0.3F, 0.3F);
+	        		break;
+	        	}
+	        	case 4:
+	        	{
+	        		GL11.glColor3f(1, 1F, 1);
+	        		break;
+	        	}
+	        }
+	       
+	        renderer.setOverrideBlockTexture(dr.icons[3]);
+	        renderer.renderBlockAsItem(Blocks.glass, 1, 1);
+	        renderer.useInventoryTint = true;
+	        GL11.glPopMatrix();
+		}
 		if(block instanceof BlockHeatGenerator)
 		{
 	        GL11.glPushMatrix();
@@ -586,6 +634,75 @@ public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 			renderer.setRenderBounds(0.3D, 0, 0.5D, 0.5D, 0.1D, 0.7D);
 			renderer.renderStandardBlockWithColorMultiplier(Block.getBlockFromName("minecraft:glass"), x, y, z, 1.0F, 1.0F, 1.0F);
 		}
+		
+		if(block instanceof BlockDropsOre)
+		{
+	        GL11.glPushMatrix();
+	        BlockDropsOre dr = (BlockDropsOre) block;
+	        renderer.setOverrideBlockTexture(metadata < 5 ? dr.icons[0] : metadata >= 5 && metadata < 10 ? dr.icons[1] : dr.icons[2]);
+	        float s = 1.001F;
+	        renderer.setRenderBounds(1-s, 1-s, 1-s, s, s, s);
+	        renderer.renderStandardBlock(Blocks.stone, x, y, z);
+	       
+	        float r = 1, g = 1, b = 1;
+	        switch(metadata % 5)
+	        {
+	        	case 0:
+	        	{
+	        		r = 1;
+	        		g = 0;
+	        		b = 1;
+	        		break;
+	        	}
+	        	case 1:
+	        	{
+	        		r = 1;
+	        		g = 0;
+	        		b = 0;
+	        		break;
+	        	}
+	        	case 2:
+	        	{
+	        		r = 0;
+	        		g = 0;
+	        		b = 1;
+	        		break;
+	        	}
+	        	case 3:
+	        	{
+	        		r = 0.4F;
+	        		g = 0.3F;
+	        		b = 0.3F;
+	        		break;
+	        	}
+	        	case 4:
+	        	{
+	        		r = 1;
+	        		g = 1;
+	        		b = 1;
+	        		break;
+	        	}
+	        }
+	       
+	        renderer.setOverrideBlockTexture(dr.icons[3]);
+	        
+	       
+	        Tessellator tec = Tessellator.instance;
+	        renderer.renderAllFaces = false;
+			renderTesselatedTextureByPoints(world,block,renderer,x,y,z,r,g,b,1D,127,dr.icons[3],
+					1D,1D,1D, //SOUTH-TOP-EAST
+					0D,1D,1D, //SOUTH-TOP-WEST
+					1D,1D,0D, //SOUTH-TOP-EAST
+					0D,1D,0D, //NORTH-TOP-WEST
+					1D,0D,1D, //SOUTH-BOT-EAST
+					0D,0D,1D, //SOUTH-BOT-WEST
+					1D,0D,0D, //SOUTH-BOT-EAST
+					0D,0D,0D  //NORTH-BOT-WEST
+					);
+	        //renderer.renderStandardBlockWithColorMultiplier(Blocks.stone, x, y, z, r, g, b);
+	        GL11.glPopMatrix();
+		}
+		
 		if(block instanceof BlockMagicalDisplay)
 		{
 			renderer.setOverrideBlockTexture(block.getBlockTextureFromSide(0));
@@ -1042,5 +1159,87 @@ public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 		// TODO Auto-generated method stub
 		return 2634;
 	}
+	
+	public void renderTesselatedTextureByPoints(IBlockAccess world, Block b, RenderBlocks renderer, double x, double y, double z, double red, double green, double blue, double alpha, int brightness, IIcon renderWith, double... points)
+	{
+		if(renderer.renderAllFaces || b.shouldSideBeRendered(world, MathHelper.floor_double(x-1), MathHelper.floor_double(y), MathHelper.floor_double(z), 6))
+		//SIDE WEST
+		renderFace(renderer, Blocks.glass, x, y, z, red, green, blue, alpha, brightness, renderWith,
+				points[3],points[4],points[5], //topright
+				points[9],points[10],points[11], //botright
+				points[21],points[22],points[23], //botleft
+				points[15],points[16],points[17]  //topleft
+				);
+		
+		if(renderer.renderAllFaces || b.shouldSideBeRendered(world, MathHelper.floor_double(x), MathHelper.floor_double(y+1), MathHelper.floor_double(z), 6))
+		//SIDE UP
+		renderFace(renderer, Blocks.glass, x, y, z, red, green, blue, alpha, brightness, renderWith,
+				points[0],points[1],points[2], //topright
+				points[6],points[7],points[8], //botright
+				points[9],points[10],points[11], //botleft
+				points[3],points[4],points[5] //topleft
+				);
+		
+		if(renderer.renderAllFaces || b.shouldSideBeRendered(world, MathHelper.floor_double(x), MathHelper.floor_double(y), MathHelper.floor_double(z+1), 6))
+		//SIDE SOUTH
+		renderFace(renderer, Blocks.glass, x, y, z, red, green, blue, alpha, brightness, renderWith,
+				points[0],points[1],points[2], //topright
+				points[3],points[4],points[5], //botright
+				points[15],points[16],points[17], //botleft
+				points[12],points[13],points[14]  //topleft
+				);
+		
+		if(renderer.renderAllFaces || b.shouldSideBeRendered(world, MathHelper.floor_double(x), MathHelper.floor_double(y), MathHelper.floor_double(z-1), 6))
+		//SIDE NORTH
+		renderFace(renderer, Blocks.glass, x, y, z, red, green, blue, alpha, brightness, renderWith,
+				points[9],points[10],points[11], //topright
+				points[6],points[7],points[8], //botright
+				points[18],points[19],points[20], //botleft
+				points[21],points[22],points[23]  //topleft
+				);
+		
+		if(renderer.renderAllFaces || b.shouldSideBeRendered(world, MathHelper.floor_double(x+1), MathHelper.floor_double(y), MathHelper.floor_double(z), 6))
+		//SIDE EAST
+		renderFace(renderer, Blocks.glass, x, y, z, red, green, blue, alpha, brightness, renderWith,
+				points[6],points[7],points[8], //topright
+				points[0],points[1],points[2], //botright
+				points[12],points[13],points[14], //botleft
+				points[18],points[19],points[20]  //topleft
+				);
+		
+		if(renderer.renderAllFaces || b.shouldSideBeRendered(world, MathHelper.floor_double(x), MathHelper.floor_double(y-1), MathHelper.floor_double(z), 6))
+		//SIDE DOWN
+		renderFace(renderer, Blocks.glass, x, y, z, red, green, blue, alpha, brightness, renderWith,
+				points[21],points[22],points[23], //topright
+				points[18],points[19],points[20], //botright
+				points[12],points[13],points[14], //botleft
+				points[15],points[16],points[17]  //topleft
+				);
+	}
+	
+    public void renderFace(RenderBlocks renderer, Block b, double x, double y, double z,double red, double green, double blue, double alpha, int brightness, IIcon icon, double... renderPts)
+    {
+        Tessellator tessellator = Tessellator.instance;
+        
+        double d3 = (double)icon.getInterpolatedU(renderer.renderMinX * 16.0D);
+        double d4 = (double)icon.getInterpolatedU(renderer.renderMaxX * 16.0D);
+        double d5 = (double)icon.getInterpolatedV(renderer.renderMinZ * 16.0D);
+        double d6 = (double)icon.getInterpolatedV(renderer.renderMaxZ * 16.0D);
+        
+        
+
+        double d7 = d4;
+        double d8 = d3;
+        double d9 = d5;
+        double d10 = d6;
+        tessellator.setColorRGBA_F((float)red, (float)green, (float)blue, (float)alpha);
+        tessellator.setBrightness(brightness);
+        {
+            tessellator.addVertexWithUV(x+renderPts[0], y+renderPts[1], z+renderPts[2], d4, d6);
+            tessellator.addVertexWithUV(x+renderPts[3], y+renderPts[4], z+renderPts[5], d7, d9);
+            tessellator.addVertexWithUV(x+renderPts[6], y+renderPts[7], z+renderPts[8], d3, d5);
+            tessellator.addVertexWithUV(x+renderPts[9], y+renderPts[10], z+renderPts[11], d8, d10);
+        }
+    }
 
 }

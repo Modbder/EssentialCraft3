@@ -14,6 +14,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 import ec3.common.block.BlocksCore;
 import ec3.common.entity.EntitiesCore;
 import ec3.common.item.ItemsCore;
@@ -29,6 +30,7 @@ import ec3.common.registry.ResearchRegistry;
 import ec3.common.registry.SpellRegistry;
 import ec3.common.registry.StructureRegistry;
 import ec3.common.registry.VillagersRegistry;
+import ec3.common.world.WorldGenManager;
 import ec3.integration.versionChecker.Check;
 import ec3.integration.waila.WailaInitialiser;
 import ec3.network.proxy.CommonProxy;
@@ -136,7 +138,7 @@ public class EssentialCraftCore {
 		BloodMagicRegistry.register();
 		AchievementRegistry.register();
 		PotionRegistry.registerPotions();
-		
+		GameRegistry.registerWorldGenerator(new WorldGenManager(), 16);
 		cfg.postInitParseDecorativeBlocks();
 		ResearchRegistry.init();
 	}
