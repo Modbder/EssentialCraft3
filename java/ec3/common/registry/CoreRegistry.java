@@ -3,6 +3,7 @@ package ec3.common.registry;
 import DummyCore.Client.MainMenuRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.ProxyInjector;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -31,6 +32,8 @@ import ec3.common.world.event.WorldEvent_Darkness;
 import ec3.common.world.event.WorldEvent_Earthquake;
 import ec3.common.world.event.WorldEvent_Fumes;
 import ec3.common.world.event.WorldEvent_SunArray;
+import ec3.network.proxy.ClientProxy;
+import ec3.network.proxy.CommonProxy;
 import ec3.utils.cfg.Config;
 import ec3.utils.common.ECEventHandler;
 import ec3.utils.common.PlayerTickHandler;
@@ -48,7 +51,18 @@ public class CoreRegistry {
 		TileRegistry.register();
 		DimensionRegistry.core = new DimensionRegistry();
 		VillagersRegistry.instance = new VillagersRegistry();
-		NetworkRegistry.INSTANCE.registerGuiHandler(EssentialCraftCore.core, EssentialCraftCore.core.proxy);
+		if(EssentialCraftCore.proxy != null)
+			NetworkRegistry.INSTANCE.registerGuiHandler(EssentialCraftCore.core, EssentialCraftCore.core.proxy);
+		else
+		{
+			Side s = FMLCommonHandler.instance().getEffectiveSide();
+			if(s == Side.CLIENT)
+				EssentialCraftCore.proxy = new ClientProxy();
+			else
+				EssentialCraftCore.proxy = new CommonProxy();
+			
+			NetworkRegistry.INSTANCE.registerGuiHandler(EssentialCraftCore.core, EssentialCraftCore.core.proxy);
+		}
 		RecipeRegistry.instance = new RecipeRegistry();
 		BiomeRegistry.core = new BiomeRegistry();
 		//MagicalEnergiserRecipes.smeltingBase = new MagicalEnergiserRecipes();

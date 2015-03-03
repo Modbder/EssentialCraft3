@@ -11,6 +11,7 @@ import cpw.mods.fml.common.ModContainerFactory;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import ec3.common.block.BlocksCore;
+import ec3.common.entity.EntitiesCore;
 import ec3.common.registry.TileRegistry;
 import ec3.utils.common.EnumOreColoring;
 
@@ -48,11 +49,12 @@ public class Config implements IDummyConfig{
 	//TODO Mobs
 	public void loadMobs()
 	{
-		mobID[0] = config.get("Entities","MRUPresenceID", 71).getInt();
-		mobID[1] = config.get("Entities","MRUArrowID", 72).getInt();
-		mobID[2] = config.get("Entities","SolarBeamID", 73).getInt();
-		mobID[3] = config.get("Entities","WindMageID", 74).getInt();
-		mobID[4] = config.get("Entities","PosionFumeID", 75).getInt();
+		autoFindEID = config.getBoolean("autoFindEntityIDs", "Entities", false, "Enable if you can't set the entity ID's on your own.");
+		mobID[0] = EntitiesCore.nextEntityID(config.get("Entities","MRUPresenceID", 71).getInt());
+		mobID[1] = EntitiesCore.nextEntityID(config.get("Entities","MRUArrowID", 72).getInt());
+		mobID[2] = EntitiesCore.nextEntityID(config.get("Entities","SolarBeamID", 73).getInt());
+		mobID[3] = EntitiesCore.nextEntityID(config.get("Entities","WindMageID", 74).getInt());
+		mobID[4] = EntitiesCore.nextEntityID(config.get("Entities","PosionFumeID", 75).getInt());
 	}
 	
 	public void loadMisc()
@@ -107,6 +109,7 @@ public class Config implements IDummyConfig{
 	public static boolean renderAdvancedBlockFX;
 	public static int magicianID;
 	public static boolean enablePersonalityShatter = true;
+	public static boolean autoFindEID = false;
 	public static net.minecraftforge.common.config.Configuration config;
 	
 	public static String[] data_addedOresNames;

@@ -24,7 +24,6 @@ import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.ParameterNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
 import DummyCore.Utils.MiscUtils;
@@ -97,6 +96,7 @@ public class ASMHandler implements IClassTransformer
 	
 	public byte[] handleTransform(byte[] transformingClass, String classpath, boolean isObfuscated)
 	{
+		/*
 		System.out.println("**************** EC3 transform running, obf: "+isObfuscated+" *********************** ");
 	    ClassNode classNode = new ClassNode(); //Creating actual ClassNode
 	    ClassReader classReader = new ClassReader(transformingClass); //Reading Class from bytes
@@ -259,13 +259,11 @@ public class ASMHandler implements IClassTransformer
 	    		 InsnList instructions = method.instructions;
 	    		 
 	    		 InsnList toInject = new InsnList();
-	             /* argument mapping:
 	    		 0: ItemStack is,
 	    		 1: World w,
 	    		 2: Entity holder,
 	    		 3: int slot,
 	    		 4: boolean held
-	    		 */
 	    		 toInject.add(new VarInsnNode(Opcodes.ALOAD,1));
 	    		 toInject.add(new VarInsnNode(Opcodes.ALOAD,0));
 	    		 toInject.add(new FieldInsnNode(Opcodes.GETFIELD, toolClass.replace('.', '/'), "maxMRU", Type.INT_TYPE.getDescriptor()));
@@ -293,7 +291,8 @@ public class ASMHandler implements IClassTransformer
 	    }
 	    System.out.println(" *Patch status: patching finished. Result: Possible Success.");
 	    System.out.println("**************** EC3 transform finish, obf: "+isObfuscated+" *********************** ");
-		return writer.toByteArray();
+	    */
+		return transformingClass;
 	}
 
 }
