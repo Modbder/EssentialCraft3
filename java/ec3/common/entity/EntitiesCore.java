@@ -19,13 +19,13 @@ public class EntitiesCore {
 	public static void registerEntities()
 	{
 		int[] id = Config.instance.mobID;
-		EntityRegistry.registerModEntity(EntityMRUPresence.class, "EssentialCraftII.entities.MRU", nextEntityID(id[0]), EssentialCraftCore.core, 64, 1, true);
-		EntityRegistry.registerModEntity(EntityMRUArrow.class, "EssentialCraftII.entities.MRUArrow", nextEntityID(id[1]), EssentialCraftCore.core, 64, 1, true);
-		EntityRegistry.registerModEntity(EntitySolarBeam.class, "EssentialCraftII.entities.SolarBeam", nextEntityID(id[2]), EssentialCraftCore.core, 64, 1, true);
-		int windMageID = nextEntityID(id[3]);
+		EntityRegistry.registerModEntity(EntityMRUPresence.class, "EssentialCraftII.entities.MRU", id[0], EssentialCraftCore.core, 64, 1, true);
+		EntityRegistry.registerModEntity(EntityMRUArrow.class, "EssentialCraftII.entities.MRUArrow", id[1], EssentialCraftCore.core, 64, 1, true);
+		EntityRegistry.registerModEntity(EntitySolarBeam.class, "EssentialCraftII.entities.SolarBeam", id[2], EssentialCraftCore.core, 64, 1, true);
+		int windMageID = id[3];
 		EntityRegistry.registerGlobalEntityID(EntityWindMage.class, "EssentialCraftII.entities.WindMage", windMageID, 0x997755, 0xffffff);
 		EntityRegistry.registerModEntity(EntityWindMage.class, "EssentialCraftII.entities.WindMage", windMageID, EssentialCraftCore.core, 64, 1, true);
-		int poisonFumeID = nextEntityID(id[4]);
+		int poisonFumeID = id[4];
 		EntityRegistry.registerGlobalEntityID(EntityPoisonFume.class, "EssentialCraftII.entities.poisonFume", poisonFumeID, 0x00ff00, 0xff00ff);
 		EntityRegistry.registerModEntity(EntityPoisonFume.class, "EssentialCraftII.entities.poisonFume", poisonFumeID, EssentialCraftCore.core, 64, 1, true);
 		
@@ -35,6 +35,7 @@ public class EntitiesCore {
 	
 	public static int nextEntityID(int defaultID)
 	{
+		if(Config.autoFindEID)return defaultID;
 		for(int i = defaultID; i < 512; ++i)
 		{
 			if(EntityList.getClassFromID(i) == null)

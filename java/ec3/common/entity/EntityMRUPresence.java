@@ -15,6 +15,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityBlaze;
@@ -37,7 +38,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 
-public class EntityMRUPresence extends Entity implements IMRUPressence
+public class EntityMRUPresence extends EntityLivingBase implements IMRUPressence
 {
 	
 	public int mruAmount;
@@ -46,23 +47,38 @@ public class EntityMRUPresence extends Entity implements IMRUPressence
 	public boolean canStay = true;
 	public boolean flag = false;
 	public int tickTimer;
+	public boolean firstTick = true;
     public EntityMRUPresence(World par1World)
     {
+    	//FIXME Attribute implementation
         super(par1World);
         this.setBalance(1.0F);
+    }
+    
+    protected void applyEntityAttributes()
+    {
+        super.applyEntityAttributes();
+        
+        //FIXME Reika's mods compathability patch?
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20);
+        this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(1);
+        
     }
 
 	@Override
 	protected void entityInit(){
-		this.dataWatcher.addObject(15, 1000000);
-		this.dataWatcher.addObject(16, 1);
-		this.dataWatcher.addObject(17, 0);
-		this.dataWatcher.addObject(18, 1);
+		super.entityInit();
+		//TODO rework data structuring
+			this.dataWatcher.addObject(15, 1000000);
+			this.dataWatcher.addObject(16, 1);
+			this.dataWatcher.addObject(17, 0);
+			this.dataWatcher.addObject(18, 1);
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound var1)
+	public void readEntityFromNBT(NBTTagCompound var1)
 	{
+		super.readEntityFromNBT(var1);
 		if(!this.worldObj.isRemote)
 		this.setMRU(var1.getInteger("mru"));
 		this.updateMRU();
@@ -78,8 +94,9 @@ public class EntityMRUPresence extends Entity implements IMRUPressence
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound var1)
+	public void writeEntityToNBT(NBTTagCompound var1)
 	{
+		super.writeEntityToNBT(var1);
 		var1.setInteger("mru", this.getMRU());
 		var1.setFloat("Balance", this.getBalance());
 		var1.setBoolean("stay", this.canAlwaysStay());
@@ -122,11 +139,14 @@ public class EntityMRUPresence extends Entity implements IMRUPressence
 	
 	@Override
 	public void onEntityUpdate(){
+		super.onEntityUpdate();
+		this.motionY = 0;
+		this.motionX = 0;
+		this.motionZ = 0;
 		this.noClip = true;
 		this.ignoreFrustumCheck = true;
-
 		this.merge();
-		if(!this.worldObj.isRemote)
+		if(!this.worldObj.isRemote && !this.isDead)
 		{
 			if(tickTimer <= 0)
 			{
@@ -143,8 +163,10 @@ public class EntityMRUPresence extends Entity implements IMRUPressence
 					id = BlocksCore.lightCorruption[0];
 					diff = getBalance()-1F;
 				}
+				//TODO better chance function, exponent maybe?
 				float mainMRUState = (diff*getMRU()/20000F)*10F;
 				Vec3 vec = Vec3.createVectorHelper(1, 0, 0);
+				//Spinning the vec right 'round...
 				vec.rotateAroundX(this.worldObj.rand.nextFloat()*360);
 				vec.rotateAroundY(this.worldObj.rand.nextFloat()*360);
 				vec.rotateAroundZ(this.worldObj.rand.nextFloat()*360);
@@ -152,6 +174,8 @@ public class EntityMRUPresence extends Entity implements IMRUPressence
 				{
 					for(int i = 0; i < mainMRUState; ++i)
 					{
+						//From now on even me, @Modbder, is unsure of the things, happening here. No idea, how and why this works, but it does.
+						//It shouldn't
 						Vec3 vc = Vec3.createVectorHelper(vec.xCoord*i, vec.yCoord*i, vec.zCoord*i);
 						Vec3 vc1 = Vec3.createVectorHelper(vec.xCoord*(i+1), vec.yCoord*(i+1), vec.zCoord*(i+1));
 						Block blk = this.worldObj.getBlock((int)(vc.xCoord+posX),(int)(vc.yCoord+posY),(int)(vc.zCoord+posZ));
@@ -199,6 +223,7 @@ public class EntityMRUPresence extends Entity implements IMRUPressence
 			}
 		}else
 		{
+			//TODO replace the noise! Too annoying.
 			if(this.worldObj.rand.nextFloat() < 0.025F)
 				this.worldObj.playSound(posX, posY, posZ, "essentialcraft:sound.mrucu_noise", (float)this.getMRU()/60000F, 0.1F+this.worldObj.rand.nextFloat(), false);
 		}
@@ -213,7 +238,11 @@ public class EntityMRUPresence extends Entity implements IMRUPressence
 		this.updateBalance();
 		this.updateStay();
 		this.updateFlag();
+		
+		firstTick = false;
 		}
+	
+	
 	
 	public void updateMRU()
 	{
@@ -221,7 +250,7 @@ public class EntityMRUPresence extends Entity implements IMRUPressence
 		{
 			this.setMRU(this.getMRU());
 		}
-		if(this.worldObj.isRemote)
+		if(this.worldObj.isRemote && !firstTick)
 		{
 			this.mruAmount = this.getMRU();
 		}
@@ -244,7 +273,7 @@ public class EntityMRUPresence extends Entity implements IMRUPressence
 		{
 			this.setBalance(this.getBalance());
 		}
-		if(this.worldObj.isRemote)
+		if(this.worldObj.isRemote && !firstTick)
 		{
 			this.balance = this.getBalance();
 		}
@@ -285,7 +314,7 @@ public class EntityMRUPresence extends Entity implements IMRUPressence
 		{
 			this.setAlwaysStay(this.canAlwaysStay());
 		}
-		if(this.worldObj.isRemote)
+		if(this.worldObj.isRemote && !firstTick)
 		{
 			this.canStay = this.canAlwaysStay();
 		}
@@ -315,7 +344,7 @@ public class EntityMRUPresence extends Entity implements IMRUPressence
 		{
 			this.setFlag(this.getFlag());
 		}
-		if(this.worldObj.isRemote)
+		if(this.worldObj.isRemote && !firstTick)
 		{
 			this.flag = this.getFlag();
 		}
@@ -362,5 +391,24 @@ public class EntityMRUPresence extends Entity implements IMRUPressence
 	
 	@Override
 	public ItemStack getPickedResult(MovingObjectPosition target){return null;}
+    
+	@Override
+	public ItemStack getHeldItem() {
+		return null;
+	}
+
+	@Override
+	public ItemStack getEquipmentInSlot(int p_71124_1_) {
+		return null;
+	}
+
+	@Override
+	public void setCurrentItemOrArmor(int p_70062_1_, ItemStack p_70062_2_) {
+	}
+
+	@Override
+	public ItemStack[] getLastActiveItems() {
+		return new ItemStack[]{};
+	}
     
 }
