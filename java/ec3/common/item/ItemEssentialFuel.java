@@ -42,7 +42,7 @@ public class ItemEssentialFuel extends Item {
     {
     	for(int i = 0; i < 4; ++i)
     	{
-    		this.icon[i] = par1IconRegister.registerIcon("essentialcraft:eFuel_"+name[i]);
+    		this.icon[i] = par1IconRegister.registerIcon("essentialcraft:elemental/eFuel_"+name[i]);
     	}
     }
     

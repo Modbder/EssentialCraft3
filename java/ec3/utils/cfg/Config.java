@@ -5,10 +5,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.EnumHelper;
 import DummyCore.Utils.IDummyConfig;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.ModContainer;
-import cpw.mods.fml.common.ModContainerFactory;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import ec3.common.block.BlocksCore;
 import ec3.common.entity.EntitiesCore;
@@ -43,6 +39,7 @@ public class Config implements IDummyConfig{
 	public void loadGUIs()
 	{
 		guiID[0] = config.get("GUI","Generic GUI ID", 7321).getInt();
+		guiID[1] = config.get("GUI","Demon GUI ID", 7322).getInt();
 	}
 	
 	
@@ -120,7 +117,7 @@ public class Config implements IDummyConfig{
 
 	@Override
 	public void load(Configuration config) {
-		this.config = config;
+		Config.config = config;
 		config.load();
 		this.loadBlocks();
 		this.loadItems();
@@ -134,19 +131,22 @@ public class Config implements IDummyConfig{
 	
 	public void loadTiles()
 	{
-		try
-		{
+
 		for(Class<? extends TileEntity> tile : TileRegistry.cfgDependant)
 		{
-			if(tile.getMethod("setupConfig", Configuration.class) != null)
+			try
 			{
-				tile.getMethod("setupConfig", Configuration.class).invoke(null, Config.config);
+				if(tile.getMethod("setupConfig", Configuration.class) != null)
+				{
+					tile.getMethod("setupConfig", Configuration.class).invoke(null, Config.config);
+				}
+			}catch(Exception e)
+			{
+				e.printStackTrace();
+				continue;
 			}
 		}
-		}catch(Exception e)
-		{
-			e.printStackTrace();
-		}
+
 	}
 	
 	public void postInitParseDecorativeBlocks()

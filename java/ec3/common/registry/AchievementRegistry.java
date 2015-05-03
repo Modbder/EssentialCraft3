@@ -16,6 +16,9 @@ public class AchievementRegistry {
 	{
 		registerNewAchievement(10,0,new ItemStack(ItemsCore.record_everlastingSummer,1,0),null,"theEndlessSummer",true);
 		registerNewAchievement(10,-2,new ItemStack(ItemsCore.record_papersPlease,1,0),null,"papersPlease",true);
+		registerNewAchievement(0,0,new ItemStack(ItemsCore.soulStone,1,0),null,"soulStone",false);
+		registerNewAchievement(0,1,new ItemStack(ItemsCore.soulStone,1,0),null,"darkSouls",true);
+		
 		Achievement[] achievements = new Achievement[achievementList.size()];
 		for(int i = 0; i < achievementList.size(); ++i)
 		{
@@ -42,7 +45,7 @@ public class AchievementRegistry {
 		AchievementList.achievementList.remove(ach);
 	}
 	
-	public static List<String> achievementNames = new ArrayList();
-	public static Hashtable<String, Achievement> achievementList = new Hashtable();
+	public static List<String> achievementNames = new ArrayList<String>();
+	public static Hashtable<String, Achievement> achievementList = new Hashtable<String, Achievement>();
 
 }

@@ -10,11 +10,11 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class MagicalAssemblerRecipes {
 	
-	public static List<ShapedAssemblerRecipe> recipes = new ArrayList();
+	public static List<ShapedAssemblerRecipe> recipes = new ArrayList<ShapedAssemblerRecipe>();
 	
 	public static List<ShapedAssemblerRecipe> findRecipes(ItemStack result)
 	{
-		List<ShapedAssemblerRecipe> retLst = new ArrayList();
+		List<ShapedAssemblerRecipe> retLst = new ArrayList<ShapedAssemblerRecipe>();
 		for(ShapedAssemblerRecipe rec : recipes)
 		{
 			if(rec.getRecipeOutput().isItemEqual(result))
@@ -23,10 +23,11 @@ public class MagicalAssemblerRecipes {
 		return retLst;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static List<ShapedAssemblerRecipe> findUsageRecipes(ItemStack result)
 	{
-		List<ShapedAssemblerRecipe> retLst = new ArrayList();
-		List<ShapedAssemblerRecipe> genLst = new ArrayList();
+		List<ShapedAssemblerRecipe> retLst = new ArrayList<ShapedAssemblerRecipe>();
+		List<ShapedAssemblerRecipe> genLst = new ArrayList<ShapedAssemblerRecipe>();
 		for(ShapedAssemblerRecipe rec : recipes)
 		{
 			for(Object obj : rec.getInput())

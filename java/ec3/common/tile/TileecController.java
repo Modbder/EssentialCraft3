@@ -2,24 +2,18 @@ package ec3.common.tile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import DummyCore.Utils.BlockPosition;
 import DummyCore.Utils.Coord3D;
 import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
 import DummyCore.Utils.MiscUtils;
-import DummyCore.Utils.Notifier;
-import ec3.api.ApiCore;
 import ec3.api.EnumStructureType;
 import ec3.api.IMRUPressence;
 import ec3.api.IStructurePiece;
 import ec3.api.ITEHasMRU;
 import ec3.utils.common.ECUtils;
-import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -46,7 +40,7 @@ public class TileecController extends TileEntity implements ITEHasMRU{
 	
 	public UUID uuid = UUID.randomUUID();
 	
-	public List<BlockPosition> blocksInStructure = new ArrayList();
+	public List<BlockPosition> blocksInStructure = new ArrayList<BlockPosition>();
 	
 	public static float cfgMaxMRU = 60000;
 	public static float cfgMRUPerStorage = 100000;
@@ -73,6 +67,7 @@ public class TileecController extends TileEntity implements ITEHasMRU{
 			--this.syncTick;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public IMRUPressence getMRUCU()
 	{
 		if(isCorrect)
@@ -132,7 +127,7 @@ public class TileecController extends TileEntity implements ITEHasMRU{
 		int maxY = 0;
 		int maxZ = 0;
 		int checkInt0 = 0;
-		List allowedBlocks = ECUtils.allowedBlocks.get(EnumStructureType.MRUCUContaigementChamber); //Getting the list of allowed blocks in the structure
+		List<?> allowedBlocks = ECUtils.allowedBlocks.get(EnumStructureType.MRUCUContaigementChamber); //Getting the list of allowed blocks in the structure
 		//Trying to find the whole shape of a structure//
 		while(allowedBlocks.contains(this.worldObj.getBlock(xCoord+checkInt0, yCoord, zCoord)))
 		{
@@ -395,8 +390,6 @@ public class TileecController extends TileEntity implements ITEHasMRU{
 		{
 			this.lowerCoord = new Coord3D(this.xCoord+minX, this.yCoord+minY, this.zCoord+minZ);
 			this.upperCoord = new Coord3D(this.xCoord+maxX, this.yCoord+maxY, this.zCoord+maxZ);
-			//Checking the structure for blocks//
-			int count = 0;
 			for(int x = minX; x <= maxX; ++x)
 			{
 				for(int y = minY; y <= maxY; ++y)
@@ -407,7 +400,6 @@ public class TileecController extends TileEntity implements ITEHasMRU{
 						{
 							if(allowedBlocks.contains(this.worldObj.getBlock(xCoord+x, yCoord+y, zCoord+z)))
 							{
-								++count;
 								this.blocksInStructure.add(new BlockPosition(worldObj, xCoord+x, yCoord+y, zCoord+z));
 								int meta = this.worldObj.getBlockMetadata(xCoord+x, yCoord+y, zCoord+z);
 								if(ECUtils.ignoreMeta.containsKey(this.worldObj.getBlock(xCoord+x, yCoord+y, zCoord+z).getUnlocalizedName()) && ECUtils.ignoreMeta.get(this.worldObj.getBlock(xCoord+x, yCoord+y, zCoord+z).getUnlocalizedName()))

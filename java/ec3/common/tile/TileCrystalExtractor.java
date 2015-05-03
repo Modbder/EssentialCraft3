@@ -1,31 +1,19 @@
 package ec3.common.tile;
 
-import java.util.List;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.util.FakePlayer;
-import DummyCore.Utils.Coord3D;
 import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
-import DummyCore.Utils.DummyDistance;
 import DummyCore.Utils.MathUtils;
-import DummyCore.Utils.MiscUtils;
 import ec3.api.ApiCore;
 import ec3.api.ITEHasMRU;
 import ec3.common.item.ItemBoundGem;
 import ec3.common.item.ItemEssence;
-import ec3.common.item.ItemGenericEC3;
 import ec3.common.item.ItemsCore;
 import ec3.utils.common.ECUtils;
 

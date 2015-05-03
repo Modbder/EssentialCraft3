@@ -15,7 +15,6 @@ import ec3.api.RadiatingChamberRecipe;
 import ec3.api.RadiatingChamberRecipes;
 import ec3.api.ShapedAssemblerRecipe;
 import ec3.common.item.ItemBoundGem;
-import ec3.integration.nei.MagicianTableRecipeHandler.MagicianTableCraftingPair;
 import ec3.utils.common.ECUtils;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
@@ -42,8 +41,8 @@ public class TileMagicalAssembler extends TileMRUGeneric{
 	public List<ItemStack> allRecipes = new ArrayList<ItemStack>();
 	public List<IRecipe> actualRecipes = new ArrayList<IRecipe>();
 	
-	public List<Coord3D> mirrors = new ArrayList();
-	public List<TileMagicalMirror> mirrorsTiles = new ArrayList();
+	public List<Coord3D> mirrors = new ArrayList<Coord3D>();
+	public List<TileMagicalMirror> mirrorsTiles = new ArrayList<TileMagicalMirror>();
 	
 	
 	public IRecipe currentSelectedOne;
@@ -207,8 +206,8 @@ public class TileMagicalAssembler extends TileMRUGeneric{
 			}
 			if(this.isWorking && this.currentCraft != null && this.worldObj.getWorldTime()%20 == 0 && !this.requiredItemsToCraft.isEmpty() && (this.getStackInSlot(17) == null || (this.getStackInSlot(17).isItemEqual(currentCraft) && this.getStackInSlot(17).stackSize+1 < this.getStackInSlot(17).getMaxStackSize()+1)) && this.getMRU() - getRequiredMRUToCraft() >= 0 && this.currentSelectedOne != null)
 			{
-				List<UnformedItemStack> hasItems = new ArrayList(this.requiredItemsToCraft.size());
-				List<UnformedItemStack> hasItemsCopy = new ArrayList(this.requiredItemsToCraft.size());
+				List<UnformedItemStack> hasItems = new ArrayList<UnformedItemStack>(this.requiredItemsToCraft.size());
+				List<UnformedItemStack> hasItemsCopy = new ArrayList<UnformedItemStack>(this.requiredItemsToCraft.size());
 				hasItemsCopy.addAll(requiredItemsToCraft);
 				
 				for(int i = 0; i < this.requiredItemsToCraft.size(); ++i)
@@ -231,7 +230,6 @@ public class TileMagicalAssembler extends TileMRUGeneric{
 						}
 					}
 				}
-				boolean equals = true;
 				for(int i = 0; i < hasItems.size(); ++i)
 				{
 					if(hasItems.get(i) == null && this.requiredItemsToCraft.get(i).possibleStacks.isEmpty())
@@ -347,11 +345,12 @@ public class TileMagicalAssembler extends TileMRUGeneric{
 		this.currentSelectedOne = null;
 		if(is != null)
 		{
+			@SuppressWarnings("unchecked")
 			List<IRecipe> rec = CraftingManager.getInstance().getRecipeList();
-			List<IRecipe> lstCR = new ArrayList();
-			List<RadiatingChamberRecipe> lstRC = new ArrayList();
-			List<MagicianTableRecipe> lstMT = new ArrayList();
-			List<ShapedAssemblerRecipe> lstMA = new ArrayList();
+			List<IRecipe> lstCR = new ArrayList<IRecipe>();
+			List<RadiatingChamberRecipe> lstRC = new ArrayList<RadiatingChamberRecipe>();
+			List<MagicianTableRecipe> lstMT = new ArrayList<MagicianTableRecipe>();
+			List<ShapedAssemblerRecipe> lstMA = new ArrayList<ShapedAssemblerRecipe>();
 			ItemStack genStk = is.copy();
 			genStk.stackSize = 0;
 			String searchPair = genStk.toString();
@@ -438,6 +437,7 @@ public class TileMagicalAssembler extends TileMRUGeneric{
 						}
 						if(o instanceof List)
 						{
+							@SuppressWarnings("unchecked")
 							List<ItemStack> isLst = (List<ItemStack>) o;
 							for(ItemStack s : isLst)
 							{
@@ -490,6 +490,7 @@ public class TileMagicalAssembler extends TileMRUGeneric{
 						}
 						if(o instanceof List)
 						{
+							@SuppressWarnings("unchecked")
 							List<ItemStack> isLst = (List<ItemStack>) o;
 							for(ItemStack s : isLst)
 							{

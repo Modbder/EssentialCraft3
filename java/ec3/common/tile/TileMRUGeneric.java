@@ -15,7 +15,6 @@ import net.minecraft.network.play.INetHandlerPlayClient;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import ec3.api.ITERequiresMRU;
-import ec3.common.item.ItemBoundGem;
 import ec3.utils.common.ECUtils;
 
 public class TileMRUGeneric extends TileEntity implements ITERequiresMRU, IInventory, ISidedInventory{
@@ -35,7 +34,7 @@ public class TileMRUGeneric extends TileEntity implements ITERequiresMRU, IInven
 	private ItemStack[] items = new ItemStack[1];
 	private TileStatTracker tracker;
 	
-	public class TileStatTracker
+	public static class TileStatTracker
 	{
 		public TileEntity trackedTile;
 		public NBTTagCompound trackedTag;
@@ -129,13 +128,11 @@ public class TileMRUGeneric extends TileEntity implements ITERequiresMRU, IInven
 	
 	@Override
 	public int getMRU() {
-		// TODO Auto-generated method stub
 		return mru;
 	}
 
 	@Override
 	public int getMaxMRU() {
-		// TODO Auto-generated method stub
 		return maxMRU;
 	}
 
@@ -147,7 +144,6 @@ public class TileMRUGeneric extends TileEntity implements ITERequiresMRU, IInven
 
 	@Override
 	public float getBalance() {
-		// TODO Auto-generated method stub
 		return balance;
 	}
 
@@ -165,19 +161,16 @@ public class TileMRUGeneric extends TileEntity implements ITERequiresMRU, IInven
 
 	@Override
 	public UUID getUUID() {
-		// TODO Auto-generated method stub
 		return uuid;
 	}
 	
 	@Override
 	public int getSizeInventory() {
-		// TODO Auto-generated method stub
 		return this.items.length;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int par1) {
-		// TODO Auto-generated method stub
 		return this.items[par1];
 	}
 
@@ -241,37 +234,31 @@ public class TileMRUGeneric extends TileEntity implements ITERequiresMRU, IInven
 
 	@Override
 	public String getInventoryName() {
-		// TODO Auto-generated method stub
 		return "ec3.container.generic";
 	}
 
 	@Override
 	public boolean hasCustomInventoryName() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public int getInventoryStackLimit() {
-		// TODO Auto-generated method stub
 		return 64;
 	}
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		// TODO Auto-generated method stub
 		return this.worldObj.getTileEntity(xCoord, yCoord, zCoord) == this && player.dimension == this.worldObj.provider.dimensionId;
 	}
 
 	@Override
 	public void openInventory() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void closeInventory() {
-		// TODO Auto-generated method stub
 		
 	}
 

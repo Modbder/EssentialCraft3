@@ -1,39 +1,27 @@
 package ec3.common.tile;
 
-import java.util.Arrays;
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import DummyCore.Utils.Coord3D;
 import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFlower;
 import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.BlockSapling;
-import net.minecraft.block.BlockTallGrass;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.oredict.OreDictionary;
 import ec3.api.ApiCore;
 import ec3.api.ITEHasMRU;
-import ec3.api.MagicianTableRecipe;
-import ec3.api.MagicianTableRecipes;
-import ec3.common.entity.EntitySolarBeam;
 import ec3.common.item.ItemBoundGem;
 import ec3.common.item.ItemGenericEC3;
-import ec3.common.mod.EssentialCraftCore;
 import ec3.utils.common.ECUtils;
 
 public class TileMagicalQuarry extends TileMRUGeneric{
@@ -349,7 +337,8 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     	}
     }
     
-    public void collectItems()
+    @SuppressWarnings("unchecked")
+	public void collectItems()
     {
     	List<EntityItem> l = this.worldObj.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(miningX, miningY, miningZ, miningX+1, miningY+1, miningZ+1).expand(4D, 2D, 4D));
     	if(!l.isEmpty())
@@ -378,7 +367,8 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     	this.worldObj.spawnEntityInWorld(item);
     }
     
-    public void insertItem(ItemStack s)
+    @SuppressWarnings("deprecation")
+	public void insertItem(ItemStack s)
     {
     	
     	if(this.hasSpaceInInv(this.getInventory()))

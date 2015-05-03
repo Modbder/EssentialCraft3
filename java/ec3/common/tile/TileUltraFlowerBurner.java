@@ -10,10 +10,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoublePlant;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.BlockLog;
-import net.minecraft.block.BlockSapling;
 import net.minecraft.block.BlockTallGrass;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,9 +19,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.oredict.OreDictionary;
 import ec3.api.ApiCore;
-import ec3.common.entity.EntitySolarBeam;
 import ec3.common.mod.EssentialCraftCore;
-import ec3.utils.common.ECUtils;
 
 public class TileUltraFlowerBurner extends TileMRUGeneric{
 	
@@ -42,6 +38,7 @@ public class TileUltraFlowerBurner extends TileMRUGeneric{
 		return false;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateEntity()
 	{

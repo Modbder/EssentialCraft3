@@ -1,13 +1,8 @@
 package ec3.common.tile;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
 import ec3.api.ApiCore;
 import ec3.api.ITEHasMRU;
 import ec3.common.block.BlocksCore;
@@ -15,37 +10,16 @@ import ec3.common.item.ItemBoundGem;
 import ec3.common.item.ItemsCore;
 import ec3.common.mod.EssentialCraftCore;
 import ec3.utils.common.ECUtils;
-import DummyCore.Utils.Coord3D;
 import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
-import DummyCore.Utils.ITEHasGameData;
 import DummyCore.Utils.MathUtils;
-import DummyCore.Utils.MiscUtils;
-import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.play.server.S07PacketRespawn;
-import net.minecraft.network.play.server.S1DPacketEntityEffect;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.Teleporter;
-import net.minecraft.world.WorldProvider;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.config.Configuration;
 
 public class TileMagicalFurnace extends TileMRUGeneric
@@ -195,13 +169,13 @@ public class TileMagicalFurnace extends TileMRUGeneric
     	}
     }
     
-    public EntityItem getSmeltingItem()
+    @SuppressWarnings("unchecked")
+	public EntityItem getSmeltingItem()
     {
     	EntityItem ret = null;
     	List<EntityItem> l = this.worldObj.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord+1, yCoord+2, zCoord+1));
     	if(!l.isEmpty())
     	{
-    		List<ItemStack> canBeSmelted = new ArrayList();
     		for(int i = 0; i < l.size(); ++i)
     		{
     			EntityItem item = l.get(i);
@@ -212,13 +186,14 @@ public class TileMagicalFurnace extends TileMRUGeneric
     	return ret;
     }
     
-    public ItemStack getSmeltingStack()
+    @SuppressWarnings("unchecked")
+	public ItemStack getSmeltingStack()
     {
     	ItemStack ret = null;
     	List<EntityItem> l = this.worldObj.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord+1, yCoord+2, zCoord+1));
     	if(!l.isEmpty())
     	{
-    		List<ItemStack> canBeSmelted = new ArrayList();
+    		List<ItemStack> canBeSmelted = new ArrayList<ItemStack>();
     		for(int i = 0; i < l.size(); ++i)
     		{
     			EntityItem item = l.get(i);

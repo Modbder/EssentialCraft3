@@ -15,7 +15,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.config.Configuration;
 import ec3.api.ApiCore;
 import ec3.api.IColdBlock;
-import ec3.common.entity.EntitySolarBeam;
 
 public class TileColdDistillator extends TileMRUGeneric{
 	
@@ -54,7 +53,8 @@ public class TileColdDistillator extends TileMRUGeneric{
 	}
 	
     
-    public void CdamageAround()
+    @SuppressWarnings("unchecked")
+	public void CdamageAround()
     {
     	List<EntityLivingBase> l = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord+1, yCoord+1, zCoord+1).expand(3D, 3D, 3D));
     	if(!l.isEmpty())

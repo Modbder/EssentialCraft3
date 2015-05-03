@@ -14,7 +14,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import ec3.common.block.BlockChargingChamber;
 import ec3.common.block.BlockColdDistillator;
@@ -48,6 +47,8 @@ import ec3.common.block.BlockMagicalRepairer;
 import ec3.common.block.BlockMagicianTable;
 import ec3.common.block.BlockMagmaticSmeltery;
 import ec3.common.block.BlockMatrixAbsorber;
+import ec3.common.block.BlockMithrilineCrystal;
+import ec3.common.block.BlockMithrilineFurnace;
 import ec3.common.block.BlockMonsterHarvester;
 import ec3.common.block.BlockMonsterHolder;
 import ec3.common.block.BlockMoonWell;
@@ -55,6 +56,7 @@ import ec3.common.block.BlockPotionSpreader;
 import ec3.common.block.BlockRadiatingChamber;
 import ec3.common.block.BlockRayTower;
 import ec3.common.block.BlockReactorSupport;
+import ec3.common.block.BlockRedstoneTransmitter;
 import ec3.common.block.BlockSunRayAbsorber;
 import ec3.common.block.BlockUltraFlowerBurner;
 import ec3.common.block.BlockUltraHeatGenerator;
@@ -72,6 +74,23 @@ public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 	        GL11.glTranslatef(0F,-0.5F,0F);
 	        Minecraft.getMinecraft().renderEngine.bindTexture(RenderCrystalExtractor.textures);
 	        RenderCrystalExtractor.model.renderAll();
+	        GL11.glPopMatrix();
+		}
+		if(block instanceof BlockMithrilineFurnace)
+		{
+	        GL11.glPushMatrix();
+	        GL11.glTranslatef(0F,-0.5F,0F);
+	        Minecraft.getMinecraft().renderEngine.bindTexture(RenderMithrilineFurnace.textures);
+	        RenderMithrilineFurnace.model.renderAll();
+	        GL11.glPopMatrix();
+		}
+		if(block instanceof BlockMithrilineCrystal)
+		{
+	        GL11.glPushMatrix();
+	        GL11.glTranslatef(0F,-1F,0F);
+	        GL11.glScalef(2, 2, 2);
+	        Minecraft.getMinecraft().renderEngine.bindTexture(metadata == 0 ? RenderMithrilineCrystal.textures_mithriline : metadata == 3 ? RenderMithrilineCrystal.textures_pale : metadata == 6 ? RenderMithrilineCrystal.textures_void : metadata == 9 ? RenderMithrilineCrystal.textures_demonic : RenderMithrilineCrystal.textures_shade);
+	        RenderMithrilineCrystal.model.renderAll();
 	        GL11.glPopMatrix();
 		}
 		if(block instanceof BlockChargingChamber)
@@ -507,7 +526,17 @@ public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicalQuarry.getIcon(0, 0),0.4F,0.5F,0.4F,0,0.1F,0);
 			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.magicalQuarry.getIcon(0, 0),0.2F,1F,0.2F,0,-0.3F,0);
 		}
-		
+		if(block instanceof BlockRedstoneTransmitter)
+		{
+			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.fortifiedStone.getIcon(0, 0),0.8F,0.2F,0.8F,0,-0.3F,0);
+			GL11.glPushMatrix();
+				float offsetY = 0.1F;
+				renderInventoryBlockWithSize(renderer,Blocks.redstone_torch,Blocks.redstone_torch.getIcon(0, 0),0.0001F,1F,1F,0.05F,offsetY,0);
+				renderInventoryBlockWithSize(renderer,Blocks.redstone_torch,Blocks.redstone_torch.getIcon(0, 0),0.0001F,1F,1F,-0.05F,offsetY,0);
+				renderInventoryBlockWithSize(renderer,Blocks.redstone_torch,Blocks.redstone_torch.getIcon(0, 0),1F,1F,0F,0,offsetY,0.05F);
+				renderInventoryBlockWithSize(renderer,Blocks.redstone_torch,Blocks.redstone_torch.getIcon(0, 0),1F,1F,0F,0,offsetY,-0.05F);
+			GL11.glPopMatrix();
+		}
 		if(block instanceof BlockMRUCoil_Coil)
 		{
 			renderInventoryBlockWithSize(renderer,Blocks.glass,Blocks.end_portal_frame.getIcon(1, 0),0.4F,0.2F,0.4F,0,-0.4F,0);
@@ -594,6 +623,86 @@ public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z,
 			Block block, int modelId, RenderBlocks renderer) {
 		int metadata = world.getBlockMetadata(x, y, z);
+		if(block instanceof BlockRedstoneTransmitter)
+		{
+			renderer.setOverrideBlockTexture(BlocksCore.fortifiedStone.getBlockTextureFromSide(0));
+			IIcon redstoneIcon = BlocksCore.demonicPlating.getBlockTextureFromSide(0);
+			switch(metadata)
+			{
+				case 0:
+				{
+					renderer.setRenderBounds(0.2D, 0, 0.2D, 0.8D, 0.2D, 0.8D);
+					renderer.renderStandardBlock(Blocks.glass, x, y, z);
+					renderer.setOverrideBlockTexture(Blocks.planks.getBlockTextureFromSide(0));
+					renderer.setRenderBounds(0.42D, 0.2D, 0.42D, 0.58D, 0.4D, 0.58D);
+					renderer.renderStandardBlock(Blocks.planks, x, y, z);
+					renderer.setOverrideBlockTexture(redstoneIcon);
+					renderer.setRenderBounds(0.4D, 0.4D, 0.4D, 0.6D, 0.6D, 0.6D);
+					renderer.renderStandardBlock(Blocks.planks, x, y, z);
+					break;
+				}
+				case 1:
+				{
+					renderer.setRenderBounds(0.2D, 0.8D, 0.2D, 0.8D, 1D, 0.8D);
+					renderer.renderStandardBlock(Blocks.glass, x, y, z);
+					renderer.setOverrideBlockTexture(Blocks.planks.getBlockTextureFromSide(0));
+					renderer.setRenderBounds(0.42D, 0.6D, 0.42D, 0.58D, 0.8D, 0.58D);
+					renderer.renderStandardBlock(Blocks.planks, x, y, z);
+					renderer.setOverrideBlockTexture(redstoneIcon);
+					renderer.setRenderBounds(0.4D, 0.4D, 0.4D, 0.6D, 0.6D, 0.6D);
+					renderer.renderStandardBlock(Blocks.planks, x, y, z);
+					break;
+				}
+				case 5:
+				{
+					renderer.setRenderBounds(0.8D, 0.2D, 0.2D, 1D, 0.8D, 0.8D);
+					renderer.renderStandardBlock(Blocks.glass, x, y, z);
+					renderer.setOverrideBlockTexture(Blocks.planks.getBlockTextureFromSide(0));
+					renderer.setRenderBounds(0.6D, 0.42D, 0.42D, 0.8D, 0.58D, 0.58D);
+					renderer.renderStandardBlock(Blocks.planks, x, y, z);
+					renderer.setOverrideBlockTexture(redstoneIcon);
+					renderer.setRenderBounds(0.4D, 0.4D, 0.4D, 0.6D, 0.6D, 0.6D);
+					renderer.renderStandardBlock(Blocks.planks, x, y, z);
+					break;
+				}
+				case 4:
+				{
+					renderer.setRenderBounds(0D, 0.2D, 0.2D, 0.2D, 0.8D, 0.8D);
+					renderer.renderStandardBlock(Blocks.glass, x, y, z);
+					renderer.setOverrideBlockTexture(Blocks.planks.getBlockTextureFromSide(0));
+					renderer.setRenderBounds(0.2D, 0.42D, 0.42D, 0.4D, 0.58D, 0.58D);
+					renderer.renderStandardBlock(Blocks.planks, x, y, z);
+					renderer.setOverrideBlockTexture(redstoneIcon);
+					renderer.setRenderBounds(0.4D, 0.4D, 0.4D, 0.6D, 0.6D, 0.6D);
+					renderer.renderStandardBlock(Blocks.planks, x, y, z);
+					break;
+				}
+				case 3:
+				{
+					renderer.setRenderBounds(0.2D, 0.2D, 0.8D, 0.8D, 0.8D, 1D);
+					renderer.renderStandardBlock(Blocks.glass, x, y, z);
+					renderer.setOverrideBlockTexture(Blocks.planks.getBlockTextureFromSide(0));
+					renderer.setRenderBounds(0.42D, 0.42D, 0.6D, 0.58D, 0.58D, 0.8D);
+					renderer.renderStandardBlock(Blocks.planks, x, y, z);
+					renderer.setOverrideBlockTexture(redstoneIcon);
+					renderer.setRenderBounds(0.4D, 0.4D, 0.4D, 0.6D, 0.6D, 0.6D);
+					renderer.renderStandardBlock(Blocks.planks, x, y, z);
+					break;
+				}
+				case 2:
+				{
+					renderer.setRenderBounds(0.2D, 0.2D, 0D, 0.8D, 0.8D, 0.2D);
+					renderer.renderStandardBlock(Blocks.glass, x, y, z);
+					renderer.setOverrideBlockTexture(Blocks.planks.getBlockTextureFromSide(0));
+					renderer.setRenderBounds(0.42D, 0.42D, 0.2D, 0.58D, 0.58D, 0.4D);
+					renderer.renderStandardBlock(Blocks.planks, x, y, z);
+					renderer.setOverrideBlockTexture(redstoneIcon);
+					renderer.setRenderBounds(0.4D, 0.4D, 0.4D, 0.6D, 0.6D, 0.6D);
+					renderer.renderStandardBlock(Blocks.planks, x, y, z);
+					break;
+				}
+			}
+		}
 		if(block instanceof BlockDrops)
 		{
 			switch(metadata)
@@ -687,7 +796,6 @@ public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 	        renderer.setOverrideBlockTexture(dr.icons[3]);
 	        
 	       
-	        Tessellator tec = Tessellator.instance;
 	        renderer.renderAllFaces = false;
 			renderTesselatedTextureByPoints(world,block,renderer,x,y,z,r,g,b,1D,127,dr.icons[3],
 					1D,1D,1D, //SOUTH-TOP-EAST

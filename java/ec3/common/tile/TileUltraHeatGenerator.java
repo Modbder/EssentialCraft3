@@ -1,27 +1,14 @@
 package ec3.common.tile;
 
-import java.util.List;
-
-import DummyCore.Utils.Coord3D;
-import DummyCore.Utils.DataStorage;
-import DummyCore.Utils.DummyData;
 import DummyCore.Utils.MathUtils;
 import net.minecraft.block.Block;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.util.ForgeDirection;
 import ec3.api.ApiCore;
-import ec3.api.IColdBlock;
 import ec3.api.IHotBlock;
-import ec3.common.entity.EntitySolarBeam;
 import ec3.common.item.ItemsCore;
 import ec3.common.mod.EssentialCraftCore;
 

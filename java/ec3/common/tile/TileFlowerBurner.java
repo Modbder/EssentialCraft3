@@ -1,7 +1,5 @@
 package ec3.common.tile;
 
-import java.util.List;
-
 import DummyCore.Utils.Coord3D;
 import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
@@ -13,13 +11,10 @@ import net.minecraft.block.BlockTallGrass;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.oredict.OreDictionary;
 import ec3.api.ApiCore;
-import ec3.common.entity.EntitySolarBeam;
 import ec3.common.mod.EssentialCraftCore;
-import ec3.utils.common.ECUtils;
 
 public class TileFlowerBurner extends TileMRUGeneric{
 	

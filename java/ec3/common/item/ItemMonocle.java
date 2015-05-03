@@ -29,7 +29,7 @@ public class ItemMonocle extends Item implements IItemAllowsSeeingMRUCU{
     @Override
     public void registerIcons(IIconRegister par1IconRegister)
     {
-        this.icon = par1IconRegister.registerIcon("essentialcraft:magicMonocle");
+        this.icon = par1IconRegister.registerIcon("essentialcraft:tools/magicMonocle");
     }
     
     @Override

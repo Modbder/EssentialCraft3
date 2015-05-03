@@ -1,9 +1,12 @@
 package ec3.common.world.event;
 
+import baubles.api.BaublesApi;
 import DummyCore.Utils.MathUtils;
 import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
@@ -11,6 +14,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import ec3.api.IWorldEvent;
+import ec3.common.item.BaublesModifier;
 import ec3.utils.common.ECUtils;
 
 public class WorldEvent_SunArray implements IWorldEvent{
@@ -27,7 +31,18 @@ public class WorldEvent_SunArray implements IWorldEvent{
 
 	@Override
 	public void playerTick(EntityPlayer p, int leftoverTime) {
-		if(!p.capabilities.isCreativeMode && p.dimension == 53 && p.worldObj.canBlockSeeTheSky(MathHelper.floor_double(p.posX), MathHelper.floor_double(p.posY+2), MathHelper.floor_double(p.posZ)))
+		boolean ignoreSun = false;
+    	IInventory b = BaublesApi.getBaubles(p);
+    	if(b != null)
+    	{
+    		for(int i = 0; i < b.getSizeInventory(); ++i)
+    		{
+    			ItemStack is = b.getStackInSlot(i);
+    			if(is != null && is.getItem() != null && is.getItem() instanceof BaublesModifier && is.getItemDamage() == 19)
+    				ignoreSun = true;
+    		}
+    	}
+		if(!p.capabilities.isCreativeMode && p.dimension == 53 && p.worldObj.canBlockSeeTheSky(MathHelper.floor_double(p.posX), MathHelper.floor_double(p.posY+2), MathHelper.floor_double(p.posZ)) && !ignoreSun)
 		{
 			p.attackEntityFrom(DamageSource.onFire, 1);
 			p.setFire(10);

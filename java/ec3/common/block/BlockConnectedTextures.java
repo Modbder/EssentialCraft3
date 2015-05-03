@@ -1,13 +1,11 @@
 package ec3.common.block;
 
-import scala.actors.threadpool.Arrays;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -528,9 +526,9 @@ public class BlockConnectedTextures extends Block{
 	    		if(oreDisctName != null && !oreDisctName.isEmpty() && !oreDisctName.equalsIgnoreCase("unknown"))
 	    		{
 	    			int color = -1;
-	    			for(int i1 = 0; i1 < this.field_150921_b.length; ++i1)
+	    			for(int i1 = 0; i1 < field_150921_b.length; ++i1)
 	    			{
-	    				String dyeName = "dye"+this.field_150921_b[i1];
+	    				String dyeName = "dye"+field_150921_b[i1];
 	    				if(oreDisctName.equalsIgnoreCase(dyeName))
 	    				{
 	    					color = i1;

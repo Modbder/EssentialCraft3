@@ -1,10 +1,7 @@
 package ec3.integration.nei;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.Set;
-
 import org.lwjgl.opengl.GL11;
 
 import DummyCore.Utils.MathUtils;
@@ -16,10 +13,7 @@ import net.minecraft.util.IIcon;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import ec3.api.MagicalAssemblerRecipes;
-import ec3.api.RadiatingChamberRecipe;
-import ec3.api.RadiatingChamberRecipes;
 import ec3.api.ShapedAssemblerRecipe;
-import ec3.client.gui.GuiRadiatingChamber;
 import ec3.common.mod.EssentialCraftCore;
 
 public class MagicalAssemblerRecipeHandler extends TemplateRecipeHandler{
@@ -76,13 +70,11 @@ public class MagicalAssemblerRecipeHandler extends TemplateRecipeHandler{
 
 	@Override
 	public String getRecipeName() {
-		// TODO Auto-generated method stub
 		return "Magical Assembler";
 	}
 
 	@Override
 	public String getGuiTexture() {
-		// TODO Auto-generated method stub
 		return "minecraft:textures/gui/container/crafting_table.png";
 	}
 	

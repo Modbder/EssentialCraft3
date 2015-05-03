@@ -1,25 +1,14 @@
 package ec3.common.block;
 
-import DummyCore.Utils.DataStorage;
-import DummyCore.Utils.DummyData;
 import DummyCore.Utils.MiscUtils;
-import ec3.common.item.ItemPlayerList;
 import ec3.common.mod.EssentialCraftCore;
 import ec3.common.tile.TileCorruptionCleaner;
-import ec3.common.tile.TileMRUCoil;
-import ec3.common.tile.TileMRUCoil_Hardener;
-import ec3.common.tile.TileecController;
 import ec3.utils.cfg.Config;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 public class BlockCorruptionCleaner extends BlockContainer{
@@ -71,7 +60,7 @@ public class BlockCorruptionCleaner extends BlockContainer{
 	        {
 	        	if(!par5EntityPlayer.isSneaking())
 	        	{
-		        		par5EntityPlayer.openGui(EssentialCraftCore.core, Config.instance.guiID[0], par1World, par2, par3, par4);
+		        		par5EntityPlayer.openGui(EssentialCraftCore.core, Config.guiID[0], par1World, par2, par3, par4);
 		            	return true;
 	        	}
 	        	else

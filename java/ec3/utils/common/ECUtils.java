@@ -1,38 +1,28 @@
 package ec3.utils.common;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 
-import org.lwjgl.opengl.GL11;
-
-import scala.collection.mutable.Stack;
 import baubles.api.BaublesApi;
-import codechicken.core.ReflectionManager;
 
 import com.mojang.authlib.GameProfile;
 
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import DummyCore.Core.CoreInitialiser;
 import DummyCore.Utils.Coord3D;
 import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
 import DummyCore.Utils.DummyDataUtils;
 import DummyCore.Utils.DummyDistance;
+import DummyCore.Utils.DummyPacketHandler;
 import DummyCore.Utils.DummyPacketIMSG;
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
@@ -60,11 +50,10 @@ import ec3.common.mod.EssentialCraftCore;
 import ec3.common.registry.PotionRegistry;
 import ec3.common.tile.TileMRUReactor;
 import ec3.common.tile.TileRayTower;
+import ec3.network.PacketNBT;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -82,20 +71,95 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public class ECUtils {
-	public static Hashtable<EnumStructureType,List<Block>> allowedBlocks = new Hashtable(); 
-	public static Hashtable<String, Float> mruResistance = new Hashtable();
-	public static Hashtable<String, Boolean> ignoreMeta = new Hashtable();
-	public static List<SpellEntry> spells = new ArrayList();
-	public static Hashtable<Object,Integer> inPortalTime = new Hashtable();
+	public static Hashtable<EnumStructureType,List<Block>> allowedBlocks = new Hashtable<EnumStructureType, List<Block>>(); 
+	public static Hashtable<String, Float> mruResistance = new Hashtable<String, Float>();
+	public static Hashtable<String, Boolean> ignoreMeta = new Hashtable<String, Boolean>();
+	public static List<SpellEntry> spells = new ArrayList<SpellEntry>();
+	public static Hashtable<Object,Integer> inPortalTime = new Hashtable<Object, Integer>();
+	public static Hashtable<String,PlayerGenericData> playerDataTable = new Hashtable<String, PlayerGenericData>();
+	
+	public static void requestSync(EntityPlayer e)
+	{
+		NBTTagCompound tag = new NBTTagCompound();
+		getData(e).writeToNBTTagCompound(tag);
+		PacketNBT pkt = new PacketNBT(tag).setID(0);
+		EssentialCraftCore.network.sendTo(pkt, (EntityPlayerMP) e);
+	}
+	
+	public static PlayerGenericData getData(EntityPlayer e)
+	{
+		return playerDataExists(e) ? playerDataTable.get(e.getCommandSenderName()) : createPlayerData(e);
+	}
+	
+	/**
+	 * Should only be used for CLIENT, but may be used for the SERVER
+	 */
+	public static PlayerGenericData getData(String username)
+	{
+		return playerDataExists(username) ? playerDataTable.get(username) : null;
+	}
+	
+	/**
+	 * Should only be used for CLIENT, but may be used for the SERVER
+	 */
+	public static boolean playerDataExists(String username)
+	{
+		return playerDataTable.containsKey(username);
+	}
+	
+	public static boolean playerDataExists(EntityPlayer e)
+	{
+		return playerDataTable.containsKey(e.getCommandSenderName());
+	}
+	
+	public static PlayerGenericData createPlayerData(EntityPlayer e)
+	{
+		PlayerGenericData dat = new PlayerGenericData(e);
+		playerDataTable.put(e.getCommandSenderName(), dat);
+		return dat;
+	}
+	
+	public static void changePlayerPositionOnClient(EntityPlayer e)
+	{
+		if(!e.worldObj.isRemote)
+		{
+			DummyData aaa = new DummyData("x",e.posX);
+			DummyData aab = new DummyData("y",e.posY);
+			DummyData aac = new DummyData("z",e.posZ);
+			DummyData aad = new DummyData("yaw",e.rotationYaw);
+			DummyData aae = new DummyData("pitch",e.rotationPitch);
+			DummyPacketIMSG pkt = new DummyPacketIMSG("||mod:ec3.player.position"+aaa+""+aab+""+aac+""+aad+""+aae);
+			DummyPacketHandler.sendToPlayer(pkt, (EntityPlayerMP) e);
+		}
+	}
+	
+	public static void playSoundToAllNearby(double x, double y, double z, String sound, float volume, float pitch, double radius, int dim)
+	{
+			DummyData aaa = new DummyData("x",x);
+			DummyData aab = new DummyData("y",y);
+			DummyData aac = new DummyData("z",z);
+			DummyData aad = new DummyData("vol",volume);
+			DummyData aae = new DummyData("pitch",pitch);
+			DummyData aaf = new DummyData("sound",sound);
+			DummyPacketIMSG pkt = new DummyPacketIMSG("||mod:ec3.sound"+aaa+""+aab+""+aac+""+aad+""+aae+""+aaf);
+			DummyPacketHandler.sendToAllAround(pkt, new TargetPoint(dim, x, y, z, radius));
+	}
+	
+	public static void readOrCreatePlayerData(EntityPlayer e, NBTTagCompound tag)
+	{
+		if(!playerDataTable.containsKey(e.getCommandSenderName()))
+		{
+			PlayerGenericData dat = new PlayerGenericData(e);
+			playerDataTable.put(e.getCommandSenderName(), dat);
+		}
+		playerDataTable.get(e.getCommandSenderName()).readFromNBTTagCompound(tag);
+	}
 	
 	public static void createNBTTag(ItemStack stack)
 	{
@@ -131,14 +195,13 @@ public class ECUtils {
 		{
 			try
 			{
-				Class itemClz = stack.getItem().getClass();
+				Class<? extends Item> itemClz = stack.getItem().getClass();
 				Field f = itemClz.getField("maxMRU");
 				f.setInt(stack.getItem(), 5000);
 				maxMRU = 5000;
 			}catch(Exception e)
 			{
-				e.printStackTrace();
-				return;
+				//Silent error tracking
 			}
 		}
 		getStackTag(stack).setInteger("maxMRU", maxMRU);
@@ -300,6 +363,7 @@ public class ECUtils {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static boolean increaseCorruptionAt(World w, float x, float y, float z, int amount)
 	{
 		Coord3D c = new Coord3D(x,y,z);
@@ -335,7 +399,6 @@ public class ECUtils {
 		if(hasEffect)
 		{
 			int currentDuration = player.getActivePotionEffect(PotionRegistry.mruCorruptionPotion).getDuration();
-			int currentModifer = player.getActivePotionEffect(PotionRegistry.mruCorruptionPotion).getAmplifier();
 			int newDuration = currentDuration+2;
 			int newModifier = currentDuration/2000;
 			player.removePotionEffect(PotionRegistry.mruCorruptionPotion.id);
@@ -352,7 +415,6 @@ public class ECUtils {
 		if(hasEffect)
 		{
 			int currentDuration = player.getActivePotionEffect(potion).getDuration();
-			int currentModifer = player.getActivePotionEffect(potion).getAmplifier();
 			int newDuration = currentDuration+index2;
 			int newModifier = currentDuration/index;
 			player.removePotionEffect(potion.id);
@@ -363,9 +425,10 @@ public class ECUtils {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static IMRUPressence getClosestMRUCU(World w, DummyCore.Utils.Coord3D c, int radius)
 	{
-		List l = w.getEntitiesWithinAABB(IMRUPressence.class, AxisAlignedBB.getBoundingBox(c.x-0.5, c.y-0.5, c.z-0.5, c.x+0.5, c.y+0.5, c.z+0.5).expand(radius, radius/2, radius));
+		List<IMRUPressence> l = w.getEntitiesWithinAABB(IMRUPressence.class, AxisAlignedBB.getBoundingBox(c.x-0.5, c.y-0.5, c.z-0.5, c.x+0.5, c.y+0.5, c.z+0.5).expand(radius, radius/2, radius));
 		IMRUPressence ret = null;
 		if(!l.isEmpty())
 		{
@@ -374,27 +437,30 @@ public class ECUtils {
 				ret = (IMRUPressence) l.get(0);
 			}else
 			{
-				List<EntityMRUPresence> actualList = l;
+				List<IMRUPressence> actualList = l;
 				double currentDistance = 0;
 				double dominatingDistance = 0;
 				int dominatingIndex = 0;
 				DummyCore.Utils.Coord3D main = new DummyCore.Utils.Coord3D(c.x,c.y,c.z);
 				for(int i = 0; i < actualList.size(); ++i)
 				{
-					EntityMRUPresence pressence = actualList.get(i);
-					DummyCore.Utils.Coord3D current = new DummyCore.Utils.Coord3D(pressence.posX,pressence.posY,pressence.posZ);
-					DummyDistance dist = new DummyDistance(main,current);
-					if(i == 0)
+					if(actualList.get(i) instanceof EntityMRUPresence)
 					{
-						dominatingIndex = i;
-						dominatingDistance = dist.getDistance();
-					}else
-					{
-						currentDistance = dist.getDistance();
-						if(currentDistance < dominatingDistance)
+						EntityMRUPresence pressence = EntityMRUPresence.class.cast(actualList.get(i));
+						DummyCore.Utils.Coord3D current = new DummyCore.Utils.Coord3D(pressence.posX,pressence.posY,pressence.posZ);
+						DummyDistance dist = new DummyDistance(main,current);
+						if(i == 0)
 						{
 							dominatingIndex = i;
 							dominatingDistance = dist.getDistance();
+						}else
+						{
+							currentDistance = dist.getDistance();
+							if(currentDistance < dominatingDistance)
+							{
+								dominatingIndex = i;
+								dominatingDistance = dist.getDistance();
+							}
 						}
 					}
 				}
@@ -661,7 +727,7 @@ public class ECUtils {
 				if(stk != null && stk.getItem() instanceof ItemBaublesWearable && MiscUtils.getStackTag(stk).hasKey("type"))
 				{
 					NBTTagCompound bTag = MiscUtils.getStackTag(stk);
-					ArrayList<Float> fltLst = new ArrayList();
+					ArrayList<Float> fltLst = new ArrayList<Float>();
 					fltLst.add(bTag.getFloat("mrucr"));
 					fltLst.add(bTag.getFloat("mrurr"));
 					fltLst.add(bTag.getFloat("car"));
@@ -734,6 +800,7 @@ public class ECUtils {
 	 * @param recipeType ID
 	 * @return The actual recipe or null if none found
 	 */
+	@SuppressWarnings("unchecked")
 	public static IRecipe findRecipeByIS(ItemStack searched, int recipeType)
 	{
 		if(recipeType == 0 || recipeType == 1)
@@ -784,16 +851,16 @@ public class ECUtils {
 		}
 		if(recipeType == 4)
 		{
-			Set $s = FurnaceRecipes.smelting().getSmeltingList().entrySet();
+			Set<?> $s = FurnaceRecipes.smelting().getSmeltingList().entrySet();
 			
-			Iterator $i = $s.iterator();
+			Iterator<?> $i = $s.iterator();
 			
 			while($i.hasNext())
 			{
 				try
 				{
 					Object obj = $i.next();
-					Entry entry = (Entry) obj;
+					Entry<?, ?> entry = (Entry<?, ?>) obj;
 					ItemStack key = (ItemStack) entry.getKey();
 					ItemStack value = (ItemStack) entry.getValue();
 					if(value.isItemEqual(searched))
@@ -836,7 +903,7 @@ public class ECUtils {
 				returnObj[i] = work;
 			if(work instanceof List)
 			{
-				ItemStack listStk = (ItemStack) ((List)work).get(0);
+				ItemStack listStk = (ItemStack) ((List<?>)work).get(0);
 				String oreDictName = OreDictionary.getOreName(OreDictionary.getOreIDs(listStk)[0]);
 				returnObj[i] = oreDictName;
 			}
@@ -850,16 +917,12 @@ public class ECUtils {
 		ShapedOreRecipe ret = new ShapedOreRecipe(recipe.getRecipeOutput(),new Object[]{"ooo","ooo","ooo",'o',Items.stick});
 		try
 		{
-			int width = 0;
-			int height = 0;
-			Class sorClazz = ShapedOreRecipe.class;
+			Class<ShapedOreRecipe> sorClazz = ShapedOreRecipe.class;
 			Field wFld = sorClazz.getDeclaredFields()[4];
 			wFld.setAccessible(true);
-			width = wFld.getInt(recipe);
 			Field hFld = sorClazz.getDeclaredFields()[5];
 			hFld.setAccessible(true);
-			height = hFld.getInt(recipe);
-	        Object[] items = recipe.getInput();
+			hFld.getInt(recipe);
 	        Field inputFld = sorClazz.getDeclaredFields()[3];
 	        inputFld.setAccessible(true);
 	        Object[] obj = (Object[]) inputFld.get(recipe);
@@ -910,8 +973,8 @@ public class ECUtils {
 						if(canFilterAcceptItem(new InventoryMagicFilter(f),is,f))return true;
 					}else
 					{
-						List oreDictConversion = Arrays.asList(OreDictionary.getOreIDs(is));
-						List oreDictConversion_Filter = Arrays.asList(OreDictionary.getOreIDs(f));
+						List<?> oreDictConversion = Arrays.asList(OreDictionary.getOreIDs(is));
+						List<?> oreDictConversion_Filter = Arrays.asList(OreDictionary.getOreIDs(f));
 						if(oreDictConversion_Filter.toString().equals(oreDictConversion.toString()) || ignoreOreDict)
 						{
 							 if(ItemStack.areItemStackTagsEqual(f, is) || ignoreNBT)
@@ -947,7 +1010,7 @@ public class ECUtils {
 		dataString += "||x:"+sX+"||y:"+sY+"||z:"+sZ;
 		dataString += "||mX:"+mX+"||mY:"+mY+"||mZ:"+mZ;
 		DummyPacketIMSG pkt = new DummyPacketIMSG(dataString);
-		CoreInitialiser.packetHandler.sendToAll(pkt);
+		DummyPacketHandler.sendToAll(pkt);
 	}
 	
 	public static void spawnItemFX(double sX, double sY, double sZ, double dX, double dY, double dZ)
@@ -960,7 +1023,7 @@ public class ECUtils {
 		dataString += "||x:"+sX+"||y:"+sY+"||z:"+sZ;
 		dataString += "||mX:"+mX+"||mY:"+mY+"||mZ:"+mZ;
 		DummyPacketIMSG pkt = new DummyPacketIMSG(dataString);
-		CoreInitialiser.packetHandler.sendToAll(pkt);
+		DummyPacketHandler.sendToAll(pkt);
 	}
 	
 	public static GameProfile EC3FakePlayerProfile = new GameProfile(UUID.fromString("5cd89d0b-e9ba-0000-89f4-b5dbb05963da"), "[EC3]");

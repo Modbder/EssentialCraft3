@@ -1,37 +1,22 @@
 package ec3.common.tile;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import DummyCore.Utils.Coord3D;
 import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
 import DummyCore.Utils.MathUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockFlower;
-import net.minecraft.block.BlockSapling;
-import net.minecraft.block.BlockTallGrass;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.oredict.OreDictionary;
 import ec3.api.ApiCore;
 import ec3.api.ITEHasMRU;
 import ec3.api.MagicianTableRecipe;
 import ec3.api.MagicianTableRecipes;
 import ec3.api.MagicianTableUpgrades;
-import ec3.common.entity.EntitySolarBeam;
 import ec3.common.item.ItemBoundGem;
-import ec3.common.mod.EssentialCraftCore;
 import ec3.utils.common.ECUtils;
 
 public class TileMagicianTable extends TileMRUGeneric{

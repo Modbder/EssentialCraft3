@@ -2,6 +2,7 @@ package ec3.common.item;
 
 import java.util.List;
 
+import ec3.api.IItemRequiresMRU;
 import ec3.utils.common.ECUtils;
 import DummyCore.Utils.Coord3D;
 import DummyCore.Utils.MiscUtils;
@@ -15,6 +16,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.StatList;
@@ -22,13 +24,70 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
-public class ItemMagicalDigger extends ItemStoresMRUInNBT {
+public class ItemMagicalDigger extends ItemPickaxe implements IItemRequiresMRU {
 	
 	public ItemMagicalDigger() {
-		super();
+		super(ItemsCore.elemental);
 		this.setMaxMRU(5000);
 		this.maxStackSize = 1;
         this.bFull3D = false;
+        this.setMaxDamage(0);
+	}
+	
+	int maxMRU = 5000;
+	
+	public Item setMaxMRU(int max)
+	{
+		maxMRU = max;
+		return this;
+	}
+	
+	@Override
+	public boolean setMRU(ItemStack stack, int amount) {
+		if(MiscUtils.getStackTag(stack).getInteger("mru")+amount >= 0 && MiscUtils.getStackTag(stack).getInteger("mru")+amount<=MiscUtils.getStackTag(stack).getInteger("maxMRU"))
+		{
+			MiscUtils.getStackTag(stack).setInteger("mru", MiscUtils.getStackTag(stack).getInteger("mru")+amount);
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public int getMRU(ItemStack stack) {
+		// TODO Auto-generated method stub
+		return MiscUtils.getStackTag(stack).getInteger("mru");
+	}
+	
+    public boolean isItemTool(ItemStack p_77616_1_)
+    {
+    	return true;
+    }
+    
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
+    {
+    	super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
+    	par3List.add(ECUtils.getStackTag(par1ItemStack).getInteger("mru") + "/" + ECUtils.getStackTag(par1ItemStack).getInteger("maxMRU") + " MRU");
+    }
+	
+    @Override
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    {
+        for (int var4 = 0; var4 < 1; ++var4)
+        {
+        	ItemStack min = new ItemStack(par1, 1, 0);
+        	ECUtils.initMRUTag(min, maxMRU);
+        	ItemStack max = new ItemStack(par1, 1, 0);
+        	ECUtils.initMRUTag(max, maxMRU);
+        	ECUtils.getStackTag(max).setInteger("mru", ECUtils.getStackTag(max).getInteger("maxMRU"));
+            par3List.add(min);
+            par3List.add(max);
+        }
+    }
+    
+	@Override
+	public int getMaxMRU(ItemStack stack) {
+		// TODO Auto-generated method stub
+		return this.maxMRU;
 	}
 	
 	@Override

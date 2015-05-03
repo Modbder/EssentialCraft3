@@ -1,20 +1,15 @@
 package ec3.network.proxy;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
 import java.util.List;
 
-import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.IGuiHandler;
-import ec3.common.entity.EntityMRUPresence;
+import ec3.common.entity.EntityDemon;
 import ec3.common.inventory.ContainerAMINEjector;
 import ec3.common.inventory.ContainerAMINInjector;
 import ec3.common.inventory.ContainerChargingChamber;
@@ -24,6 +19,7 @@ import ec3.common.inventory.ContainerCrystalController;
 import ec3.common.inventory.ContainerCrystalExtractor;
 import ec3.common.inventory.ContainerCrystalFormer;
 import ec3.common.inventory.ContainerDarknessObelisk;
+import ec3.common.inventory.ContainerDemon;
 import ec3.common.inventory.ContainerEnderGenerator;
 import ec3.common.inventory.ContainerFilter;
 import ec3.common.inventory.ContainerFlowerBurner;
@@ -37,6 +33,7 @@ import ec3.common.inventory.ContainerMRUInfo;
 import ec3.common.inventory.ContainerMagicalAssembler;
 import ec3.common.inventory.ContainerMagicalEnchanter;
 import ec3.common.inventory.ContainerMagicalFurnace;
+import ec3.common.inventory.ContainerMagicalHopper;
 import ec3.common.inventory.ContainerMagicalJukebox;
 import ec3.common.inventory.ContainerMagicalQuarry;
 import ec3.common.inventory.ContainerMagicalRepairer;
@@ -44,15 +41,19 @@ import ec3.common.inventory.ContainerMagicalTeleporter;
 import ec3.common.inventory.ContainerMagicianTable;
 import ec3.common.inventory.ContainerMagmaticSmeltery;
 import ec3.common.inventory.ContainerMatrixAbsorber;
+import ec3.common.inventory.ContainerMithrilineFurnace;
 import ec3.common.inventory.ContainerMonsterHarvester;
 import ec3.common.inventory.ContainerMonsterHolder;
 import ec3.common.inventory.ContainerMoonWell;
 import ec3.common.inventory.ContainerPotionSpreader;
 import ec3.common.inventory.ContainerRadiatingChamber;
 import ec3.common.inventory.ContainerRayTower;
+import ec3.common.inventory.ContainerRedstoneTransmitter;
+import ec3.common.inventory.ContainerRightClicker;
 import ec3.common.inventory.ContainerSunRayAbsorber;
 import ec3.common.inventory.ContainerUltraFlowerBurner;
 import ec3.common.inventory.ContainerUltraHeatGenerator;
+import ec3.common.inventory.ContainerWeaponBench;
 import ec3.common.inventory.InventoryMagicFilter;
 import ec3.common.tile.TileAMINEjector;
 import ec3.common.tile.TileAMINInjector;
@@ -73,6 +74,7 @@ import ec3.common.tile.TileMRUCoil;
 import ec3.common.tile.TileMagicalAssembler;
 import ec3.common.tile.TileMagicalEnchanter;
 import ec3.common.tile.TileMagicalFurnace;
+import ec3.common.tile.TileMagicalHopper;
 import ec3.common.tile.TileMagicalJukebox;
 import ec3.common.tile.TileMagicalQuarry;
 import ec3.common.tile.TileMagicalRepairer;
@@ -80,21 +82,26 @@ import ec3.common.tile.TileMagicalTeleporter;
 import ec3.common.tile.TileMagicianTable;
 import ec3.common.tile.TileMagmaticSmelter;
 import ec3.common.tile.TileMatrixAbsorber;
+import ec3.common.tile.TileMithrilineFurnace;
 import ec3.common.tile.TileMonsterHarvester;
 import ec3.common.tile.TileMonsterHolder;
 import ec3.common.tile.TileMoonWell;
 import ec3.common.tile.TilePotionSpreader;
 import ec3.common.tile.TileRadiatingChamber;
 import ec3.common.tile.TileRayTower;
+import ec3.common.tile.TileRedstoneTransmitter;
+import ec3.common.tile.TileRightClicker;
 import ec3.common.tile.TileSunRayAbsorber;
 import ec3.common.tile.TileUltraFlowerBurner;
 import ec3.common.tile.TileUltraHeatGenerator;
+import ec3.common.tile.TileWeaponMaker;
 import ec3.common.tile.TileecAcceptor;
 import ec3.common.tile.TileecStateChecker;
 import ec3.utils.cfg.Config;
 
 public class CommonProxy implements IGuiHandler{
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world,
 			int x, int y, int z) {
@@ -258,11 +265,44 @@ public class CommonProxy implements IGuiHandler{
 			{
 				return new ContainerMagicalAssembler(player.inventory, tile);
 			}
+			if(tile instanceof TileMithrilineFurnace)
+			{
+				return new ContainerMithrilineFurnace(player.inventory, tile);
+			}
+			if(tile instanceof TileRightClicker)
+			{
+				return new ContainerRightClicker(player.inventory, tile);
+			}
+			if(tile instanceof TileRedstoneTransmitter)
+			{
+				return new ContainerRedstoneTransmitter(player.inventory, tile);
+			}
+			if(tile instanceof TileMagicalHopper)
+			{
+				return new ContainerMagicalHopper(player.inventory, tile);
+			}
+			if(tile instanceof TileWeaponMaker)
+			{
+				return new ContainerWeaponBench(player.inventory, tile);
+			}
+		}
+		if(ID == Config.guiID[1])
+		{
+			List<EntityDemon> demons = world.getEntitiesWithinAABB(EntityDemon.class, AxisAlignedBB.getBoundingBox(x-1, y-1, z-1, x+1, y+1, z+1));
+			if(!demons.isEmpty())
+			{
+				return new ContainerDemon(player, demons.get(0));
+			}
 		}
 		return null;
 	}
 	
 	public void openBookGUIForPlayer()
+	{
+		
+	}
+	
+	public void openPentacleGUIForPlayer(TileEntity tile)
 	{
 		
 	}
@@ -345,6 +385,16 @@ public class CommonProxy implements IGuiHandler{
 	}
 	
 	public void wingsAction(EntityPlayer e, ItemStack s)
+	{
+		
+	}
+	
+	public void handlePositionChangePacket(DummyData[] packetData)
+	{
+		
+	}
+	
+	public void handleSoundPlay(DummyData[] packetData)
 	{
 		
 	}

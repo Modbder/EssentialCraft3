@@ -1,10 +1,7 @@
 package ec3.integration.nei;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.Set;
-
 import org.lwjgl.opengl.GL11;
 
 import DummyCore.Utils.MathUtils;
@@ -113,13 +110,11 @@ public class RadiatingChamberRecipeHandler extends TemplateRecipeHandler{
 
 	@Override
 	public String getRecipeName() {
-		// TODO Auto-generated method stub
 		return "Radiating Chamber";
 	}
 
 	@Override
 	public String getGuiTexture() {
-		// TODO Auto-generated method stub
 		return "essentialcraft:textures/gui/gui_generic.png";
 	}
 	

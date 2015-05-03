@@ -159,7 +159,7 @@ public class TileMagicalMirror extends TileMRUGeneric{
 	
 	public int findAssemblerSlotForIS(TileMagicalAssembler assembler, ItemStack is)
 	{
-		List<UnformedItemStack> lst = new ArrayList();
+		List<UnformedItemStack> lst = new ArrayList<UnformedItemStack>();
 		
 		lst.addAll(assembler.requiredItemsToCraft);
 

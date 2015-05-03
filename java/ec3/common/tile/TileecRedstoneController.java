@@ -4,10 +4,8 @@ import java.util.UUID;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 import ec3.api.EnumStructureType;
 import ec3.api.IStructurePiece;
-import ec3.api.ITERequiresMRU;
 
 public class TileecRedstoneController extends TileEntity implements IStructurePiece{
 	public TileecController controller;
@@ -29,13 +27,11 @@ public class TileecRedstoneController extends TileEntity implements IStructurePi
 	
 	@Override
 	public EnumStructureType getStructure() {
-		// TODO Auto-generated method stub
 		return EnumStructureType.MRUCUContaigementChamber;
 	}
 
 	@Override
 	public TileEntity structureController() {
-		// TODO Auto-generated method stub
 		return controller;
 	}
 

@@ -3,10 +3,13 @@ package ec3.integration.waila;
 import java.util.List;
 
 import ec3.api.ITEHasMRU;
+import ec3.common.block.BlockRightClicker;
 import ec3.common.item.ItemBoundGem;
+import ec3.common.tile.TileRightClicker;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -22,6 +25,14 @@ public class WailaDataProvider implements IWailaDataProvider{
 	@Override
 	public ItemStack getWailaStack(IWailaDataAccessor accessor,
 			IWailaConfigHandler config) {
+		if(accessor.getTileEntity() != null)
+		{
+			if(accessor.getTileEntity() instanceof TileRightClicker)
+			{
+				TileRightClicker tile = (TileRightClicker) accessor.getTileEntity();
+				return tile.getStackInSlot(2) != null && tile.getStackInSlot(2).getItem() instanceof ItemBlock ? tile.getStackInSlot(2) : null;
+			}
+		}
 		return null;
 	}
 
@@ -39,48 +50,52 @@ public class WailaDataProvider implements IWailaDataProvider{
 		
 		if(accessor.getTileEntity() != null)
 		{
+			if(accessor.getTileEntity() instanceof TileRightClicker)
+			{
+				return currenttip;
+			}
 			if(accessor.getTileEntity() instanceof ITEHasMRU)
 			{
 				ITEHasMRU tile = (ITEHasMRU) accessor.getTileEntity();
-				currenttip.add("MRU: "+tile.getMRU()+"/"+tile.getMaxMRU());
-				float balance = tile.getBalance();
-				String str = Float.toString( ((ITEHasMRU)tile).getBalance());
-				if(str.length() > 6)
-					str = str.substring(0, 6);
-				for(int i = str.length()-1; i > 0; --i)
+				if(tile.getMaxMRU() > 0)
 				{
-					if(i > 2)
+					currenttip.add("MRU: "+tile.getMRU()+"/"+tile.getMaxMRU());
+					float balance = tile.getBalance();
+					String str = Float.toString( ((ITEHasMRU)tile).getBalance());
+					if(str.length() > 6)
+						str = str.substring(0, 6);
+					for(int i = str.length()-1; i > 0; --i)
 					{
-						char c = str.charAt(i);
-						if(c == '0')
+						if(i > 2)
 						{
-							str = str.substring(0, i);
+							char c = str.charAt(i);
+							if(c == '0')
+							{
+								str = str.substring(0, i);
+							}
 						}
 					}
-				}
-				String balanceType = "Pure";
-				EnumChatFormatting color = EnumChatFormatting.AQUA;
-				if(balance < 1)
-				{
-					balanceType = "Frozen";
-					color = EnumChatFormatting.BLUE;
-				}
-				if(balance > 1)
-				{
-					balanceType = "Chaos";
-					color = EnumChatFormatting.RED;
-				}
-				currenttip.add("Balance: "+color+str);
-				if(accessor.getTileEntity() instanceof IInventory)
-				{
-					IInventory tInv = (IInventory) accessor.getTileEntity();
-					ItemStack tryBoundGem = tInv.getStackInSlot(0);
-					if(tryBoundGem != null)
+					EnumChatFormatting color = EnumChatFormatting.AQUA;
+					if(balance < 1)
 					{
-						if(tryBoundGem.getItem() instanceof ItemBoundGem)
+						color = EnumChatFormatting.BLUE;
+					}
+					if(balance > 1)
+					{
+						color = EnumChatFormatting.RED;
+					}
+					currenttip.add("Balance: "+color+str);
+					if(accessor.getTileEntity() instanceof IInventory)
+					{
+						IInventory tInv = (IInventory) accessor.getTileEntity();
+						ItemStack tryBoundGem = tInv.getStackInSlot(0);
+						if(tryBoundGem != null)
 						{
-							ItemBoundGem itm = (ItemBoundGem) tryBoundGem.getItem();
-							itm.addInformation(tryBoundGem, null, currenttip, true);
+							if(tryBoundGem.getItem() instanceof ItemBoundGem)
+							{
+								ItemBoundGem itm = (ItemBoundGem) tryBoundGem.getItem();
+								itm.addInformation(tryBoundGem, null, currenttip, true);
+							}
 						}
 					}
 				}
@@ -107,6 +122,7 @@ public class WailaDataProvider implements IWailaDataProvider{
 	public static void callbackRegister(IWailaRegistrar registrar)
 	{
 		registrar.registerBodyProvider(new WailaDataProvider(), Block.class);
+		registrar.registerStackProvider(new WailaDataProvider(), BlockRightClicker.class);
 	}
 
 }

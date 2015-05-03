@@ -4,14 +4,11 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Vec3;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -20,18 +17,11 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.oredict.OreDictionary;
-import DummyCore.Utils.Coord3D;
 import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
-import DummyCore.Utils.DummyDistance;
 import DummyCore.Utils.MathUtils;
 import ec3.api.ApiCore;
 import ec3.api.ITEHasMRU;
-import ec3.api.MagicianTableRecipe;
-import ec3.api.MagicianTableRecipes;
-import ec3.api.RadiatingChamberRecipe;
-import ec3.api.RadiatingChamberRecipes;
-import ec3.common.block.BlocksCore;
 import ec3.common.item.ItemBoundGem;
 import ec3.common.item.ItemsCore;
 import ec3.utils.common.ECUtils;
@@ -134,7 +124,7 @@ public class TileMagmaticSmelter extends TileMRUGeneric implements IFluidTank{
 							{
 								this.decrStackSize(3, 1);
 								int suggestedStackSize = EnumOreColoring.values()[metadata].dropAmount;
-								if(this.worldObj.rand.nextFloat() <= quadriplingChance)
+								if(this.worldObj.rand.nextFloat() <= 1)
 									suggestedStackSize = EnumOreColoring.values()[metadata].dropAmount*2;
 								this.setInventorySlotContents(4, new ItemStack(ItemsCore.magicalAlloy,suggestedStackSize,metadata));
 								this.progressLevel = 0;
@@ -168,7 +158,7 @@ public class TileMagmaticSmelter extends TileMRUGeneric implements IFluidTank{
 							{
 								this.decrStackSize(3, 1);
 								int suggestedStackSize = EnumOreColoring.values()[metadata].dropAmount;
-								if(this.worldObj.rand.nextFloat() <= quadriplingChance)
+								if(this.worldObj.rand.nextFloat() <= 1)
 									suggestedStackSize = EnumOreColoring.values()[metadata].dropAmount*2;
 								ItemStack is = this.getStackInSlot(4);
 								is.stackSize += suggestedStackSize;
@@ -333,37 +323,31 @@ public class TileMagmaticSmelter extends TileMRUGeneric implements IFluidTank{
 
 	@Override
 	public FluidStack getFluid() {
-		// TODO Auto-generated method stub
 		return lavaTank.getFluid();
 	}
 
 	@Override
 	public int getFluidAmount() {
-		// TODO Auto-generated method stub
 		return lavaTank.getFluidAmount();
 	}
 
 	@Override
 	public int getCapacity() {
-		// TODO Auto-generated method stub
 		return lavaTank.getCapacity();
 	}
 
 	@Override
 	public FluidTankInfo getInfo() {
-		// TODO Auto-generated method stub
 		return lavaTank.getInfo();
 	}
 
 	@Override
 	public int fill(FluidStack resource, boolean doFill) {
-		// TODO Auto-generated method stub
 		return lavaTank.fill(resource, doFill);
 	}
 
 	@Override
 	public FluidStack drain(int maxDrain, boolean doDrain) {
-		// TODO Auto-generated method stub
 		return lavaTank.drain(maxDrain, doDrain);
 	}
 	

@@ -287,6 +287,8 @@ ec3book.discovery_ec3.disc.book.name=Book Of Knowledge
 ec3book.discovery_ec3.disc.book.desc=The ultimate guide!
 ec3book.discovery_ec3.disc.decorations.name=Decorative Blocks
 ec3book.discovery_ec3.disc.decorations.desc=Fancy it all up!
+ec3book.discovery_ec3.disc.overworld.name=World Changes
+ec3book.discovery_ec3.disc.overworld.desc=Past remains...
 
 ec3.page.wind_0.txt=Magical wind. What is it? We all know it, we all had met it at some point in our lives, but what it actually is? Well, the answer is pretty simple!|The wind is somewhat of a living creature, that likes to observe people with unique fate!
 ec3.page.wind_1.txt=This effect you can get randomly just by doing random stuff in the world. It does nothing on it's own.
@@ -315,7 +317,7 @@ ec3.page.mru_10.txt=As you can guess, the rotation speed is so called 'balance' 
 ec3.page.mru_11.txt=Sometimes, if too much unstable MRU leak into the world, the so called MRU Field becomes a little bit more global. They start creating so called 'MRUCU' - Magical Radiation Unit Concentration Unit. Lots of units there, huh?
 ec3.page.mru_12.txt=Here is a picture of a 100% balanced MRUCU. Yes, they exist too!
 ec3.page.mru_13.txt=Usually MRUCUs will get their balance shifted to one or other side. There is another problem - you simply cannot SEE the MRUCUs! There are items, that allow you to see them, but you can't make them now. 
-ec3.page.mru_14.txt=However, you can HEAR MRUCUs! They make a little noise, that you can hear, if you listen carefully. If MRUCU is pretty big it will start corrupting the world around itself
+ec3.page.mru_14.txt=However, you can HEAR MRUCUs! They make a little noise, that you can hear, if you listen carefully. If MRUCU is pretty big it will start corrupting the world around itself.|It is also known, that standing near MRUCUs without any protection may lead to some nasty effects...
 ec3.page.mru_15.txt=You can simply break those corruption blocks, just do not stand in them for too long! You can also MOVE MRUCUs using MRUCU Moving Wands. They break after some time too. To pull MRUCUs hold rightclick, and to push them also hold SHIFT.
 ec3.page.soulStone_0.txt=Every living thing has 'MRU Matrix'. This matrix cannot be seen or otherwise known of, and it serves as a protection from various MRU effects. However, there is a way to see the numeric representaion of your matrix - the Soul Stone!
 ec3.page.soulStone_1.txt=To make a Soul Stone throw some emeralds on an emerald block.
@@ -341,6 +343,8 @@ ec3.page.book_13.txt=The same rule applies to items - if an item lays on the gro
 ec3.page.book_14.txt=You can lookup recipes/info about blocks and items even if you do not have the required tier of a book.
 ec3.page.book_15.txt=This is how you upgrade your book to tier 2. Thanks and have fun!
 ec3.page.decorations_0.txt=You can create lots of decorative blocks using the Magical Chisel! There are some variations, and you can create your own, using the config file! It is also possible to use those blocks in the corresponding structures, just like before chiselling.
+ec3.page.overworld_0.txt=The world has changed - it is not the same as it used to be. You can find some structures, that appear to be a part of some other MRU scientists from the past... Seems like deep, deep past, a very long time ago. They usually have a MRUCU in their center. They may also have some chests with fancy loot in them!
+ec3.page.overworld_1.txt=In different chests around your world you may find some interesting items - rings, amulets and belts. They can't be replicated - the technology seems lost, but you can use what is left. They all have a description, that tells you exactly what they do.
  
 #MRU and Matrix
 ec3book.discovery_ec3.disc.boundGem.name=Bound Gemstone
@@ -464,6 +468,12 @@ ec3book.discovery_ec3.disc.magnetizingStaff.desc=Your resistance only makes my m
 ec3book.discovery_ec3.disc.spawnerCollector.name=Spawner Collector
 ec3book.discovery_ec3.disc.spawnerCollector.desc=Better than silk touch!
 ec3book.discovery_ec3.disc.lifeStaff.name=Staff Of Life
+
+
+
+
+
+
 ec3book.discovery_ec3.disc.lifeStaff.desc=GreenIsGood
 ec3book.discovery_ec3.disc.holyMace.name=Holy Mace
 ec3book.discovery_ec3.disc.holyMace.desc=How sad it is not a Holy Hand Grenade...
@@ -752,3 +762,314 @@ ec3.txt.redstone_8=Redstone Output Enabled: Above 80% MRU
 ec3.txt.redstone_9=Redstone Output Enabled: Above 90% MRU
 ec3.txt.redstone_10=Redstone Output Enabled: If MRU is full
 ec3.txt.desc.advanced=Advanced
+
+#4.5
+tile.essentialcraft.oreDrops.name=Elemental Infused Ore
+tile.essentialcraft.mithrilinePlating.name=Mithriline Plating
+tile.essentialcraft.mithrilineCrystal.mithriline.name=Mitriline Crystal
+tile.essentialcraft.mithrilineCrystal.pale.name=Pale Crystal
+tile.essentialcraft.mithrilineCrystal.void.name=Void Crystal
+tile.essentialcraft.mithrilineCrystal.demonic.name=Demonic Crystal
+tile.essentialcraft.mithrilineCrystal.shade.name=SHADE Corrupted Crystal
+tile.essentialcraft.mithrilineFurnace.name=Mitriline Furnace
+tile.essentialcraft.demonicPlating.name=Demonic Plating
+tile.essentialcraft.fancyBlock.demonicPlating.name=Fancy Demonic Plating
+tile.essentialcraft.playerPentacle.name=Soul Pentacle
+tile.essentialcraft.windRune.name=Wind Rune
+tile.essentialcraft.fancyBlock.mithrilinePlating.name=Fancy Mithriline Plating
+tile.essentialcraft.rightClicker.name=Magical Activator
+tile.essentialcraft.redstoneTransmitter.name=Redstone Transmitter
+tile.essentialcraft.magicalHopper.name=Magical Hopper
+tile.essentialcraft.metadataManager.name=Metadata Manager
+tile.essentialcraft.blockBreaker.name=Magical Breaker
+tile.essentialcraft.compressed.name=Compressed Drops
+tile.essentialcraft.demonicPentacle.name=Demonic Pentacle
+tile.essentialcraft.weaponMaker.name=Weapon Bench
+
+
+item.essentialcraft:baublesCore.portableMD.name=Portable Matrix Destructor
+item.essentialcraft:baublesCore.ringOfExperience.name=Ring Of Experience
+item.essentialcraft:baublesCore.ringOfResistance.name=Ring Of Resistance
+item.essentialcraft:baublesCore.ringOfStability.name=Ring Of Stability
+item.essentialcraft:baublesCore.lifePendant.name=Pendant Of Health
+item.essentialcraft:baublesCore.windCatcher.name=Wind Catcher
+item.essentialcraft:baublesCore.windMagesTalisman.name=Wind Mage's Talisman
+item.essentialcraft:baublesCore.doctorsBelt.name=Doctor's Belt
+item.essentialcraft:baublesCore.alphaRing.name=α Ring
+item.essentialcraft:baublesCore.betaRing.name=β Ring
+item.essentialcraft:baublesCore.gammaRing.name=γ Ring
+item.essentialcraft:baublesCore.deltaRing.name=δ Ring
+item.essentialcraft:baublesCore.epsilonBelt.name=ε Belt
+item.essentialcraft:baublesCore.dzetaAmulet.name=ζ Amulet
+item.essentialcraft:baublesCore.etaAmulet.name=η Amulet
+item.essentialcraft:baublesCore.thetaBelt.name=θ Belt
+item.essentialcraft:baublesCore.iotaRing.name=ι Ring
+item.essentialcraft:baublesCore.kappaRing.name=κ Ring
+item.essentialcraft:baublesCore.lambdaRing.name=λ Ring
+item.essentialcraft:baublesCore.muRing.name=μ Ring
+item.essentialcraft:baublesCore.nuAmulet.name=ν Amulet
+item.essentialcraft:baublesCore.xiBelt.name=ξ Belt
+item.essentialcraft:baublesCore.omicronAmulet.name=ο Amulet
+item.essentialcraft:baublesCore.piBelt.name=π Belt
+item.essentialcraft:baublesCore.rhoRing.name=ρ Ring
+item.essentialcraft:baublesCore.sigmaRing.name=σ Ring
+item.essentialcraft:baublesCore.tauRing.name=τ Ring
+item.essentialcraft:baublesCore.upsilonRing.name=υ Ring
+item.essentialcraft:baublesCore.phiRing.name=φ Ring
+item.essentialcraft:baublesCore.chiRing.name=χ Ring
+item.essentialcraft:baublesCore.psiRing.name=ψ Ring
+item.essentialcraft:baublesCore.omegaRing.name=ω Ring
+item.essentialcraft:genItemmithrilineIngot.name=Mithriline Ingot
+item.essentialcraft:genItemmithrilinePlate.name=Mithriline Plate
+item.essentialcraft:genItemmithrilineCrystal.name=Mithriline Crystal
+item.essentialcraft:genItemlapisCore.name=Lapis Core
+item.essentialcraft:genItemfadingDust.name=Fading Dust
+item.essentialcraft:genItemfadingCrystal.name=Fading Crystal
+item.essentialcraft:genItemwindGem.name=Wind Crystal
+item.essentialcraft:genItemmithrilineDust.name=Mitriline Dust
+item.essentialcraft:genItemackroniteIngot.name=Ackronite Ingot
+item.essentialcraft:genItemdemonicCore.name=Demonic Core
+item.essentialcraft:genItemdemonicPlate.name=Demonic Plate
+item.ec3.gun.sniper.name=Sniper Rifle
+item.ec3.gun.rifle.name=Assault Rifle
+item.ec3.gun.pistol.name=Pistol
+item.ec3.gun.gatling.name=Gatling Gun
+item.essentialcraft:shadeSword.name=SHADE Corrupted Sword
+item.essentialcraft:shadeSlasher.name=SHADE Corrupted Cleaver
+item.essentialcraft:shadeKnife.name=SHADE Corrupted Daggers
+item.essentialcraft:entityEgg.name=Spawn Entity:
+item.essentialcraft.weak_elemental_axe.name=Weakened Elemental Axe
+item.essentialcraft.weak_elemental_hoe.name=Weakened Elemental Hoe
+item.essentialcraft.weak_elemental_pick.name=Weakened Elemental Pickaxe
+item.essentialcraft.weak_elemental_sword.name=Weakened Elemental Sword
+item.essentialcraft.weak_elemental_shovel.name=Weakened Elemental Shovel
+
+item.essentialcraft.wind_elemental_axe.name=Wind Infused Axe
+item.essentialcraft.wind_elemental_hoe.name=Wind Infused Hoe
+item.essentialcraft.wind_elemental_pick.name=Wind Infused Pickaxe
+item.essentialcraft.wind_elemental_sword.name=Wind Infused Sword
+item.essentialcraft.wind_elemental_shovel.name=Wind Infused Shovel
+
+item.essentialcraft.wind_helmet.name=Wind Infused Helmet
+item.essentialcraft.wind_chestplate.name=Wind Infused Chestplate
+item.essentialcraft.wind_leggings.name=Wind Infused Leggings
+item.essentialcraft.wind_boots.name=Wind Infused Boots
+
+item.essentialcraft:soulScriber.name=Soul Scriber
+item.essentialcraft:soul.EntityVillager.name=Captured Soul - Villager
+item.essentialcraft:soul.EntityEnderman.name=Captured Soul - Enderman
+item.essentialcraft:soul.EntityWindMage.name=Captured Soul - Wind Mage
+
+entity.ec3.common.entity.EntityMRUPresence.name=MRUCU
+entity.ec3.common.entity.EntityMRUArrow.name=MRU Shot
+entity.ec3.common.entity.EntitySolarBeam.name=Solar Beam
+entity.ec3.common.entity.EntityWindMage.name=Wind Mage
+entity.ec3.common.entity.EntityPoisonFume.name=Poison Fume
+entity.ec3.common.entity.EntityShadowKnife.name=Shadow Knife
+entity.ec3.common.entity.EntityMRURay.name=Ray of LOVE
+entity.ec3.common.entity.EntityDemon.name=Demon
+
+ec3.txt.help.baubles.0=|aConverts UBMRU from the wearer's matrix to MRU
+ec3.txt.help.baubles.1=|aIncreases UBMRUCU gains from kills
+ec3.txt.help.baubles.2=Gain |610% |cless UBMRUCU from kills|r, |nbut |ahave that number transformed to XP
+ec3.txt.help.baubles.3=Gain |aresistance to wind's tricks.
+ec3.txt.help.baubles.4=Gain |630% |cless UBMRUCU from kills|r, |nbut |arestore some life each kill.
+ec3.txt.help.baubles.5=Gain |cless wind relations|r, |nbut |ahave a |615% |achance to trap the wind on each event.
+ec3.txt.help.baubles.6=Gain |amore wind relations.
+ec3.txt.help.baubles.7=Gain |cno UBMRUCU from kills|r,|nbut |ahalve the duration of negative effects.
+ec3.txt.help.baubles.8=Gain |a500 UBMRU by drinking Magic Radiated Water.
+ec3.txt.help.baubles.9=Wind effects are now |delemental.
+ec3.txt.help.baubles.10=|aMRU Corruption heals.
+ec3.txt.help.baubles.11=|aHalves the effect of Hoanna's radiation.
+ec3.txt.help.baubles.12=|aMobs will sometimes drop different Ember.
+ec3.txt.help.baubles.13=|cEach attack uses UBMRU|r, |nbut |ayou can hit as fast as you can click.
+ec3.txt.help.baubles.14=|cDouble damage in, |n|aDouble damage out.
+ec3.txt.help.baubles.15=|aResist a fatal hit |cat the cost of your UBMRU.
+ec3.txt.help.baubles.16=|cDecrease your damage by |610%, |nBut |adeal those |610% |aas unblockable damage.
+ec3.txt.help.baubles.17=Periodically |again UBMRU |r|7and |close hunger.
+ec3.txt.help.baubles.18=|aDecreases the half-life of elements |63 |atimes.
+ec3.txt.help.baubles.19=|cGain more radiation in Hoanna,|r |nbut |aget resistant to some of it's events.
+ec3.txt.help.baubles.20=Gain |625% |cless UBMRUCU from kills|r, |nBut |adamage all enemies around upon kills.
+ec3.txt.help.baubles.21=|aInflict radiation on enemies with each hit, |nBut |cgain radiation yourself each time you take damage.
+ec3.txt.help.baubles.22=|aBlocks yield more drops, |nbut |cit costs you UBMRU to break blocks.
+ec3.txt.help.baubles.23=|aGain |63 |atimes the experience from breaking blocks.
+ec3.txt.help.baubles.24=|cGet no EXP for breaking blocks, |nBut |again UBMRU instead.
+ec3.txt.help.baubles.25=|aGain a 10% chance to reflect damage taken.
+ec3.txt.help.baubles.26=|aKilling mobs yields more drops, |nbut |cit costs you UBMRU to kill creatures.
+ec3.txt.help.baubles.27=|aPrevents Endermen nearby from teleporting.
+ec3.txt.help.baubles.28=|aAllows shearing various mobs for the |ccost of UBMRU 
+ec3.txt.help.baubles.29=Gain |6twice |aas much XP from any source, |nBut |cgain only half UBMRU.
+ec3.txt.help.baubles.30=|aMobs can attack other mobs.
+ec3.txt.help.baubles.31=|aDouble the amount of UBMRU gained. |n|aAlso negates corruption effects.
+ec3.txt.corruption=Something suddently feels different about you. What cound it be?
+ec3.txt.viewInfoHotkey=Hold Shift to view gun stats
+ec3.gun.txt.damage=Damage per shot:
+ec3.gun.txt.durability=Durability:
+ec3.gun.txt.reload=Cooldown time required(sec):
+ec3.gun.txt.knockback=Knockback upon shot:
+ec3.gun.txt.speed=Delay between shots(tick):
+ec3.gun.txt.spread=Shots spread(degrees):
+ec3.gun.txt.shots=Shots before cooldown:
+ec3.gun.txt.zoom=Scope zoom factor:
+ec3.gun.txt.balance_0=Lense balance: Neutral
+ec3.gun.txt.balance_1=Lense balance: Chaos
+ec3.gun.txt.balance_2=Lense balance: Frozen
+ec3.gun.txt.balance_3=Lense balance: Magic
+ec3.gun.txt.balance_4=Lense balance: SHADE
+
+death.attack.mru=%1$s got penetrated by the ray of LOVE
+death.attack.mru.player=%1$s got penetrated by %2$s's ray of LOVE
+
+ec3.effect.name_0=Slow hands
+ec3.effect.desc_0=Your hands suddently feel too heavy to propely control!
+ec3.effect.name_1=Weak hands
+ec3.effect.desc_1=Your hands suddently stop properly responding to your commands!
+ec3.effect.name_2=Burned hands
+ec3.effect.desc_2=Your hands suddently hurt!
+ec3.effect.name_3=Slow legs
+ec3.effect.desc_3=Your legs suddently become too slow!
+ec3.effect.name_4=Weak legs
+ec3.effect.desc_4=Your legs suddently feel very heavy!
+ec3.effect.name_5=The universe shatters
+ec3.effect.desc_5=Something seems wrong here...!
+ec3.effect.name_6=You see dead people
+ec3.effect.desc_6=Wait, did a creeper just bypassed you?
+ec3.effect.name_7=Darkened vision
+ec3.effect.desc_7=Your vision darkens...
+ec3.effect.name_8=Inventory is a huge mess
+ec3.effect.desc_8=Why did you do that?
+ec3.effect.name_9=You do not like that item
+ec3.effect.desc_9=The item you are holding suddently becomes too ugly to hold!
+ec3.effect.name_10=You like to use items.
+ec3.effect.desc_10=You suddently use the item you are holding.
+ec3.effect.name_11=Bulwark of the weak
+ec3.effect.desc_11=Everyting seems to have skipped a second or two. Or was that just your body?
+ec3.effect.name_12=You can't breathe in the end
+ec3.effect.desc_12=The very air of this blace burns!
+ec3.effect.name_13=Spontaneous explosions
+ec3.effect.desc_13=You suddently explode for no reason! Have you been eating creepers before?
+ec3.effect.name_14=You are too hot
+ec3.effect.desc_14=You suddently set on fire from the heat of your own body!
+ec3.effect.name_15=Lightnings like you
+ec3.effect.desc_15=This lightning seems to ignore laws of physics...
+ec3.effect.name_16=Lesser matrix protection
+ec3.effect.desc_16=
+ec3.effect.name_17=The moon hurts
+ec3.effect.desc_17=Your eyes hurt when you look up. Your skin burns.
+ec3.effect.name_18=No protection against MRU
+ec3.effect.desc_18=
+ec3.effect.name_19=You can't breathe in the nether
+ec3.effect.desc_19=The very air of this blace burns!
+ec3.effect.name_20=You can't breathe in the overworld
+ec3.effect.desc_20=The very air of your home burns!
+ec3.effect.name_21=The rain is acid
+ec3.effect.desc_21=The rain burns your skin! Is it acid?
+ec3.effect.name_22=The sun burns
+ec3.effect.desc_22=The sun is too hot to stay under!
+ec3.effect.name_23=All water is acid
+ec3.effect.desc_23=Why did you want to swim in acid, again?
+ec3.effect.name_24=The air hurts
+ec3.effect.desc_24=The wind tears some parts of your skin!
+ec3.txt.windImbue=The wind whirls around you. What could it mean?..
+ec3.txt.noEnergy=The ritual does not have enough energy to activate!
+ec3.txt.layer_-1=Height: -1
+ec3.txt.layer_0=Height: 0
+ec3.txt.layer_1=Height: 1
+ec3.txt.layer_2=Height: 2
+ec3.txt.layer_3=Height: 3
+ec3.txt.layer_4=Height: 4
+ec3.txt.layer_5=Height: 5
+
+ec3.page.drops_11.txt=Stories tell, that MRU was not always in your world as it is. It came in in thousands of powerfull rays, penetrating the matter of the world here and there. Apparently, the effects of those rays started to reveal only now - some rock in all dimensions that had absorbed some of that energy now has that energy in it - a mineable drops ore!
+
+ec3book.discovery_ec3.disc.magicalActivator.name=Magical Activator
+ec3book.discovery_ec3.disc.magicalActivator.desc=A magical deployer?
+ec3book.discovery_ec3.disc.redstoneTransmitter.name=Redstone Transmitter
+ec3book.discovery_ec3.disc.redstoneTransmitter.desc=Wireless Redstone Modbder's edition!
+ec3book.discovery_ec3.disc.magicalHopper.name=Magical Hopper
+ec3book.discovery_ec3.disc.magicalHopper.desc=Quantum Hoppers!
+ec3book.discovery_ec3.disc.metadataManager.name=Metadata Manager
+ec3book.discovery_ec3.disc.metadataManager.desc=Only for nerds!
+ec3book.discovery_ec3.disc.blockBreaker.name=Magical Breaker
+ec3book.discovery_ec3.disc.blockBreaker.desc=Terrain Smasher 2.0?
+ec3book.discovery_ec3.disc.weaponMaker.name=Weapon Bench
+ec3book.discovery_ec3.disc.weaponMaker.desc=Rays of LOVE <3
+
+ec3.page.magicalActivator_0.txt=This device is able to act like a player - if given a redstone signal it will use the item or block that is placed in it's central slot. It is also able to look like any block placed in it's top right slot. In fact, it looks so natural, that it is able to fool some block tellers like WAILA too!
+ec3.page.magicalActivator_1.txt=It also has a slot for the boung gem and an MRU storage.MRU is not required for this device to work! However, shall you put any MRU requiring item in it's central slot and upon usage of that item MRU will get used from this device's buffer!
+ec3.page.magicalActivator_2.txt=Shall one craft any type of activator with a slimeball, and the activator will turn into a sneaky one, saving all properties of the one it was crafted from! It also stats using items just like the player would with holding a sneak key.
+ec3.page.magicalActivator_3.txt=If this device is crafted with a chest it gains 8 additional slots. Upon a redstone signal it will now use all the items from all it's 9 slots, one by one. However, it is not smart enough to know the existance of other items upon using one.
+ec3.page.magicalActivator_4.txt=Giving the device with the chest a piece of redstone makes it smarter, therefore it will now work just like it shoud - with actually taking all 9 slots into account when using one.
+
+ec3.page.redstoneTransmitter_0.txt=This device, once supplied with a bound gem will detect a redstone signal on the Redstone Transmitter it is linked to via the bound gem and output the same redstone signal as the one it is linked to is recieving.
+ec3.page.redstoneTransmitter_1.txt=It can transfer the redstone pretty much any distance, as long as the chunks are loaded. However, it comes with some disadvantages - it takes some time for the redstone pulse to travel. It is also unable to transfer redstone between dimensions.
+ec3.page.redstoneTransmitter_2.txt=You also need to give the redstone signal not directly to this device, but instead to the block it is placed on.
+
+ec3.page.magicalHopper_0.txt=This wonderfull device will pick up items in the range of 3 blocks around itself, and will throw them in front of itself. It is also possible to disable it via a redstone signal. It will also not pick up items thrown in front of it. It can also be told which items to collect by placing a filter inside it's inventory.
+
+ec3.page.metadataManager_0.txt=This block will output a redstone signal with the strength equal to the metadata of the block it is placed next to. However, it will not cause a block update itself, so for the things like wheat you will need to give this device a block update to handle the wheat change.
+
+ec3.page.blockBreaker_0.txt=This device upon recieving a redstone signal will break up to 12 blocks in front of itself, which have the same HARDNESS(the amount of time required to break the block). It will also try to collect drops from the broken blocks and split them out of the back of itself.
+
+ec3.page.weaponMaker_0.txt=You already know that MRU is a dangerous thing. But MRU is radiation, right? You think, that you might be able to create a weapon, that will create concentrated MRU rays, which should kill everything that exists.
+ec3.page.weaponMaker_1.txt=The weapon bench is able to create guns for you. Opening it up brings an interesting GUI. There are 4 types of weapons, which you can made, and to switch between the crafting patterns press the >>> button at the bottom.
+ec3.page.weaponMaker_2.txt=The Pistol, which is the most basic gun. It requires a Base, a Handle and a Mechanism to be created. The pistol cools down much faster, than any other gun.
+ec3.page.weaponMaker_3.txt=The Rifle shoots much faster than the pistol. It also is able to shoot more rays before overheating. However, the shots have much less accuracy. It requires a Base, a Handle and a Mechanism to be created.
+ec3.page.weaponMaker_4.txt=The Sniper Rifle is a very slow weapon. It, however, deals massive damage. It requires a Base, a Handle, a Mechanism and a Scope to be created. It's scopes can also provide up to 16x zoom on things.
+ec3.page.weaponMaker_5.txt=The Gatling. This gun slows you down if you are holding it. It also takse 3 seconds of preparation before you are able to shoot. However, it has INSANE shot speed, and can shoot insane amounts of shots before overheating. It requires a Base, a Handle, a Mechanism and a Lens to be created.
+ec3.page.weaponMaker_6.txt=Each slot has a letter next to it.B means, that the material in this slot will get used as a Base for the gun. H means Handle, M means Mechanism and S means scope for the sniper. Slots with the same letters require the same material to be in all of them. however, other slots may have different materials. Each material has it's unique properties.
+ec3.page.weaponMaker_7.txt=Some guns are different - the Sniper not only requires Glass alloy as a scope, it also requires one of the possible materials to make one. Gatling requires a Sun Imbued Glass as a part of it's lens.
+ec3.page.weaponMaker_8.txt=Lens is only required for the Gatling, other guns may work without it. Lenses only affect the color of the ray(SHADE lens works as a SHADE damage type)
+ec3.page.weaponMaker_9.txt=Scope is only required for the sniper. Other guns may work without it. To zoom in hold Shift while holding the gun with a scope.
+ec3.page.weaponMaker_10.txt=Guns have a lot of different parameters, which can be viewed by pressing shift while mousing over a gun.
+ec3.page.weaponMaker_11.txt=Guns will occasionally break. They will never get destroyed though. If the gun is broken upon each shot it will have a chance to instantly overheat. Guns can be repaired in the anvil using the same material that was used to create the base of the gun.
+ec3.page.weaponMaker_12.txt=Guns also require MRU to shoot - the more damage the gun deals the more MRU it requires.
+ec3.page.weaponMaker_13.txt=The MRU ray the guns shoot passes through non-solid blocks. It, however, may get stopped by any solid block. It also passes through entities, dealing damage to each it passes through. It looses no damage upon passing through entity. MRU rays are visible for 3 seconds after the shot has been done.
+ec3.page.weaponMaker_14.txt=The last note is about PVP. The guns are extremly efficent at killing other players. However, it is worth noticing, that MRU rays have a devastating effect on the Matrix of the player it passed through, up to the point of complete matrix destruction.
+
+#Ender
+ec3book.category_ec3.ender.name=The legend of the Enderstar...
+ec3book.category_ec3.ender.desc=The forgotten knowledge comes into play!
+
+ec3book.discovery_enderstar.name=The Enderstar Legend...
+ec3book.discovery_enderstar.desc=What keeps us alive...
+ec3book.discovery_mithriline.name=Mitriline
+ec3book.discovery_mithriline.desc=The changes of your world...
+ec3book.discovery_mithrilineFurnace.name=Mitriline Furnace
+ec3book.discovery_mithrilineFurnace.desc=The bases of alchemy?
+ec3book.discovery_windRune.name=Wind Rune
+ec3book.discovery_windRune.desc=Wind infusion!
+ec3book.discovery_playerPentacle.name=Soul Pentacle
+ec3book.discovery_playerPentacle.desc=Cleanse the soul!
+ec3book.discovery_demonicPentacle.name=Demonic Pentacle
+ec3book.discovery_demonicPentacle.desc=They seek souls and the king... Casual.
+
+
+ec3.page.enderstar_0.txt=The Enderstar. What is it? The Enderstar, or sometimes referenced as 'The Green Sun' is a mysterious object, that exists on the other material plane. It actually is so far from yours, that there is no way to see or feel the enderstar...
+ec3.page.enderstar_1.txt=Not much is known about this mysterious object, but some ancient knowledge exists. It teaches, that the Enderstar is the thing, that gives life to everything and everyone via Pulses - chaotic, uncontrollable pulses of destructive energy, which, upon appearing into our plane gets too weakened to damage anything.
+ec3.page.enderstar_2.txt=This energy is called ESPE - Ender Star Pulse Energy, and it seems possible to collect it... But who knows how?..
+
+ec3.page.mithriline_0.txt=The Enderstar Pulses do not change anything on their own... However, it seems, that some MRU rays were caught by the pulse when they were passing through yout world. That changed something - however, not much. It seems, that most of the world stayed unaffected, but the Lapis.
+ec3.page.mithriline_1.txt=When mined Lapis Ore will now drop a piece of Mithriline. The amount of Mithriline dropped is affected by the fortune enchantment.
+ec3.page.mithriline_2.txt=Mithriline Plating can be used as a part of MRUCU Enrichment Chamber, giving it a lot of protection against MRU rays.
+ec3.page.mithriline_3.txt=Mithriline Crystals seem to be able to collect a tiny piece of ESPE each tick. That can be used later. They also can be improved by adding more materials to them, though it seems to have no effect on the amount of ESPE collected. The Crystals also will work 4 times better in the end.
+
+ec3.page.mithrilineFurnace_0.txt=This structure is able to harness the power of the Enderstar to transform some items into other. The most important thing that it can do - it can transform the Glowstone into Mithriline Dust! It can also transform 1 piece of mithriline dust into 1 mithriline ingot. Also, MRU Resonating Crystal can be transfromed into Mithriline crystal.
+ec3.page.mithrilineFurnace_1.txt=The Mithriline Crystal can be transformed into Fading Crystal, which gets transformed into Fading Dust. It is also worth trying transforming other items, like redstone or ender pearls - thi may yeld some interesting results! It is also wotrth noticing that the furnace can get ESPE from not only 4 corner crystals, but from crystals, placed on top of Mithriline Plating Blocks.
+
+ec3.page.windRune_0.txt=If you want the ancient wind to help you out on your journey - this is the way to do so! This rune, once placed correctly will use the ESPE from the crystals to infuse items with wind. To infuse the item just right-click the rune with the item you want to infuse.
+ec3.page.windRune_1.txt=Infusing a Soul Stone will imbue the player with a strength of the wind, therefore they may start gathering wind relation points to visit Hoanna. 
+ec3.page.windRune_2.txt=One can also infuse diamonds with wind, making Wind Gems. Wind gems can be used to make tools and armor.
+ec3.page.windRune_3.txt=Wind tools are a multitool - should the player start mining the wrong block - the tool in his hand will transform into the correct one. The wind tools will also store their enchantments upon transformation.
+ec3.page.windRune_4.txt=Wind armor gains some benefits. The helmet allows seing MRU and MRUCUs. Wind chestplate greatly increases the wearer's movement speed. Wind Leggings allow the wearer to jump 1.5 blocks higher than normal, and wind boots provide step assistance.
+
+ec3.page.playerPentacle_0.txt=MRU rays splitted out by both MRUCUs and MRU guns will deal some matrix damage to the player, who gets caught in them. Using the Enderstar energy you've managed to create a device, that is able to remove those effects. Weirdly enough the structure has multiple tiers.
+ec3.page.playerPentacle_1.txt=Tier 1. This tier is the most basic - it is able to remove the most basic "Body Damage" from you using the energy of the Mithriline Crystals.
+ec3.page.playerPentacle_2.txt=Tier 2. This tier is able to purge Mind damage, as well as the body damage.
+ec3.page.playerPentacle_3.txt=Tier 3. This one is able to remove most of the Matrix Damage, as well as Mind damage and Body Damage
+ec3.page.playerPentacle_4.txt=Tier 4. This one is the most powerfull, which is not only able to completely restore the matrix, it is also capable of accumulating twice as much ESPE twice fast.
+
+ec3.page.demonicPentacle_0.txt=You seem stuck - your Mithriline Crystals are too mundane for some things. All books seem to give you no information... Except for the "Forgotten Necronomicon". That book tells about Ackronite, the metal, that only exists in hell, and only Demons can see and mine it.
+ec3.page.demonicPentacle_1.txt=That material seems to have all the properties you need. So, you need to summon a demon and trade with him. Be aware though, demons only care about themself, and they will try to fool you - do not give them any information related to your world, like maps and such - they will invade your world if you do so.
+ec3.page.demonicPentacle_2.txt=The demon will take everything you give him as a present, so you need to give him as much items of the type he desires at once. If you do not want his offer - punch him and he will dissapear. They always give you some Ackronite as a trade, though you never know how much... 
+

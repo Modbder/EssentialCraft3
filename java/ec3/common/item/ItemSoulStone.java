@@ -12,6 +12,8 @@ import ec3.api.ITERequiresMRU;
 import ec3.api.ITEStoresMRU;
 import ec3.api.ITETransfersMRU;
 import ec3.common.block.BlocksCore;
+import ec3.common.mod.EssentialCraftCore;
+import ec3.network.PacketNBT;
 import ec3.utils.common.ECUtils;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -24,6 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
@@ -32,6 +35,7 @@ import net.minecraft.world.World;
 
 public class ItemSoulStone extends Item {
 
+	int clientTimer = 0;
 	public IIcon icon;
 	public IIcon active_icon;
 	public ItemSoulStone() {
@@ -61,16 +65,17 @@ public class ItemSoulStone extends Item {
     	if(par1ItemStack.getTagCompound() != null)
     	{
     		String username = par1ItemStack.getTagCompound().getString("playerName");
-    		String currentEnergy = DummyDataUtils.getDataForPlayer(username, "essentialcraft", "ubmruEnergy");
-			if(currentEnergy != null && !currentEnergy.isEmpty() && !currentEnergy.equals("no data") && !currentEnergy.equals("empty string") && !currentEnergy.equals("empty"))
-			{
-				par3List.add(EnumChatFormatting.DARK_GRAY+"Tracking MRU Matrix of "+EnumChatFormatting.GOLD+username);
-				par3List.add(EnumChatFormatting.DARK_GRAY+"Detected "+EnumChatFormatting.GREEN+currentEnergy+EnumChatFormatting.DARK_GRAY+" UBMRU Energy");
-				String attunement = DummyDataUtils.getDataForPlayer(username, "essentialcraft", "attunement");
-				if(attunement != null && !attunement.isEmpty() && !attunement.equals("no data") && !attunement.equals("empty string") && !attunement.equals("empty"))
-				{
+    		EntityPlayer player = par2EntityPlayer;
+    		if(player != null)
+    		{
+	    		if(ECUtils.playerDataExists(username))
+	    		{
+	    			int currentEnergy = ECUtils.getData(player).getPlayerUBMRU();
+	    			int att = ECUtils.getData(player).getMatrixTypeID();
+					par3List.add(EnumChatFormatting.DARK_GRAY+"Tracking MRU Matrix of "+EnumChatFormatting.GOLD+username);
+					par3List.add(EnumChatFormatting.DARK_GRAY+"Detected "+EnumChatFormatting.GREEN+currentEnergy+EnumChatFormatting.DARK_GRAY+" UBMRU Energy");
+					
 					String at = "Neutral";
-					int att = Integer.parseInt(attunement);
 					switch(att)
 					{
 						case 0:
@@ -105,11 +110,23 @@ public class ItemSoulStone extends Item {
 						}
 					}
 					par3List.add(EnumChatFormatting.DARK_GRAY+"MRU Matrix twists with "+at+EnumChatFormatting.DARK_GRAY+" energies.");
+					}
+				}else
+				{
+					par3List.add(EnumChatFormatting.DARK_GRAY+"The MRU Matrix of the owner is too pale to track...");
+					if(clientTimer == 0)
+					{
+						NBTTagCompound sTag = new NBTTagCompound();
+						sTag.setString("syncplayer", username);
+						sTag.setString("sender", par2EntityPlayer.getCommandSenderName());
+						EssentialCraftCore.network.sendToServer(new PacketNBT(sTag).setID(1));
+						clientTimer = 100;
+						
+					}else
+					{
+						--clientTimer;
+					}
 				}
-			}else
-			{
-				par3List.add(EnumChatFormatting.DARK_GRAY+"The MRU Matrix of the owner is too pale to track...");
-			}
 			this.addBloodMagicDescription(par1ItemStack, par2EntityPlayer, par3List, par4);
     	}
     }
@@ -130,6 +147,9 @@ public class ItemSoulStone extends Item {
 			{
 				par3List.add(EnumChatFormatting.DARK_GRAY+"The owner's life network is pure and untouched...");
 			}
+    	}else if(par1ItemStack.getTagCompound() != null)
+    	{
+    		par3List.add(EnumChatFormatting.DARK_GRAY+"The owner's life network is pure and untouched...");
     	}
     }
     
@@ -148,7 +168,7 @@ public class ItemSoulStone extends Item {
     public void registerIcons(IIconRegister par1IconRegister)
     {
     	super.registerIcons(par1IconRegister);
-        this.icon = par1IconRegister.registerIcon("essentialcraft:soulStone");
+        this.icon = par1IconRegister.registerIcon("essentialcraft:matrix/soulStone");
     }
     
     @SideOnly(Side.CLIENT)

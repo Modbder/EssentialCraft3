@@ -2,12 +2,15 @@ package ec3.common.item;
 
 import java.util.List;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
 import DummyCore.Utils.DummyDataUtils;
 import DummyCore.Utils.MathUtils;
+import DummyCore.Utils.MiscUtils;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
+import ec3.api.IItemRequiresMRU;
 import ec3.utils.common.ECUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -23,19 +26,77 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.stats.StatList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
-public class ItemHolyMace extends ItemStoresMRUInNBT {
+public class ItemHolyMace extends ItemSword implements IItemRequiresMRU/*ItemStoresMRUInNBT*/ {
 
 	public ItemHolyMace() {
-		super();
+		super(ItemsCore.elemental);
 		this.setMaxMRU(5000);
 		this.maxStackSize = 1;
         this.bFull3D = true;
+        this.setMaxDamage(0);
+	}
+	
+	int maxMRU = 5000;
+	
+	public Item setMaxMRU(int max)
+	{
+		maxMRU = max;
+		return this;
+	}
+	
+	@Override
+	public boolean setMRU(ItemStack stack, int amount) {
+		if(MiscUtils.getStackTag(stack).getInteger("mru")+amount >= 0 && MiscUtils.getStackTag(stack).getInteger("mru")+amount<=MiscUtils.getStackTag(stack).getInteger("maxMRU"))
+		{
+			MiscUtils.getStackTag(stack).setInteger("mru", MiscUtils.getStackTag(stack).getInteger("mru")+amount);
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public int getMRU(ItemStack stack) {
+		// TODO Auto-generated method stub
+		return MiscUtils.getStackTag(stack).getInteger("mru");
+	}
+	
+    public boolean isItemTool(ItemStack p_77616_1_)
+    {
+    	return true;
+    }
+    
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
+    {
+    	super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
+    	par3List.add(ECUtils.getStackTag(par1ItemStack).getInteger("mru") + "/" + ECUtils.getStackTag(par1ItemStack).getInteger("maxMRU") + " MRU");
+    }
+	
+    @Override
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    {
+        for (int var4 = 0; var4 < 1; ++var4)
+        {
+        	ItemStack min = new ItemStack(par1, 1, 0);
+        	ECUtils.initMRUTag(min, maxMRU);
+        	ItemStack max = new ItemStack(par1, 1, 0);
+        	ECUtils.initMRUTag(max, maxMRU);
+        	ECUtils.getStackTag(max).setInteger("mru", ECUtils.getStackTag(max).getInteger("maxMRU"));
+            par3List.add(min);
+            par3List.add(max);
+        }
+    }
+    
+	@Override
+	public int getMaxMRU(ItemStack stack) {
+		// TODO Auto-generated method stub
+		return this.maxMRU;
 	}
 	
     public boolean hitEntity(ItemStack p_77644_1_, EntityLivingBase p_77644_2_, EntityLivingBase p_77644_3_)
@@ -54,20 +115,12 @@ public class ItemHolyMace extends ItemStoresMRUInNBT {
 	@Override
 	public void onUpdate(ItemStack s, World world, Entity entity, int indexInInventory, boolean isCurrentItem)
 	{
-		super.onUpdate(s, world, entity, indexInInventory, isCurrentItem);
-		if(entity instanceof EntityPlayer)
-		{
-			int level = EnchantmentHelper.getEnchantmentLevel(Enchantment.smite.effectId, s);
-			if(level == 0)
-			{
-				s.addEnchantment(Enchantment.smite, 6);
-			}
-		}
+		ECUtils.initMRUTag(s, maxMRU);
 	}
 	
     public Multimap getItemAttributeModifiers()
     {
-        Multimap multimap = super.getItemAttributeModifiers();
+        Multimap multimap = HashMultimap.create();
         multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Weapon modifier", 12, 0));
         return multimap;
     }

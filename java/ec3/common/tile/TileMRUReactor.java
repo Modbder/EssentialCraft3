@@ -1,9 +1,7 @@
 package ec3.common.tile;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import DummyCore.Utils.Coord3D;
 import DummyCore.Utils.DataStorage;
@@ -11,22 +9,13 @@ import DummyCore.Utils.DummyData;
 import DummyCore.Utils.Lightning;
 import DummyCore.Utils.MathUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFlower;
-import net.minecraft.block.BlockSapling;
-import net.minecraft.block.BlockTallGrass;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.oredict.OreDictionary;
 import ec3.api.ApiCore;
 import ec3.common.block.BlocksCore;
-import ec3.common.entity.EntitySolarBeam;
-import ec3.common.mod.EssentialCraftCore;
-import ec3.utils.common.ECUtils;
 
 public class TileMRUReactor extends TileMRUGeneric{
 	
@@ -39,7 +28,7 @@ public class TileMRUReactor extends TileMRUGeneric{
 	public static float mruGenerated = 50;
 	public static boolean damage = true;
 	
-	public List<Lightning> lightnings = new ArrayList();
+	public List<Lightning> lightnings = new ArrayList<Lightning>();
 	
 	public TileMRUReactor()
 	{
@@ -201,6 +190,7 @@ public class TileMRUReactor extends TileMRUGeneric{
 		return false;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateEntity()
 	{

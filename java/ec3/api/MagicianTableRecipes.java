@@ -6,11 +6,8 @@ import java.util.Hashtable;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
-import DummyCore.Utils.DataStorage;
-import DummyCore.Utils.DummyData;
 import DummyCore.Utils.Notifier;
 import DummyCore.Utils.UnformedItemStack;
 
@@ -22,12 +19,12 @@ public class MagicianTableRecipes {
 	
 	public static List<MagicianTableRecipe> getRecipiesByComponent(ItemStack component)
 	{
-		List<MagicianTableRecipe> retLst = new ArrayList();
+		List<MagicianTableRecipe> retLst = new ArrayList<MagicianTableRecipe>();
 		for(List<UnformedItemStack> lst : craftMatrixByID)
 		{
 			for(UnformedItemStack stk : lst)
 			{
-				if(stk.itemStackMatches(component))
+				if(stk != null && component != null && stk.itemStackMatches(component))
 					retLst.add(recipes.get(lst));
 			}
 		}
@@ -51,7 +48,7 @@ public class MagicianTableRecipes {
 			if(pair[i] != null)
 				allNull = false;
 		}
-		if(allNull)return new ArrayList();
+		if(allNull)return new ArrayList<UnformedItemStack>();
 		ForLST:for(List<UnformedItemStack> lst : craftMatrixByID)
 		{
 			ForSize:for(int i = 0; i < lst.size(); ++i)
@@ -68,7 +65,7 @@ public class MagicianTableRecipes {
 			}
 			return lst;
 		}
-		return new ArrayList();
+		return new ArrayList<UnformedItemStack>();
 	}
 
 	

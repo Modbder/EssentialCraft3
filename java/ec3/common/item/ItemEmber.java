@@ -33,7 +33,7 @@ public class ItemEmber extends Item{
     {
         super.registerIcons(p_94581_1_);
         for(int i = 0; i < unlocalisedName.length; ++i)
-        	itemIcons[i] = p_94581_1_.registerIcon("essentialcraft:ember_"+unlocalisedName[i]);
+        	itemIcons[i] = p_94581_1_.registerIcon("essentialcraft:misc/ember_"+unlocalisedName[i]);
     }
     
     @SideOnly(Side.CLIENT)

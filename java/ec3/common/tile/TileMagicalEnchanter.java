@@ -3,32 +3,22 @@ package ec3.common.tile;
 import java.util.List;
 import java.util.Random;
 
-import org.lwjgl.opengl.GL11;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Vec3;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.config.Configuration;
-import DummyCore.Utils.Coord3D;
 import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
-import DummyCore.Utils.DummyDistance;
 import DummyCore.Utils.MathUtils;
-import DummyCore.Utils.MiscUtils;
 import ec3.api.ApiCore;
 import ec3.api.ITEHasMRU;
 import ec3.common.item.ItemBoundGem;
@@ -245,7 +235,8 @@ public class TileMagicalEnchanter extends TileMRUGeneric{
     	this.enchants = null;
     }
     
-    public List getEnchantmentsForStack(ItemStack stack)
+    @SuppressWarnings("unchecked")
+	public List<EnchantmentData> getEnchantmentsForStack(ItemStack stack)
     {
     	if(this.enchants == null)
     		this.enchants = EnchantmentHelper.buildEnchantmentList(this.worldObj.rand, stack, this.getMaxPower());

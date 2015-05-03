@@ -6,13 +6,11 @@ import ec3.common.world.BiomeGenCorruption_Chaos;
 import ec3.common.world.BiomeGenCorruption_Frozen;
 import ec3.common.world.BiomeGenCorruption_Magic;
 import ec3.common.world.BiomeGenCorruption_Shadow;
-import ec3.common.world.BiomeGenFirstWorld;
 import ec3.common.world.BiomeGenFirstWorld_Desert;
 import ec3.common.world.BiomeGenFirstWorld_Dreadlands;
 import ec3.utils.cfg.Config;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenBase.Height;
-import net.minecraftforge.common.BiomeDictionary;
 
 public class BiomeRegistry {
 	public static BiomeRegistry core;

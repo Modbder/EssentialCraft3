@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 
 public class RadiatingChamberRecipes {
 	
-	public static final Hashtable<String,List<RadiatingChamberRecipe>> recipes = new Hashtable();
+	public static final Hashtable<String,List<RadiatingChamberRecipe>> recipes = new Hashtable<String, List<RadiatingChamberRecipe>>();
 	public static final Hashtable<String,RadiatingChamberRecipe> recipesByIS = new Hashtable<String,RadiatingChamberRecipe>();
 	public static final List<String> craftMatrixByID = new ArrayList<String>();
 	
@@ -83,7 +83,7 @@ public class RadiatingChamberRecipes {
 			if(recipes.containsKey(Arrays.toString(req)))
 				lst = recipes.get(Arrays.toString(req));
 			else
-				lst = new ArrayList();
+				lst = new ArrayList<RadiatingChamberRecipe>();
 			lst.add(rec);
 			recipes.put(Arrays.toString(req), lst);
 			ItemStack result = rec.result.copy();

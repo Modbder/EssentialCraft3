@@ -4,34 +4,44 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
+import DummyCore.Utils.DCASMCheck;
+import DummyCore.Utils.ExistanceCheck;
+import DummyCore.Utils.MiscUtils;
 import thaumcraft.api.IGoggles;
 import thaumcraft.api.IRepairable;
-import thaumcraft.api.IRunicArmor;
 import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.nodes.IRevealer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ec3.api.IItemRequiresMRU;
 import ec3.common.mod.EssentialCraftCore;
+import ec3.utils.common.ECUtils;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.ISpecialArmor;
 
-public class ItemArmorMod extends ItemArmor implements IRepairable, IVisDiscountGear, IRevealer, IGoggles{
+@DCASMCheck
+@ExistanceCheck(classPath = {"thaumcraft.api.IRepairable","thaumcraft.api.IVisDiscountGear","thaumcraft.api.nodes.IRevealer","thaumcraft.api.IGoggles"})
+public class ItemArmorMod extends ItemArmor implements IRepairable, IVisDiscountGear, IRevealer, IGoggles, ISpecialArmor, IItemRequiresMRU{
 	public String armorTexture;
 	public int aType;
-	
+	public ArmorMaterial mat;
 	public ItemArmorMod(ArmorMaterial p_i45325_1_, int p_i45325_2_,
 			int p_i45325_3_, int it) {
 		super(p_i45325_1_, p_i45325_2_, p_i45325_3_);
 		aType = it;
+		mat = p_i45325_1_;
 	}
 	
 	public Item setArmorTexture(String path)
@@ -40,10 +50,15 @@ public class ItemArmorMod extends ItemArmor implements IRepairable, IVisDiscount
 		return this;
 	}
 	
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
     {
         super.addInformation(stack, player, list, par4);
         list.add((new StringBuilder()).append(EnumChatFormatting.DARK_PURPLE).append(StatCollector.translateToLocal("tc.visdiscount")).append(": ").append(getVisDiscount(stack, player, null)).append("%").toString());
+        if(this.aType == 1)
+        {
+        	list.add(this.getMRU(stack) + "/" + this.getMaxMRU(stack) + " MRU");
+        }	
     }
     
 	
@@ -56,6 +71,25 @@ public class ItemArmorMod extends ItemArmor implements IRepairable, IVisDiscount
 			default: return "essentialcraft:textures/special/models/"+armorTexture+"_0.png"; 
 		}
 	}
+	
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    {
+    	if(this.aType != 1)
+    		super.getSubItems(par1, par2CreativeTabs, par3List);
+    	else
+	        for (int var4 = 0; var4 < 1; ++var4)
+	        {
+	        	ItemStack min = new ItemStack(par1, 1, 0);
+	        	ECUtils.initMRUTag(min, 5000);
+	        	ItemStack max = new ItemStack(par1, 1, 0);
+	        	ECUtils.initMRUTag(max, 5000);
+	        	ECUtils.getStackTag(max).setInteger("mru", 5000);
+	            par3List.add(min);
+	            par3List.add(max);
+	        }
+    }
     
     @Override
     @SideOnly(Side.CLIENT)
@@ -127,5 +161,76 @@ public class ItemArmorMod extends ItemArmor implements IRepairable, IVisDiscount
 	}
 	
 	public static int[][] discount = new int[][]{{5,5,3,2},{8,10,7,5},{10,15,8,7},{2,3,2,1}};
+
+	@Override
+	public ArmorProperties getProperties(EntityLivingBase player,
+			ItemStack armor, DamageSource source, double damage, int slot) {
+		if(this.aType != 1)
+		{
+			if(!source.isUnblockable())
+			{
+                ItemArmor aarmor = (ItemArmor)armor.getItem();
+                return new ArmorProperties(0, aarmor.damageReduceAmount / 25D, aarmor.getMaxDamage() + 1 - armor.getItemDamage());
+			}else
+				return new ArmorProperties(0,0,armor.getMaxDamage() + 1 - armor.getItemDamage());
+		}else
+		{
+			int mru = getMRU(armor);
+			if(mru > 0)
+			{
+                ItemArmor aarmor = (ItemArmor)armor.getItem();
+                return new ArmorProperties(0, aarmor.damageReduceAmount / 25D, aarmor.getMaxDamage() + 1 - armor.getItemDamage());
+			}else
+				return new ArmorProperties(0,0,armor.getMaxDamage() + 1 - armor.getItemDamage());
+		}
+	}
+
+	@Override
+	public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
+		return mat.getDamageReductionAmount(armorType);
+	}
+
+	@Override
+	public void damageArmor(EntityLivingBase entity, ItemStack stack,
+			DamageSource source, int damage, int slot) {
+		
+		if(this.aType != 1)
+		{
+			stack.damageItem(damage, entity);
+		}else
+		{
+			if(entity instanceof EntityPlayer)
+			{
+				EntityPlayer p = (EntityPlayer) entity;
+				if(ECUtils.tryToDecreaseMRUInStorage(p, -damage*1000) || this.setMRU(stack, -damage*1000))
+				{
+					
+				}else
+				{
+					
+				}
+			}
+		}
+	}
+
+	@Override
+	public boolean setMRU(ItemStack stack, int amount) {
+		if(getMRU(stack)+amount >= 0 && getMRU(stack)+amount<=getMaxMRU(stack))
+		{
+			MiscUtils.getStackTag(stack).setInteger("mru", MiscUtils.getStackTag(stack).getInteger("mru")+amount);
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public int getMRU(ItemStack stack) {
+		return MiscUtils.getStackTag(stack).getInteger("mru");
+	}
+
+	@Override
+	public int getMaxMRU(ItemStack stack) {
+		return this.aType == 1 ? 5000 : 1;
+	}
 
 }

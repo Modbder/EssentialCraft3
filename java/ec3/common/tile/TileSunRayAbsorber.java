@@ -25,6 +25,7 @@ public class TileSunRayAbsorber extends TileMRUGeneric{
 		return false;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateEntity()
 	{

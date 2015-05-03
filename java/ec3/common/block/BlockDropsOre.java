@@ -80,7 +80,7 @@ public class BlockDropsOre extends Block{
     @Override
     public int quantityDropped(Random p_149745_1_)
     {
-        return 1+p_149745_1_.nextInt(6);
+        return 1+p_149745_1_.nextInt(2);
     }
 
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)

@@ -1,6 +1,6 @@
 package ec3.common.world;
 
-import static net.minecraftforge.common.ChestGenHooks.VILLAGE_BLACKSMITH;
+import static net.minecraftforge.common.ChestGenHooks.DUNGEON_CHEST;
 
 import java.util.Random;
 
@@ -82,7 +82,7 @@ public class WorldGenElderMRUCC extends WorldGenerator{
 
                         if (tileentitychest != null)
                         {
-                            WeightedRandomChestContent.generateChestContents(var2, ChestGenHooks.getItems(VILLAGE_BLACKSMITH, var2), tileentitychest, ChestGenHooks.getCount(VILLAGE_BLACKSMITH, var2));
+                            WeightedRandomChestContent.generateChestContents(var2, ChestGenHooks.getItems(DUNGEON_CHEST, var2), tileentitychest, ChestGenHooks.getCount(DUNGEON_CHEST, var2));
                         }
 					}
 				}
@@ -147,7 +147,7 @@ public class WorldGenElderMRUCC extends WorldGenerator{
 
                         if (tileentitychest != null)
                         {
-                            WeightedRandomChestContent.generateChestContents(var2, ChestGenHooks.getItems(VILLAGE_BLACKSMITH, var2), tileentitychest, ChestGenHooks.getCount(VILLAGE_BLACKSMITH, var2));
+                            WeightedRandomChestContent.generateChestContents(var2, ChestGenHooks.getItems(DUNGEON_CHEST, var2), tileentitychest, ChestGenHooks.getCount(DUNGEON_CHEST, var2));
                         }
 					}
 					if((x == -1 && z == 0) || (x == 1 && z == 0) || (x == 0 && z == 1) || (x == 0 && z == -1))

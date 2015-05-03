@@ -29,7 +29,6 @@ public class BlockPortal extends net.minecraft.block.BlockPortal{
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister p_149651_1_)
     {
-    	System.out.println(this.getTextureName());
         this.blockIcon = p_149651_1_.registerIcon(this.getTextureName());
     }
 	

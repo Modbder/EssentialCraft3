@@ -10,14 +10,13 @@ import ec3.common.potion.PotionRadiation;
 import ec3.common.potion.PotionShadeCorruption;
 import ec3.common.potion.PotionUnnormalLightness;
 import ec3.common.potion.PotionWindTouch;
-import ec3.utils.common.ECUtils;
 import net.minecraft.potion.Potion;
 
 public class PotionRegistry {
 	
 	public static void registerPotions()
 	{
-		int pStart = 0;
+		int pStart = 20;
         pStart = getNextPotionId(pStart);
         if(pStart >= 0)
         {
@@ -62,15 +61,16 @@ public class PotionRegistry {
         
 	}
 	
+			
     static int getNextPotionId(int start)
     {
         if(Potion.potionTypes != null && start > 0 && start < Potion.potionTypes.length && Potion.potionTypes[start] == null)
             return start;
-        if(++start < 128)
+        if(++start < Potion.potionTypes.length)
             start = getNextPotionId(start);
         else
             start = -1;
-        if(start == -1 && Potion.potionTypes.length < 64)
+        if(start == -1)
         	start = MiscUtils.extendPotionArray(1);
         return start;
     }

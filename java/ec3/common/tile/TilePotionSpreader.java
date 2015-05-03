@@ -2,13 +2,9 @@ package ec3.common.tile;
 
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
@@ -17,12 +13,9 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Vec3;
 import net.minecraftforge.common.config.Configuration;
-import DummyCore.Utils.Coord3D;
 import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
-import DummyCore.Utils.DummyDistance;
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
 import ec3.api.ApiCore;
@@ -48,6 +41,7 @@ public class TilePotionSpreader extends TileMRUGeneric{
 		this.setSlotsNum(9);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateEntity()
 	{

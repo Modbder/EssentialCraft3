@@ -5,7 +5,6 @@ import java.util.UUID;
 import net.minecraft.tileentity.TileEntity;
 import ec3.api.EnumStructureType;
 import ec3.api.IStructurePiece;
-import ec3.api.ITERequiresMRU;
 import ec3.api.ITEStoresMRU;
 
 public class TileecEjector extends TileEntity implements ITEStoresMRU, IStructurePiece{
@@ -21,7 +20,6 @@ public class TileecEjector extends TileEntity implements ITEStoresMRU, IStructur
 
 	@Override
 	public int getMaxMRU() {
-		// TODO Auto-generated method stub
 		return 60000;
 	}
 
@@ -55,19 +53,16 @@ public class TileecEjector extends TileEntity implements ITEStoresMRU, IStructur
 
 	@Override
 	public UUID getUUID() {
-		// TODO Auto-generated method stub
 		return uuid;
 	}
 
 	@Override
 	public EnumStructureType getStructure() {
-		// TODO Auto-generated method stub
 		return EnumStructureType.MRUCUContaigementChamber;
 	}
 
 	@Override
 	public TileEntity structureController() {
-		// TODO Auto-generated method stub
 		return controller;
 	}
 

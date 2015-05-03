@@ -9,7 +9,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.config.Configuration;
 import ec3.api.ApiCore;
-import ec3.common.entity.EntitySolarBeam;
 
 public class TileEnderGenerator extends TileMRUGeneric{
 	
@@ -30,6 +29,7 @@ public class TileEnderGenerator extends TileMRUGeneric{
 		return false;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateEntity()
 	{

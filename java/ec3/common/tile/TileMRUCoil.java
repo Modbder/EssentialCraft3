@@ -1,7 +1,6 @@
 package ec3.common.tile;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
@@ -16,12 +15,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Vec3;
 import net.minecraftforge.common.config.Configuration;
 import DummyCore.Utils.Coord3D;
 import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
-import DummyCore.Utils.DummyDistance;
 import DummyCore.Utils.Lightning;
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
@@ -31,7 +28,6 @@ import ec3.api.ITEHasMRU;
 import ec3.common.block.BlocksCore;
 import ec3.common.item.ItemBoundGem;
 import ec3.common.item.ItemPlayerList;
-import ec3.common.item.ItemsCore;
 import ec3.utils.common.ECUtils;
 
 public class TileMRUCoil extends TileMRUGeneric{
@@ -107,7 +103,7 @@ public class TileMRUCoil extends TileMRUGeneric{
 		Block b_1_9 = this.worldObj.getBlock(xCoord-3, dy, zCoord);
 		Block b_1_10 = this.worldObj.getBlock(xCoord-3, dy, zCoord-1);
 		Block b_1_11 = this.worldObj.getBlock(xCoord-3, dy, zCoord+1);
-		List<Block> cBl = new ArrayList();
+		List<Block> cBl = new ArrayList<Block>();
 		cBl.add(b_0);
 		cBl.add(b_1);
 		cBl.add(b_2);
@@ -141,6 +137,7 @@ public class TileMRUCoil extends TileMRUGeneric{
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateEntity()
 	{

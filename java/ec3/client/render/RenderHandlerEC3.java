@@ -11,22 +11,32 @@ import DummyCore.Utils.Coord3D;
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ec3.api.WindImbueRecipe;
+import ec3.common.block.BlockWindRune;
 import ec3.common.block.BlocksCore;
+import ec3.common.item.ItemGenericArmor;
 import ec3.common.mod.EssentialCraftCore;
 import ec3.common.registry.PotionRegistry;
-import ec3.network.proxy.ClientProxy;
+import ec3.common.tile.TileWindRune;
 import ec3.utils.common.ECUtils;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.RenderBiped;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -34,15 +44,19 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.IRenderHandler;
+import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent.SetArmorModel;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 
 public class RenderHandlerEC3 {
 	
@@ -60,7 +74,7 @@ public class RenderHandlerEC3 {
 	
 	public static boolean isMouseInverted;
 	
-	public static Hashtable<IInventory, Hashtable<Integer,List<ForgeDirection>>> slotsTable = new Hashtable();
+	public static Hashtable<IInventory, Hashtable<Integer,List<ForgeDirection>>> slotsTable = new Hashtable<IInventory, Hashtable<Integer, List<ForgeDirection>>>();
 	
 	public void renderParadox()
 	{
@@ -184,6 +198,69 @@ public class RenderHandlerEC3 {
 		return null;
 	}
 	
+	@SubscribeEvent
+	public void renderPlayerModel(SetArmorModel event)
+	{
+		int slot = event.slot;
+		ItemStack stk = event.entityPlayer.inventory.armorItemInSlot(3-event.slot);
+		if(stk != null)
+		{
+            Item item = stk.getItem();
+
+            if (item instanceof ItemGenericArmor)
+            {
+            	event.result = 0;
+            	ItemGenericArmor itemarmor = (ItemGenericArmor)item;
+            	Minecraft.getMinecraft().renderEngine.bindTexture(RenderBiped.getArmorResource(event.entityPlayer, stk, slot, null));
+            	RenderPlayer rp = (RenderPlayer) RenderManager.instance.getEntityRenderObject(Minecraft.getMinecraft().thePlayer);
+                ModelBiped modelbiped = slot == 2 ? rp.modelArmor : rp.modelArmorChestplate;
+                modelbiped.bipedHead.showModel = slot == 0;
+                modelbiped.bipedHeadwear.showModel = slot == 0;
+                modelbiped.bipedBody.showModel = slot == 1 || slot == 2;
+                modelbiped.bipedRightArm.showModel = slot == 1;
+                modelbiped.bipedLeftArm.showModel = slot == 1;
+                modelbiped.bipedRightLeg.showModel = slot == 2 || slot == 3;
+                modelbiped.bipedLeftLeg.showModel = slot == 2 || slot == 3;
+                modelbiped = net.minecraftforge.client.ForgeHooksClient.getArmorModel(event.entityPlayer, stk, slot, modelbiped);
+                rp.setRenderPassModel(modelbiped);
+                
+                modelbiped.onGround = event.entityPlayer.swingProgress;
+                modelbiped.isRiding = event.entityPlayer.isRiding();
+                modelbiped.isChild = event.entityPlayer.isChild();
+                
+                int j = itemarmor.getColor(stk);
+                if (j != -1)
+                {
+                    float f1 = (float)(j >> 16 & 255) / 255.0F;
+                    float f2 = (float)(j >> 8 & 255) / 255.0F;
+                    float f3 = (float)(j & 255) / 255.0F;
+                    GL11.glColor3f(f1, f2, f3);
+
+                    if (stk.isItemEnchanted())
+                    {
+                    	event.result = 31;
+                    	return;
+                    }
+
+                    event.result = 16;
+                    return;
+                }
+                
+                GL11.glColor3f(1.0F, 1.0F, 1.0F);
+
+                if (stk.isItemEnchanted())
+                {
+                    event.result = 15;
+                    return;
+                }
+
+                event.result = 11;
+                return;
+            }
+
+		}
+	}
+	
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void clientGUIRenderTickEvent(RenderTickEvent event)
@@ -195,12 +272,12 @@ public class RenderHandlerEC3 {
 			if(w != null)
 			{
 				GuiScreen currentScreen = Minecraft.getMinecraft().currentScreen;
-				if(currentScreen != null && currentScreen instanceof GuiContainer && currentScreen.isCtrlKeyDown())
+				if(currentScreen != null && currentScreen instanceof GuiContainer && GuiScreen.isCtrlKeyDown())
 				{
 					GuiContainer gc = (GuiContainer) currentScreen;
 					try
 					{
-						Class gcClass = GuiContainer.class;
+						Class<GuiContainer> gcClass = GuiContainer.class;
 						Field FguiLeft = gcClass.getDeclaredFields()[4];
 						Field FguiTop = gcClass.getDeclaredFields()[5];
 						FguiLeft.setAccessible(true);
@@ -214,10 +291,10 @@ public class RenderHandlerEC3 {
 				        if(inv != null && inv instanceof ISidedInventory)
 				        {
 				        	ISidedInventory sided = (ISidedInventory) inv;
-				        	if(this.slotsTable.isEmpty() || !this.slotsTable.containsKey(inv))
+				        	if(RenderHandlerEC3.slotsTable.isEmpty() || !RenderHandlerEC3.slotsTable.containsKey(inv))
 				        	{
-				        		this.slotsTable.clear();
-								Hashtable<Integer, List<ForgeDirection>> accessibleSlots = new Hashtable();
+				        		RenderHandlerEC3.slotsTable.clear();
+								Hashtable<Integer, List<ForgeDirection>> accessibleSlots = new Hashtable<Integer, List<ForgeDirection>>();
 								for(int j = 0; j < 6; ++j)
 								{
 									ForgeDirection d = ForgeDirection.VALID_DIRECTIONS[j];
@@ -235,14 +312,14 @@ public class RenderHandlerEC3 {
 												accessibleSlots.put(slotN, lst);
 											}else
 											{
-												List<ForgeDirection> lst = new ArrayList();
+												List<ForgeDirection> lst = new ArrayList<ForgeDirection>();
 												lst.add(d);
 												accessibleSlots.put(slotN, lst);
 											}
 										}
 									}
 								}
-								this.slotsTable.put(inv, accessibleSlots);
+								RenderHandlerEC3.slotsTable.put(inv, accessibleSlots);
 				        	}
 				        }
 				       
@@ -258,10 +335,9 @@ public class RenderHandlerEC3 {
 								GL11.glPopMatrix();
 								if(slt.inventory instanceof ISidedInventory)
 								{
-									ISidedInventory sided = (ISidedInventory) slt.inventory;
-									if(this.slotsTable.containsKey(inv))
+									if(RenderHandlerEC3.slotsTable.containsKey(inv))
 									{
-										Hashtable<Integer, List<ForgeDirection>> accessibleSlots = this.slotsTable.get(inv);
+										Hashtable<Integer, List<ForgeDirection>> accessibleSlots = RenderHandlerEC3.slotsTable.get(inv);
 										if(accessibleSlots.containsKey(slt.slotNumber))
 										{
 											List<ForgeDirection> lst = accessibleSlots.get(slt.slotNumber);
@@ -290,13 +366,14 @@ public class RenderHandlerEC3 {
 	
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
-	public void onPlayerTick(LivingUpdateEvent event)
+	public void onPlayerTick(TickEvent.PlayerTickEvent event)
 	{
-		if(event.entity.worldObj.isRemote)
-			if(event.entityLiving instanceof EntityClientPlayerMP)
+		if(event.player.worldObj.isRemote && event.phase == Phase.START)
+			if(event.player instanceof EntityClientPlayerMP)
 			{
-				EntityClientPlayerMP player = (EntityClientPlayerMP) event.entityLiving;
-			    if(mc.thePlayer.getActivePotionEffect(PotionRegistry.paradox) != null)
+				EntityClientPlayerMP player = (EntityClientPlayerMP) event.player;
+				
+			    if(PotionRegistry.paradox != null && mc.thePlayer.getActivePotionEffect(PotionRegistry.paradox) != null)
 			    {
 			    	int duration = mc.thePlayer.getActivePotionEffect(PotionRegistry.paradox).getDuration();
 			    	if(duration % 100 == 0)
@@ -325,6 +402,13 @@ public class RenderHandlerEC3 {
 			}
 	}
 	
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
+	public void renderWindRuneOverlay(DrawBlockHighlightEvent event)
+	{
+
+	}
+	
 	@SubscribeEvent
 	public void pre(RenderGameOverlayEvent.Pre event)
 	{
@@ -335,6 +419,49 @@ public class RenderHandlerEC3 {
 				{
 					Minecraft.getMinecraft().renderEngine.bindTexture(iconsEC);
 					
+				}
+			}
+			if(event.type == RenderGameOverlayEvent.ElementType.HOTBAR)
+			{
+				EntityPlayer p = Minecraft.getMinecraft().thePlayer;
+				MovingObjectPosition target = p.rayTrace(mc.playerController.getBlockReachDistance(), event.partialTicks);
+				
+				if(target != null && target.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
+				{
+					int x = target.blockX;
+					int y = target.blockY;
+					int z = target.blockZ;
+					Block b = p.worldObj.getBlock(x, y, z);
+					if(b != null && b instanceof BlockWindRune)
+					{
+						TileWindRune rune = (TileWindRune) p.worldObj.getTileEntity(x, y, z);
+						if(rune != null)
+						{
+							if(p.getCurrentEquippedItem() != null)
+							{
+								WindImbueRecipe rec = WindImbueRecipe.findRecipeByComponent(p.getCurrentEquippedItem());
+								if(rec != null)
+								{
+									int energyReq = rec.enderEnergy;
+									int energy = rune.energy;
+									
+									int color = 0xffffff;
+									boolean creative = p.capabilities.isCreativeMode;
+									
+									if(energy < energyReq && !creative)
+										color = 0xff0000;
+									else
+										color = 0x00ff66;
+									
+									ScaledResolution res = new ScaledResolution(mc,mc.displayWidth,mc.displayHeight);
+									String displayed = energyReq+" ESPE";
+									if(creative)
+										displayed += " [Creative]";
+									Minecraft.getMinecraft().fontRenderer.drawString(displayed, res.getScaledWidth()/2-displayed.length()*3, res.getScaledHeight()/2+5, color);
+								}
+							}
+						}
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -428,7 +555,7 @@ public class RenderHandlerEC3 {
 			        GL11.glEnable(GL11.GL_DEPTH_TEST);
 			        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			    }
-			    /*
+			    
 			    if(mc.thePlayer.getActivePotionEffect(PotionRegistry.paradox) != null)
 			    {
 			    	int duration = mc.thePlayer.getActivePotionEffect(PotionRegistry.paradox).getDuration();
@@ -461,7 +588,7 @@ public class RenderHandlerEC3 {
 			    {
 			    	return;
 			    }
-			    */
+			    
 			}
 			if(event.type == RenderGameOverlayEvent.ElementType.HEALTH)
 			{

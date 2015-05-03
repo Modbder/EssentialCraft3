@@ -83,11 +83,11 @@ public class ItemMRUStorageNBTTag extends Item implements IMRUStorage, IItemRequ
     @Override
     public void registerIcons(IIconRegister par1IconRegister)
     {
-        this.itemIcon[0] = par1IconRegister.registerIcon("essentialcraft:soulShard");
-        this.itemIcon[1] = par1IconRegister.registerIcon("essentialcraft:soulSphere");
-        this.itemIcon[2] = par1IconRegister.registerIcon("essentialcraft:darkSoulMatter");
-        this.itemIcon[3] = par1IconRegister.registerIcon("essentialcraft:redSoulMatter");
-        this.itemIcon[4] = par1IconRegister.registerIcon("essentialcraft:eternityMatter");
+        this.itemIcon[0] = par1IconRegister.registerIcon("essentialcraft:storages/soulShard");
+        this.itemIcon[1] = par1IconRegister.registerIcon("essentialcraft:storages/soulSphere");
+        this.itemIcon[2] = par1IconRegister.registerIcon("essentialcraft:storages/darkSoulMatter");
+        this.itemIcon[3] = par1IconRegister.registerIcon("essentialcraft:storages/redSoulMatter");
+        this.itemIcon[4] = par1IconRegister.registerIcon("essentialcraft:storages/eternityMatter");
     }
 
 	@Override

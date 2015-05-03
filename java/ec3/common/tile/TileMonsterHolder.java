@@ -1,6 +1,5 @@
 package ec3.common.tile;
 
-import java.util.Arrays;
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
@@ -37,6 +36,7 @@ public class TileMonsterHolder extends TileMRUGeneric{
 		this.setSlotsNum(1);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateEntity()
 	{

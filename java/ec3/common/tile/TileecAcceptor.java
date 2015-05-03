@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -18,10 +17,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import ec3.api.EnumStructureType;
 import ec3.api.IStructurePiece;
-import ec3.api.ITEHasMRU;
 import ec3.api.ITERequiresMRU;
 import ec3.common.item.ItemBoundGem;
-import ec3.common.mod.EssentialCraftCore;
 import ec3.utils.common.ECUtils;
 
 public class TileecAcceptor extends TileEntity implements ITERequiresMRU, IStructurePiece, IInventory{
@@ -89,19 +86,16 @@ public class TileecAcceptor extends TileEntity implements ITERequiresMRU, IStruc
 
 	@Override
 	public UUID getUUID() {
-		// TODO Auto-generated method stub
 		return uuid;
 	}
 
 	@Override
 	public EnumStructureType getStructure() {
-		// TODO Auto-generated method stub
 		return EnumStructureType.MRUCUContaigementChamber;
 	}
 
 	@Override
 	public TileEntity structureController() {
-		// TODO Auto-generated method stub
 		return controller;
 	}
 
@@ -150,13 +144,11 @@ public class TileecAcceptor extends TileEntity implements ITERequiresMRU, IStruc
 	
 	@Override
 	public int getSizeInventory() {
-		// TODO Auto-generated method stub
 		return this.items.length;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int par1) {
-		// TODO Auto-generated method stub
 		return this.items[par1];
 	}
 
@@ -220,37 +212,31 @@ public class TileecAcceptor extends TileEntity implements ITERequiresMRU, IStruc
 
 	@Override
 	public String getInventoryName() {
-		// TODO Auto-generated method stub
 		return "ec3.container.mruAcceptor";
 	}
 
 	@Override
 	public boolean hasCustomInventoryName() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public int getInventoryStackLimit() {
-		// TODO Auto-generated method stub
 		return 64;
 	}
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
-		// TODO Auto-generated method stub
 		return this.worldObj.getTileEntity(xCoord, yCoord, zCoord) == this && player.dimension == this.worldObj.provider.dimensionId;
 	}
 
 	@Override
 	public void openInventory() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void closeInventory() {
-		// TODO Auto-generated method stub
 		
 	}
 

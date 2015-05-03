@@ -1,8 +1,5 @@
 package ec3.common.item;
 
-import net.minecraft.item.ItemAxe;
-import net.minecraft.item.ItemHoe;
-import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemSword;
 
 public class ItemSword_Mod extends ItemSword{

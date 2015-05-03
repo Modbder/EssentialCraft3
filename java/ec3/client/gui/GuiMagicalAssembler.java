@@ -96,6 +96,27 @@ public class GuiMagicalAssembler extends GuiCommon{
 	    	this.initGui();
 	    }
 	    if(assembler.currentRecipe == -1)
+	    {
+	    	if(this.getRecipiesSize() <= 0)
+	    	{
+	    		Object gb = this.buttonList.get(0);
+	    		if(gb != null)
+	    		{
+	    			GuiButton b = (GuiButton) gb;
+	    			b.enabled = false;
+	    		}
+	    	}else
+	    	{
+	    		Object gb = this.buttonList.get(0);
+	    		if(gb != null)
+	    		{
+	    			GuiButton b = (GuiButton) gb;
+	    			b.enabled = true;
+	    		}
+	    	}
+	    }
+	    
+	    if(assembler.currentRecipe == -1)
 	    	this.modList.drawScreen(p_73863_1_, p_73863_2_, p_73863_3_);
 	    else
 	    {

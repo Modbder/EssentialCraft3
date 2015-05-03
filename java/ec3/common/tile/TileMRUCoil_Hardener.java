@@ -1,19 +1,12 @@
 package ec3.common.tile;
 
-import java.util.UUID;
-
 import DummyCore.Utils.Coord3D;
 import DummyCore.Utils.Lightning;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import ec3.api.EnumStructureType;
-import ec3.api.IStructurePiece;
-import ec3.api.ITERequiresMRU;
 import ec3.common.block.BlocksCore;
-import ec3.common.entity.EntitySolarBeam;
 
 public class TileMRUCoil_Hardener extends TileEntity{
 	

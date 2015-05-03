@@ -9,7 +9,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
@@ -77,7 +76,6 @@ public class PotionMindfoldParadox extends Potion{
     	mc.fontRenderer.drawStringWithShadow(StatCollector.translateToLocal("potion.paradox.txt"), x + 10 + 18, y + 16, 16777215);
     }
     
-    private int statusIconIndex;
     static final ResourceLocation rl = new ResourceLocation("essentialcraft", "textures/special/potions.png");
 
 }

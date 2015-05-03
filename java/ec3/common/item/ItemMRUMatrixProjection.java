@@ -4,31 +4,18 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import DummyCore.Utils.DummyDataUtils;
-import DummyCore.Utils.MiscUtils;
-import ec3.api.ITEHasMRU;
-import ec3.api.ITERequiresMRU;
-import ec3.api.ITEStoresMRU;
-import ec3.api.ITETransfersMRU;
-import ec3.common.block.BlocksCore;
-import ec3.utils.common.ECUtils;
+import ec3.api.ApiCore;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
-import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
@@ -65,7 +52,8 @@ public class ItemMRUMatrixProjection extends Item {
         return par1ItemStack;
     }
     
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
     {
     	if(par1ItemStack.getTagCompound() != null)
     	{
@@ -79,7 +67,7 @@ public class ItemMRUMatrixProjection extends Item {
     {
     	super.registerIcons(par1IconRegister);
     	for(int i = 0; i < 5; ++i)
-    		this.icon[i] = par1IconRegister.registerIcon("essentialcraft:mruMatrix_"+names[i]);
+    		this.icon[i] = par1IconRegister.registerIcon("essentialcraft:matrix/mruMatrix_"+names[i]);
     }
     
     @SideOnly(Side.CLIENT)
@@ -88,7 +76,8 @@ public class ItemMRUMatrixProjection extends Item {
         return this.icon[i];
     }
     
-    @SideOnly(Side.CLIENT)
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	@SideOnly(Side.CLIENT)
     public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List p_150895_3_)
     {
         for(int i = 0; i < 5; ++i)
@@ -134,7 +123,7 @@ public class ItemMRUMatrixProjection extends Item {
     	if(!p_77654_3_.worldObj.isRemote)
     	{
     		p_77654_3_.addChatMessage(new ChatComponentText(EnumChatFormatting.AQUA+"Your MRU Matrix twists with new colors!"));
-    		DummyDataUtils.setDataForPlayer(p_77654_3_.getDisplayName(), "essentialcraft", "attunement", Integer.toString(p_77654_1_.getItemDamage()));
+    		ApiCore.getPlayerData(p_77654_3_).modifyMatrixType(p_77654_1_.getItemDamage());
     	}
     	p_77654_3_.inventory.decrStackSize(p_77654_3_.inventory.currentItem, 1);
         return p_77654_1_;

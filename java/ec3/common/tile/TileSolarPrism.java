@@ -1,16 +1,10 @@
 package ec3.common.tile;
 
-import java.util.UUID;
-
 import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.config.Configuration;
-import ec3.api.ApiCore;
-import ec3.api.EnumStructureType;
-import ec3.api.IStructurePiece;
-import ec3.api.ITERequiresMRU;
 import ec3.common.entity.EntitySolarBeam;
 
 public class TileSolarPrism extends TileEntity{

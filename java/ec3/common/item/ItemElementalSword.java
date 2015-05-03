@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
 import DummyCore.Utils.DummyDataUtils;
 import DummyCore.Utils.MathUtils;
+import DummyCore.Utils.MiscUtils;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ec3.api.IItemRequiresMRU;
 import ec3.utils.common.ECUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -28,6 +31,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -38,17 +42,46 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
-public class ItemElementalSword extends ItemStoresMRUInNBT {
-
+public class ItemElementalSword extends ItemSword implements IItemRequiresMRU /*ItemStoresMRUInNBT*/ {
+	
+	int maxMRU = 5000;
 	static Random rand = new Random(8192L);
 	public static IIcon[] icon = new IIcon[8];
 	
+	public Item setMaxMRU(int max)
+	{
+		maxMRU = max;
+		return this;
+	}
+	
 	public ItemElementalSword() {
-		super();
+		super(ItemsCore.elemental);
 		this.setMaxMRU(5000);
 		this.maxStackSize = 1;
         this.bFull3D = true;
+        this.setMaxDamage(0);
 	}
+	
+	@Override
+	public boolean setMRU(ItemStack stack, int amount) {
+		if(MiscUtils.getStackTag(stack).getInteger("mru")+amount >= 0 && MiscUtils.getStackTag(stack).getInteger("mru")+amount<=MiscUtils.getStackTag(stack).getInteger("maxMRU"))
+		{
+			MiscUtils.getStackTag(stack).setInteger("mru", MiscUtils.getStackTag(stack).getInteger("mru")+amount);
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public int getMRU(ItemStack stack) {
+		// TODO Auto-generated method stub
+		return MiscUtils.getStackTag(stack).getInteger("mru");
+	}
+	
+    public boolean isItemTool(ItemStack p_77616_1_)
+    {
+    	return true;
+    }
 	
     @SideOnly(Side.CLIENT)
     @Override
@@ -168,21 +201,45 @@ public class ItemElementalSword extends ItemStoresMRUInNBT {
 	    		par2EntityLivingBase.addPotionEffect(new PotionEffect(Potion.hunger.id,60,1));
 	    	}
     	}
-    	par2EntityLivingBase.attackEntityFrom(DamageSource.causeMobDamage(par3EntityLivingBase),damage);
+    	//par2EntityLivingBase.attackEntityFrom(DamageSource.causeMobDamage(par3EntityLivingBase),damage);
         return false;
     }
     
 	
 	@Override
-	public void onUpdate(ItemStack s, World world, Entity entity, int indexInInventory, boolean isCurrentItem)
+	public void onUpdate(ItemStack itemStack, World world, Entity entity, int indexInInventory, boolean isCurrentItem)
 	{
-		super.onUpdate(s, world, entity, indexInInventory, isCurrentItem);
+		ECUtils.initMRUTag(itemStack, maxMRU);
 	}
 	
-    public Multimap getItemAttributeModifiers()
+    public Multimap getAttributeModifiers(ItemStack stack)
     {
-        Multimap multimap = super.getItemAttributeModifiers();
-        multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Weapon modifier", 1, 0));
+        Multimap multimap = HashMultimap.create();
+    	String attrib = getPrimaryAttribute(stack);
+    	int damage = 0;
+    	if(attrib.contains("Fire") )
+    	{
+    		damage += 7;
+    	}
+    	if(attrib.contains("Water"))
+    	{
+    		damage += 3;
+    	}
+    	if(attrib.contains("Earth"))
+    	{
+    		damage += 8;
+    	}
+    	if(attrib.contains("Air"))
+    	{
+    		damage += 8;
+    	}
+    	List embers = getEmberEffects(stack);
+	    for(int i = 0; i < 11; ++i)
+	    {
+	    	if(embers.contains("Damage +"+i))
+	    		damage += i;
+	    }
+        multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Weapon modifier", damage, 0));
         return multimap;
     }
     
@@ -196,7 +253,29 @@ public class ItemElementalSword extends ItemStoresMRUInNBT {
 	    	par3List.add("Primal Attribute: "+par1ItemStack.getTagCompound().getString("primary"));
 	    	par3List.add("Second Attribute: "+par1ItemStack.getTagCompound().getString("secondary"));
     	}
+    	par3List.add(ECUtils.getStackTag(par1ItemStack).getInteger("mru") + "/" + ECUtils.getStackTag(par1ItemStack).getInteger("maxMRU") + " MRU");
     }
+    
+    @Override
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    {
+        for (int var4 = 0; var4 < 1; ++var4)
+        {
+        	ItemStack min = new ItemStack(par1, 1, 0);
+        	ECUtils.initMRUTag(min, maxMRU);
+        	ItemStack max = new ItemStack(par1, 1, 0);
+        	ECUtils.initMRUTag(max, maxMRU);
+        	ECUtils.getStackTag(max).setInteger("mru", ECUtils.getStackTag(max).getInteger("maxMRU"));
+            par3List.add(min);
+            par3List.add(max);
+        }
+    }
+    
+	@Override
+	public int getMaxMRU(ItemStack stack) {
+		// TODO Auto-generated method stub
+		return this.maxMRU;
+	}
     
     public static void setPrimaryAttribute(ItemStack s)
     {
@@ -342,14 +421,14 @@ public class ItemElementalSword extends ItemStoresMRUInNBT {
     @Override
     public void registerIcons(IIconRegister par1IconRegister)
     {
-    	icon[0] = par1IconRegister.registerIcon("essentialcraft:pa_Fire");
-    	icon[1] = par1IconRegister.registerIcon("essentialcraft:pa_Water");
-    	icon[2] = par1IconRegister.registerIcon("essentialcraft:pa_Earth");
-    	icon[3] = par1IconRegister.registerIcon("essentialcraft:pa_Air");
-    	icon[4] = par1IconRegister.registerIcon("essentialcraft:sa_Fire");
-    	icon[5] = par1IconRegister.registerIcon("essentialcraft:sa_Water");
-    	icon[6] = par1IconRegister.registerIcon("essentialcraft:sa_Earth");
-    	icon[7] = par1IconRegister.registerIcon("essentialcraft:sa_Air");
+    	icon[0] = par1IconRegister.registerIcon("essentialcraft:modular/pa_Fire");
+    	icon[1] = par1IconRegister.registerIcon("essentialcraft:modular/pa_Water");
+    	icon[2] = par1IconRegister.registerIcon("essentialcraft:modular/pa_Earth");
+    	icon[3] = par1IconRegister.registerIcon("essentialcraft:modular/pa_Air");
+    	icon[4] = par1IconRegister.registerIcon("essentialcraft:modular/sa_Fire");
+    	icon[5] = par1IconRegister.registerIcon("essentialcraft:modular/sa_Water");
+    	icon[6] = par1IconRegister.registerIcon("essentialcraft:modular/sa_Earth");
+    	icon[7] = par1IconRegister.registerIcon("essentialcraft:modular/sa_Air");
     	super.registerIcons(par1IconRegister);
     }
     

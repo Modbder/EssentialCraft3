@@ -1,9 +1,14 @@
 package ec3.common.potion;
 
+import baubles.api.BaublesApi;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ec3.common.item.BaublesModifier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -27,7 +32,21 @@ public class PotionRadiation extends Potion{
     {
     	if(!p_76394_1_.worldObj.isRemote && p_76394_1_.worldObj.rand.nextInt(16) < p_76394_2_)
     	{
+			boolean divide = false;
+        	IInventory b = BaublesApi.getBaubles((EntityPlayer) p_76394_1_);
+        	if(b != null)
+        	{
+        		for(int i = 0; i < b.getSizeInventory(); ++i)
+        		{
+        			ItemStack is = b.getStackInSlot(i);
+        			if(is != null && is.getItem() != null && is.getItem() instanceof BaublesModifier && is.getItemDamage() == 11)
+        				divide = true;
+        		}
+        	}
+        	
     		int amplifier = p_76394_2_;
+    		if(divide)
+    			amplifier/=2;
     		int maxHealth = (int) p_76394_1_.getMaxHealth()-(amplifier+1);
     		float currentHealth = p_76394_1_.getHealth();
     		if(maxHealth < 1)

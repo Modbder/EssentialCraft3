@@ -1,6 +1,5 @@
 package ec3.common.block;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,21 +7,17 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import ec3.common.item.ItemBlockElementalCrystal;
 import ec3.common.item.ItemBlockFancy;
 import ec3.common.item.ItemBlockGeneric;
+import ec3.common.item.ItemBlockMithrilineCrystal;
 import ec3.common.item.ItemsCore;
 import ec3.common.mod.EssentialCraftCore;
 import DummyCore.Blocks.BlocksRegistry;
-import DummyCore.Items.ItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import static ec3.utils.cfg.Config.getIdForBlock;
-import static ec3.utils.cfg.Config.getIdForItem;
 
 public class BlocksCore {
 
@@ -148,6 +143,25 @@ public class BlocksCore {
 		magicalDisplay = registerBlockSimple(BlockMagicalDisplay.class,Material.rock,magicalDisplay,"magicalDisplay","magicalDisplay",1,1,0);
 		portal = registerBlockSimple(BlockPortal.class,Material.rock,portal,"portal","portal",-1,-1,1);
 		oreDrops = registerBlockSimple(BlockDropsOre.class,Material.rock,oreDrops,"oreDrops","fortifiedStone",1,1,1);
+		
+		invertedBlock = new BlockConnectedTextures(Material.rock).setTexturePath("invertedPlating").setHardness(4.0F).setResistance(100.0F).setBlockName("essentialcraft.mithrilinePlating").setBlockTextureName("essentialcraft:invertedPlatingBlock");
+		BlocksRegistry.registerBlock(invertedBlock, "invertedPlating", EssentialCraftCore.class, ItemBlockGeneric.class);
+		mithrilineCrystal = new BlockMithrilineCrystal().setBlockName("essentialcraft.mithrilineCrystal").setBlockTextureName("essentialcraft:invertedPlatingBlock").setHardness(1).setResistance(1).setLightOpacity(1);
+		BlocksRegistry.registerBlock(mithrilineCrystal, "mithrilineCrystal", EssentialCraftCore.class, ItemBlockMithrilineCrystal.class);
+		mithrilineFurnace = registerBlockSimple(BlockMithrilineFurnace.class,Material.rock,mithrilineFurnace,"mithrilineFurnace","invertedPlatingBlock",1,1,1);
+	
+		demonicPlating = new BlockConnectedTextures(Material.rock).setTexturePath("demonicPlating").setHardness(3.0F).setResistance(100.0F).setBlockName("essentialcraft.demonicPlating").setBlockTextureName("essentialcraft:demonicPlatingBlock");
+		BlocksRegistry.registerBlock(demonicPlating, "demonicPlating", EssentialCraftCore.class, ItemBlockGeneric.class);
+		playerPentacle = registerBlockSimple(BlockPlayerPentacle.class,Material.rock,playerPentacle,"playerPentacle","playerPentacle",0,0,0);
+		windRune = registerBlockSimple(BlockWindRune.class,Material.rock,windRune,"windRune","windRune",3,10,0);
+		rightClicker = registerBlockSimple(BlockRightClicker.class,Material.rock,rightClicker,"rightClicker","fortifiedStone",1,1,15);
+		redstoneTransmitter = registerBlockSimple(BlockRedstoneTransmitter.class,Material.rock,redstoneTransmitter,"redstoneTransmitter","fortifiedStone",0,0,0);
+		magicalHopper = registerBlockSimple(BlockMagicalHopper.class,Material.rock,magicalHopper,"magicalHopper","fortifiedStone",1,1,15);
+		metadataManager = registerBlockSimple(BlockMetadataManager.class,Material.rock,metadataManager,"metadataManager","fortifiedStone",1,1,15);
+		blockBreaker = registerBlockSimple(BlockBlockBreaker.class,Material.rock,blockBreaker,"blockBreaker","fortifiedStone",1,1,15);
+		compressed = registerBlockSimple(BlockCompressedDrops.class,Material.rock,compressed,"compressed","compressed",0.4F,1,15);
+		demonicPentacle = registerBlockSimple(BlockDemonicPentacle.class,Material.rock,demonicPentacle,"demonicPentacle","demonicPentacle",0,0,0);
+		weaponMaker = registerBlockSimple(BlockWeaponMaker.class,Material.rock,weaponMaker,"weaponMaker","fortifiedStone",1,1,15);
 	}
 	
 	public static void postInitLoad()
@@ -161,6 +175,8 @@ public class BlocksCore {
 		createFancyBlock(Material.rock,"magicPlating","magicPlating",2F,8,new ItemStack(magicPlating));
 		createFancyBlock(Material.rock,"palePlating","palePlating",2F,8,new ItemStack(platingPale));
 		createFancyBlock(Material.rock,"voidStone","voidStone",3F,28,new ItemStack(voidStone));
+		createFancyBlock(Material.rock,"mithrilinePlating","mithrilinePlating",3F,100,new ItemStack(invertedBlock));
+		createFancyBlock(Material.rock,"demonicPlating","demonicPlating",3F,100,new ItemStack(demonicPlating));
 	}
 	
 	public static Block registerBlockSimple(Class<? extends Block> c,Material m,Block b, String name, String texture, float hardness, float resistance, int opacity)
@@ -493,6 +509,20 @@ public class BlocksCore {
 	public static Block magicalDisplay;
 	public static Block portal;
 	public static Block oreDrops;
+	public static Block invertedBlock;
+	public static Block mithrilineCrystal;
+	public static Block mithrilineFurnace;
+	public static Block demonicPlating;
+	public static Block playerPentacle;
+	public static Block windRune;
+	public static Block rightClicker;
+	public static Block redstoneTransmitter;
+	public static Block magicalHopper;
+	public static Block metadataManager;
+	public static Block blockBreaker;
+	public static Block compressed;
+	public static Block demonicPentacle;
+	public static Block weaponMaker;
 	
 	public static List<Block> fancyBlocks = new ArrayList<Block>();
 	

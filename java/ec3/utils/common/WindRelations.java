@@ -1,20 +1,18 @@
 package ec3.utils.common;
 
-import java.util.Hashtable;
-import java.util.Random;
-
+import baubles.api.BaublesApi;
+import ec3.api.IWindModifier;
+import ec3.api.IWindResistance;
+import ec3.common.item.BaublesModifier;
 import ec3.common.item.ItemsCore;
-import ec3.common.registry.BiomeRegistry;
 import ec3.common.registry.PotionRegistry;
-import DummyCore.Utils.DummyDataUtils;
-import DummyCore.Utils.MathUtils;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.FakePlayer;
 
 public class WindRelations {
@@ -22,15 +20,7 @@ public class WindRelations {
 	public static int getPlayerWindRelations(EntityPlayer player)
 	{
 		if((player instanceof FakePlayer)) return 0;
-		String str = DummyDataUtils.getDataForPlayer(player.getDisplayName(), "essentialcraft", "windRelations");
-		if(str == null || str.isEmpty() || str.equals("no data") || str.equals("empty string") || str.equals("empty"))
-		{
-				DummyDataUtils.setDataForPlayer(player.getDisplayName(), "essentialcraft", "windRelations", Integer.toString(0));
-		}
-		
-		str = DummyDataUtils.getDataForPlayer(player.getDisplayName(), "essentialcraft", "windRelations");
-		int retInt = Integer.parseInt(str);
-		return retInt;
+		return ECUtils.getData(player).getPlayerWindPoints();
 	}
 	
 	public static float getPlayerWindRevModifier(EntityPlayer player)
@@ -45,34 +35,31 @@ public class WindRelations {
 				{
 					retFlt += 0.23F;
 				}
+				if(armor.getItem() instanceof IWindModifier)
+				{
+					retFlt += ((IWindModifier)armor.getItem()).getModifier(armor, player);
+				}
+			}
+		}
+		if(BaublesApi.getBaubles(player) != null)
+		for(int i = 0; i < BaublesApi.getBaubles(player).getSizeInventory(); ++i)
+		{
+			ItemStack armor = BaublesApi.getBaubles(player).getStackInSlot(i);
+			if(armor != null)
+			{
+				if(armor.getItem() instanceof IWindModifier)
+				{
+					retFlt += ((IWindModifier)armor.getItem()).getModifier(armor, player);
+				}
 			}
 		}
 		return retFlt;
 	}
 	
-	public static int getPlayerRadiation(EntityPlayer player)
-	{
-		if((player instanceof FakePlayer)) return 0;
-		String str = DummyDataUtils.getDataForPlayer(player.getDisplayName(), "essentialcraft", "radiation");
-		if(str == null || str.isEmpty() || str.equals("no data") || str.equals("empty string") || str.equals("empty"))
-		{
-			DummyDataUtils.setDataForPlayer(player.getDisplayName(), "essentialcraft", "radiation", Integer.toString(0));
-		}
-		str = DummyDataUtils.getDataForPlayer(player.getDisplayName(), "essentialcraft", "radiation");
-		int retInt = Integer.parseInt(str);
-		return retInt;
-	}
-	
 	public static void setPlayerWindRelations(EntityPlayer player, int amount)
 	{
 		if(!(player instanceof FakePlayer))
-			DummyDataUtils.setDataForPlayer(player.getDisplayName(), "essentialcraft", "windRelations", Integer.toString(amount));
-	}
-	
-	public static void setPlayerRadiation(EntityPlayer player, int amount)
-	{
-		if(!(player instanceof FakePlayer))
-			DummyDataUtils.setDataForPlayer(player.getDisplayName(), "essentialcraft", "radiation", Integer.toString(amount));
+			ECUtils.getData(player).modifyWindpoints(amount);
 	}
 	
 	public static void increasePlayerWindRelations(EntityPlayer e, int amount)
@@ -83,82 +70,108 @@ public class WindRelations {
 		e.addPotionEffect(new PotionEffect(PotionRegistry.windTouch.id,1000,0,true));
 	}
 	
-	public static void increasePlayerRadiation(EntityPlayer e, int amount)
-	{
-		int current = getPlayerRadiation(e);
-		setPlayerRadiation(e, current+amount);
-	}
-	
 	public static void playerTick(EntityPlayer player)
 	{
-		if((player instanceof FakePlayer)) return;
-		int dimID = player.dimension;
-		if(dimID == 53)
+		if(player instanceof FakePlayer) return;
+		if(!ECUtils.getData(player).isWindbound()) return;
+		
+		int mod = 1;
+		if(player.getActivePotionEffect(PotionRegistry.paranormalLightness) != null) 
+			mod = player.getActivePotionEffect(PotionRegistry.paranormalLightness).getAmplifier()+1;
+		
+		if(!player.worldObj.isRemote && player.worldObj.rand.nextDouble() < (0.00001F)*mod)
 		{
-			int chunkX = player.chunkCoordX;
-			int chunkZ = player.chunkCoordZ;
-			Random rnd = new Random(Long.parseLong((int)MathUtils.module(chunkX)*128+""+(int)MathUtils.module(chunkZ)*128));
-			BiomeGenBase biome = player.worldObj.getBiomeGenForCoords((int)player.posX, (int)player.posZ);
-			int rndRad = rnd.nextInt(6);
-			if(biome == BiomeRegistry.firstWorldBiomeArray[8])
-				rndRad += 2;
-			if(biome == BiomeRegistry.firstWorldBiomeArray[4])
-				rndRad += 6;
-			rndRad = (int) ((float)rndRad * ECUtils.getGenResistance(2, player));
-			increasePlayerRadiation(player,rndRad);
-			rnd = null;
+			
+			increasePlayerWindRelations(player,1000);
+			boolean elemental = false;
+	       	IInventory b = BaublesApi.getBaubles(player);
+	       	if(b != null)
+	       	{
+	       		for(int i = 0; i < b.getSizeInventory(); ++i)
+	       		{
+	       			ItemStack is = b.getStackInSlot(i);
+	       			if(is != null && is.getItem() != null && is.getItem() instanceof BaublesModifier && is.getItemDamage() == 9)
+	       				elemental = true;
+	       		}
+	       	}
+	       	if(!elemental)
+	       		player.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA+""+EnumChatFormatting.ITALIC+"The wind timidly touches your hair..."));
+	       	else
+	       	{
+	       		int rndID = player.worldObj.rand.nextInt(4);
+	       		//Fire
+	       		if(rndID == 0)
+	       		{
+	       			player.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA+""+EnumChatFormatting.ITALIC+"You feel a warm touch of the wind..."));
+	       			player.addPotionEffect(new PotionEffect(Potion.damageBoost.getId(),6*60*20,1,true));
+	       		}
+	       		//Water
+	       		if(rndID == 1)
+	       		{
+	       			player.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA+""+EnumChatFormatting.ITALIC+"You feel a chilling touch of the wind..."));
+	       			player.addPotionEffect(new PotionEffect(Potion.regeneration.getId(),2*60*20,0,true));
+	       		}
+	       		//Earth
+	       		if(rndID == 2)
+	       		{
+	       			player.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA+""+EnumChatFormatting.ITALIC+"You feel a strong push of the wind..."));
+	       			player.addPotionEffect(new PotionEffect(Potion.field_76443_y.getId(),2*60*20,0,true));
+	       		}
+	       		//Air
+	       		if(rndID == 2)
+	       		{
+	       			player.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA+""+EnumChatFormatting.ITALIC+"You feel a strong blow of the wind..."));
+	       			player.addPotionEffect(new PotionEffect(Potion.digSpeed.getId(),6*60*20,1,true));
+	       		}
+	       	}
 		}
-		String str1 = DummyDataUtils.getDataForPlayer(player.getDisplayName(), "essentialcraft", "radiation");
-		if(str1 == null || str1.isEmpty() || str1.equals("no data") || str1.equals("empty string") || str1.equals("empty"))
+		if(!player.worldObj.isRemote && player.worldObj.rand.nextDouble() < 0.00005F*mod)
 		{
-			DummyDataUtils.setDataForPlayer(player.getDisplayName(), "essentialcraft", "radiation", Integer.toString(0));
-		}else
-		{
-			int amount = getPlayerRadiation(player);
-			if(amount > 0)
-				if(player.dimension == 53)
-					increasePlayerRadiation(player,-1);
-				else
-					increasePlayerRadiation(player,-5);
-			if(amount > 0)
+			if(player.isSprinting())
 			{
-				boolean hasEffect = player.getActivePotionEffect(PotionRegistry.radiation) != null;
-				if(hasEffect)
-				{
-					int currentDuration = amount;
-					int newModifier = currentDuration/10000;
-					player.removePotionEffect(PotionRegistry.radiation.id);
-					player.addPotionEffect(new PotionEffect(PotionRegistry.radiation.id,currentDuration,newModifier,true));
-				}else
-				{
-					player.addPotionEffect(new PotionEffect(PotionRegistry.radiation.id,200,0,true));
-				}
-			}
-		}
-		String str = DummyDataUtils.getDataForPlayer(player.getDisplayName(), "essentialcraft", "windRelations");
-		if(str == null || str.isEmpty() || str.equals("no data") || str.equals("empty string") || str.equals("empty"))
-		{
-			DummyDataUtils.setDataForPlayer(player.getDisplayName(), "essentialcraft", "windRelations", Integer.toString(0));
-		}else
-		{
-			int current = getPlayerWindRelations(player);
-			int mod = 1;
-			if(player.getActivePotionEffect(PotionRegistry.paranormalLightness) != null) mod = player.getActivePotionEffect(PotionRegistry.paranormalLightness).getAmplifier()+1;
-			if(!player.worldObj.isRemote && player.worldObj.rand.nextDouble() < (0.00001F)*mod)
-			{
-				player.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA+""+EnumChatFormatting.ITALIC+"The wind timidly touches your hair..."));
+				player.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA+""+EnumChatFormatting.ITALIC+"The wind pushes you in the back..."));
 				increasePlayerWindRelations(player,1000);
-			}
-			if(!player.worldObj.isRemote && player.worldObj.rand.nextDouble() < 0.00005F*mod)
-			{
-				if(player.isSprinting())
+				boolean addBuff = true;
+				
+				if(BaublesApi.getBaubles(player) != null)
 				{
-					player.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA+""+EnumChatFormatting.ITALIC+"The wind pushes you in the back..."));
-					increasePlayerWindRelations(player,1000);
-					player.addPotionEffect(new PotionEffect(Potion.moveSpeed.id,20,31));
+					for(int i = 0; i < BaublesApi.getBaubles(player).getSizeInventory(); ++i)
+					{
+						if(BaublesApi.getBaubles(player).getStackInSlot(i) != null)
+						{
+							if(BaublesApi.getBaubles(player).getStackInSlot(i).getItem() != null)
+							{
+								if(BaublesApi.getBaubles(player).getStackInSlot(i).getItem() instanceof IWindResistance)
+								{
+									if(addBuff)
+										addBuff = !((IWindResistance)BaublesApi.getBaubles(player).getStackInSlot(i).getItem()).resistWind(player, BaublesApi.getBaubles(player).getStackInSlot(i));
+								}
+							}
+						}
+					}
 				}
+				
+				if(player.inventory != null)
+				{
+					for(int i = 0; i < player.inventory.armorInventory.length; ++i)
+					{
+						if(player.inventory.armorInventory[i] != null)
+						{
+							if(player.inventory.armorInventory[i].getItem() != null)
+							{
+								if(player.inventory.armorInventory[i].getItem() instanceof IWindResistance)
+								{
+									if(addBuff)
+										addBuff = !((IWindResistance)player.inventory.armorInventory[i].getItem()).resistWind(player, BaublesApi.getBaubles(player).getStackInSlot(i));
+								}
+							}
+						}
+					}
+				}
+				
+				if(addBuff)
+					player.addPotionEffect(new PotionEffect(Potion.moveSpeed.id,20,31));
 			}
 		}
 	}
-
 }

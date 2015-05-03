@@ -1,11 +1,15 @@
 package ec3.common.potion;
 
+import baubles.api.BaublesApi;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ec3.common.item.BaublesModifier;
 import ec3.utils.common.ECUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -33,9 +37,22 @@ public class PotionMRUCorruption extends Potion{
     		if(p_76394_1_ instanceof EntityPlayer)
     		{
     			damIndex *= ECUtils.getGenResistance(0, (EntityPlayer) p_76394_1_);
+				boolean heal = false;
+	        	IInventory b = BaublesApi.getBaubles((EntityPlayer) p_76394_1_);
+	        	if(b != null)
+	        	{
+	        		for(int i = 0; i < b.getSizeInventory(); ++i)
+	        		{
+	        			ItemStack is = b.getStackInSlot(i);
+	        			if(is != null && is.getItem() != null && is.getItem() instanceof BaublesModifier && is.getItemDamage() == 10)
+	        				heal = true;
+	        		}
+	        	}
+	        	if(!heal)
+	        		p_76394_1_.attackEntityFrom(DamageSource.magic, damIndex);
+	        	else
+	        		p_76394_1_.heal(damIndex);
     		}
-    		
-    		p_76394_1_.attackEntityFrom(DamageSource.magic, damIndex);
     	}
     }
     
@@ -58,7 +75,6 @@ public class PotionMRUCorruption extends Potion{
     }
     
     
-    private int statusIconIndex;
     static final ResourceLocation rl = new ResourceLocation("essentialcraft", "textures/special/potions.png");
 
 }

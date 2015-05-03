@@ -5,7 +5,6 @@ import java.util.UUID;
 import net.minecraft.tileentity.TileEntity;
 import ec3.api.EnumStructureType;
 import ec3.api.IStructurePiece;
-import ec3.api.ITERequiresMRU;
 
 public class TileecBalancer extends TileEntity implements IStructurePiece{
 	public TileecController controller;
@@ -13,13 +12,11 @@ public class TileecBalancer extends TileEntity implements IStructurePiece{
 	
 	@Override
 	public EnumStructureType getStructure() {
-		// TODO Auto-generated method stub
 		return EnumStructureType.MRUCUContaigementChamber;
 	}
 
 	@Override
 	public TileEntity structureController() {
-		// TODO Auto-generated method stub
 		return controller;
 	}
 

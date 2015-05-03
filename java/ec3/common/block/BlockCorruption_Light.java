@@ -1,15 +1,12 @@
 package ec3.common.block;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import ec3.common.item.ItemsCore;
 import ec3.common.tile.TileCorruption;
 import ec3.network.proxy.ClientProxy;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -20,7 +17,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.event.ForgeEventFactory;
 
 public class BlockCorruption_Light extends BlockContainer{
 	
@@ -56,7 +52,8 @@ public class BlockCorruption_Light extends BlockContainer{
         return 2634;
     }
     
-    @SideOnly(Side.CLIENT)
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	@SideOnly(Side.CLIENT)
     public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List p_149666_3_)
     {
     	for(int i = 0; i < 8; ++i)

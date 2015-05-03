@@ -2,7 +2,6 @@ package ec3.client.regular;
 
 import org.lwjgl.opengl.GL11;
 
-import ec3.utils.common.ECUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntitySmokeFX;
 import net.minecraft.client.renderer.Tessellator;
@@ -13,12 +12,17 @@ public class SmokeFX extends EntitySmokeFX{
     private static final ResourceLocation particleTextures = new ResourceLocation("textures/particle/particles.png");
     private static final ResourceLocation ecparticleTextures = new ResourceLocation("essentialcraft","textures/special/particles.png");
     
-	public SmokeFX(World p_i1226_1_, double p_i1226_2_, double p_i1226_4_,
-			double p_i1226_6_, double p_i1226_8_, double p_i1226_10_,
-			double p_i1226_12_, float p_i1226_14_) {
-		super(p_i1226_1_, p_i1226_2_, p_i1226_4_, p_i1226_6_, p_i1226_8_, p_i1226_10_,
-				p_i1226_12_, p_i1226_14_);
-		// TODO Auto-generated constructor stub
+	public SmokeFX(World w, double x, double y,	double z, double mX, double mY,	double mZ, float scale)
+	{
+		super(w, x, y, z, mX, mY,mZ, scale);
+	}
+	
+	public SmokeFX(World w, double x, double y,	double z, double mX, double mY,	double mZ, float scale, double r, double g, double b)
+	{
+		super(w, x, y, z, mX, mY,mZ, scale);
+		this.particleRed = (float) r;
+		this.particleGreen = (float) g;
+		this.particleBlue = (float) b;
 	}
 	
 	public void renderParticle(Tessellator var3, float par2, float par3, float par4, float par5, float par6, float par7)

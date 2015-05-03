@@ -3,9 +3,12 @@ package ec3.common.item;
 import java.util.List;
 
 import DummyCore.Utils.DummyDataUtils;
+import DummyCore.Utils.MiscUtils;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
+import ec3.api.IItemRequiresMRU;
 import ec3.utils.common.ECUtils;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -24,6 +27,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -32,13 +36,70 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
-public class ItemChaosFork extends ItemStoresMRUInNBT {
+public class ItemChaosFork extends ItemSword implements IItemRequiresMRU {
 
 	public ItemChaosFork() {
-		super();	
+		super(ItemsCore.elemental);	
 		this.setMaxMRU(5000);
 		this.maxStackSize = 1;
 		this.bFull3D = true;
+		this.setMaxDamage(0);
+	}
+	
+	int maxMRU = 5000;
+	
+	public Item setMaxMRU(int max)
+	{
+		maxMRU = max;
+		return this;
+	}
+	
+	@Override
+	public boolean setMRU(ItemStack stack, int amount) {
+		if(MiscUtils.getStackTag(stack).getInteger("mru")+amount >= 0 && MiscUtils.getStackTag(stack).getInteger("mru")+amount<=MiscUtils.getStackTag(stack).getInteger("maxMRU"))
+		{
+			MiscUtils.getStackTag(stack).setInteger("mru", MiscUtils.getStackTag(stack).getInteger("mru")+amount);
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public int getMRU(ItemStack stack) {
+		// TODO Auto-generated method stub
+		return MiscUtils.getStackTag(stack).getInteger("mru");
+	}
+	
+    public boolean isItemTool(ItemStack p_77616_1_)
+    {
+    	return true;
+    }
+    
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
+    {
+    	super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
+    	par3List.add(ECUtils.getStackTag(par1ItemStack).getInteger("mru") + "/" + ECUtils.getStackTag(par1ItemStack).getInteger("maxMRU") + " MRU");
+    }
+	
+    @Override
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    {
+        for (int var4 = 0; var4 < 1; ++var4)
+        {
+        	ItemStack min = new ItemStack(par1, 1, 0);
+        	ECUtils.initMRUTag(min, maxMRU);
+        	ItemStack max = new ItemStack(par1, 1, 0);
+        	ECUtils.initMRUTag(max, maxMRU);
+        	ECUtils.getStackTag(max).setInteger("mru", ECUtils.getStackTag(max).getInteger("maxMRU"));
+            par3List.add(min);
+            par3List.add(max);
+        }
+    }
+    
+	@Override
+	public int getMaxMRU(ItemStack stack) {
+		// TODO Auto-generated method stub
+		return this.maxMRU;
 	}
 	
 	@Override
@@ -64,35 +125,32 @@ public class ItemChaosFork extends ItemStoresMRUInNBT {
     	try {
 			if(p_77644_3_ instanceof EntityPlayer)
 			{
+				EntityPlayer player = (EntityPlayer) p_77644_3_;
 			    if((ECUtils.tryToDecreaseMRUInStorage((EntityPlayer) p_77644_3_, -250) || this.setMRU(p_77644_1_, -250)))
 			    {
 			    	String username = ((EntityPlayer) p_77644_3_).getDisplayName();
-			    	String attunement = DummyDataUtils.getDataForPlayer(username, "essentialcraft", "attunement");
-					if(attunement != null && !attunement.isEmpty() && !attunement.equals("no data") && !attunement.equals("empty string") && !attunement.equals("empty"))
+					int att = ECUtils.getData(player).getMatrixTypeID();
+					if(att == 1)
 					{
-						int att = Integer.parseInt(attunement);
-						if(att == 1)
+						PotionEffect eff = p_77644_2_.getActivePotionEffect(Potion.digSlowdown);
+						if(eff != null && p_77644_2_.hurtResistantTime == 0 || p_77644_2_.hurtResistantTime >= 15 && eff != null)
 						{
-							PotionEffect eff = p_77644_2_.getActivePotionEffect(Potion.digSlowdown);
-							if(eff != null && p_77644_2_.hurtResistantTime == 0 || p_77644_2_.hurtResistantTime >= 15 && eff != null)
+							int buffLevel = eff.getAmplifier();
+							p_77644_2_.addPotionEffect(new PotionEffect(Potion.digSlowdown.id,100,eff.getAmplifier()+1));
+							p_77644_3_.addPotionEffect(new PotionEffect(Potion.damageBoost.id,100,buffLevel));
+							return true;
+						}
+						else
+						{
+							if(p_77644_2_.hurtResistantTime == 0 || p_77644_2_.hurtResistantTime >= 15)
 							{
-								int buffLevel = eff.getAmplifier();
-								p_77644_2_.addPotionEffect(new PotionEffect(Potion.digSlowdown.id,100,eff.getAmplifier()+1));
+								int buffLevel = 0;
+								p_77644_2_.addPotionEffect(new PotionEffect(Potion.digSlowdown.id,100,0));
 								p_77644_3_.addPotionEffect(new PotionEffect(Potion.damageBoost.id,100,buffLevel));
 								return true;
 							}
-							else
-							{
-								if(p_77644_2_.hurtResistantTime == 0 || p_77644_2_.hurtResistantTime >= 15)
-								{
-									int buffLevel = 0;
-									p_77644_2_.addPotionEffect(new PotionEffect(Potion.digSlowdown.id,100,0));
-									p_77644_3_.addPotionEffect(new PotionEffect(Potion.damageBoost.id,100,buffLevel));
-									return true;
-								}
-							}
-							
 						}
+						
 					}
 			    }
 			}
@@ -104,7 +162,7 @@ public class ItemChaosFork extends ItemStoresMRUInNBT {
     
     public Multimap getItemAttributeModifiers()
     {
-        Multimap multimap = super.getItemAttributeModifiers();
+        Multimap multimap = HashMultimap.create();
         multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Weapon modifier", 6, 0));
         return multimap;
     }

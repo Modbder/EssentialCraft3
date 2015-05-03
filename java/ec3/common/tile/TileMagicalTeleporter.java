@@ -1,35 +1,25 @@
 package ec3.common.tile;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.util.Iterator;
 import java.util.List;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
 import ec3.api.ApiCore;
 import ec3.api.ITEHasMRU;
 import ec3.common.block.BlocksCore;
 import ec3.common.item.ItemBoundGem;
 import ec3.common.mod.EssentialCraftCore;
 import ec3.utils.common.ECUtils;
-import DummyCore.Utils.Coord3D;
 import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
-import DummyCore.Utils.ITEHasGameData;
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
-import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.play.server.S07PacketRespawn;
 import net.minecraft.network.play.server.S1DPacketEntityEffect;
 import net.minecraft.potion.PotionEffect;
@@ -38,10 +28,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.config.Configuration;
 
 public class TileMagicalTeleporter extends TileMRUGeneric
@@ -112,7 +100,7 @@ public class TileMagicalTeleporter extends TileMRUGeneric
         		{
         			ItemStack s = new ItemStack(this.worldObj.getBlock(xCoord+x, yCoord, zCoord+z),this.worldObj.getBlockMetadata(xCoord+x, yCoord, zCoord+z),1);
         			ItemStack c = new ItemStack(BlocksCore.magicPlating,0,1);
-        			flag = s.areItemStacksEqual(s, c);
+        			flag = ItemStack.areItemStacksEqual(s, c);
         			if(!flag)
         			{
         				return false;
@@ -182,7 +170,7 @@ public class TileMagicalTeleporter extends TileMRUGeneric
     			        p_72356_1_.theItemInWorldManager.setWorld(worldserver1);
     			        mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(p_72356_1_, worldserver1);
     			        mcServer.getConfigurationManager().syncPlayerInventory(p_72356_1_);
-    			        Iterator iterator = p_72356_1_.getActivePotionEffects().iterator();
+    			        Iterator<?> iterator = p_72356_1_.getActivePotionEffects().iterator();
 
     			        while (iterator.hasNext())
     			        {
@@ -213,10 +201,6 @@ public class TileMagicalTeleporter extends TileMRUGeneric
         double moveFactor = pOld.getMovementFactor() / pNew.getMovementFactor();
         double d0 = p_82448_1_.posX * moveFactor;
         double d1 = p_82448_1_.posZ * moveFactor;
-        double d3 = p_82448_1_.posX;
-        double d4 = p_82448_1_.posY;
-        double d5 = p_82448_1_.posZ;
-        float f = p_82448_1_.rotationYaw;
         p_82448_3_.theProfiler.startSection("moving");
         if (p_82448_1_.dimension == 1)
         {
@@ -278,7 +262,8 @@ public class TileMagicalTeleporter extends TileMRUGeneric
     	return ret;
     }
     
-    public EntityPlayer getPlayer()
+    @SuppressWarnings("unchecked")
+	public EntityPlayer getPlayer()
     {
     	List<EntityPlayer> l = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord+1, yCoord+2, zCoord+1));
     	if(!l.isEmpty())
@@ -288,7 +273,8 @@ public class TileMagicalTeleporter extends TileMRUGeneric
     	return null;
     }
     
-    public boolean hasPlayer()
+    @SuppressWarnings("unchecked")
+	public boolean hasPlayer()
     {
     	List<EntityPlayer> l = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord+1, yCoord+2, zCoord+1));
     	if(!l.isEmpty())

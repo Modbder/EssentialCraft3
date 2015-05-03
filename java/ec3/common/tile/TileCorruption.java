@@ -2,9 +2,7 @@ package ec3.common.tile;
 
 import java.util.List;
 
-import ec3.api.ApiCore;
 import ec3.common.block.BlocksCore;
-import ec3.common.mod.EssentialCraftCore;
 import ec3.common.registry.BiomeRegistry;
 import ec3.common.registry.PotionRegistry;
 import ec3.utils.common.ECUtils;
@@ -64,7 +62,8 @@ public class TileCorruption extends TileEntity
     	}
     }
     
-    public void updateEntity()
+    @SuppressWarnings("unchecked")
+	public void updateEntity()
     {
     	try {
 			super.updateEntity();

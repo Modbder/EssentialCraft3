@@ -2,13 +2,6 @@ package ec3.client.gui;
 
 import DummyCore.Client.GuiCommon;
 import DummyCore.Utils.MiscUtils;
-import ec3.api.ITEHasMRU;
-import ec3.client.gui.element.GuiBalanceState;
-import ec3.client.gui.element.GuiHeightState;
-import ec3.client.gui.element.GuiMRUGenerated;
-import ec3.client.gui.element.GuiMRUState;
-import ec3.client.gui.element.GuiMRUStorage;
-import ec3.client.gui.element.GuiMoonState;
 import ec3.common.tile.TileAMINEjector;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.inventory.Container;
@@ -21,7 +14,8 @@ public class GuiAMINEjector extends GuiCommon{
 		super(c,tile);
 	}
 	
-    public void initGui()
+    @SuppressWarnings("unchecked")
+	public void initGui()
     {
         super.initGui();
 	    int k = (this.width - this.xSize) / 2;

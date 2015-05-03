@@ -3,18 +3,14 @@ package ec3.api;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class ShapedAssemblerRecipe implements IRecipe {
 
@@ -165,7 +161,8 @@ public class ShapedAssemblerRecipe implements IRecipe {
         return false;
     }
 
-    private boolean checkMatch(InventoryCrafting inv, int startX, int startY, boolean mirror)
+    @SuppressWarnings("unchecked")
+	private boolean checkMatch(InventoryCrafting inv, int startX, int startY, boolean mirror)
     {
         for (int x = 0; x < 3; x++)
         {

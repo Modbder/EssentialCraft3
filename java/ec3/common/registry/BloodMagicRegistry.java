@@ -16,7 +16,7 @@ public class BloodMagicRegistry {
 	{
 		try
 		{
-			Class bmApiRegistry = Class.forName("WayofTime.alchemicalWizardry.api.altarRecipeRegistry.AltarRecipeRegistry");
+			Class<?> bmApiRegistry = Class.forName("WayofTime.alchemicalWizardry.api.altarRecipeRegistry.AltarRecipeRegistry");
 			Method registerNBTAltarRecipe = bmApiRegistry.getMethod("registerNBTAltarRecipe", ItemStack.class, ItemStack.class, int.class, int.class, int.class, int.class, boolean.class);
 			ItemStack emptySoulStone = new ItemStack(ItemsCore.soulStone,1,0);
 			ItemStack filledSoulStone = new ItemStack(ItemsCore.soulStone,1,0);

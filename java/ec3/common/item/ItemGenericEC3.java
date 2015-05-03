@@ -1,27 +1,20 @@
 package ec3.common.item;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import DummyCore.Utils.DummyDataUtils;
+import baubles.api.BaublesApi;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import ec3.common.registry.PotionRegistry;
-import ec3.common.world.WorldGenElderMRUCC;
-import ec3.network.proxy.ClientProxy;
-import ec3.utils.common.ECUtils;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.EntityRenderer;
+import ec3.api.ApiCore;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.client.shader.ShaderGroup;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
@@ -71,7 +64,18 @@ public class ItemGenericEC3 extends Item{
 		"palePlate", //41
 		"paleCore", //42
 		"mruMagnet", //43
-		"mruResonatingCrystal" //44
+		"mruResonatingCrystal", //44
+		"lapisCore", //45
+		"fadingDust", //46
+		"fadingCrystal", //47
+		"mithrilineCrystal", //48
+		"mithrilinePlate", //49
+		"mithrilineIngot", //50
+		"mithrilineDust", //51
+		"ackroniteIngot", //52
+		"demonicCore", //53
+		"demonicPlate", //54
+		"windGem" //55
 		};
 	public static IIcon[] itemIcons = new IIcon[128];
 	
@@ -81,6 +85,11 @@ public class ItemGenericEC3 extends Item{
 		this.setHasSubtypes(true);
 	}
 	
+    public ItemStack getContainerItem(ItemStack itemStack)
+    {
+    		return super.getContainerItem(itemStack);
+    }
+	
     public ItemStack onEaten(ItemStack p_77654_1_, World p_77654_2_, EntityPlayer base)
     {
         if (!base.capabilities.isCreativeMode)
@@ -88,16 +97,21 @@ public class ItemGenericEC3 extends Item{
             --p_77654_1_.stackSize;
         }
 
-        if (!p_77654_2_.isRemote)
+        if (!p_77654_2_.isRemote && p_77654_1_.getItemDamage() == 6)
         {
-        	String currentEnergy = DummyDataUtils.getDataForPlayer(((EntityPlayer) base).getDisplayName(),"essentialcraft", "ubmruEnergy");
-        	int addedEnergy = 500;
-			if(currentEnergy != null && !currentEnergy.isEmpty() && !currentEnergy.equals("no data") && !currentEnergy.equals("empty string") && !currentEnergy.equals("empty"))
-			{
-				int currentEnergy_int = Integer.parseInt(currentEnergy);
-				addedEnergy += currentEnergy_int;
-			}
-			DummyDataUtils.setDataForPlayer(base.getDisplayName(), "essentialcraft", "ubmruEnergy", Integer.toString(addedEnergy));
+        	int addedEnergy = 0;
+        	IInventory b = BaublesApi.getBaubles(base);
+        	if(b != null)
+        	{
+        		for(int i = 0; i < b.getSizeInventory(); ++i)
+        		{
+        			ItemStack is = b.getStackInSlot(i);
+        			if(is != null && is.getItem() != null && is.getItem() instanceof BaublesModifier && is.getItemDamage() == 8)
+        				addedEnergy = 500;
+        		}
+        	}
+        	int current = ApiCore.getPlayerData(base).getPlayerUBMRU();
+        	ApiCore.getPlayerData(base).modifyUBMRU(current+addedEnergy);
         }else
         {
 
@@ -115,7 +129,8 @@ public class ItemGenericEC3 extends Item{
         return EnumAction.drink;
     }
     
-    public static ItemStack getStkByName(String name)
+    @SuppressWarnings("rawtypes")
+	public static ItemStack getStkByName(String name)
     {
     	List lst = Arrays.asList(names);
     	if(lst.contains(name))
@@ -142,16 +157,17 @@ public class ItemGenericEC3 extends Item{
     {
         super.registerIcons(p_94581_1_);
         for(int i = 0; i < names.length; ++i)
-        	itemIcons[i] = p_94581_1_.registerIcon("essentialcraft:"+names[i]);
+        	itemIcons[i] = p_94581_1_.registerIcon("essentialcraft:misc/"+names[i]);
     }
     
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int i)
     {
-        return this.itemIcons[i];
+        return itemIcons[i];
     }
     
-    @SideOnly(Side.CLIENT)
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	@SideOnly(Side.CLIENT)
     public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List p_150895_3_)
     {
         for(int i = 0; i < names.length; ++i)

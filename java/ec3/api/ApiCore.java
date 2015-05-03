@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
-import DummyCore.Utils.DummyDataUtils;
 import DummyCore.Utils.DummyDistance;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -32,33 +31,45 @@ public class ApiCore {
 	
 	public static Hashtable<Item, ArrayList<Float>> reductionsTable = new Hashtable<Item, ArrayList<Float>>();
 	
-	public static List<CategoryEntry> categories = new ArrayList();
+	public static List<CategoryEntry> categories = new ArrayList<CategoryEntry>();
 	
-	public static Hashtable<String, DiscoveryEntry> discoveriesByIS = new Hashtable();
+	public static Hashtable<String, DiscoveryEntry> discoveriesByIS = new Hashtable<String, DiscoveryEntry>();
 	
-	public static int getubmru(EntityPlayer p)
+	public static IPlayerData getPlayerData(EntityPlayer p)
 	{
-		String currentEnergy = DummyDataUtils.getDataForPlayer(p.getCommandSenderName(), "essentialcraft", "ubmruEnergy");
-		if(currentEnergy != null && !currentEnergy.isEmpty() && !currentEnergy.equals("no data") && !currentEnergy.equals("empty string") && !currentEnergy.equals("empty"))
+		try
 		{
-			return Integer.parseInt(currentEnergy);
+			Class<?> ecUtilsClass = Class.forName("ec3.utils.common.ECUtils");
+			Method getData = ecUtilsClass.getMethod("getData", EntityPlayer.class);
+			return IPlayerData.class.cast(getData.invoke(null, p));
+			
+		}catch(Exception e)
+		{
+			return null;
 		}
-		return 0;
 	}
 	
+	@Deprecated
+	public static int getubmru(EntityPlayer p)
+	{
+		return getPlayerData(p).getPlayerUBMRU();
+	}
+	
+	@Deprecated
 	public static void setubmru(EntityPlayer p, int amount)
 	{
 		if(!(p instanceof FakePlayer))
-			DummyDataUtils.setDataForPlayer(p.getCommandSenderName(), "essentialcraft", "ubmruEnergy", Integer.toString(amount));
+			getPlayerData(p).modifyUBMRU(amount);
 	}
 	
 	
 	
+	@SuppressWarnings("unchecked")
 	public static void registerBlockInAStructure(EnumStructureType structure, Block registered)
 	{
 		try
 		{
-			Class ecUtilsClass = Class.forName("ec3.utils.common.ECUtils");
+			Class<?> ecUtilsClass = Class.forName("ec3.utils.common.ECUtils");
 			Field hashTableFld = ecUtilsClass.getDeclaredField("allowedBlocks");
 			hashTableFld.setAccessible(true);
 			Hashtable<EnumStructureType,List<Block>> hashMap = (Hashtable<EnumStructureType, List<Block>>) hashTableFld.get(null);
@@ -76,7 +87,7 @@ public class ApiCore {
 	{
 		try
 		{
-			Class ecUtilsClass = Class.forName("ec3.utils.common.ECUtils");
+			Class<?> ecUtilsClass = Class.forName("ec3.utils.common.ECUtils");
 			Method regBlk = ecUtilsClass.getMethod("registerBlockResistance", Block.class,int.class,float.class);
 			regBlk.setAccessible(true);
 			regBlk.invoke(null,registered,metadata,resistance);
@@ -89,7 +100,6 @@ public class ApiCore {
 	public static DiscoveryEntry findDiscoveryByIS(ItemStack referal)
 	{
 		if(referal == null)return null;
-		int stk = referal.stackSize;
 		referal.stackSize = 0;
 		return ApiCore.discoveriesByIS.get(referal.toString());
 	}
@@ -112,7 +122,7 @@ public class ApiCore {
 	{
 		try
 		{
-			Class ecUtilsClass = Class.forName("ec3.utils.common.ECUtils");
+			Class<?> ecUtilsClass = Class.forName("ec3.utils.common.ECUtils");
 			Method tryToDecreaseMRUInStorage = ecUtilsClass.getMethod("tryToDecreaseMRUInStorage", EntityPlayer.class,int.class);
 			return Boolean.parseBoolean(tryToDecreaseMRUInStorage.invoke(null, player,-amount).toString());
 		}
@@ -126,7 +136,7 @@ public class ApiCore {
 	{
 		try
 		{
-			Class ecUtilsClass = Class.forName("ec3.utils.common.ECUtils");
+			Class<?> ecUtilsClass = Class.forName("ec3.utils.common.ECUtils");
 			Method increaseCorruptionAt = ecUtilsClass.getMethod("increaseCorruptionAt", World.class,float.class,float.class,float.class,int.class);
 			increaseCorruptionAt.setAccessible(true);
 			increaseCorruptionAt.invoke(null, w,x,y,z,amount);
@@ -136,9 +146,10 @@ public class ApiCore {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static IMRUPressence getClosestMRUCU(World w, DummyCore.Utils.Coord3D c, int radius)
 	{
-		List l = w.getEntitiesWithinAABB(IMRUPressence.class, AxisAlignedBB.getBoundingBox(c.x-0.5, c.y-0.5, c.z-0.5, c.x+0.5, c.y+0.5, c.z+0.5).expand(radius, radius/2, radius));
+		List<IMRUPressence> l = w.getEntitiesWithinAABB(IMRUPressence.class, AxisAlignedBB.getBoundingBox(c.x-0.5, c.y-0.5, c.z-0.5, c.x+0.5, c.y+0.5, c.z+0.5).expand(radius, radius/2, radius));
 		IMRUPressence ret = null;
 		if(!l.isEmpty())
 		{

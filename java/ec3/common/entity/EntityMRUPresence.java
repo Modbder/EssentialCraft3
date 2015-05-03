@@ -2,10 +2,8 @@ package ec3.common.entity;
 
 import java.util.List;
 
+import codechicken.lib.math.MathHelper;
 import DummyCore.Utils.DummyData;
-import DummyCore.Utils.MathUtils;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import ec3.api.IMRUPressence;
 import ec3.common.block.BlockCorruption_Light;
 import ec3.common.block.BlocksCore;
@@ -13,30 +11,18 @@ import ec3.utils.common.ECUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.effect.EntityLightningBolt;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityBlaze;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntitySmallFireball;
-import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.chunk.Chunk;
 
 public class EntityMRUPresence extends EntityLivingBase implements IMRUPressence
 {
@@ -115,6 +101,7 @@ public class EntityMRUPresence extends EntityLivingBase implements IMRUPressence
 	@Override
 	protected void setOnFireFromLava(){}
 	
+	@SuppressWarnings("unchecked")
 	public void merge()
 	{
 		if(!this.isDead)
@@ -137,6 +124,7 @@ public class EntityMRUPresence extends EntityLivingBase implements IMRUPressence
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onEntityUpdate(){
 		super.onEntityUpdate();
@@ -164,7 +152,7 @@ public class EntityMRUPresence extends EntityLivingBase implements IMRUPressence
 					diff = getBalance()-1F;
 				}
 				//TODO better chance function, exponent maybe?
-				float mainMRUState = (diff*getMRU()/20000F)*10F;
+				float mainMRUState = (diff*getMRU()/60000F)*10F;
 				Vec3 vec = Vec3.createVectorHelper(1, 0, 0);
 				//Spinning the vec right 'round...
 				vec.rotateAroundX(this.worldObj.rand.nextFloat()*360);
@@ -212,6 +200,54 @@ public class EntityMRUPresence extends EntityLivingBase implements IMRUPressence
 							}
 						}
 					}
+					List<EntityPlayer> players = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(posX-0.5D, posY-0.5D, posZ-0.5D, posX+0.5D, posY+0.5D, posZ+0.5D).expand(12, 12, 12));
+					for(int i = 0; i < players.size(); ++i)
+					{
+						EntityPlayer player = players.get(i);
+						Vec3 playerCheck = Vec3.createVectorHelper(player.posX-this.posX, player.posY-this.posY, player.posZ-this.posZ);
+						float resistance = 1F;
+						for(double j = 0; j < playerCheck.lengthVector(); j += 0.5D)
+						{
+							double checkIndexX = playerCheck.xCoord / playerCheck.lengthVector() * j;
+							double checkIndexY = playerCheck.yCoord / playerCheck.lengthVector() * j;
+							double checkIndexZ = playerCheck.zCoord / playerCheck.lengthVector() * j;
+							int dX = MathHelper.floor_double(posX+checkIndexX);
+							int dY = MathHelper.floor_double(posY+checkIndexY);
+							int dZ = MathHelper.floor_double(posZ+checkIndexZ);
+							Block b = this.worldObj.getBlock(dX, dY, dZ);
+							int meta = this.worldObj.getBlockMetadata(dX,dY,dZ);
+							
+							if(ECUtils.ignoreMeta.containsKey(b.getUnlocalizedName()) && ECUtils.ignoreMeta.get(b.getUnlocalizedName()))
+							{
+								meta = -1;
+							}
+							DummyData dt = new DummyData(b.getUnlocalizedName(),meta);
+							if(ECUtils.mruResistance.containsKey(dt.toString()))
+							{
+								if(resistance < ECUtils.mruResistance.get(dt.toString()))
+										resistance = ECUtils.mruResistance.get(dt.toString());
+							}else
+							{
+								if(resistance < 1)
+									resistance = 1F;
+							}
+							dt = null;
+						}
+						playerCheck = null;
+						if(this.worldObj.rand.nextInt(MathHelper.floor_double(resistance)) == 0)
+						{
+							float genResistance = ECUtils.getGenResistance(0, player);
+							if(genResistance >= 1.0F)genResistance = 0.99F;
+							float matrixDamage = 2 * ((this.getMRU() / 20000) / (10-(genResistance*10)));
+							if(matrixDamage >= 1)
+							{
+								ECUtils.getData(player).modifyOverhaulDamage(ECUtils.getData(player).getOverhaulDamage()+MathHelper.floor_double(matrixDamage));
+							}
+						}
+					}
+					players.clear();
+					players = null;
+					
 				}else
 				{
 					this.setFlag(false);

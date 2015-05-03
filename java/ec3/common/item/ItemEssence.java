@@ -34,7 +34,7 @@ public class ItemEssence extends Item{
     {
         super.registerIcons(p_94581_1_);
         for(int i = 0; i < 4; ++i)
-        	itemIcons[i] = p_94581_1_.registerIcon("essentialcraft:essence"+dropNames[i]);
+        	itemIcons[i] = p_94581_1_.registerIcon("essentialcraft:elemental/essence"+dropNames[i]);
     }
     
     @SideOnly(Side.CLIENT)

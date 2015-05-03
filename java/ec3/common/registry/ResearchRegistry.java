@@ -3,10 +3,8 @@ package ec3.common.registry;
 import java.util.Hashtable;
 import java.util.Random;
 
-import DummyCore.Utils.BlockPosition;
 import DummyCore.Utils.MiscUtils;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -19,12 +17,13 @@ import ec3.api.StructureBlock;
 import ec3.api.StructureRecipe;
 import ec3.common.block.BlocksCore;
 import ec3.common.item.ItemBaublesWearable;
+import ec3.common.item.ItemGun;
 import ec3.common.item.ItemsCore;
 import ec3.utils.common.ECUtils;
 
 public class ResearchRegistry {
 	
-	public static Hashtable<String, Integer> stringIDS = new Hashtable();
+	public static Hashtable<String, Integer> stringIDS = new Hashtable<String, Integer>();
 	
 	public static void registerBasicCategory()
 	{
@@ -149,7 +148,7 @@ public class ResearchRegistry {
 	)
 		.apendDiscovery(
 				new DiscoveryEntry("ec3.disc.drops")
-				.setReferal(new ItemStack(ItemsCore.drops,1,0),new ItemStack(ItemsCore.drops,1,1),new ItemStack(ItemsCore.drops,1,2),new ItemStack(ItemsCore.drops,1,3),new ItemStack(ItemsCore.drops,1,4), new ItemStack(ItemsCore.elemental_pick,1,0),new ItemStack(ItemsCore.elemental_axe,1,0),new ItemStack(ItemsCore.elemental_sword,1,0),new ItemStack(ItemsCore.elemental_hoe,1,0),new ItemStack(ItemsCore.elemental_shovel,1,0))
+				.setReferal(new ItemStack(ItemsCore.drops,1,0),new ItemStack(ItemsCore.drops,1,1),new ItemStack(ItemsCore.drops,1,2),new ItemStack(ItemsCore.drops,1,3),new ItemStack(ItemsCore.drops,1,4),new ItemStack(BlocksCore.compressed,1,0),new ItemStack(BlocksCore.compressed,1,1),new ItemStack(BlocksCore.compressed,1,2),new ItemStack(BlocksCore.compressed,1,3),new ItemStack(BlocksCore.compressed,1,4),new ItemStack(ItemsCore.weak_elemental_axe),new ItemStack(ItemsCore.weak_elemental_hoe),new ItemStack(ItemsCore.weak_elemental_pick),new ItemStack(ItemsCore.weak_elemental_shovel),new ItemStack(ItemsCore.weak_elemental_sword))
 				.setDisplayStack(new ItemStack(ItemsCore.drops,1,4))
 				.setNew()
 				.apendPage(
@@ -201,29 +200,54 @@ public class ResearchRegistry {
 							.setText(StatCollector.translateToLocal("ec3.page.drops_4.txt"))		
 						)	
 				.apendPage(
+							new PageEntry("ec3.page.drops_11")
+							.setText(StatCollector.translateToLocal("ec3.page.drops_11.txt"))
+							.setDisplayStacks(new ItemStack(BlocksCore.oreDrops,1,0),new ItemStack(BlocksCore.oreDrops,1,1),new ItemStack(BlocksCore.oreDrops,1,2),new ItemStack(BlocksCore.oreDrops,1,3),new ItemStack(BlocksCore.oreDrops,1,4))
+						)
+				.apendPage(
+							new PageEntry("ec3.page.drops_12")
+							.setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.compressed,1,0), 3))
+						)	
+				.apendPage(
+							new PageEntry("ec3.page.drops_13")
+							.setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.compressed,1,1), 3))
+						)	
+				.apendPage(
+							new PageEntry("ec3.page.drops_14")
+							.setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.compressed,1,2), 3))
+						)	
+				.apendPage(
+							new PageEntry("ec3.page.drops_15")
+							.setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.compressed,1,3), 3))
+						)	
+				.apendPage(
+							new PageEntry("ec3.page.drops_16")
+							.setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.compressed,1,4), 3))
+						)	
+				.apendPage(
 							new PageEntry("ec3.page.drops_5")
 							.setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.drops,1,4), 3))
 							.setText(StatCollector.translateToLocal("ec3.page.drops_5.txt"))		
 						)
 				.apendPage(
 							new PageEntry("ec3.page.drops_6")
-							.setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.elemental_axe,1,0), 2))	
+							.setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.weak_elemental_axe,1,0), 2))	
 						)
 				.apendPage(
 							new PageEntry("ec3.page.drops_7")
-							.setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.elemental_hoe,1,0), 2))	
+							.setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.weak_elemental_hoe,1,0), 2))	
 						)
 				.apendPage(
 							new PageEntry("ec3.page.drops_8")
-							.setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.elemental_pick,1,0), 2))	
+							.setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.weak_elemental_pick,1,0), 2))	
 						)
 				.apendPage(
 							new PageEntry("ec3.page.drops_9")
-							.setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.elemental_shovel,1,0), 2))	
+							.setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.weak_elemental_shovel,1,0), 2))	
 						)
 				.apendPage(
 							new PageEntry("ec3.page.drops_10")
-							.setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.elemental_sword,1,0), 3))	
+							.setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.weak_elemental_sword,1,0), 3))	
 						)
 								
 	)
@@ -348,7 +372,6 @@ public class ResearchRegistry {
 				new DiscoveryEntry("ec3.disc.soulStone")
 				.setReferal(new ItemStack(ItemsCore.soulStone))
 				.setDisplayStack(new ItemStack(ItemsCore.soulStone,0,1))
-				.setNew()
 				.apendPage(
 							new PageEntry("ec3.page.soulStone_0")
 							.setText(StatCollector.translateToLocal("ec3.page.soulStone_0.txt"))
@@ -386,7 +409,6 @@ public class ResearchRegistry {
 				new DiscoveryEntry("ec3.disc.decorations")
 				.setReferal(new ItemStack(ItemsCore.magicalChisel))
 				.setDisplayStack(new ItemStack(ItemsCore.magicalChisel))
-				.setNew()
 				.apendPage(next("decorations").setText(StatCollector.translateToLocal("ec3.page.decorations_0.txt")))
 				.apendPage(next("decorations").setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.magicalChisel), 2))
 						.setDisplayStacks(new ItemStack(ItemsCore.magicalSlag),new ItemStack(BlocksCore.concrete),new ItemStack(BlocksCore.fortifiedStone),new ItemStack(BlocksCore.magicPlating),new ItemStack(BlocksCore.platingPale),new ItemStack(BlocksCore.voidStone),new ItemStack(BlocksCore.coldStone)))
@@ -407,6 +429,15 @@ public class ResearchRegistry {
 																		.apendPage(next("decorations").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.fancyBlocks.get(0),1,14), 2)))
 																			.apendPage(next("decorations").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.fancyBlocks.get(0),1,15), 2)))
 				)
+		.apendDiscovery(
+					new DiscoveryEntry("ec3.disc.overworld")
+					.setReferal(new ItemStack(ItemsCore.baublesCore,1,0),new ItemStack(ItemsCore.baublesCore,1,1),new ItemStack(ItemsCore.baublesCore,1,2),new ItemStack(ItemsCore.baublesCore,1,3),new ItemStack(ItemsCore.baublesCore,1,4),new ItemStack(ItemsCore.baublesCore,1,5),new ItemStack(ItemsCore.baublesCore,1,6),new ItemStack(ItemsCore.baublesCore,1,7),new ItemStack(ItemsCore.baublesCore,1,8),new ItemStack(ItemsCore.baublesCore,1,9),new ItemStack(ItemsCore.baublesCore,1,10),new ItemStack(ItemsCore.baublesCore,1,11),new ItemStack(ItemsCore.baublesCore,1,12),new ItemStack(ItemsCore.baublesCore,1,13),new ItemStack(ItemsCore.baublesCore,1,14),new ItemStack(ItemsCore.baublesCore,1,15),new ItemStack(ItemsCore.baublesCore,1,16),new ItemStack(ItemsCore.baublesCore,1,17),new ItemStack(ItemsCore.baublesCore,1,18),new ItemStack(ItemsCore.baublesCore,1,19),new ItemStack(ItemsCore.baublesCore,1,20),new ItemStack(ItemsCore.baublesCore,1,21),new ItemStack(ItemsCore.baublesCore,1,22),new ItemStack(ItemsCore.baublesCore,1,23),new ItemStack(ItemsCore.baublesCore,1,24),new ItemStack(ItemsCore.baublesCore,1,25),new ItemStack(ItemsCore.baublesCore,1,26),new ItemStack(ItemsCore.baublesCore,1,27),new ItemStack(ItemsCore.baublesCore,1,28),new ItemStack(ItemsCore.baublesCore,1,29),new ItemStack(ItemsCore.baublesCore,1,30),new ItemStack(ItemsCore.baublesCore,1,31))
+					.setDisplayStack(new ItemStack(ItemsCore.baublesCore,1,14))
+					.setNew()
+					.apendPage(next("overworld").setText(StatCollector.translateToLocal("ec3.page.overworld_0.txt")))
+					.apendPage(next("overworld").setText(StatCollector.translateToLocal("ec3.page.overworld_1.txt")))
+					.apendPage(next("overworld").setDisplayStacks(new ItemStack(ItemsCore.baublesCore,1,0),new ItemStack(ItemsCore.baublesCore,1,1),new ItemStack(ItemsCore.baublesCore,1,2),new ItemStack(ItemsCore.baublesCore,1,3),new ItemStack(ItemsCore.baublesCore,1,4),new ItemStack(ItemsCore.baublesCore,1,5),new ItemStack(ItemsCore.baublesCore,1,6),new ItemStack(ItemsCore.baublesCore,1,7),new ItemStack(ItemsCore.baublesCore,1,8),new ItemStack(ItemsCore.baublesCore,1,9),new ItemStack(ItemsCore.baublesCore,1,10),new ItemStack(ItemsCore.baublesCore,1,11),new ItemStack(ItemsCore.baublesCore,1,12),new ItemStack(ItemsCore.baublesCore,1,13),new ItemStack(ItemsCore.baublesCore,1,14),new ItemStack(ItemsCore.baublesCore,1,15),new ItemStack(ItemsCore.baublesCore,1,16),new ItemStack(ItemsCore.baublesCore,1,17),new ItemStack(ItemsCore.baublesCore,1,18),new ItemStack(ItemsCore.baublesCore,1,19),new ItemStack(ItemsCore.baublesCore,1,20),new ItemStack(ItemsCore.baublesCore,1,21),new ItemStack(ItemsCore.baublesCore,1,22),new ItemStack(ItemsCore.baublesCore,1,23),new ItemStack(ItemsCore.baublesCore,1,24),new ItemStack(ItemsCore.baublesCore,1,25),new ItemStack(ItemsCore.baublesCore,1,26),new ItemStack(ItemsCore.baublesCore,1,27),new ItemStack(ItemsCore.baublesCore,1,28),new ItemStack(ItemsCore.baublesCore,1,29),new ItemStack(ItemsCore.baublesCore,1,30),new ItemStack(ItemsCore.baublesCore,1,31)))
+				)
 	;
 	}
 	
@@ -416,6 +447,14 @@ public class ResearchRegistry {
 		MiscUtils.getStackTag(book_t1).setInteger("tier", 1);
 		ItemStack book_t2 = new ItemStack(ItemsCore.research_book);
 		MiscUtils.getStackTag(book_t2).setInteger("tier", 2);
+		ItemStack pistol = new ItemStack(ItemsCore.pistol,1,0);
+		ItemGun.createRandomGun(pistol);
+		ItemStack rifle = new ItemStack(ItemsCore.rifle,1,0);
+		ItemGun.createRandomGun(rifle);
+		ItemStack sniper = new ItemStack(ItemsCore.sniper,1,0);
+		ItemGun.createRandomGun(sniper);
+		ItemStack gatling = new ItemStack(ItemsCore.gatling,1,0);
+		ItemGun.createRandomGun(gatling);
 		mru
 			.apendDiscovery(
 					new DiscoveryEntry("ec3.disc.boundGem")
@@ -501,6 +540,7 @@ public class ResearchRegistry {
 					)
 			.apendDiscovery(
 					new DiscoveryEntry("ec3.disc.miscRadiation")
+					.setNew()
 					.setReferal(
 							new ItemStack(ItemsCore.genericItem,0,3),
 							new ItemStack(ItemsCore.genericItem,0,43),
@@ -508,7 +548,12 @@ public class ResearchRegistry {
 							new ItemStack(BlocksCore.fortifiedStone,0,0),
 							new ItemStack(BlocksCore.fortifiedGlass,0,0),
 							new ItemStack(ItemsCore.genericItem,0,24),
-							new ItemStack(ItemsCore.genericItem,0,31)
+							new ItemStack(ItemsCore.genericItem,0,31),
+							new ItemStack(ItemsCore.elemental_pick,1,0),
+							new ItemStack(ItemsCore.elemental_axe,1,0),
+							new ItemStack(ItemsCore.elemental_sword,1,0),
+							new ItemStack(ItemsCore.elemental_hoe,1,0),
+							new ItemStack(ItemsCore.elemental_shovel,1,0)
 							)
 					.setDisplayStack(new ItemStack(ItemsCore.genericItem,1,44))
 					.apendPage(
@@ -543,12 +588,31 @@ public class ResearchRegistry {
 							new PageEntry("ec3.page.miscRadiation_7")
 							.setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.genericItem,1,31), 2))
 							)
+					.apendPage(
+							new PageEntry("ec3.page.drops_6")
+							.setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.elemental_axe,1,0), 2))	
+						)
+				    .apendPage(
+							new PageEntry("ec3.page.drops_7")
+							.setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.elemental_hoe,1,0), 2))	
+						)
+			    	.apendPage(
+							new PageEntry("ec3.page.drops_8")
+							.setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.elemental_pick,1,0), 2))	
+						)
+	    			.apendPage(
+							new PageEntry("ec3.page.drops_9")
+							.setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.elemental_shovel,1,0), 2))	
+						)
+		    		.apendPage(
+							new PageEntry("ec3.page.drops_10")
+							.setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.elemental_sword,1,0), 3))	
+						)
 					)
 			.apendDiscovery(
 					new DiscoveryEntry("ec3.disc.magicianTable")
 					.setReferal(new ItemStack(BlocksCore.magicianTable,0,0))
 					.setDisplayStack(new ItemStack(BlocksCore.magicianTable,1,0))
-					.setNew()
 					.apendPage(
 							new PageEntry("ec3.page.magicianTable_0")
 							.setText(StatCollector.translateToLocal("ec3.page.magicianTable_0.txt"))
@@ -656,7 +720,7 @@ public class ResearchRegistry {
 					.apendPage(next("mrucuec").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.magicPlating,1,0), 2)))
 					.apendPage(next("mrucuec").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.ecController,1,0), 2)))
 					.apendPage(next("mrucuec").setText(StatCollector.translateToLocal("ec3.page.mrucuec_3.txt")))
-					.apendPage(next("mrucuec").setDisplayStacks(new ItemStack(BlocksCore.fortifiedStone),new ItemStack(BlocksCore.fortifiedGlass),new ItemStack(BlocksCore.magicPlating),new ItemStack(BlocksCore.platingPale),new ItemStack(BlocksCore.voidStone),new ItemStack(BlocksCore.voidGlass)).setText(StatCollector.translateToLocal("ec3.page.mrucuec_4.txt")))
+					.apendPage(next("mrucuec").setDisplayStacks(new ItemStack(BlocksCore.fortifiedStone),new ItemStack(BlocksCore.fortifiedGlass),new ItemStack(BlocksCore.magicPlating),new ItemStack(BlocksCore.platingPale),new ItemStack(BlocksCore.voidStone),new ItemStack(BlocksCore.voidGlass), new ItemStack(BlocksCore.invertedBlock,1,0)).setText(StatCollector.translateToLocal("ec3.page.mrucuec_4.txt")))
 					.apendPage(next("mrucuec").setImg(new ResourceLocation("essentialcraft","textures/special/bookIcons/mrucuec.png")))
 					.apendPage(next("mrucuec").setText(StatCollector.translateToLocal("ec3.page.mrucuec_6.txt")))
 					.apendPage(next("mrucuec").setImg(new ResourceLocation("essentialcraft","textures/special/bookIcons/mrucuec_mru.png")))
@@ -695,7 +759,6 @@ public class ResearchRegistry {
 					new DiscoveryEntry("ec3.disc.mrucuec.balancer")
 					.setReferal(new ItemStack(BlocksCore.ecBalancer))
 					.setDisplayStack(new ItemStack(BlocksCore.ecBalancer,0,0))
-					.setNew()
 					.apendPage(next("mrucuec.balancer").setText(StatCollector.translateToLocal("ec3.page.mrucuec.balancer_0.txt")))
 					.apendPage(next("mrucuec.balancer").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.ecBalancer), 2)))
 					)		
@@ -703,7 +766,6 @@ public class ResearchRegistry {
 					new DiscoveryEntry("ec3.disc.mrucuec.redstone")
 					.setReferal(new ItemStack(BlocksCore.ecRedstoneController))
 					.setDisplayStack(new ItemStack(BlocksCore.ecRedstoneController,0,0))
-					.setNew()
 					.apendPage(next("mrucuec.redstone").setText(StatCollector.translateToLocal("ec3.page.mrucuec.redstone_0.txt")))
 					.apendPage(next("mrucuec.redstone").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.ecRedstoneController), 2)))
 					)	
@@ -767,7 +829,7 @@ public class ResearchRegistry {
 					new DiscoveryEntry("ec3.disc.magicalMirrors")
 					.setReferal(new ItemStack(BlocksCore.magicalMirror),new ItemStack(ItemsCore.controlRod))
 					.setDisplayStack(new ItemStack(BlocksCore.magicalMirror,0,0))
-					.setNew()
+					 
 					.apendPage(next("magicalMirrors").setText(StatCollector.translateToLocal("ec3.page.magicalMirrors_0.txt")))
 					.apendPage(next("magicalMirrors").setText(StatCollector.translateToLocal("ec3.page.magicalMirrors_1.txt")))
 					.apendPage(next("magicalMirrors").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.magicalMirror), 2)))
@@ -777,7 +839,7 @@ public class ResearchRegistry {
 					new DiscoveryEntry("ec3.disc.magicalAssembler")
 					.setReferal(new ItemStack(BlocksCore.assembler))
 					.setDisplayStack(new ItemStack(BlocksCore.assembler,0,0))
-					.setNew()
+					 
 					.apendPage(next("magicalAssembler").setText(StatCollector.translateToLocal("ec3.page.magicalAssembler_0.txt")))
 					.apendPage(next("magicalAssembler").setText(StatCollector.translateToLocal("ec3.page.magicalAssembler_1.txt")))
 					.apendPage(next("magicalAssembler").setText(StatCollector.translateToLocal("ec3.page.magicalAssembler_2.txt")))
@@ -787,7 +849,7 @@ public class ResearchRegistry {
 					)						
 			.apendDiscovery(
 					new DiscoveryEntry("ec3.disc.corruptionCleaner")
-					.setNew()
+					 
 					.setReferal(new ItemStack(BlocksCore.corruptionCleaner))
 					.setDisplayStack(new ItemStack(BlocksCore.corruptionCleaner,0,0))
 					.apendPage(next("corruptionCleaner").setText(StatCollector.translateToLocal("ec3.page.corruptionCleaner_0.txt")))
@@ -805,7 +867,80 @@ public class ResearchRegistry {
 					.setDisplayStack(book_t2)
 					.apendPage(next("book_t2").setText(StatCollector.translateToLocal("ec3.page.book_t2_0.txt")))
 					.apendPage(next("book_t2").setRecipe(ECUtils.findRecipeByIS(book_t2, 6)))
-					)					
+					)	
+			.apendDiscovery(
+					new DiscoveryEntry("ec3.disc.magicalActivator")
+					.setNew()
+					.setDisplayStack(new ItemStack(BlocksCore.rightClicker))
+					.setReferal(new ItemStack(BlocksCore.rightClicker))
+					.apendPage(next("magicalActivator").setText(StatCollector.translateToLocal("ec3.page.magicalActivator_0.txt")))
+					.apendPage(next("magicalActivator").setText(StatCollector.translateToLocal("ec3.page.magicalActivator_1.txt")))
+					.apendPage(next("magicalActivator").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.rightClicker,1,0), 2)))
+					.apendPage(next("magicalActivator").setText(StatCollector.translateToLocal("ec3.page.magicalActivator_2.txt")))
+					.apendPage(next("magicalActivator").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.rightClicker,1,1), 3)))
+					.apendPage(next("magicalActivator").setText(StatCollector.translateToLocal("ec3.page.magicalActivator_3.txt")))
+					.apendPage(next("magicalActivator").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.rightClicker,1,2), 3)))
+					.apendPage(next("magicalActivator").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.rightClicker,1,3), 3)))
+					.apendPage(next("magicalActivator").setText(StatCollector.translateToLocal("ec3.page.magicalActivator_4.txt")))
+					.apendPage(next("magicalActivator").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.rightClicker,1,4), 3)))
+					.apendPage(next("magicalActivator").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.rightClicker,1,5), 3)))
+					)		
+			.apendDiscovery(
+					new DiscoveryEntry("ec3.disc.redstoneTransmitter")
+					.setDisplayStack(new ItemStack(BlocksCore.redstoneTransmitter))
+					.setReferal(new ItemStack(BlocksCore.redstoneTransmitter))
+					.setNew()
+					.apendPage(next("redstoneTransmitter").setText(StatCollector.translateToLocal("ec3.page.redstoneTransmitter_0.txt")))
+					.apendPage(next("redstoneTransmitter").setText(StatCollector.translateToLocal("ec3.page.redstoneTransmitter_1.txt")))
+					.apendPage(next("redstoneTransmitter").setText(StatCollector.translateToLocal("ec3.page.redstoneTransmitter_2.txt")))
+					.apendPage(next("redstoneTransmitter").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.redstoneTransmitter), 2)))
+					)	
+			.apendDiscovery(
+					new DiscoveryEntry("ec3.disc.magicalHopper")
+					.setDisplayStack(new ItemStack(BlocksCore.magicalHopper))
+					.setReferal(new ItemStack(BlocksCore.magicalHopper))
+					.setNew()
+					.apendPage(next("magicalHopper").setText(StatCollector.translateToLocal("ec3.page.magicalHopper_0.txt")))
+					.apendPage(next("magicalHopper").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.magicalHopper), 2)))
+					)	
+			.apendDiscovery(
+					new DiscoveryEntry("ec3.disc.metadataManager")
+					.setDisplayStack(new ItemStack(BlocksCore.metadataManager))
+					.setReferal(new ItemStack(BlocksCore.metadataManager))
+					.setNew()
+					.apendPage(next("metadataManager").setText(StatCollector.translateToLocal("ec3.page.metadataManager_0.txt")))
+					.apendPage(next("metadataManager").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.metadataManager), 2)))
+					)	
+			.apendDiscovery(
+					new DiscoveryEntry("ec3.disc.blockBreaker")
+					.setDisplayStack(new ItemStack(BlocksCore.blockBreaker))
+					.setReferal(new ItemStack(BlocksCore.blockBreaker))
+					.setNew()
+					.apendPage(next("blockBreaker").setText(StatCollector.translateToLocal("ec3.page.blockBreaker_0.txt")))
+					.apendPage(next("blockBreaker").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.blockBreaker), 2)))
+					)	
+			.apendDiscovery(
+					new DiscoveryEntry("ec3.disc.weaponMaker")
+					.setDisplayStack(new ItemStack(BlocksCore.weaponMaker))
+					.setReferal(new ItemStack(BlocksCore.weaponMaker))
+					.setNew()
+					.apendPage(next("weaponMaker").setText(StatCollector.translateToLocal("ec3.page.weaponMaker_0.txt")))
+					.apendPage(next("weaponMaker").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.weaponMaker), 2)))
+					.apendPage(next("weaponMaker").setText(StatCollector.translateToLocal("ec3.page.weaponMaker_1.txt")))
+					.apendPage(next("weaponMaker").setText(StatCollector.translateToLocal("ec3.page.weaponMaker_2.txt")).setDisplayStacks(pistol))
+					.apendPage(next("weaponMaker").setText(StatCollector.translateToLocal("ec3.page.weaponMaker_3.txt")).setDisplayStacks(rifle))
+					.apendPage(next("weaponMaker").setText(StatCollector.translateToLocal("ec3.page.weaponMaker_4.txt")).setDisplayStacks(sniper))
+					.apendPage(next("weaponMaker").setText(StatCollector.translateToLocal("ec3.page.weaponMaker_5.txt")).setDisplayStacks(gatling))
+					.apendPage(next("weaponMaker").setText(StatCollector.translateToLocal("ec3.page.weaponMaker_6.txt")))
+					.apendPage(next("weaponMaker").setText(StatCollector.translateToLocal("ec3.page.weaponMaker_7.txt")).setDisplayStacks(new ItemStack(ItemsCore.genericItem,1,5),new ItemStack(ItemsCore.genericItem,1,39),new ItemStack(ItemsCore.genericItem,1,50),new ItemStack(ItemsCore.genericItem,1,35),new ItemStack(ItemsCore.genericItem,1,52)))
+					.apendPage(next("weaponMaker").setText(StatCollector.translateToLocal("ec3.page.weaponMaker_8.txt")))
+					.apendPage(next("weaponMaker").setText(StatCollector.translateToLocal("ec3.page.weaponMaker_9.txt")))
+					.apendPage(next("weaponMaker").setText(StatCollector.translateToLocal("ec3.page.weaponMaker_10.txt")))
+					.apendPage(next("weaponMaker").setText(StatCollector.translateToLocal("ec3.page.weaponMaker_11.txt")))
+					.apendPage(next("weaponMaker").setText(StatCollector.translateToLocal("ec3.page.weaponMaker_12.txt")))
+					.apendPage(next("weaponMaker").setText(StatCollector.translateToLocal("ec3.page.weaponMaker_13.txt")))
+					.apendPage(next("weaponMaker").setText(StatCollector.translateToLocal("ec3.page.weaponMaker_14.txt")))
+					)
 		;
 	}
 	
@@ -868,7 +1003,7 @@ public class ResearchRegistry {
 				)
 			.apendDiscovery(
 					new DiscoveryEntry("ec3.disc.coldDistillator")
-					.setNew()
+					 
 					.setReferal(new ItemStack(BlocksCore.coldStone,1,0),new ItemStack(BlocksCore.coldDistillator,1,0))
 					.setDisplayStack(new ItemStack(BlocksCore.coldDistillator,1,0))
 					.apendPage(next("coldDistillator").setText(StatCollector.translateToLocal("ec3.page.coldDistillator_0.txt")))
@@ -886,7 +1021,7 @@ public class ResearchRegistry {
 					new DiscoveryEntry("ec3.disc.solarAbsorber")
 					.setReferal(new ItemStack(BlocksCore.solarPrism,1,0),new ItemStack(BlocksCore.sunRayAbsorber,1,0))
 					.setDisplayStack(new ItemStack(BlocksCore.solarPrism,1,0))
-					.setNew()
+					 
 					.apendPage(next("solarAbsorber").setText(StatCollector.translateToLocal("ec3.page.solarAbsorber_0.txt")))
 					.apendPage(next("solarAbsorber").setText(StatCollector.translateToLocal("ec3.page.solarAbsorber_1.txt")))
 					.apendPage(next("solarAbsorber").setText(StatCollector.translateToLocal("ec3.page.solarAbsorber_2.txt")))
@@ -911,7 +1046,7 @@ public class ResearchRegistry {
 				)
 				.apendDiscovery(
 					new DiscoveryEntry("ec3.disc.moonWell")
-					.setNew()
+					 
 					.setReferal(new ItemStack(BlocksCore.moonWell,1,0))
 					.setDisplayStack(new ItemStack(BlocksCore.moonWell,1,0))
 					.apendPage(next("moonWell").setText(StatCollector.translateToLocal("ec3.page.moonWell_0.txt")))
@@ -921,7 +1056,7 @@ public class ResearchRegistry {
 				)
 			.apendDiscovery(
 					new DiscoveryEntry("ec3.disc.reactor")
-					.setNew()
+					 
 					.setReferal(new ItemStack(BlocksCore.reactor,1,0),new ItemStack(BlocksCore.reactorSupport,1,0))
 					.setDisplayStack(new ItemStack(BlocksCore.reactor,1,0))
 					.apendPage(next("reactor").setText(StatCollector.translateToLocal("ec3.page.reactor_0.txt")))
@@ -996,7 +1131,7 @@ public class ResearchRegistry {
 				)	
 			.apendDiscovery(
 					new DiscoveryEntry("ec3.disc.magicalDigger")
-					.setNew()
+					 
 					.setReferal(new ItemStack(ItemsCore.magicalDigger,1,0))
 					.setDisplayStack(new ItemStack(ItemsCore.magicalDigger,1,0))
 					.apendPage(next("magicalDigger").setText(StatCollector.translateToLocal("ec3.page.magicalDigger_0.txt")))
@@ -1004,7 +1139,7 @@ public class ResearchRegistry {
 				)	
 			.apendDiscovery(
 					new DiscoveryEntry("ec3.disc.magicalLantern")
-					.setNew()
+					 
 					.setReferal(new ItemStack(ItemsCore.magicalLantern,1,0))
 					.setDisplayStack(new ItemStack(ItemsCore.magicalLantern,1,0))
 					.apendPage(next("magicalLantern").setText(StatCollector.translateToLocal("ec3.page.magicalLantern_0.txt")))
@@ -1012,7 +1147,7 @@ public class ResearchRegistry {
 				)	
 			.apendDiscovery(
 					new DiscoveryEntry("ec3.disc.magnetizingStaff")
-					.setNew()
+					 
 					.setReferal(new ItemStack(ItemsCore.magnetizingStaff,1,0))
 					.setDisplayStack(new ItemStack(ItemsCore.magnetizingStaff,1,0))
 					.apendPage(next("magnetizingStaff").setText(StatCollector.translateToLocal("ec3.page.magnetizingStaff_0.txt")))
@@ -1020,7 +1155,7 @@ public class ResearchRegistry {
 				)	
 			.apendDiscovery(
 					new DiscoveryEntry("ec3.disc.spawnerCollector")
-					.setNew()
+					 
 					.setReferal(new ItemStack(ItemsCore.spawnerCollector,1,0))
 					.setDisplayStack(new ItemStack(ItemsCore.spawnerCollector,1,0))
 					.apendPage(next("spawnerCollector").setText(StatCollector.translateToLocal("ec3.page.spawnerCollector_0.txt")))
@@ -1028,7 +1163,7 @@ public class ResearchRegistry {
 				)	
 			.apendDiscovery(
 					new DiscoveryEntry("ec3.disc.lifeStaff")
-					.setNew()
+					 
 					.setReferal(new ItemStack(ItemsCore.staffOfLife,1,0))
 					.setDisplayStack(new ItemStack(ItemsCore.staffOfLife,1,0))
 					.apendPage(next("lifeStaff").setText(StatCollector.translateToLocal("ec3.page.lifeStaff_0.txt")))
@@ -1036,7 +1171,7 @@ public class ResearchRegistry {
 				)	
 			.apendDiscovery(
 					new DiscoveryEntry("ec3.disc.holyMace")
-					.setNew()
+					 
 					.setReferal(new ItemStack(ItemsCore.holyMace,1,0))
 					.setDisplayStack(new ItemStack(ItemsCore.holyMace,1,0))
 					.apendPage(next("holyMace").setText(StatCollector.translateToLocal("ec3.page.holyMace_0.txt")))
@@ -1044,7 +1179,7 @@ public class ResearchRegistry {
 				)	
 			.apendDiscovery(
 					new DiscoveryEntry("ec3.disc.emeraldHeart")
-					.setNew()
+					 
 					.setReferal(new ItemStack(ItemsCore.emeraldHeart,1,0))
 					.setDisplayStack(new ItemStack(ItemsCore.emeraldHeart,1,0))
 					.apendPage(next("emeraldHeart").setText(StatCollector.translateToLocal("ec3.page.emeraldHeart_0.txt")))
@@ -1052,7 +1187,7 @@ public class ResearchRegistry {
 				)	
 			.apendDiscovery(
 					new DiscoveryEntry("ec3.disc.magicalWings")
-					.setNew()
+					 
 					.setReferal(new ItemStack(ItemsCore.magicalWings,1,0))
 					.setDisplayStack(new ItemStack(ItemsCore.magicalWings,1,0))
 					.apendPage(next("magicalWings").setText(StatCollector.translateToLocal("ec3.page.magicalWings_0.txt")))
@@ -1060,7 +1195,7 @@ public class ResearchRegistry {
 				)	
 			.apendDiscovery(
 					new DiscoveryEntry("ec3.disc.magicalPorkchop")
-					.setNew()
+					 
 					.setReferal(new ItemStack(ItemsCore.magicalPorkchop,1,0))
 					.setDisplayStack(new ItemStack(ItemsCore.magicalPorkchop,1,0))
 					.apendPage(next("magicalPorkchop").setText(StatCollector.translateToLocal("ec3.page.magicalPorkchop_0.txt")))
@@ -1068,7 +1203,7 @@ public class ResearchRegistry {
 				)	
 			.apendDiscovery(
 					new DiscoveryEntry("ec3.disc.magicalWater")
-					.setNew()
+					 
 					.setReferal(new ItemStack(ItemsCore.magicWaterBottle,1,0))
 					.setDisplayStack(new ItemStack(ItemsCore.magicWaterBottle,1,0))
 					.apendPage(next("magicalWater").setText(StatCollector.translateToLocal("ec3.page.magicalWater_0.txt")))
@@ -1076,7 +1211,7 @@ public class ResearchRegistry {
 				)	
 			.apendDiscovery(
 					new DiscoveryEntry("ec3.disc.magicalShield")
-					.setNew()
+					 
 					.setReferal(new ItemStack(ItemsCore.magicalShield,1,0),new ItemStack(ItemsCore.spikyShield,1,0))
 					.setDisplayStack(new ItemStack(ItemsCore.magicalShield,1,0))
 					.apendPage(next("magicalShield").setText(StatCollector.translateToLocal("ec3.page.magicalShield_0.txt")))
@@ -1085,7 +1220,7 @@ public class ResearchRegistry {
 				)
 			.apendDiscovery(
 					new DiscoveryEntry("ec3.disc.biomeWand")
-					.setNew()
+					 
 					.setReferal(new ItemStack(ItemsCore.biomeWand,1,0))
 					.setDisplayStack(new ItemStack(ItemsCore.biomeWand,1,0))
 					.apendPage(next("biomeWand").setText(StatCollector.translateToLocal("ec3.page.biomeWand_0.txt")))
@@ -1093,28 +1228,28 @@ public class ResearchRegistry {
 				)	
 			.apendDiscovery(
 					new DiscoveryEntry("ec3.disc.chaosFork")
-					.setNew()
+					 
 					.setReferal(new ItemStack(ItemsCore.chaosFork,1,0))
 					.setDisplayStack(new ItemStack(ItemsCore.chaosFork,1,0))
 					.apendPage(next("chaosFork").setText(StatCollector.translateToLocal("ec3.page.chaosFork_0.txt")))
 					.apendPage(next("chaosFork").setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.chaosFork,1,0), 2)))
 				)					
 			.apendDiscovery(
-					new DiscoveryEntry("ec3.disc.frozenMace").setNew()
+					new DiscoveryEntry("ec3.disc.frozenMace") 
 					.setReferal(new ItemStack(ItemsCore.frozenMace,1,0))
 					.setDisplayStack(new ItemStack(ItemsCore.frozenMace,1,0))
 					.apendPage(next("frozenMace").setText(StatCollector.translateToLocal("ec3.page.frozenMace_0.txt")))
 					.apendPage(next("frozenMace").setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.frozenMace,1,0), 2)))
 				)		
 			.apendDiscovery(
-					new DiscoveryEntry("ec3.disc.magmaticStaff").setNew()
+					new DiscoveryEntry("ec3.disc.magmaticStaff") 
 					.setReferal(new ItemStack(ItemsCore.magmaticStaff,1,0))
 					.setDisplayStack(new ItemStack(ItemsCore.magmaticStaff,1,0))
 					.apendPage(next("magmaticStaff").setText(StatCollector.translateToLocal("ec3.page.magmaticStaff_0.txt")))
 					.apendPage(next("magmaticStaff").setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.magmaticStaff,1,0), 2)))
 				)						
 			.apendDiscovery(
-					new DiscoveryEntry("ec3.disc.mhs").setNew()
+					new DiscoveryEntry("ec3.disc.mhs") 
 					.setReferal(new ItemStack(ItemsCore.magicArmorItems[0],1,0),new ItemStack(ItemsCore.magicArmorItems[1],1,0),new ItemStack(ItemsCore.magicArmorItems[2],1,0),new ItemStack(ItemsCore.magicArmorItems[3],1,0))
 					.setDisplayStack(new ItemStack(ItemsCore.magicArmorItems[0],1,0))
 					.apendPage(next("mhs").setText(StatCollector.translateToLocal("ec3.page.mhs_0.txt")))
@@ -1140,7 +1275,7 @@ public class ResearchRegistry {
 					.apendPage(next("elementalCharms").setText(StatCollector.translateToLocal("ec3.page.elementalCharms_10.txt")).setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.charm,1,9), 2)))
 				)
 			.apendDiscovery(
-					new DiscoveryEntry("ec3.disc.mruCoil").setNew()
+					new DiscoveryEntry("ec3.disc.mruCoil") 
 					.setReferal(new ItemStack(ItemsCore.playerList,1,0),new ItemStack(BlocksCore.mruCoil,1,0),new ItemStack(BlocksCore.mruCoilHardener,1,0))
 					.setDisplayStack(new ItemStack(BlocksCore.mruCoil,1,0))
 					.apendPage(next("mruCoil").setText(StatCollector.translateToLocal("ec3.page.mruCoil_0.txt")))
@@ -1179,49 +1314,49 @@ public class ResearchRegistry {
 					.apendPage(next("mruCoil").setText(StatCollector.translateToLocal("ec3.page.mruCoil_7.txt")))
 				)				
 			.apendDiscovery(
-					new DiscoveryEntry("ec3.disc.potionSpreader").setNew()
+					new DiscoveryEntry("ec3.disc.potionSpreader") 
 					.setReferal(new ItemStack(BlocksCore.potionSpreader,1,0))
 					.setDisplayStack(new ItemStack(BlocksCore.potionSpreader,1,0))
 					.apendPage(next("potionSpreader").setText(StatCollector.translateToLocal("ec3.page.potionSpreader_0.txt")))
 					.apendPage(next("potionSpreader").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.potionSpreader,1,0), 2)))
 				)		
 			.apendDiscovery(
-					new DiscoveryEntry("ec3.disc.magicalEnchanter").setNew()
+					new DiscoveryEntry("ec3.disc.magicalEnchanter") 
 					.setReferal(new ItemStack(BlocksCore.magicalEnchanter,1,0))
 					.setDisplayStack(new ItemStack(BlocksCore.magicalEnchanter,1,0))
 					.apendPage(next("magicalEnchanter").setText(StatCollector.translateToLocal("ec3.page.magicalEnchanter_0.txt")))
 					.apendPage(next("magicalEnchanter").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.magicalEnchanter,1,0), 2)))
 				)	
 			.apendDiscovery(
-					new DiscoveryEntry("ec3.disc.monsterHolder").setNew()
+					new DiscoveryEntry("ec3.disc.monsterHolder") 
 					.setReferal(new ItemStack(BlocksCore.monsterClinger,1,0))
 					.setDisplayStack(new ItemStack(BlocksCore.monsterClinger,1,0))
 					.apendPage(next("monsterHolder").setText(StatCollector.translateToLocal("ec3.page.monsterHolder_0.txt")))
 					.apendPage(next("monsterHolder").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.monsterClinger,1,0), 2)))
 				)		
 			.apendDiscovery(
-					new DiscoveryEntry("ec3.disc.magicalJukebox").setNew()
+					new DiscoveryEntry("ec3.disc.magicalJukebox") 
 					.setReferal(new ItemStack(BlocksCore.magicalJukebox,1,0))
 					.setDisplayStack(new ItemStack(BlocksCore.magicalJukebox,1,0))
 					.apendPage(next("magicalJukebox").setText(StatCollector.translateToLocal("ec3.page.magicalJukebox_0.txt")))
 					.apendPage(next("magicalJukebox").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.magicalJukebox,1,0), 2)))
 				)		
 			.apendDiscovery(
-					new DiscoveryEntry("ec3.disc.magicalRepairer").setNew()
+					new DiscoveryEntry("ec3.disc.magicalRepairer") 
 					.setReferal(new ItemStack(BlocksCore.magicalRepairer,1,0))
 					.setDisplayStack(new ItemStack(BlocksCore.magicalRepairer,1,0))
 					.apendPage(next("magicalRepairer").setText(StatCollector.translateToLocal("ec3.page.magicalRepairer_0.txt")))
 					.apendPage(next("magicalRepairer").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.magicalRepairer,1,0), 2)))
 				)	
 			.apendDiscovery(
-					new DiscoveryEntry("ec3.disc.monsterDuplicator").setNew()
+					new DiscoveryEntry("ec3.disc.monsterDuplicator") 
 					.setReferal(new ItemStack(BlocksCore.monsterHarvester,1,0))
 					.setDisplayStack(new ItemStack(BlocksCore.monsterHarvester,1,0))
 					.apendPage(next("monsterDuplicator").setText(StatCollector.translateToLocal("ec3.page.monsterDuplicator_0.txt")))
 					.apendPage(next("monsterDuplicator").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.monsterHarvester,1,0), 2)))
 				)
 			.apendDiscovery(
-					new DiscoveryEntry("ec3.disc.magmaticSmeltery").setNew()
+					new DiscoveryEntry("ec3.disc.magmaticSmeltery") 
 					.setReferal(new ItemStack(BlocksCore.magmaticSmeltery,1,0))
 					.setDisplayStack(new ItemStack(BlocksCore.magmaticSmeltery,1,0))
 					.apendPage(next("magmaticSmeltery").setText(StatCollector.translateToLocal("ec3.page.magmaticSmeltery_0.txt")))
@@ -1234,7 +1369,7 @@ public class ResearchRegistry {
 					.apendPage(next("magmaticSmeltery").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.magmaticSmeltery,1,0), 2)))
 				)
 			.apendDiscovery(
-					new DiscoveryEntry("ec3.disc.magicalQuarry").setNew()
+					new DiscoveryEntry("ec3.disc.magicalQuarry") 
 					.setReferal(new ItemStack(BlocksCore.magicalQuarry,1,0),generic(18),generic(19),generic(17))
 					.setDisplayStack(new ItemStack(BlocksCore.magicalQuarry,1,0))
 					.apendPage(next("magicalQuarry").setText(StatCollector.translateToLocal("ec3.page.magicalQuarry_0.txt")))
@@ -1247,7 +1382,7 @@ public class ResearchRegistry {
 					.apendPage(next("magicalQuarry").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.magicalQuarry,1,0), 2)))
 				)		
 			.apendDiscovery(
-					new DiscoveryEntry("ec3.disc.hoanna").setNew()
+					new DiscoveryEntry("ec3.disc.hoanna") 
 					.setReferal(new ItemStack(ItemsCore.windTablet,1,0))
 					.setDisplayStack(new ItemStack(ItemsCore.windTablet,1,0))
 					.apendPage(next("hoanna").setText(StatCollector.translateToLocal("ec3.page.hoanna_0.txt")))
@@ -1264,6 +1399,7 @@ public class ResearchRegistry {
 				)				
 		;
 	}
+	
 	
 	public static void registerHoannaCategory()
 	{
@@ -1298,7 +1434,7 @@ public class ResearchRegistry {
 					.apendPage(next("voidStone").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.voidGlass), 2)))
 			)
 			.apendDiscovery(
-					new DiscoveryEntry("ec3.disc.voidArmor").setNew()
+					new DiscoveryEntry("ec3.disc.voidArmor") 
 					.setReferal(new ItemStack(ItemsCore.magicArmorItems[4],1,0),new ItemStack(ItemsCore.magicArmorItems[5],1,0),new ItemStack(ItemsCore.magicArmorItems[6],1,0),new ItemStack(ItemsCore.magicArmorItems[7],1,0))
 					.setDisplayStack(new ItemStack(ItemsCore.magicArmorItems[5],1,0))
 					.apendPage(next("voidArmor").setText(StatCollector.translateToLocal("ec3.page.voidArmor_0.txt")))
@@ -1308,7 +1444,7 @@ public class ResearchRegistry {
 					.apendPage(next("voidArmor").setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.magicArmorItems[7],1,0), 2)))
 			)	
 			.apendDiscovery(
-					new DiscoveryEntry("ec3.disc.magicalTeleporter").setNew()
+					new DiscoveryEntry("ec3.disc.magicalTeleporter") 
 					.setReferal(new ItemStack(BlocksCore.magicalTeleporter))
 					.setDisplayStack(new ItemStack(BlocksCore.magicalTeleporter))
 					.apendPage(next("magicalTeleporter").setText(StatCollector.translateToLocal("ec3.page.magicalTeleporter_0.txt")))
@@ -1365,7 +1501,7 @@ public class ResearchRegistry {
 				))
 			)
 			.apendDiscovery(
-					new DiscoveryEntry("ec3.disc.magicalFurnace").setNew()
+					new DiscoveryEntry("ec3.disc.magicalFurnace") 
 					.setReferal(new ItemStack(BlocksCore.magicalFurnace))
 					.setDisplayStack(new ItemStack(BlocksCore.magicalFurnace))
 					.apendPage(next("magicalFurnace").setText(StatCollector.translateToLocal("ec3.page.magicalFurnace_0.txt")))
@@ -1415,7 +1551,7 @@ public class ResearchRegistry {
 				))
 			)
 			.apendDiscovery(
-					new DiscoveryEntry("ec3.disc.emberForge").setNew()
+					new DiscoveryEntry("ec3.disc.emberForge") 
 					.setReferal(new ItemStack(BlocksCore.emberForge))
 					.setDisplayStack(new ItemStack(BlocksCore.emberForge))
 					.apendPage(next("emberForge").setText(StatCollector.translateToLocal("ec3.page.emberForge_0.txt")))
@@ -1470,7 +1606,7 @@ public class ResearchRegistry {
 			)
 			.apendDiscovery(
 					new DiscoveryEntry("ec3.disc.mim")
-					.setNew()
+					 
 					.setDisplayStack(new ItemStack(BlocksCore.mim,1,0))
 					.setReferal(new ItemStack(BlocksCore.mim,1,0),new ItemStack(BlocksCore.minEjector,1,0),new ItemStack(BlocksCore.minInjector,1,0),new ItemStack(ItemsCore.filter,1,0))
 					.apendPage(next("mim").setText(StatCollector.translateToLocal("ec3.page.mim_0.txt")))
@@ -1492,7 +1628,7 @@ public class ResearchRegistry {
 					new DiscoveryEntry("ec3.disc.o8elisk")
 					.setDisplayStack(new ItemStack(BlocksCore.darknessObelisk,1,0))
 					.setReferal(new ItemStack(BlocksCore.darknessObelisk,1,0))
-					.setNew()
+					 
 					.apendPage(next("o8elisk").setText(StatCollector.translateToLocal("ec3.page.o8elisk_0.txt")))
 					.apendPage(next("o8elisk").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.darknessObelisk), 2)))
 			)		
@@ -1500,7 +1636,7 @@ public class ResearchRegistry {
 					new DiscoveryEntry("ec3.disc.ultraHeat")
 					.setDisplayStack(new ItemStack(BlocksCore.ultraHeatGen,1,0))
 					.setReferal(new ItemStack(BlocksCore.ultraHeatGen,1,0))
-					.setNew()
+					 
 					.apendPage(next("ultraHeat").setText(StatCollector.translateToLocal("ec3.page.ultraHeat_0.txt")))
 					.apendPage(next("ultraHeat").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.ultraHeatGen), 2)))
 			)		
@@ -1508,7 +1644,7 @@ public class ResearchRegistry {
 					new DiscoveryEntry("ec3.disc.ultraFlower")
 					.setDisplayStack(new ItemStack(BlocksCore.ultraFlowerBurner,1,0))
 					.setReferal(new ItemStack(BlocksCore.ultraFlowerBurner,1,0))
-					.setNew()
+					 
 					.apendPage(next("ultraFlower").setText(StatCollector.translateToLocal("ec3.page.ultraFlower_0.txt")))
 					.apendPage(next("ultraFlower").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.ultraFlowerBurner), 2)))
 			)		
@@ -1518,6 +1654,440 @@ public class ResearchRegistry {
 	public static ItemStack generic(int meta)
 	{
 		return new ItemStack(ItemsCore.genericItem,0,meta);
+	}
+	
+	
+	public static void registerEnderCategory()
+	{
+		ender
+		.apendDiscovery(
+				new DiscoveryEntry("enderstar")
+				.setNew()
+				.setDisplayStack(new ItemStack(ItemsCore.genericItem,1,48))
+				.apendPage(next("enderstar").setText(StatCollector.translateToLocal("ec3.page.enderstar_0.txt")))
+				.apendPage(next("enderstar").setText(StatCollector.translateToLocal("ec3.page.enderstar_1.txt")))
+				.apendPage(next("enderstar").setText(StatCollector.translateToLocal("ec3.page.enderstar_2.txt")))
+				)
+		.apendDiscovery(
+				new DiscoveryEntry("mithriline")
+				.setNew()
+				.setDisplayStack(new ItemStack(ItemsCore.genericItem,1,51))
+				.setReferal(new ItemStack(ItemsCore.genericItem,1,51),new ItemStack(ItemsCore.genericItem,1,50),new ItemStack(ItemsCore.genericItem,1,49),new ItemStack(ItemsCore.genericItem,1,48),new ItemStack(BlocksCore.invertedBlock,1,0))
+				.apendPage(next("mithriline").setText(StatCollector.translateToLocal("ec3.page.mithriline_0.txt")))
+				.apendPage(next("mithriline").setText(StatCollector.translateToLocal("ec3.page.mithriline_1.txt")).setDisplayStacks(new ItemStack(ItemsCore.genericItem,1,51)))
+				.apendPage(next("mithriline").setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.genericItem,1,50), 2)))
+				.apendPage(next("mithriline").setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.genericItem,1,49), 6)))
+				.apendPage(next("mithriline").setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.genericItem,1,48), 2)))
+				.apendPage(next("mithriline").setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.genericItem,1,50), 2)))
+				.apendPage(next("mithriline").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.invertedBlock,1,0), 2)).setText(StatCollector.translateToLocal("ec3.page.mithriline_2.txt")))
+				.apendPage(next("mithriline").setText(StatCollector.translateToLocal("ec3.page.mithriline_3.txt")))
+				.apendPage(next("mithriline").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.mithrilineCrystal,1,0), 2)))
+				.apendPage(next("mithriline").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.mithrilineCrystal,1,3), 2)))
+				.apendPage(next("mithriline").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.mithrilineCrystal,1,6), 2)))
+				.apendPage(next("mithriline").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.mithrilineCrystal,1,9), 2)))
+				)
+		.apendDiscovery(
+				new DiscoveryEntry("mithrilineFurnace")
+				.setNew()
+				.setDisplayStack(new ItemStack(BlocksCore.mithrilineFurnace))
+				.setReferal(new ItemStack(BlocksCore.mithrilineFurnace))
+				.apendPage(next("mithrilineFurnace").setText(StatCollector.translateToLocal("ec3.page.mithrilineFurnace_0.txt")))
+				.apendPage(next("mithrilineFurnace").setText(StatCollector.translateToLocal("ec3.page.mithrilineFurnace_1.txt")))
+				.apendPage(next("mithrilineFurnace").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.mithrilineFurnace,1,0), 2)))
+				.apendPage(next("mithrilineFurnace").setText(StatCollector.translateToLocal("ec3.txt.layer_-1")).setRecipe(new StructureRecipe(new ItemStack(BlocksCore.mithrilineFurnace),
+						new StructureBlock(BlocksCore.invertedBlock, 0, 0, 0, 0),
+						new StructureBlock(BlocksCore.invertedBlock, 0, 1, 0, 0),
+						new StructureBlock(BlocksCore.invertedBlock, 0, -1, 0, 0),
+						new StructureBlock(BlocksCore.invertedBlock, 0, 0, 0, 1),
+						new StructureBlock(BlocksCore.invertedBlock, 0, 0, 0, -1),
+						new StructureBlock(BlocksCore.invertedBlock, 0, 1, 0, 1),
+						new StructureBlock(BlocksCore.invertedBlock, 0, 1, 0, -1),
+						new StructureBlock(BlocksCore.invertedBlock, 0, -1, 0, 1),
+						new StructureBlock(BlocksCore.invertedBlock, 0, -1, 0, -1),
+						new StructureBlock(BlocksCore.invertedBlock, 0, 2, 0, 0),
+						new StructureBlock(BlocksCore.invertedBlock, 0, -2, 0, 0),
+						new StructureBlock(BlocksCore.invertedBlock, 0, 0, 0, 2),
+						new StructureBlock(BlocksCore.invertedBlock, 0, 0, 0, -2),
+						new StructureBlock(BlocksCore.invertedBlock, 0, 2, 0, 2),
+						new StructureBlock(BlocksCore.invertedBlock, 0, 2, 0, -2),
+						new StructureBlock(BlocksCore.invertedBlock, 0, -2, 0, 2),
+						new StructureBlock(BlocksCore.invertedBlock, 0, -2, 0, -2)
+						)))
+				.apendPage(next("mithrilineFurnace").setText(StatCollector.translateToLocal("ec3.txt.layer_0")).setRecipe(new StructureRecipe(new ItemStack(BlocksCore.mithrilineFurnace),
+						new StructureBlock(BlocksCore.mithrilineFurnace, 0, 0, 0, 0),
+						new StructureBlock(BlocksCore.invertedBlock, 0, 2, 0, 0),
+						new StructureBlock(BlocksCore.invertedBlock, 0, -2, 0, 0),
+						new StructureBlock(BlocksCore.invertedBlock, 0, 0, 0, 2),
+						new StructureBlock(BlocksCore.invertedBlock, 0, 0, 0, -2),
+						new StructureBlock(BlocksCore.invertedBlock, 0, 2, 0, 2),
+						new StructureBlock(BlocksCore.invertedBlock, 0, 2, 0, -2),
+						new StructureBlock(BlocksCore.invertedBlock, 0, -2, 0, 2),
+						new StructureBlock(BlocksCore.invertedBlock, 0, -2, 0, -2)
+						)))
+				.apendPage(next("mithrilineFurnace").setText(StatCollector.translateToLocal("ec3.txt.layer_1")).setRecipe(new StructureRecipe(new ItemStack(BlocksCore.mithrilineFurnace),
+						new StructureBlock(BlocksCore.invertedBlock, 0, 2, 0, 2),
+						new StructureBlock(BlocksCore.invertedBlock, 0, 2, 0, -2),
+						new StructureBlock(BlocksCore.invertedBlock, 0, -2, 0, 2),
+						new StructureBlock(BlocksCore.invertedBlock, 0, -2, 0, -2)
+						)))
+				.apendPage(next("mithrilineFurnace").setText(StatCollector.translateToLocal("ec3.txt.layer_2")).setRecipe(new StructureRecipe(new ItemStack(BlocksCore.mithrilineFurnace),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, 2, 0, 2),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, 2, 0, -2),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, -2, 0, 2),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, -2, 0, -2)
+						)))						
+				)
+		.apendDiscovery(
+				new DiscoveryEntry("windRune")
+				.setNew()
+				.setDisplayStack(new ItemStack(BlocksCore.windRune))
+				.setReferal(new ItemStack(BlocksCore.windRune))
+				.apendPage(next("windRune").setText(StatCollector.translateToLocal("ec3.page.windRune_0.txt")))
+				.apendPage(next("windRune").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.windRune,1,0), 2)))
+				.apendPage(next("windRune").setText(StatCollector.translateToLocal("ec3.txt.layer_-1")).setRecipe(new StructureRecipe(new ItemStack(BlocksCore.windRune),
+						new StructureBlock(BlocksCore.invertedBlock, 0, 0, 0, 0),
+						new StructureBlock(BlocksCore.invertedBlock, 0, 1, 0, 0),
+						new StructureBlock(BlocksCore.invertedBlock, 0, -1, 0, 0),
+						new StructureBlock(BlocksCore.invertedBlock, 0, 0, 0, 1),
+						new StructureBlock(BlocksCore.invertedBlock, 0, 0, 0, -1),
+						new StructureBlock(BlocksCore.platingPale, 0, 1, 0, 1),
+						new StructureBlock(BlocksCore.platingPale, 0, 2, 0, 1),
+						new StructureBlock(BlocksCore.platingPale, 0, 1, 0, 2),
+						new StructureBlock(BlocksCore.platingPale, 0, -1, 0, 1),
+						new StructureBlock(BlocksCore.platingPale, 0, -2, 0, 1),
+						new StructureBlock(BlocksCore.platingPale, 0, -1, 0, 2),
+						new StructureBlock(BlocksCore.platingPale, 0, 1, 0, -1),
+						new StructureBlock(BlocksCore.platingPale, 0, 2, 0, -1),
+						new StructureBlock(BlocksCore.platingPale, 0, 1, 0, -2),
+						new StructureBlock(BlocksCore.platingPale, 0, -1, 0, -1),
+						new StructureBlock(BlocksCore.platingPale, 0, -2, 0, -1),
+						new StructureBlock(BlocksCore.platingPale, 0, -1, 0, -2),
+						new StructureBlock(BlocksCore.magicPlating, 0, 2, 0, 0),
+						new StructureBlock(BlocksCore.magicPlating, 0, -2, 0, 0),
+						new StructureBlock(BlocksCore.magicPlating, 0, 0, 0, 2),
+						new StructureBlock(BlocksCore.magicPlating, 0, 0, 0, -2)
+						)))	
+						.apendPage(next("windRune").setText(StatCollector.translateToLocal("ec3.txt.layer_0")).setRecipe(new StructureRecipe(new ItemStack(BlocksCore.windRune),
+								new StructureBlock(BlocksCore.windRune, 0, 0, 0, 0),
+								new StructureBlock(BlocksCore.invertedBlock, 0, 1, 0, 1),
+								new StructureBlock(BlocksCore.invertedBlock, 0, -1, 0, 1),
+								new StructureBlock(BlocksCore.invertedBlock, 0, 1, 0, -1),
+								new StructureBlock(BlocksCore.invertedBlock, 0, -1, 0, -1),
+								new StructureBlock(BlocksCore.magicPlating, 0, 2, 0, 0),
+								new StructureBlock(BlocksCore.magicPlating, 0, -2, 0, 0),
+								new StructureBlock(BlocksCore.magicPlating, 0, 0, 0, 2),
+								new StructureBlock(BlocksCore.magicPlating, 0, 0, 0, -2),
+								new StructureBlock(BlocksCore.mithrilineCrystal, 0, 2, 0, 2),
+								new StructureBlock(BlocksCore.mithrilineCrystal, 0, -2, 0, 2),
+								new StructureBlock(BlocksCore.mithrilineCrystal, 0, 2, 0, -2),
+								new StructureBlock(BlocksCore.mithrilineCrystal, 0, -2, 0, -2)
+						)))	
+						.apendPage(next("windRune").setText(StatCollector.translateToLocal("ec3.txt.layer_1")).setRecipe(new StructureRecipe(new ItemStack(BlocksCore.windRune),
+								new StructureBlock(BlocksCore.invertedBlock, 0, 1, 0, 1),
+								new StructureBlock(BlocksCore.invertedBlock, 0, -1, 0, 1),
+								new StructureBlock(BlocksCore.invertedBlock, 0, 1, 0, -1),
+								new StructureBlock(BlocksCore.invertedBlock, 0, -1, 0, -1)
+						)))	
+						.apendPage(next("windRune").setText(StatCollector.translateToLocal("ec3.txt.layer_2")).setRecipe(new StructureRecipe(new ItemStack(BlocksCore.windRune),
+								new StructureBlock(BlocksCore.mithrilineCrystal, 0, 1, 0, 1),
+								new StructureBlock(BlocksCore.mithrilineCrystal, 0, -1, 0, 1),
+								new StructureBlock(BlocksCore.mithrilineCrystal, 0, 1, 0, -1),
+								new StructureBlock(BlocksCore.mithrilineCrystal, 0, -1, 0, -1)
+						)))	
+						.apendPage(next("windRune").setText(StatCollector.translateToLocal("ec3.page.windRune_1.txt")))
+						.apendPage(next("windRune").setText(StatCollector.translateToLocal("ec3.page.windRune_2.txt")))
+						.apendPage(next("windRune").setText(StatCollector.translateToLocal("ec3.page.windRune_3.txt")))
+						.apendPage(next("windRune").setText(StatCollector.translateToLocal("ec3.page.windRune_4.txt")))
+						.apendPage(next("windRune").setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.wind_elemental_axe), 2)))
+						.apendPage(next("windRune").setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.wind_elemental_pick), 2)))
+						.apendPage(next("windRune").setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.wind_elemental_hoe), 2)))
+						.apendPage(next("windRune").setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.wind_elemental_shovel), 2)))
+						.apendPage(next("windRune").setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.wind_elemental_sword), 2)))
+				)
+		.apendDiscovery(
+				new DiscoveryEntry("playerPentacle")
+				.setNew()
+				.setDisplayStack(new ItemStack(BlocksCore.playerPentacle))
+				.setReferal(new ItemStack(BlocksCore.playerPentacle))
+				.apendPage(next("playerPentacle").setText(StatCollector.translateToLocal("ec3.page.playerPentacle_0.txt")))
+				.apendPage(next("playerPentacle").setText(StatCollector.translateToLocal("ec3.page.playerPentacle_1.txt")))
+				.apendPage(next("playerPentacle").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.playerPentacle), 2)))
+				.apendPage(next("playerPentacle").setText(StatCollector.translateToLocal("ec3.txt.layer_-1")).setRecipe(new StructureRecipe(new ItemStack(BlocksCore.playerPentacle),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 1, 0, 0),
+					new StructureBlock(BlocksCore.invertedBlock, 0, -1, 0, 0),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 0, 0, 1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 0, 0, -1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 0, 0, 0),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 2, 0, 1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 2, 0, -1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, -2, 0, 1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, -2, 0, -1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 1, 0, 2),
+					new StructureBlock(BlocksCore.invertedBlock, 0, -1, 0, 2),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 1, 0, -2),
+					new StructureBlock(BlocksCore.invertedBlock, 0, -1, 0, -2)
+					)))
+				.apendPage(next("playerPentacle").setText(StatCollector.translateToLocal("ec3.txt.layer_0")).setRecipe(new StructureRecipe(new ItemStack(BlocksCore.playerPentacle),
+						new StructureBlock(BlocksCore.playerPentacle, 0, 0, 0, 0),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, 2, 0, 1),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, 2, 0, -1),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, -2, 0, 1),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, -2, 0, -1),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, 1, 0, 2),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, -1, 0, 2),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, 1, 0, -2),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, -1, 0, -2)
+					)))
+					
+					.apendPage(next("playerPentacle").setText(StatCollector.translateToLocal("ec3.page.playerPentacle_2.txt")))
+					.apendPage(next("playerPentacle").setText(StatCollector.translateToLocal("ec3.txt.layer_-1")).setRecipe(new StructureRecipe(new ItemStack(BlocksCore.playerPentacle),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 1, 0, 0),
+					new StructureBlock(BlocksCore.invertedBlock, 0, -1, 0, 0),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 0, 0, 1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 0, 0, -1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 1, 0, 1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, -1, 0, 1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 1, 0, -1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, -1, 0, -1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 0, 0, 0),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 2, 0, 1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 2, 0, -1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, -2, 0, 1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, -2, 0, -1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 1, 0, 2),
+					new StructureBlock(BlocksCore.invertedBlock, 0, -1, 0, 2),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 1, 0, -2),
+					new StructureBlock(BlocksCore.invertedBlock, 0, -1, 0, -2)
+					)))
+				.apendPage(next("playerPentacle").setText(StatCollector.translateToLocal("ec3.txt.layer_0")).setRecipe(new StructureRecipe(new ItemStack(BlocksCore.playerPentacle),
+						new StructureBlock(BlocksCore.playerPentacle, 0, 0, 0, 0),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, 2, 0, 1),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, 2, 0, -1),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, -2, 0, 1),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, -2, 0, -1),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, 1, 0, 2),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, -1, 0, 2),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, 1, 0, -2),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, -1, 0, -2),
+						new StructureBlock(BlocksCore.blockPale, 0, 1, 0, 1),
+						new StructureBlock(BlocksCore.blockPale, 0, -1, 0, 1),
+						new StructureBlock(BlocksCore.blockPale, 0, 1, 0, -1),
+						new StructureBlock(BlocksCore.blockPale, 0, -1, 0, -1)
+					)))
+				.apendPage(next("playerPentacle").setText(StatCollector.translateToLocal("ec3.txt.layer_1")).setRecipe(new StructureRecipe(new ItemStack(BlocksCore.playerPentacle),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 3, 1, 0, 1),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 3, -1, 0, 1),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 3, 1, 0, -1),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 3, -1, 0, -1)
+					)))
+					
+				.apendPage(next("playerPentacle").setText(StatCollector.translateToLocal("ec3.page.playerPentacle_3.txt")))
+				.apendPage(next("playerPentacle").setText(StatCollector.translateToLocal("ec3.txt.layer_-1")).setRecipe(new StructureRecipe(new ItemStack(BlocksCore.playerPentacle),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 1, 0, 0),
+					new StructureBlock(BlocksCore.invertedBlock, 0, -1, 0, 0),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 0, 0, 1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 0, 0, -1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 1, 0, 1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, -1, 0, 1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 1, 0, -1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, -1, 0, -1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 0, 0, 0),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 2, 0, 1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 2, 0, -1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, -2, 0, 1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, -2, 0, -1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 1, 0, 2),
+					new StructureBlock(BlocksCore.invertedBlock, 0, -1, 0, 2),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 1, 0, -2),
+					new StructureBlock(BlocksCore.invertedBlock, 0, -1, 0, -2)
+					)))
+				.apendPage(next("playerPentacle").setText(StatCollector.translateToLocal("ec3.txt.layer_0")).setRecipe(new StructureRecipe(new ItemStack(BlocksCore.playerPentacle),
+						new StructureBlock(BlocksCore.playerPentacle, 0, 0, 0, 0),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, 2, 0, 1),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, 2, 0, -1),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, -2, 0, 1),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, -2, 0, -1),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, 1, 0, 2),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, -1, 0, 2),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, 1, 0, -2),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, -1, 0, -2),
+						new StructureBlock(BlocksCore.blockPale, 0, 1, 0, 1),
+						new StructureBlock(BlocksCore.blockPale, 0, -1, 0, 1),
+						new StructureBlock(BlocksCore.blockPale, 0, 1, 0, -1),
+						new StructureBlock(BlocksCore.blockPale, 0, -1, 0, -1),
+						new StructureBlock(BlocksCore.voidStone, 0, 2, 0, 2),
+						new StructureBlock(BlocksCore.voidStone, 0, -2, 0, 2),
+						new StructureBlock(BlocksCore.voidStone, 0, 2, 0, -2),
+						new StructureBlock(BlocksCore.voidStone, 0, -2, 0, -2)
+					)))
+				.apendPage(next("playerPentacle").setText(StatCollector.translateToLocal("ec3.txt.layer_1")).setRecipe(new StructureRecipe(new ItemStack(BlocksCore.playerPentacle),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 3, 1, 0, 1),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 3, -1, 0, 1),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 3, 1, 0, -1),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 3, -1, 0, -1),
+						new StructureBlock(BlocksCore.voidStone, 0, 2, 0, 2),
+						new StructureBlock(BlocksCore.voidStone, 0, -2, 0, 2),
+						new StructureBlock(BlocksCore.voidStone, 0, 2, 0, -2),
+						new StructureBlock(BlocksCore.voidStone, 0, -2, 0, -2)
+					)))
+				.apendPage(next("playerPentacle").setText(StatCollector.translateToLocal("ec3.txt.layer_2")).setRecipe(new StructureRecipe(new ItemStack(BlocksCore.playerPentacle),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 6, 2, 0, 2),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 6, -2, 0, 2),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 6, 2, 0, -2),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 6, -2, 0, -2)
+					)))
+		
+				.apendPage(next("playerPentacle").setText(StatCollector.translateToLocal("ec3.page.playerPentacle_4.txt")))
+				.apendPage(next("playerPentacle").setText(StatCollector.translateToLocal("ec3.txt.layer_-1")).setRecipe(new StructureRecipe(new ItemStack(BlocksCore.playerPentacle),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 1, 0, 0),
+					new StructureBlock(BlocksCore.invertedBlock, 0, -1, 0, 0),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 0, 0, 1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 0, 0, -1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 1, 0, 1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, -1, 0, 1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 1, 0, -1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, -1, 0, -1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 0, 0, 0),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 2, 0, 1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 2, 0, -1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, -2, 0, 1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, -2, 0, -1),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 1, 0, 2),
+					new StructureBlock(BlocksCore.invertedBlock, 0, -1, 0, 2),
+					new StructureBlock(BlocksCore.invertedBlock, 0, 1, 0, -2),
+					new StructureBlock(BlocksCore.invertedBlock, 0, -1, 0, -2),
+					new StructureBlock(BlocksCore.demonicPlating, 0, 0, 0, 2),
+					new StructureBlock(BlocksCore.demonicPlating, 0, 0, 0, -2),
+					new StructureBlock(BlocksCore.demonicPlating, 0, 2, 0, 0),
+					new StructureBlock(BlocksCore.demonicPlating, 0, -2, 0, 0)
+					)))
+				.apendPage(next("playerPentacle").setText(StatCollector.translateToLocal("ec3.txt.layer_0")).setRecipe(new StructureRecipe(new ItemStack(BlocksCore.playerPentacle),
+						new StructureBlock(BlocksCore.playerPentacle, 0, 0, 0, 0),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, 2, 0, 1),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, 2, 0, -1),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, -2, 0, 1),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, -2, 0, -1),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, 1, 0, 2),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, -1, 0, 2),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, 1, 0, -2),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 0, -1, 0, -2),
+						new StructureBlock(BlocksCore.blockPale, 0, 1, 0, 1),
+						new StructureBlock(BlocksCore.blockPale, 0, -1, 0, 1),
+						new StructureBlock(BlocksCore.blockPale, 0, 1, 0, -1),
+						new StructureBlock(BlocksCore.blockPale, 0, -1, 0, -1),
+						new StructureBlock(BlocksCore.voidStone, 0, 2, 0, 2),
+						new StructureBlock(BlocksCore.voidStone, 0, -2, 0, 2),
+						new StructureBlock(BlocksCore.voidStone, 0, 2, 0, -2),
+						new StructureBlock(BlocksCore.voidStone, 0, -2, 0, -2)
+					)))
+				.apendPage(next("playerPentacle").setText(StatCollector.translateToLocal("ec3.txt.layer_1")).setRecipe(new StructureRecipe(new ItemStack(BlocksCore.playerPentacle),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 3, 1, 0, 1),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 3, -1, 0, 1),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 3, 1, 0, -1),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 3, -1, 0, -1),
+						new StructureBlock(BlocksCore.voidStone, 0, 2, 0, 2),
+						new StructureBlock(BlocksCore.voidStone, 0, -2, 0, 2),
+						new StructureBlock(BlocksCore.voidStone, 0, 2, 0, -2),
+						new StructureBlock(BlocksCore.voidStone, 0, -2, 0, -2)
+					)))
+				.apendPage(next("playerPentacle").setText(StatCollector.translateToLocal("ec3.txt.layer_2")).setRecipe(new StructureRecipe(new ItemStack(BlocksCore.playerPentacle),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 6, 2, 0, 2),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 6, -2, 0, 2),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 6, 2, 0, -2),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 6, -2, 0, -2)
+					)))
+				.apendPage(next("playerPentacle").setText(StatCollector.translateToLocal("ec3.txt.layer_3")).setRecipe(new StructureRecipe(new ItemStack(BlocksCore.playerPentacle),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 9, 2, 0, 0),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 9, -2, 0, 0),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 9, 0, 0, 2),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 9, 0, 0, -2)
+					)))
+				)
+		.apendDiscovery(
+				new DiscoveryEntry("demonicPentacle")
+				.setNew()
+				.setDisplayStack(new ItemStack(BlocksCore.demonicPentacle))
+				.apendPage(next("demonicPentacle").setText(StatCollector.translateToLocal("ec3.page.demonicPentacle_0.txt")))
+				.apendPage(next("demonicPentacle").setText(StatCollector.translateToLocal("ec3.page.demonicPentacle_1.txt")))
+				.apendPage(next("demonicPentacle").setText(StatCollector.translateToLocal("ec3.page.demonicPentacle_2.txt")))
+				.apendPage(next("demonicPentacle").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.demonicPentacle), 2)))
+				.apendPage(next("demonicPentacle").setText(StatCollector.translateToLocal("ec3.txt.layer_-1")).setRecipe(new StructureRecipe(new ItemStack(BlocksCore.demonicPentacle),
+						new StructureBlock(BlocksCore.voidStone, 0, 0, 0, 0),
+						
+						new StructureBlock(BlocksCore.voidStone, 0, 2, 0, 0),
+						new StructureBlock(BlocksCore.voidStone, 0, -2, 0, 0),
+						new StructureBlock(BlocksCore.voidStone, 0, 0, 0, 2),
+						new StructureBlock(BlocksCore.voidStone, 0, 0, 0, -2),
+						
+						new StructureBlock(BlocksCore.voidStone, 0, 3, 0, 1),
+						new StructureBlock(BlocksCore.voidStone, 0, 3, 0, -1),
+						new StructureBlock(BlocksCore.voidStone, 0, -3, 0, 1),
+						new StructureBlock(BlocksCore.voidStone, 0, -3, 0, -1),
+						new StructureBlock(BlocksCore.voidStone, 0, 1, 0, 3),
+						new StructureBlock(BlocksCore.voidStone, 0, -1, 0, 3),
+						new StructureBlock(BlocksCore.voidStone, 0, 1, 0, -3),
+						new StructureBlock(BlocksCore.voidStone, 0, -1, 0, -3),
+						
+						new StructureBlock(BlocksCore.platingPale, 0, 1, 0, 0),
+						new StructureBlock(BlocksCore.platingPale, 0, -1, 0, 0),
+						new StructureBlock(BlocksCore.platingPale, 0, 0, 0, 1),
+						new StructureBlock(BlocksCore.platingPale, 0, 0, 0, -1),
+						
+						new StructureBlock(BlocksCore.platingPale, 0, 2, 0, 1),
+						new StructureBlock(BlocksCore.platingPale, 0, 2, 0, -1),
+						new StructureBlock(BlocksCore.platingPale, 0, -2, 0, 1),
+						new StructureBlock(BlocksCore.platingPale, 0, -2, 0, -1),
+						new StructureBlock(BlocksCore.platingPale, 0, 1, 0, 2),
+						new StructureBlock(BlocksCore.platingPale, 0, -1, 0, 2),
+						new StructureBlock(BlocksCore.platingPale, 0, 1, 0, -2),
+						new StructureBlock(BlocksCore.platingPale, 0, -1, 0, -2),
+						
+						new StructureBlock(BlocksCore.platingPale, 0, 3, 0, 2),
+						new StructureBlock(BlocksCore.platingPale, 0, 3, 0, -2),
+						new StructureBlock(BlocksCore.platingPale, 0, -3, 0, 2),
+						new StructureBlock(BlocksCore.platingPale, 0, -3, 0, -2),
+						new StructureBlock(BlocksCore.platingPale, 0, 2, 0, 3),
+						new StructureBlock(BlocksCore.platingPale, 0, -2, 0, 3),
+						new StructureBlock(BlocksCore.platingPale, 0, 2, 0, -3),
+						new StructureBlock(BlocksCore.platingPale, 0, -2, 0, -3)
+					)))
+				.apendPage(next("demonicPentacle").setText(StatCollector.translateToLocal("ec3.txt.layer_0")).setRecipe(new StructureRecipe(new ItemStack(BlocksCore.demonicPentacle),
+						new StructureBlock(BlocksCore.demonicPentacle, 0, 0, 0, 0),
+						
+						new StructureBlock(BlocksCore.invertedBlock, 0, 2, 0, 2),
+						new StructureBlock(BlocksCore.invertedBlock, 0, -2, 0, 2),
+						new StructureBlock(BlocksCore.invertedBlock, 0, 2, 0, -2),
+						new StructureBlock(BlocksCore.invertedBlock, 0, -2, 0, -2),
+						
+						new StructureBlock(Blocks.glowstone, 0, 3, 0, 0),
+						new StructureBlock(Blocks.glowstone, 0, -3, 0, 0),
+						new StructureBlock(Blocks.glowstone, 0, 0, 0, 3),
+						new StructureBlock(Blocks.glowstone, 0, 0, 0, -3),
+						
+						new StructureBlock(BlocksCore.mithrilineCrystal, 3, 3, 0, 2),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 3, 3, 0, -2),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 3, -3, 0, 2),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 3, -3, 0, -2),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 3, 2, 0, 3),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 3, -2, 0, 3),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 3, 2, 0, -3),
+						new StructureBlock(BlocksCore.mithrilineCrystal, 3, -2, 0, -3)
+					)))		
+					.apendPage(next("demonicPentacle").setText(StatCollector.translateToLocal("ec3.txt.layer_1")).setRecipe(new StructureRecipe(new ItemStack(BlocksCore.demonicPentacle),
+							
+							new StructureBlock(BlocksCore.mithrilineCrystal, 0, 2, 0, 2),
+							new StructureBlock(BlocksCore.mithrilineCrystal, 0, -2, 0, 2),
+							new StructureBlock(BlocksCore.mithrilineCrystal, 0, 2, 0, -2),
+							new StructureBlock(BlocksCore.mithrilineCrystal, 0, -2, 0, -2),
+							
+							new StructureBlock(BlocksCore.mithrilineCrystal, 6, 3, 0, 0),
+							new StructureBlock(BlocksCore.mithrilineCrystal, 6, -3, 0, 0),
+							new StructureBlock(BlocksCore.mithrilineCrystal, 6, 0, 0, 3),
+							new StructureBlock(BlocksCore.mithrilineCrystal, 6, 0, 0, -3)
+						)))		
+					
+				)
+		;
 	}
 	
 	public static PageEntry next(String genID)
@@ -1531,7 +2101,8 @@ public class ResearchRegistry {
 	
 	public static void init()
 	{
-		stringIDS.clear();ApiCore.categories.clear();basic.discoveries.clear();mru.discoveries.clear();eng.discoveries.clear();hoanna.discoveries.clear();shade.discoveries.clear();
+		stringIDS.clear();ApiCore.categories.clear();basic.discoveries.clear();mru.discoveries.clear();eng.discoveries.clear();hoanna.discoveries.clear();shade.discoveries.clear();ender.discoveries.clear();
+		
 		registerBasicCategory();
 		registerMruCategory();
 		
@@ -1539,21 +2110,26 @@ public class ResearchRegistry {
 		
 		registerHoannaCategory();
 		
+		registerEnderCategory();
+		
 		mru.setDisplayStack(new ItemStack(ItemsCore.drops,1,4));
 		eng.setDisplayStack(new ItemStack(ItemsCore.wFocus,1,0));
 		hoanna.setDisplayStack(new ItemStack(ItemsCore.genericItem,1,37));
 		shade.setDisplayStack(new ItemStack(BlocksCore.lightCorruption[2],1,6));
+		ender.setDisplayStack(new ItemStack(BlocksCore.mithrilineCrystal,1,0));
 		
 		ApiCore.categories.add(basic);
 		ApiCore.categories.add(mru);
 		ApiCore.categories.add(eng);
 		ApiCore.categories.add(hoanna);
 		ApiCore.categories.add(shade);
+		ApiCore.categories.add(ender);
 	}
 	
 	public static final CategoryEntry basic = new CategoryEntry("ec3.basic").setDisplayStack(new ResourceLocation("essentialcraft","textures/special/basical_knowledge_icon.png"));
 	public static final CategoryEntry mru = new CategoryEntry("ec3.mru").setTier(1);
 	public static final CategoryEntry eng = new CategoryEntry("ec3.eng").setTier(2);
+	public static final CategoryEntry ender = new CategoryEntry("ec3.ender").setTier(2);
 	public static final CategoryEntry hoanna = new CategoryEntry("ec3.hoanna").setTier(3).setSpecificTexture(new ResourceLocation("essentialcraft","textures/gui/research_book_hoanna.png"));
 	public static final CategoryEntry shade = new CategoryEntry("ec3.shade").setTier(4);
 

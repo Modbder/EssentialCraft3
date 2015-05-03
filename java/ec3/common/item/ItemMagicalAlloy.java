@@ -33,8 +33,8 @@ public class ItemMagicalAlloy extends Item{
     public void registerIcons(IIconRegister p_94581_1_)
     {
         super.registerIcons(p_94581_1_);
-        layerIcon[0] = p_94581_1_.registerIcon("essentialcraft:alloy_layer_0");
-        layerIcon[1] = p_94581_1_.registerIcon("essentialcraft:alloy_layer_1");
+        layerIcon[0] = p_94581_1_.registerIcon("essentialcraft:modular/alloy_layer_0");
+        layerIcon[1] = p_94581_1_.registerIcon("essentialcraft:modular/alloy_layer_1");
     }
     
     @SideOnly(Side.CLIENT)

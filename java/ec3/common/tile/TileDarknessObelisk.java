@@ -8,7 +8,6 @@ import net.minecraft.block.BlockMobSpawner;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.inventory.IInventory;
@@ -49,6 +48,7 @@ public class TileDarknessObelisk extends TileMRUGeneric
 		this.setSlotsNum(2);
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void updateEntity()
 	{

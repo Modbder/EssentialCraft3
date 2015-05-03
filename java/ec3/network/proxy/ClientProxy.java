@@ -1,29 +1,19 @@
 package ec3.network.proxy;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
 import java.util.List;
 
-import org.lwjgl.input.Keyboard;
-
+import DummyCore.Client.GuiCommon;
 import DummyCore.Client.MainMenuRegistry;
-import DummyCore.Core.CoreInitialiser;
-import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
+import DummyCore.Utils.DummyPacketHandler;
 import DummyCore.Utils.DummyPacketIMSG;
 import DummyCore.Utils.MathUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.inventory.GuiChest;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.model.ModelSlime;
-import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.client.settings.GameSettings;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
@@ -31,7 +21,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenBase.TempCategory;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
@@ -39,8 +28,6 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.common.registry.VillagerRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ec3.client.gui.GuiAMINEjector;
@@ -52,6 +39,7 @@ import ec3.client.gui.GuiCrystalController;
 import ec3.client.gui.GuiCrystalExtractor;
 import ec3.client.gui.GuiCrystalFormer;
 import ec3.client.gui.GuiDarknessObelisk;
+import ec3.client.gui.GuiDemon;
 import ec3.client.gui.GuiEnderGenerator;
 import ec3.client.gui.GuiFilter;
 import ec3.client.gui.GuiFlowerBurner;
@@ -73,16 +61,20 @@ import ec3.client.gui.GuiMagicianTable;
 import ec3.client.gui.GuiMagmaticSmeltery;
 import ec3.client.gui.GuiMainMenuEC3;
 import ec3.client.gui.GuiMatrixAbsorber;
+import ec3.client.gui.GuiMithrilineFurnace;
 import ec3.client.gui.GuiMonsterHarvester;
 import ec3.client.gui.GuiMonsterHolder;
 import ec3.client.gui.GuiMoonWell;
+import ec3.client.gui.GuiPlayerPentacle;
 import ec3.client.gui.GuiPotionSpreader;
 import ec3.client.gui.GuiRadiatingChamber;
 import ec3.client.gui.GuiRayTower;
 import ec3.client.gui.GuiResearchBook;
+import ec3.client.gui.GuiRightClicker;
 import ec3.client.gui.GuiSunRayAbsorber;
 import ec3.client.gui.GuiUltraFlowerBurner;
 import ec3.client.gui.GuiUltraHeatGenerator;
+import ec3.client.gui.GuiWeaponBench;
 import ec3.client.model.ModelArmorEC3;
 import ec3.client.regular.EntityCSpellFX;
 import ec3.client.regular.EntityColoredFlameFX;
@@ -92,6 +84,7 @@ import ec3.client.regular.EntityMRUFX;
 import ec3.client.regular.RenderMRUArrow;
 import ec3.client.render.ArmorRenderer;
 import ec3.client.render.ClientRenderHandler;
+import ec3.client.render.GunItemRenderHelper;
 import ec3.client.render.RenderBlocksECIII;
 import ec3.client.render.RenderChargingChamber;
 import ec3.client.render.RenderCloudsFirstWorld;
@@ -101,6 +94,8 @@ import ec3.client.render.RenderCrystalController;
 import ec3.client.render.RenderCrystalExtractor;
 import ec3.client.render.RenderCrystalFormer;
 import ec3.client.render.RenderDarknessObelisk;
+import ec3.client.render.RenderDemon;
+import ec3.client.render.RenderDemonicPentacle;
 import ec3.client.render.RenderElementalCrystal;
 import ec3.client.render.RenderElementalCrystalAsItem;
 import ec3.client.render.RenderEnderGenerator;
@@ -114,8 +109,10 @@ import ec3.client.render.RenderMRUCoil;
 import ec3.client.render.RenderMRUCoilHardener;
 import ec3.client.render.RenderMRULink;
 import ec3.client.render.RenderMRUPresence;
+import ec3.client.render.RenderMRURay;
 import ec3.client.render.RenderMRUReactor;
 import ec3.client.render.RenderMagicalAssembler;
+import ec3.client.render.RenderMagicalDisplay;
 import ec3.client.render.RenderMagicalEnchanter;
 import ec3.client.render.RenderMagicalJukebox;
 import ec3.client.render.RenderMagicalMirror;
@@ -124,8 +121,11 @@ import ec3.client.render.RenderMagicalRepairer;
 import ec3.client.render.RenderMagicianTable;
 import ec3.client.render.RenderMagmaticSmelter;
 import ec3.client.render.RenderMatrixAbsorber;
+import ec3.client.render.RenderMithrilineCrystal;
+import ec3.client.render.RenderMithrilineFurnace;
 import ec3.client.render.RenderMonsterHarvester;
 import ec3.client.render.RenderMonsterHolder;
+import ec3.client.render.RenderPlayerPentacle;
 import ec3.client.render.RenderPoisonFume;
 import ec3.client.render.RenderPotionSpreader;
 import ec3.client.render.RenderRadiatingChamber;
@@ -138,10 +138,14 @@ import ec3.client.render.RenderSunRayAbsorber;
 import ec3.client.render.RenderUltraFlowerBurner;
 import ec3.client.render.RenderUltraHeatGenerator;
 import ec3.client.render.RenderWindMage;
+import ec3.client.render.RenderWindRune;
 import ec3.common.block.BlocksCore;
+import ec3.common.entity.EntityDemon;
 import ec3.common.entity.EntityMRUArrow;
 import ec3.common.entity.EntityMRUPresence;
+import ec3.common.entity.EntityMRURay;
 import ec3.common.entity.EntityPoisonFume;
+import ec3.common.entity.EntityShadowKnife;
 import ec3.common.entity.EntitySolarBeam;
 import ec3.common.entity.EntityWindMage;
 import ec3.common.inventory.ContainerAMINEjector;
@@ -153,6 +157,7 @@ import ec3.common.inventory.ContainerCrystalController;
 import ec3.common.inventory.ContainerCrystalExtractor;
 import ec3.common.inventory.ContainerCrystalFormer;
 import ec3.common.inventory.ContainerDarknessObelisk;
+import ec3.common.inventory.ContainerDemon;
 import ec3.common.inventory.ContainerEnderGenerator;
 import ec3.common.inventory.ContainerFilter;
 import ec3.common.inventory.ContainerFlowerBurner;
@@ -166,6 +171,7 @@ import ec3.common.inventory.ContainerMRUInfo;
 import ec3.common.inventory.ContainerMagicalAssembler;
 import ec3.common.inventory.ContainerMagicalEnchanter;
 import ec3.common.inventory.ContainerMagicalFurnace;
+import ec3.common.inventory.ContainerMagicalHopper;
 import ec3.common.inventory.ContainerMagicalJukebox;
 import ec3.common.inventory.ContainerMagicalQuarry;
 import ec3.common.inventory.ContainerMagicalRepairer;
@@ -173,15 +179,19 @@ import ec3.common.inventory.ContainerMagicalTeleporter;
 import ec3.common.inventory.ContainerMagicianTable;
 import ec3.common.inventory.ContainerMagmaticSmeltery;
 import ec3.common.inventory.ContainerMatrixAbsorber;
+import ec3.common.inventory.ContainerMithrilineFurnace;
 import ec3.common.inventory.ContainerMonsterHarvester;
 import ec3.common.inventory.ContainerMonsterHolder;
 import ec3.common.inventory.ContainerMoonWell;
 import ec3.common.inventory.ContainerPotionSpreader;
 import ec3.common.inventory.ContainerRadiatingChamber;
 import ec3.common.inventory.ContainerRayTower;
+import ec3.common.inventory.ContainerRedstoneTransmitter;
+import ec3.common.inventory.ContainerRightClicker;
 import ec3.common.inventory.ContainerSunRayAbsorber;
 import ec3.common.inventory.ContainerUltraFlowerBurner;
 import ec3.common.inventory.ContainerUltraHeatGenerator;
+import ec3.common.inventory.ContainerWeaponBench;
 import ec3.common.inventory.InventoryMagicFilter;
 import ec3.common.item.ItemSecret;
 import ec3.common.item.ItemsCore;
@@ -194,6 +204,7 @@ import ec3.common.tile.TileCrystalController;
 import ec3.common.tile.TileCrystalExtractor;
 import ec3.common.tile.TileCrystalFormer;
 import ec3.common.tile.TileDarknessObelisk;
+import ec3.common.tile.TileDemonicPentacle;
 import ec3.common.tile.TileElementalCrystal;
 import ec3.common.tile.TileEnderGenerator;
 import ec3.common.tile.TileFlowerBurner;
@@ -205,8 +216,10 @@ import ec3.common.tile.TileMRUCoil;
 import ec3.common.tile.TileMRUCoil_Hardener;
 import ec3.common.tile.TileMRUReactor;
 import ec3.common.tile.TileMagicalAssembler;
+import ec3.common.tile.TileMagicalDisplay;
 import ec3.common.tile.TileMagicalEnchanter;
 import ec3.common.tile.TileMagicalFurnace;
+import ec3.common.tile.TileMagicalHopper;
 import ec3.common.tile.TileMagicalJukebox;
 import ec3.common.tile.TileMagicalMirror;
 import ec3.common.tile.TileMagicalQuarry;
@@ -215,22 +228,30 @@ import ec3.common.tile.TileMagicalTeleporter;
 import ec3.common.tile.TileMagicianTable;
 import ec3.common.tile.TileMagmaticSmelter;
 import ec3.common.tile.TileMatrixAbsorber;
+import ec3.common.tile.TileMithrilineCrystal;
+import ec3.common.tile.TileMithrilineFurnace;
 import ec3.common.tile.TileMonsterHarvester;
 import ec3.common.tile.TileMonsterHolder;
 import ec3.common.tile.TileMoonWell;
+import ec3.common.tile.TilePlayerPentacle;
 import ec3.common.tile.TilePotionSpreader;
 import ec3.common.tile.TileRadiatingChamber;
 import ec3.common.tile.TileRayTower;
+import ec3.common.tile.TileRedstoneTransmitter;
+import ec3.common.tile.TileRightClicker;
 import ec3.common.tile.TileSolarPrism;
 import ec3.common.tile.TileSunRayAbsorber;
 import ec3.common.tile.TileUltraFlowerBurner;
 import ec3.common.tile.TileUltraHeatGenerator;
+import ec3.common.tile.TileWeaponMaker;
+import ec3.common.tile.TileWindRune;
 import ec3.common.tile.TileecAcceptor;
 import ec3.common.tile.TileecStateChecker;
 import ec3.utils.cfg.Config;
 
 public class ClientProxy extends CommonProxy{
 ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/entities/magician.png");
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world,int x, int y, int z) 
 	{
@@ -394,6 +415,39 @@ ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/
 			{
 				return new GuiMagicalAssembler(new ContainerMagicalAssembler(player.inventory, tile),tile);
 			}
+			if(tile instanceof TileMithrilineFurnace)
+			{
+				return new GuiMithrilineFurnace(new ContainerMithrilineFurnace(player.inventory, tile),tile);
+			}
+			if(tile instanceof TileRightClicker)
+			{
+				return new GuiRightClicker(new ContainerRightClicker(player.inventory, tile),tile);
+			}
+			if(tile instanceof TileRedstoneTransmitter)
+			{
+				return new GuiCommon(new ContainerRedstoneTransmitter(player.inventory, tile),tile);
+			}
+			if(tile instanceof TileMagicalHopper)
+			{
+				return new GuiCommon(new ContainerMagicalHopper(player.inventory, tile),tile);
+			}
+			if(tile instanceof TileWeaponMaker)
+			{
+				return new GuiWeaponBench(new ContainerWeaponBench(player.inventory, tile),tile);
+			}
+			if(tile instanceof TilePlayerPentacle)
+			{
+				
+				return new GuiPlayerPentacle(tile);
+			}
+		}
+		if(ID == Config.guiID[1])
+		{
+			List<EntityDemon> demons = world.getEntitiesWithinAABB(EntityDemon.class, AxisAlignedBB.getBoundingBox(x-1, y-1, z-1, x+1, y+1, z+1));
+			if(!demons.isEmpty())
+			{
+				return new GuiDemon(new ContainerDemon(player, demons.get(0)));
+			}
 		}
 		return null;
 	}
@@ -402,6 +456,12 @@ ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/
 	public void openBookGUIForPlayer()
 	{
 		Minecraft.getMinecraft().displayGuiScreen(new GuiResearchBook());
+	}
+	
+	@Override
+	public void openPentacleGUIForPlayer(TileEntity tile)
+	{
+		Minecraft.getMinecraft().displayGuiScreen(new GuiPlayerPentacle(tile));
 	}
 
 	@Override
@@ -413,12 +473,19 @@ ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/
 		RenderingRegistry.registerEntityRenderingHandler(EntitySolarBeam.class, new RenderSolarBeam());
 		RenderingRegistry.registerEntityRenderingHandler(EntityWindMage.class, new RenderWindMage());
 		RenderingRegistry.registerEntityRenderingHandler(EntityPoisonFume.class, new RenderPoisonFume());
+		RenderingRegistry.registerEntityRenderingHandler(EntityShadowKnife.class, new RenderSnowball(ItemsCore.shadeKnife));
+		RenderingRegistry.registerEntityRenderingHandler(EntityMRURay.class, new RenderMRURay());
+		RenderingRegistry.registerEntityRenderingHandler(EntityDemon.class, new RenderDemon());
 		RenderingRegistry.registerBlockHandler(new RenderBlocksECIII());
-		FMLCommonHandler.instance().bus().register(new ClientRenderHandler());
+		MinecraftForge.EVENT_BUS.register(new ClientRenderHandler());
 		FMLCommonHandler.instance().bus().register(new RenderHandlerEC3());
 		MinecraftForge.EVENT_BUS.register(new RenderHandlerEC3());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlocksCore.elementalCrystal), new RenderElementalCrystalAsItem());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlocksCore.solarPrism), new RenderSolarPrismAsItem());
+		MinecraftForgeClient.registerItemRenderer(ItemsCore.pistol, new GunItemRenderHelper());
+		MinecraftForgeClient.registerItemRenderer(ItemsCore.rifle, new GunItemRenderHelper());
+		MinecraftForgeClient.registerItemRenderer(ItemsCore.sniper, new GunItemRenderHelper());
+		MinecraftForgeClient.registerItemRenderer(ItemsCore.gatling, new GunItemRenderHelper());
 		for(int i = 0; i < ItemsCore.magicArmorItems.length; ++i)
 		{
 			if(ItemsCore.magicArmorItems[i] != null)
@@ -468,6 +535,12 @@ ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/
 		ClientRegistry.bindTileEntitySpecialRenderer(TileUltraFlowerBurner.class, new RenderUltraFlowerBurner());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileMagicalAssembler.class, new RenderMagicalAssembler());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileMagicalMirror.class, new RenderMagicalMirror());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileMagicalDisplay.class, new RenderMagicalDisplay());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileMithrilineCrystal.class, new RenderMithrilineCrystal());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileMithrilineFurnace.class, new RenderMithrilineFurnace());
+		ClientRegistry.bindTileEntitySpecialRenderer(TilePlayerPentacle.class, new RenderPlayerPentacle());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileWindRune.class, new RenderWindRune());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileDemonicPentacle.class, new RenderDemonicPentacle());
 	}
 	
 	@Override
@@ -512,6 +585,7 @@ ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/
 			Minecraft.getMinecraft().effectRenderer.addEffect(new EntityFogFX(getClientWorld(), x, y, z, i, j, k));
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean itemHasEffect(ItemStack stk)
 	{
@@ -582,9 +656,18 @@ ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/
 	
 	public void SmokeFX(double... ds)
 	{
-		Minecraft.getMinecraft().effectRenderer.addEffect(new ec3.client.regular.SmokeFX(
-				Minecraft.getMinecraft().theWorld, ds[0], ds[1], ds[2], ds[3], ds[4], ds[5], (float) ds[6]
-				));
+		if(ds.length == 7)
+		{
+			Minecraft.getMinecraft().effectRenderer.addEffect(new ec3.client.regular.SmokeFX(
+					Minecraft.getMinecraft().theWorld, ds[0], ds[1], ds[2], ds[3], ds[4], ds[5], (float) ds[6]
+					));
+		}
+		if(ds.length == 10)
+		{
+			Minecraft.getMinecraft().effectRenderer.addEffect(new ec3.client.regular.SmokeFX(
+					Minecraft.getMinecraft().theWorld, ds[0], ds[1], ds[2], ds[3], ds[4], ds[5], (float) ds[6], ds[7], ds[8], ds[9]
+					));
+		}
 	}
 	
 	@Override
@@ -600,7 +683,7 @@ ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/
 	@Override
 	public void wingsAction(EntityPlayer e, ItemStack s)
 	{
-		if(GameSettings.isKeyDown(Minecraft.getMinecraft().gameSettings.keyBindJump))
+		if(GameSettings.isKeyDown(Minecraft.getMinecraft().gameSettings.keyBindJump) && Minecraft.getMinecraft().inGameHasFocus)
 		{
 			e.worldObj.spawnParticle("reddust", e.posX+MathUtils.randomDouble(e.worldObj.rand)/2, e.posY-1+MathUtils.randomDouble(e.worldObj.rand), e.posZ+MathUtils.randomDouble(e.worldObj.rand)/2, 0, 1, 1);
 			e.motionY += 0.1F;
@@ -613,8 +696,33 @@ ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/
 			dataString += "||x:"+pX+"||y:"+pY+"||z:"+pZ;
 			dataString += "||playername:"+e.getCommandSenderName();
 			DummyPacketIMSG pkt = new DummyPacketIMSG(dataString);
-			CoreInitialiser.packetHandler.sendToServer(pkt);
+			DummyPacketHandler.sendToServer(pkt);
 		}
+	}
+	
+	@Override
+	public void handlePositionChangePacket(DummyData[] packetData)
+	{
+		double sX = Double.parseDouble(packetData[1].fieldValue);
+		double sY = Double.parseDouble(packetData[2].fieldValue);
+		double sZ = Double.parseDouble(packetData[3].fieldValue);
+		float yaw = Float.parseFloat(packetData[4].fieldValue);
+		float pitch = Float.parseFloat(packetData[5].fieldValue);
+		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+		player.setPositionAndRotation(sX, sY, sZ,yaw,pitch);
+		player.rotationYawHead = player.rotationYaw;
+	}
+	
+	public void handleSoundPlay(DummyData[] packetData)
+	{
+		double sX = Double.parseDouble(packetData[1].fieldValue);
+		double sY = Double.parseDouble(packetData[2].fieldValue);
+		double sZ = Double.parseDouble(packetData[3].fieldValue);
+		float volume = Float.parseFloat(packetData[4].fieldValue);
+		float pitch = Float.parseFloat(packetData[5].fieldValue);
+		String sound = packetData[6].fieldValue;
+		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+		player.worldObj.playSound(sX, sY, sZ, sound, volume, pitch, false);
 	}
 	
 	public static IIcon mruIcon;

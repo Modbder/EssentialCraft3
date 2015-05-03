@@ -14,6 +14,7 @@ import ec3.common.tile.TileCrystalController;
 import ec3.common.tile.TileCrystalExtractor;
 import ec3.common.tile.TileCrystalFormer;
 import ec3.common.tile.TileDarknessObelisk;
+import ec3.common.tile.TileDemonicPentacle;
 import ec3.common.tile.TileElementalCrystal;
 import ec3.common.tile.TileEmberForge;
 import ec3.common.tile.TileEnderGenerator;
@@ -26,8 +27,10 @@ import ec3.common.tile.TileMRUCoil;
 import ec3.common.tile.TileMRUCoil_Hardener;
 import ec3.common.tile.TileMRUReactor;
 import ec3.common.tile.TileMagicalAssembler;
+import ec3.common.tile.TileMagicalDisplay;
 import ec3.common.tile.TileMagicalEnchanter;
 import ec3.common.tile.TileMagicalFurnace;
+import ec3.common.tile.TileMagicalHopper;
 import ec3.common.tile.TileMagicalJukebox;
 import ec3.common.tile.TileMagicalMirror;
 import ec3.common.tile.TileMagicalQuarry;
@@ -36,16 +39,23 @@ import ec3.common.tile.TileMagicalTeleporter;
 import ec3.common.tile.TileMagicianTable;
 import ec3.common.tile.TileMagmaticSmelter;
 import ec3.common.tile.TileMatrixAbsorber;
+import ec3.common.tile.TileMithrilineCrystal;
+import ec3.common.tile.TileMithrilineFurnace;
 import ec3.common.tile.TileMonsterHarvester;
 import ec3.common.tile.TileMonsterHolder;
 import ec3.common.tile.TileMoonWell;
+import ec3.common.tile.TilePlayerPentacle;
 import ec3.common.tile.TilePotionSpreader;
 import ec3.common.tile.TileRadiatingChamber;
 import ec3.common.tile.TileRayTower;
+import ec3.common.tile.TileRedstoneTransmitter;
+import ec3.common.tile.TileRightClicker;
 import ec3.common.tile.TileSolarPrism;
 import ec3.common.tile.TileSunRayAbsorber;
 import ec3.common.tile.TileUltraFlowerBurner;
 import ec3.common.tile.TileUltraHeatGenerator;
+import ec3.common.tile.TileWeaponMaker;
+import ec3.common.tile.TileWindRune;
 import ec3.common.tile.TileecAcceptor;
 import ec3.common.tile.TileecBalancer;
 import ec3.common.tile.TileecController;
@@ -59,7 +69,7 @@ import net.minecraftforge.common.config.Configuration;
 
 public class TileRegistry {
 	
-	public static final List<Class<? extends TileEntity>> cfgDependant = new ArrayList();
+	public static final List<Class<? extends TileEntity>> cfgDependant = new ArrayList<Class<? extends TileEntity>>();
 	
 	public static void register()
 	{
@@ -112,6 +122,16 @@ public class TileRegistry {
 		addTileToMapping(TileUltraFlowerBurner.class);
 		addTileToMapping(TileMagicalAssembler.class);
 		addTileToMapping(TileMagicalMirror.class);
+		addTileToMapping(TileMagicalDisplay.class);
+		addTileToMapping(TileMithrilineCrystal.class);
+		addTileToMapping(TileMithrilineFurnace.class);
+		addTileToMapping(TilePlayerPentacle.class);
+		addTileToMapping(TileWindRune.class);
+		addTileToMapping(TileRightClicker.class);
+		addTileToMapping(TileRedstoneTransmitter.class);
+		addTileToMapping(TileMagicalHopper.class);
+		addTileToMapping(TileDemonicPentacle.class);
+		addTileToMapping(TileWeaponMaker.class);
 	}
 	
 	public static void addTileToMapping(Class<? extends TileEntity> tile)

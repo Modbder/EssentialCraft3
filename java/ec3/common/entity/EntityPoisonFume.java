@@ -2,11 +2,14 @@ package ec3.common.entity;
 
 import java.util.List;
 
+import baubles.api.BaublesApi;
 import DummyCore.Utils.MathUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ec3.common.item.BaublesModifier;
 import ec3.common.mod.EssentialCraftCore;
 import ec3.utils.common.ECUtils;
+import ec3.utils.common.RadiationManager;
 import ec3.utils.common.WindRelations;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -14,7 +17,9 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntitySmallFireball;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
@@ -97,9 +102,20 @@ public class EntityPoisonFume extends EntityMob
         for(int i = 0; i < players.size(); ++i)
         {
         	EntityPlayer p = players.get(i);
-        	if(!p.worldObj.isRemote)
+    		boolean ignorePoison = false;
+        	IInventory b = BaublesApi.getBaubles(p);
+        	if(b != null)
         	{
-	        	WindRelations.increasePlayerRadiation(p, 10);
+        		for(int i1 = 0; i1 < b.getSizeInventory(); ++i1)
+        		{
+        			ItemStack is = b.getStackInSlot(i1);
+        			if(is != null && is.getItem() != null && is.getItem() instanceof BaublesModifier && is.getItemDamage() == 19)
+        				ignorePoison = true;
+        		}
+        	}
+        	if(!p.worldObj.isRemote && !ignorePoison)
+        	{
+        		RadiationManager.increasePlayerRadiation(p, 10);
 	        	p.addPotionEffect(new PotionEffect(Potion.poison.id,200,1));
         	}
         }

@@ -8,11 +8,10 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
-import DummyCore.Utils.BlockPosition;
 
 public class StructureRecipe implements IRecipe{
 	
-	public List<StructureBlock> structure = new ArrayList();
+	public List<StructureBlock> structure = new ArrayList<StructureBlock>();
 	public ItemStack referal;
 	
 	public StructureRecipe(ItemStack ref, StructureBlock... positions)
