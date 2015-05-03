@@ -1,3 +1,58 @@
+4.5.1710.125
+	+API: Added IPlayerData to view and modify all Player related stats
+	+API: Performing any changes to FakePlayers now has no effect.
+	+API: ICorruptionEffect allows you to add new Player related effects.
+	+API: DemonTrade allows you to add your own trades with demons(including souls)
+	+API: EnumCorruptionEffect theoretically allows you to add more depth to your effects?
+	+API: EnumMatrixType makes it easier to recognize the current Matrix of the player
+	+API: GunRegistry allows you to add new Guns and Gun materials.
+	+API: IShadeCreature allows you to create your own SHADE monsters(for future)
+	+API: IUBMRUGainModifier allows you to control the amount of UBMRU the player recieves from kills
+	+API: IWindModifier allows you to control the amount of wind relations added to the player
+	+API: IWindResistance allows you to control the ability of the wind to push player around
+	+API: Added MithrilineFurnaceRecipes, that allow you to add your own recipes.
+	+API: WindImbueRecipes allows you to add new Wind rune imbues
+
+	+Added: New corruption mechanics - MRU now sticks to the player, randomly adding negative effects.
+	+Added: Demons! And trades with them.
+	+Added: GUNS! They shoot MRU rays, which DESTROY everything!
+	+Added: New resource - Mithriline, comes from breaking Lapis Lazuli Ore, affected by fortune
+	+Added: New energy type ESPE, a very simple one.
+	+Added: Mithriline Furnace - a structure, that is able to use ESPE to transform items into different items.
+	+Added: WindRune - a structure to imbue some items with the Wind
+	+Added: Player Pentacles, a structure that allows you to remove negative corruption effects from your body.
+	+Added: Magical Activator, a block, that can right-click an item inside it. Can also be hidden.
+	+Added: Weapon Bench, to make weapons.
+	+Added: the Paradox Potion Effect now works.
+	+Added: 5 types of Mithriline Crystals, which collect ESPE. They can also boost up Enchantment tables.
+	+Added: Block Breaker.
+	+Added: Drops Block(the one crafted from 9 drops)
+	+Added: the Demonic Pentacle, a structure to summon Demons.
+	+Added: Elemental Drops as an Ore in your world.
+	+Added: Magical Hopper, a hopper, that picks up items in a range. Also has a filter slot to specify items.
+	+Added: Metadata manager, the block, that outputs a redstone signal based on the metadata of the block in front of it.
+	+Added: Redstone Transmitter - the Wireless Redstone.
+	+Added: SHADE weapons. Will be used in the future.
+
+	+Changed: MRUCUs now have a max MRU of 20000. They still run their corruption checks as max would be 60000
+	+Changed: EC3 now saves it's player data as a separate .nbt files.
+	+Changed: The wind no longer affects player from the start - now requires a Wind Rune.
+
+	-Removed: Magical Assembler is no longer required for advanced crafts.
+	-Fixed: Magical Assembler crashing the game on pressing button, if no recipe selected.
+	-Fixed: Random Book of knowledge crashes when attempting to view a recipe with one of it's components being null.
+	-Fixed: Some particles causing weird render glitches.
+	--Added: More render glitches! Yay!
+	-Fixed: Some random crashes upon viewing the recipe in the world.
+	-Fixed: Portal no longer outputs it's texture path into log.
+	-Fixed: Pressing space bar while having Magical Wings in your baubles, and having a GUI no longer pushes you up anyway.
+
+	=Generic code cleanup - removing unused vars, parametrising lists, etc.
+	=Changed: LivingUpdateEvent to PlayerUpdateEvent, optimisation.
+	=Changed: EC3 Entities are now registered differently. This means no more EntityID conflicts, but all entities from EC3 will be removed from your world.
+
+	+++Much more, GIT Hub can't display it all, sadly. ~4000 changes in total, and sadly I can't reflect them all...
+
 4.4.1710.45a
 	+Added: You now can look at the ID of slots by holding CTRL.
 
