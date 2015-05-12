@@ -12,8 +12,8 @@ import ec3.api.IMRUStorage;
 import ec3.api.IUBMRUGainModifier;
 import ec3.api.IWindModifier;
 import ec3.api.IWindResistance;
+import ec3.utils.cfg.Config;
 import ec3.utils.common.RadiationManager;
-import ec3.utils.common.WindRelations;
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
 import baubles.api.BaubleType;
@@ -21,7 +21,6 @@ import baubles.api.IBauble;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -125,6 +124,7 @@ public class BaublesModifier extends Item implements IBauble, IUBMRUGainModifier
 		return btALST.length > itemstack.getItemDamage() ? btALST[itemstack.getItemDamage()] : BaubleType.RING;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
 		if(itemstack.getItemDamage() == 0 && player instanceof EntityPlayer)
@@ -146,13 +146,13 @@ public class BaublesModifier extends Item implements IBauble, IUBMRUGainModifier
 		if(itemstack.getItemDamage() == 18 && player instanceof EntityPlayer)
 		{
 			EntityPlayer p = (EntityPlayer) player;
-			if(p.worldObj.provider != null && p.worldObj.provider.dimensionId!=53)
+			if(p.worldObj.provider != null && p.worldObj.provider.dimensionId!=Config.dimensionID)
 				RadiationManager.increasePlayerRadiation(p, -3);
 		}
 		if(itemstack.getItemDamage() == 19 && player instanceof EntityPlayer)
 		{
 			EntityPlayer p = (EntityPlayer) player;
-			if(p.worldObj.provider != null && p.worldObj.provider.dimensionId==53)
+			if(p.worldObj.provider != null && p.worldObj.provider.dimensionId==Config.dimensionID)
 				RadiationManager.increasePlayerRadiation(p, 1);
 		}
 		if(itemstack.getItemDamage() == 7 && player instanceof EntityPlayer)
@@ -167,7 +167,7 @@ public class BaublesModifier extends Item implements IBauble, IUBMRUGainModifier
 				{
 					try
 					{
-						Class cz = PotionEffect.class;
+						Class<PotionEffect> cz = PotionEffect.class;
 						Field duration = cz.getDeclaredFields()[1];
 						duration.setAccessible(true);
 						int d = duration.getInt(effect);
@@ -186,7 +186,6 @@ public class BaublesModifier extends Item implements IBauble, IUBMRUGainModifier
 
 	@Override
 	public void onEquipped(ItemStack itemstack, EntityLivingBase player) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -196,13 +195,11 @@ public class BaublesModifier extends Item implements IBauble, IUBMRUGainModifier
 
 	@Override
 	public boolean canEquip(ItemStack itemstack, EntityLivingBase player) {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public boolean canUnequip(ItemStack itemstack, EntityLivingBase player) {
-		// TODO Auto-generated method stub
 		return true;
 	}
 	
@@ -218,10 +215,11 @@ public class BaublesModifier extends Item implements IBauble, IUBMRUGainModifier
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int i)
     {
-        return this.itemIcons[i];
+        return itemIcons[i];
     }
 	
-    @SideOnly(Side.CLIENT)
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	@SideOnly(Side.CLIENT)
     public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List p_150895_3_)
     {
         for(int i = 0; i < names.length; ++i)
@@ -235,6 +233,7 @@ public class BaublesModifier extends Item implements IBauble, IUBMRUGainModifier
         return this.getUnlocalizedName()+"."+names[p_77667_1_.getItemDamage()];
     }
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public float getModifiedValue(float original, ItemStack mod, Random rng, EntityPlayer p) {
 		if(mod.getItemDamage() == 31)
@@ -294,7 +293,8 @@ public class BaublesModifier extends Item implements IBauble, IUBMRUGainModifier
 		return original;
 	}
 
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
     {
         super.addInformation(stack, player, list, par4);
         if(stack.getItemDamage() == 0)
