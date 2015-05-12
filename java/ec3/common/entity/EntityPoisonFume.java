@@ -8,23 +8,18 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ec3.common.item.BaublesModifier;
 import ec3.common.mod.EssentialCraftCore;
+import ec3.utils.cfg.Config;
 import ec3.utils.common.ECUtils;
 import ec3.utils.common.RadiationManager;
-import ec3.utils.common.WindRelations;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntitySmallFireball;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityPoisonFume extends EntityMob
@@ -33,8 +28,6 @@ public class EntityPoisonFume extends EntityMob
     private float heightOffset = 0.5F;
     /** ticks until heightOffset is randomized */
     private int heightOffsetUpdateTime;
-    private int field_70846_g;
-    
     public double mX, mY, mZ;
 
     public EntityPoisonFume(World p_i1731_1_)
@@ -77,7 +70,8 @@ public class EntityPoisonFume extends EntityMob
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.
      */
-    public void onLivingUpdate()
+    @SuppressWarnings("unchecked")
+	public void onLivingUpdate()
     {
         if (!this.worldObj.isRemote)
         {
@@ -89,7 +83,7 @@ public class EntityPoisonFume extends EntityMob
                 this.mX = MathUtils.randomDouble(this.worldObj.rand);
                 this.mY = MathUtils.randomDouble(this.worldObj.rand);
                 this.mZ = MathUtils.randomDouble(this.worldObj.rand);
-                this.heightOffset = 0.5F + (float)this.rand.nextGaussian() * 3.0F;
+                this.setHeightOffset(0.5F + (float)this.rand.nextGaussian() * 3.0F);
             }
             this.motionX = mX/10;
             this.motionY = mY/10;
@@ -173,6 +167,14 @@ public class EntityPoisonFume extends EntityMob
     
     public boolean getCanSpawnHere()
     {
-    	return this.dimension == 53 && ECUtils.isEventActive("ec3.event.fumes");
+    	return this.dimension == Config.dimensionID && ECUtils.isEventActive("ec3.event.fumes");
     }
+
+	public float getHeightOffset() {
+		return heightOffset;
+	}
+
+	public void setHeightOffset(float heightOffset) {
+		this.heightOffset = heightOffset;
+	}
 }
