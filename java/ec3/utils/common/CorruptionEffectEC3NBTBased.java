@@ -3,7 +3,6 @@ package ec3.utils.common;
 import java.util.ArrayList;
 import java.util.List;
 
-import codechicken.lib.math.MathHelper;
 import DummyCore.Utils.UnformedItemStack;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.effect.EntityLightningBolt;
@@ -13,6 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import ec3.api.CorruptionEffectLibrary;
