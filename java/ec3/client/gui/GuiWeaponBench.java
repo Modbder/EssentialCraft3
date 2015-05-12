@@ -43,6 +43,10 @@ public class GuiWeaponBench extends GuiCommon{
     		if(w.index > 3)
     			w.index = 0;
     		
+    		w.getWorldObj().setBlockMetadataWithNotify(w.xCoord, w.yCoord, w.zCoord, w.index, 4);
+    		
+    		Minecraft.getMinecraft().thePlayer.openContainer = null;
+    		Minecraft.getMinecraft().thePlayer.closeScreenNoPacket();
     		Minecraft.getMinecraft().setIngameFocus();
     	}
     	MiscUtils.handleButtonPress(par1GuiButton.id, this.getClass(), GuiButton.class, Minecraft.getMinecraft().thePlayer, this.genericTile.xCoord, this.genericTile.yCoord, this.genericTile.zCoord);
