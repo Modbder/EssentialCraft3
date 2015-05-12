@@ -42,13 +42,20 @@ public class MagicianTableRecipes {
 	
 	public static List<UnformedItemStack> getUnformedStkByItemStacks(ItemStack[] pair)
 	{
+		if(pair == null)
+			return new ArrayList<UnformedItemStack>();
+		
 		boolean allNull = true;
+		
 		for(int i = 0; i < pair.length; ++i)
 		{
 			if(pair[i] != null)
 				allNull = false;
 		}
-		if(allNull)return new ArrayList<UnformedItemStack>();
+		
+		if(allNull)
+			return new ArrayList<UnformedItemStack>();
+		
 		ForLST:for(List<UnformedItemStack> lst : craftMatrixByID)
 		{
 			ForSize:for(int i = 0; i < lst.size(); ++i)
@@ -59,7 +66,7 @@ public class MagicianTableRecipes {
 					{
 						continue ForSize;
 					}
-					if(!stack.itemStackMatches(pair[i]))
+					if(stack != null && !stack.itemStackMatches(pair[i]))
 						continue ForLST;
 				}
 			}
