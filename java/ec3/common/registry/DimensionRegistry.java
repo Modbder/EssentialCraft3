@@ -1,14 +1,15 @@
 package ec3.common.registry;
 
 import ec3.common.world.WorldProviderFirstWorld;
+import ec3.utils.cfg.Config;
 import net.minecraftforge.common.DimensionManager;
 
 public class DimensionRegistry {
 	public static DimensionRegistry core;
 	public void registerDimensionMagic()
 	{
-		DimensionManager.registerProviderType(53, WorldProviderFirstWorld.class, false);
-		DimensionManager.registerDimension(53,53);
+		DimensionManager.registerProviderType(Config.dimensionID, WorldProviderFirstWorld.class, false);
+		DimensionManager.registerDimension(Config.dimensionID,Config.dimensionID);
 	}
 
 }
