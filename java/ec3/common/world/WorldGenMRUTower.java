@@ -1,29 +1,17 @@
 package ec3.common.world;
 
-import static net.minecraftforge.common.ChestGenHooks.DUNGEON_CHEST;
-
 import java.util.Random;
 
-import DummyCore.Utils.MathUtils;
 import ec3.common.block.BlocksCore;
 import ec3.common.item.ItemBaublesWearable;
 import ec3.common.item.ItemsCore;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockBush;
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockVine;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Vec3;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
-import net.minecraftforge.common.ChestGenHooks;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class WorldGenMRUTower extends WorldGenerator{
 	

@@ -27,8 +27,6 @@ public class StructureModernShaftPieces
 {
     /** List of contents that can generate in Mineshafts. */
     public static final WeightedRandomChestContent[] mineshaftChestContents = new WeightedRandomChestContent[] {new WeightedRandomChestContent(Items.iron_ingot, 0, 1, 5, 10), new WeightedRandomChestContent(Items.gold_ingot, 0, 1, 3, 5), new WeightedRandomChestContent(Items.redstone, 0, 4, 9, 5), new WeightedRandomChestContent(Items.dye, 4, 4, 9, 5), new WeightedRandomChestContent(Items.diamond, 0, 1, 2, 3), new WeightedRandomChestContent(Items.coal, 0, 3, 8, 10), new WeightedRandomChestContent(Items.bread, 0, 1, 3, 15), new WeightedRandomChestContent(Items.iron_pickaxe, 0, 1, 1, 1), new WeightedRandomChestContent(Item.getItemFromBlock(Blocks.rail), 0, 4, 8, 1), new WeightedRandomChestContent(Items.melon_seeds, 0, 2, 4, 10), new WeightedRandomChestContent(Items.pumpkin_seeds, 0, 2, 4, 10), new WeightedRandomChestContent(Items.saddle, 0, 1, 1, 3), new WeightedRandomChestContent(Items.iron_horse_armor, 0, 1, 1, 1)};
-    private static final String __OBFID = "CL_00000444";
-
     public static void registerStructurePieces()
     {
         MapGenStructureIO.func_143031_a(StructureModernShaftPieces.Corridor.class, "MMSCorridor");
@@ -37,7 +35,8 @@ public class StructureModernShaftPieces
         MapGenStructureIO.func_143031_a(StructureModernShaftPieces.Stairs.class, "MMSStairs");
     }
 
-    private static StructureComponent getRandomComponent(List p_78815_0_, Random p_78815_1_, int p_78815_2_, int p_78815_3_, int p_78815_4_, int p_78815_5_, int p_78815_6_)
+    @SuppressWarnings("rawtypes")
+	private static StructureComponent getRandomComponent(List p_78815_0_, Random p_78815_1_, int p_78815_2_, int p_78815_3_, int p_78815_4_, int p_78815_5_, int p_78815_6_)
     {
         int j1 = p_78815_1_.nextInt(100);
         StructureBoundingBox structureboundingbox;
@@ -73,7 +72,8 @@ public class StructureModernShaftPieces
         return null;
     }
 
-    private static StructureComponent getNextMineShaftComponent(StructureComponent p_78817_0_, List p_78817_1_, Random p_78817_2_, int p_78817_3_, int p_78817_4_, int p_78817_5_, int p_78817_6_, int p_78817_7_)
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	private static StructureComponent getNextMineShaftComponent(StructureComponent p_78817_0_, List p_78817_1_, Random p_78817_2_, int p_78817_3_, int p_78817_4_, int p_78817_5_, int p_78817_6_, int p_78817_7_)
     {
         if (p_78817_7_ > 8)
         {
@@ -96,7 +96,8 @@ public class StructureModernShaftPieces
             return null;
         }
     }
-
+    
+    @SuppressWarnings({ "rawtypes" })
     public static class Corridor extends StructureComponent
         {
             private boolean hasRails;
@@ -104,8 +105,6 @@ public class StructureModernShaftPieces
             private boolean spawnerPlaced;
             /** A count of the different sections of this mine. The space between ceiling supports. */
             private int sectionCount;
-            private static final String __OBFID = "CL_00000445";
-
             public Corridor() {}
 
             protected void func_143012_a(NBTTagCompound p_143012_1_)
@@ -326,10 +325,6 @@ public class StructureModernShaftPieces
                 }
                 else
                 {
-                    boolean flag = false;
-                    boolean flag1 = true;
-                    boolean flag2 = false;
-                    boolean flag3 = true;
                     int i = this.sectionCount * 5 - 1;
                     this.fillWithBlocks(p_74875_1_, p_74875_3_, 0, 0, 0, 2, 1, i, Blocks.air, Blocks.air, false);
                     //TODO random destruction
@@ -425,7 +420,7 @@ public class StructureModernShaftPieces
                     {
                         for (j = 0; j <= i; ++j)
                         {
-                            Block block = this.getBlockAtCurrentPosition(p_74875_1_, 1, -1, j, p_74875_3_);
+                            this.getBlockAtCurrentPosition(p_74875_1_, 1, -1, j, p_74875_3_);
 
                             if (true)
                             {
@@ -446,8 +441,6 @@ public class StructureModernShaftPieces
         {
             private int corridorDirection;
             private boolean isMultipleFloors;
-            private static final String __OBFID = "CL_00000446";
-
             public Cross() {}
 
             protected void func_143012_a(NBTTagCompound p_143012_1_)
@@ -469,7 +462,7 @@ public class StructureModernShaftPieces
                 this.boundingBox = p_i2036_3_;
                 this.isMultipleFloors = p_i2036_3_.getYSize() > 3;
             }
-
+            @SuppressWarnings({ "rawtypes" })
             public static StructureBoundingBox findValidPlacement(List p_74951_0_, Random p_74951_1_, int p_74951_2_, int p_74951_3_, int p_74951_4_, int p_74951_5_)
             {
                 StructureBoundingBox structureboundingbox = new StructureBoundingBox(p_74951_2_, p_74951_3_, p_74951_4_, p_74951_2_, p_74951_3_ + 2, p_74951_4_);
@@ -508,6 +501,7 @@ public class StructureModernShaftPieces
             /**
              * Initiates construction of the Structure Component picked, at the current Location of StructGen
              */
+            @SuppressWarnings({ "rawtypes" })
             public void buildComponent(StructureComponent p_74861_1_, List p_74861_2_, Random p_74861_3_)
             {
                 int i = this.getComponentType();
@@ -606,12 +600,11 @@ public class StructureModernShaftPieces
             }
         }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public static class Room extends StructureComponent
         {
             /** List of other Mineshaft components linked to this room. */
             private List roomsLinkedToTheRoom = new LinkedList();
-            private static final String __OBFID = "CL_00000447";
-
             public Room() {}
 
             public Room(int p_i2037_1_, Random p_i2037_2_, int p_i2037_3_, int p_i2037_4_)
@@ -764,8 +757,6 @@ public class StructureModernShaftPieces
 
     public static class Stairs extends StructureComponent
         {
-            private static final String __OBFID = "CL_00000449";
-
             public Stairs() {}
 
             public Stairs(int p_i2038_1_, Random p_i2038_2_, StructureBoundingBox p_i2038_3_, int p_i2038_4_)
@@ -782,6 +773,7 @@ public class StructureModernShaftPieces
             /**
              * Trys to find a valid place to put this component.
              */
+            @SuppressWarnings({ "rawtypes" })
             public static StructureBoundingBox findValidPlacement(List p_74950_0_, Random p_74950_1_, int p_74950_2_, int p_74950_3_, int p_74950_4_, int p_74950_5_)
             {
                 StructureBoundingBox structureboundingbox = new StructureBoundingBox(p_74950_2_, p_74950_3_ - 5, p_74950_4_, p_74950_2_, p_74950_3_ + 2, p_74950_4_);
@@ -811,6 +803,7 @@ public class StructureModernShaftPieces
             /**
              * Initiates construction of the Structure Component picked, at the current Location of StructGen
              */
+            @SuppressWarnings({ "rawtypes" })
             public void buildComponent(StructureComponent p_74861_1_, List p_74861_2_, Random p_74861_3_)
             {
                 int i = this.getComponentType();

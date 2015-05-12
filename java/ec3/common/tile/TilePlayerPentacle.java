@@ -1,8 +1,8 @@
 package ec3.common.tile;
 
-import codechicken.lib.math.MathHelper;
 import ec3.common.block.BlocksCore;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class TilePlayerPentacle extends TileEntity

@@ -5,7 +5,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 
 public class PotionShadeCorruption extends Potion{
@@ -46,8 +45,6 @@ public class PotionShadeCorruption extends Potion{
         return super.getStatusIconIndex();
     }
     
-    
-    private int statusIconIndex;
     static final ResourceLocation rl = new ResourceLocation("essentialcraft", "textures/special/potions.png");
 
 }

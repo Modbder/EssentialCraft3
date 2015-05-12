@@ -2,29 +2,23 @@ package ec3.client.render;
 
 import java.util.Random;
 
-import org.lwjgl.opengl.ARBOcclusionQuery;
 import org.lwjgl.opengl.GL11;
 
 import ec3.utils.common.ECUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.client.renderer.OpenGlCapsChecker;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.client.IRenderHandler;
 
 public class RenderSkyFirstWorld extends IRenderHandler{
 	
     private static final ResourceLocation locationMoonPhasesPng = new ResourceLocation("textures/environment/moon_phases.png");
     private static final ResourceLocation locationSunPng = new ResourceLocation("textures/environment/sun.png");
-    private static final ResourceLocation locationCloudsPng = new ResourceLocation("textures/environment/clouds.png");
     private static final ResourceLocation locationEndSkyPng = new ResourceLocation("textures/environment/end_sky.png");
     
     public RenderSkyFirstWorld()
@@ -34,8 +28,6 @@ public class RenderSkyFirstWorld extends IRenderHandler{
 
 	@Override
 	public void render(float partialTicks, WorldClient world, Minecraft mc) {
-		// TODO Auto-generated method stub
-		int color = 0x011121;
 		int colorDay = 0x213141;
 		if(ECUtils.isEventActive("ec3.event.darkness"))
 			colorDay = 0x000000;

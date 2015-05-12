@@ -27,7 +27,16 @@ public class TileWeaponMaker extends TileMRUGeneric{
 	@Override
 	public void updateEntity()
 	{
-		super.updateEntity();
+		this.index = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
+		++this.innerRotation;
+		//Sending the sync packets to the CLIENT. 
+		if(syncTick == 0)
+		{
+			if(!this.worldObj.isRemote)
+				MiscUtils.sendPacketToAllAround(worldObj, getDescriptionPacket(), xCoord, yCoord, zCoord, this.worldObj.provider.dimensionId, 16);
+			syncTick = 20;
+		}else
+			--this.syncTick;
 	}
 	
 	@Override

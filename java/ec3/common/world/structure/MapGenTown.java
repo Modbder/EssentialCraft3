@@ -8,7 +8,7 @@ import java.util.Random;
 import java.util.Map.Entry;
 
 import ec3.common.registry.BiomeRegistry;
-import ec3.common.world.ChunkProviderFirstWorld;
+import ec3.utils.cfg.Config;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -20,7 +20,8 @@ import net.minecraft.world.gen.structure.StructureStart;
 public class MapGenTown extends MapGenStructure
 {
     /** A list of all the biomes villages can spawn in. */
-    public static List villageSpawnBiomes = Arrays.asList(new BiomeGenBase[] {BiomeGenBase.plains, BiomeRegistry.chaosCorruption, BiomeRegistry.frozenCorruption});
+    @SuppressWarnings("rawtypes")
+	public static List villageSpawnBiomes = Arrays.asList(new BiomeGenBase[] {BiomeGenBase.plains, BiomeRegistry.chaosCorruption, BiomeRegistry.frozenCorruption});
     /** World terrain type, 0 for normal, 1 for flat map */
     private int terrainType;
     private int field_82665_g;
@@ -32,7 +33,8 @@ public class MapGenTown extends MapGenStructure
         this.field_82666_h = 8;
     }
 
-    public MapGenTown(Map p_i2093_1_)
+    @SuppressWarnings("rawtypes")
+	public MapGenTown(Map p_i2093_1_)
     {
         this();
         Iterator iterator = p_i2093_1_.entrySet().iterator();
@@ -81,7 +83,7 @@ public class MapGenTown extends MapGenStructure
         j1 += random.nextInt(this.field_82665_g - this.field_82666_h);
         if (k == i1 && l == j1)
         {
-            boolean flag = this.worldObj.provider.dimensionId == 53;
+            boolean flag = this.worldObj.provider.dimensionId == Config.dimensionID;
             if (flag)
             {
                 return true;
@@ -103,7 +105,8 @@ public class MapGenTown extends MapGenStructure
 
             public Start() {}
 
-            public Start(World p_i2092_1_, Random p_i2092_2_, int p_i2092_3_, int p_i2092_4_, int p_i2092_5_)
+            @SuppressWarnings({ "rawtypes", "unchecked" })
+			public Start(World p_i2092_1_, Random p_i2092_2_, int p_i2092_3_, int p_i2092_4_, int p_i2092_5_)
             {
                 super(p_i2092_3_, p_i2092_4_);
                 List list = StructureTownPieces.getStructureVillageWeightedPieceList(p_i2092_2_, p_i2092_5_);

@@ -50,7 +50,6 @@ public class PotionPurpleFlame extends Potion{
     }
     
     
-    private int statusIconIndex;
     static final ResourceLocation rl = new ResourceLocation("essentialcraft", "textures/special/potions.png");
 
 }

@@ -1,7 +1,5 @@
 package ec3.common.world;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import ec3.common.block.BlocksCore;
@@ -52,10 +50,10 @@ public class WorldGenElementalDrops extends WorldGenerator{
 		int metadata = 0;
 		if(parent.generationStep < 16)
 		{
-			metadata = dimID == 0 ? 0 : dimID == -1 ? 5 : 10;
+			metadata = dimID == 1 ? 10 : dimID == -1 ? 5 : 0;
 		}else
 		{
-			metadata = dimID == 0 ? 1+r.nextInt(4) : dimID == -1 ? 6+r.nextInt(4) : 11+r.nextInt(4);
+			metadata = dimID == 1 ? 11+r.nextInt(4) : dimID == -1 ? 6+r.nextInt(4) : 1+r.nextInt(4);
 		}
 		Block b = w.getBlock(x, y, z);
 		if(b.isReplaceableOreGen(w, x, y, z, minableReplaceable))
@@ -76,7 +74,6 @@ public class WorldGenElementalDrops extends WorldGenerator{
 			++parent.generationStep;
 		}else
 			return false;
-		List<Integer> lst = new ArrayList();
 		int tries = 0;
 		int i = r.nextInt(6);
 		ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[i];

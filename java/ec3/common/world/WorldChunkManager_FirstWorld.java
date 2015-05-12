@@ -1,34 +1,10 @@
 package ec3.common.world;
 
-import static net.minecraft.world.biome.BiomeGenBase.forest;
-import static net.minecraft.world.biome.BiomeGenBase.forestHills;
-import static net.minecraft.world.biome.BiomeGenBase.jungle;
-import static net.minecraft.world.biome.BiomeGenBase.jungleHills;
-import static net.minecraft.world.biome.BiomeGenBase.plains;
-import static net.minecraft.world.biome.BiomeGenBase.taiga;
-import static net.minecraft.world.biome.BiomeGenBase.taigaHills;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import ec3.common.registry.BiomeRegistry;
-import net.minecraft.crash.CrashReport;
-import net.minecraft.crash.CrashReportCategory;
-import net.minecraft.util.ReportedException;
-import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
-import net.minecraft.world.biome.BiomeCache;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.WorldChunkManager;
-import net.minecraft.world.gen.layer.GenLayer;
-import net.minecraft.world.gen.layer.IntCache;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.terraingen.WorldTypeEvent;
 
 public class WorldChunkManager_FirstWorld extends WorldChunkManager{
 	

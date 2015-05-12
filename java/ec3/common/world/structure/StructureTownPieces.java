@@ -6,38 +6,30 @@ import java.util.List;
 import java.util.Random;
 
 import DummyCore.Utils.Coord2D;
-import DummyCore.Utils.Coord3D;
-import DummyCore.Utils.DummyDistance;
-import DummyCore.Utils.MathUtils;
 import cpw.mods.fml.common.eventhandler.Event.Result;
-import cpw.mods.fml.common.registry.VillagerRegistry;
 import ec3.common.block.BlocksCore;
 import ec3.common.world.ECExplosion;
 import ec3.common.world.WorldGenDestroyedHouse;
 import ec3.common.world.WorldGenMRUSpreader;
 import ec3.common.world.WorldGenMRUTower;
+import ec3.utils.cfg.Config;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
 import net.minecraft.util.WeightedRandomChestContent;
-import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.BiomeEvent;
-import static net.minecraftforge.common.ChestGenHooks.*;
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class StructureTownPieces
 {
     public static void registerVillagePieces()
@@ -228,12 +220,6 @@ public class StructureTownPieces
 
             if (village != null)
             {
-                int j1 = (village.getBoundingBox().minX + village.getBoundingBox().maxX) / 2;
-                int k1 = (village.getBoundingBox().minZ + village.getBoundingBox().maxZ) / 2;
-                int l1 = village.getBoundingBox().maxX - village.getBoundingBox().minX;
-                int i2 = village.getBoundingBox().maxZ - village.getBoundingBox().minZ;
-                int j2 = l1 > i2 ? l1 : i2;
-
                 if (true)
                 {
                     p_75077_1_.add(village);
@@ -263,12 +249,14 @@ public class StructureTownPieces
             if (structureboundingbox != null && structureboundingbox.minY > 10)
             {
                 StructureTownPieces.Path path = new StructureTownPieces.Path(p_75080_0_, p_75080_7_, p_75080_2_, structureboundingbox, p_75080_6_);
-                int j1 = (path.getBoundingBox().minX + path.getBoundingBox().maxX) / 2;
-                int k1 = (path.getBoundingBox().minZ + path.getBoundingBox().maxZ) / 2;
-                int l1 = path.getBoundingBox().maxX - path.getBoundingBox().minX;
-                int i2 = path.getBoundingBox().maxZ - path.getBoundingBox().minZ;
-                int j2 = l1 > i2 ? l1 : i2;
-
+                path.getBoundingBox();
+				path.getBoundingBox();
+                path.getBoundingBox();
+				path.getBoundingBox();
+                path.getBoundingBox();
+				path.getBoundingBox();
+                path.getBoundingBox();
+				path.getBoundingBox();
                 if (true)
                 {
                     p_75080_1_.add(path);
@@ -287,8 +275,6 @@ public class StructureTownPieces
 
     public static class Church extends StructureTownPieces.Village
         {
-            private static final String __OBFID = "CL_00000525";
-
             public Church() {}
 
             public Church(StructureTownPieces.Start p_i2102_1_, int p_i2102_2_, Random p_i2102_3_, StructureBoundingBox p_i2102_4_, int p_i2102_5_)
@@ -321,7 +307,7 @@ public class StructureTownPieces
 
                     this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.maxY + 12 - 1, 0);
                 }
-                if(p_74875_1_.provider.dimensionId == 53)
+                if(p_74875_1_.provider.dimensionId == Config.dimensionID)
              	  new WorldGenMRUTower().generate(p_74875_1_, p_74875_2_, p_74875_3_.minX,  this.getAverageGroundLevel(p_74875_1_, p_74875_3_), p_74875_3_.minZ);
                 return true;
             }
@@ -527,7 +513,7 @@ public class StructureTownPieces
 
                     this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.maxY + 7 - 1, 0);
                 }
-                if(p_74875_1_.provider.dimensionId == 53)
+                if(p_74875_1_.provider.dimensionId == Config.dimensionID)
             	   new WorldGenMRUSpreader().generate(p_74875_1_, p_74875_2_, p_74875_3_.minX,  this.getAverageGroundLevel(p_74875_1_, p_74875_3_), p_74875_3_.minZ);
                 return true;
             }
@@ -576,7 +562,7 @@ public class StructureTownPieces
                     this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.maxY + 9 - 1, 0);
                 }
 
-                if(p_74875_1_.provider.dimensionId == 53)
+                if(p_74875_1_.provider.dimensionId == Config.dimensionID)
                 	new WorldGenDestroyedHouse(p_74875_2_.nextInt(2)+1,5).generate(p_74875_1_, p_74875_2_, p_74875_3_.minX,  this.getAverageGroundLevel(p_74875_1_, p_74875_3_), p_74875_3_.minZ);
                 return true;
             }
@@ -641,7 +627,7 @@ public class StructureTownPieces
                     this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.maxY + 6 - 1, 0);
                 }
 
-                if(p_74875_1_.provider.dimensionId == 53)
+                if(p_74875_1_.provider.dimensionId == Config.dimensionID)
             	   new WorldGenDestroyedHouse(p_74875_2_.nextInt(5)+1,4).generate(p_74875_1_, p_74875_2_, p_74875_3_.minX,  this.getAverageGroundLevel(p_74875_1_, p_74875_3_), p_74875_3_.minZ);
                 return true;
             }
@@ -690,7 +676,7 @@ public class StructureTownPieces
 
                     this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.maxY + 7 - 1, 0);
                 }
-                if(p_74875_1_.provider.dimensionId == 53)
+                if(p_74875_1_.provider.dimensionId == Config.dimensionID)
                 	new WorldGenDestroyedHouse(p_74875_2_.nextInt(9)+1,3).generate(p_74875_1_, p_74875_2_, p_74875_3_.minX,  this.getAverageGroundLevel(p_74875_1_, p_74875_3_), p_74875_3_.minZ);
                 return true;
             }
@@ -745,7 +731,7 @@ public class StructureTownPieces
                     this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.maxY + 6 - 1, 0);
                 }
 
-                if(p_74875_1_.provider.dimensionId == 53)
+                if(p_74875_1_.provider.dimensionId == Config.dimensionID)
                 	new WorldGenDestroyedHouse(p_74875_2_.nextInt(3)+1,7).generate(p_74875_1_, p_74875_2_, p_74875_3_.minX,  this.getAverageGroundLevel(p_74875_1_, p_74875_3_), p_74875_3_.minZ);
                 return true;
             }
@@ -993,7 +979,7 @@ public class StructureTownPieces
                     this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.maxY + 4 - 1, 0);
                 }
 
-                if(p_74875_1_.provider.dimensionId == 53)
+                if(p_74875_1_.provider.dimensionId == Config.dimensionID)
                 {
 	                this.fillWithBlocks(p_74875_1_, p_74875_3_, 0, 0, 0, 2, 3, 1, Blocks.air, Blocks.air, false);
 	                this.placeBlockAtCurrentPosition(p_74875_1_, BlocksCore.fence[0], 0, 1, 0, 0, p_74875_3_);
@@ -1301,7 +1287,7 @@ public class StructureTownPieces
                     this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.maxY + 3, 0);
                 }
 
-                if(p_74875_1_.provider.dimensionId == 53)
+                if(p_74875_1_.provider.dimensionId == Config.dimensionID)
                 {
 	                this.fillWithBlocks(p_74875_1_, p_74875_3_, 1, 0, 1, 4, 12, 4, Blocks.cobblestone, Blocks.flowing_water, false);
 	                this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.air, 0, 2, 12, 2, p_74875_3_);
@@ -1318,7 +1304,7 @@ public class StructureTownPieces
 	                this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.fence, 0, 4, 14, 4, p_74875_3_);
 	                this.fillWithBlocks(p_74875_1_, p_74875_3_, 1, 15, 1, 4, 15, 4, Blocks.cobblestone, Blocks.cobblestone, false);
                 }
-                if(p_74875_1_.provider.dimensionId == 53)
+                if(p_74875_1_.provider.dimensionId == Config.dimensionID)
                 	
                 for (int i = 0; i <= 5; ++i)
                 {
@@ -1390,7 +1376,7 @@ public class StructureTownPieces
                     this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.maxY + 6 - 1, 0);
                 }
                 //TODO do
-                if(p_74875_1_.provider.dimensionId == 53)
+                if(p_74875_1_.provider.dimensionId == Config.dimensionID)
                 {
 	                ECExplosion explosion = new ECExplosion(p_74875_1_, null, p_74875_3_.minX,  this.getAverageGroundLevel(p_74875_1_, p_74875_3_)-3, p_74875_3_.minZ, 15F);
 	                explosion.doExplosionA();

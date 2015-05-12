@@ -10,7 +10,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 
 public class PotionRadiation extends Potion{
@@ -78,7 +77,6 @@ public class PotionRadiation extends Potion{
     }
     
     
-    private int statusIconIndex;
     static final ResourceLocation rl = new ResourceLocation("essentialcraft", "textures/special/potions.png");
 
 }

@@ -5,6 +5,7 @@ import java.util.Random;
 import DummyCore.Utils.MathUtils;
 import ec3.common.registry.BiomeRegistry;
 import ec3.common.registry.PotionRegistry;
+import ec3.utils.cfg.Config;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -36,7 +37,7 @@ public class RadiationManager {
 	{
 		if((player instanceof FakePlayer)) return;
 		int dimID = player.dimension;
-		if(dimID == 53)
+		if(dimID == Config.dimensionID)
 		{
 			int chunkX = player.chunkCoordX;
 			int chunkZ = player.chunkCoordZ;
@@ -53,7 +54,7 @@ public class RadiationManager {
 		}
 		int amount = getPlayerRadiation(player);
 		if(amount > 0)
-			if(player.dimension == 53)
+			if(player.dimension == Config.dimensionID)
 				increasePlayerRadiation(player,-1);
 			else
 				increasePlayerRadiation(player,-5);

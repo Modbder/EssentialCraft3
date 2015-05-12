@@ -103,7 +103,7 @@ public class TileMRUGeneric extends TileEntity implements ITERequiresMRU, IInven
 			else
 				if(!this.worldObj.isRemote && this.tracker.tileNeedsSyncing())
 				{
-					MiscUtils.sendPacketToAllAround(worldObj, getDescriptionPacket(), xCoord, yCoord, zCoord, this.worldObj.provider.dimensionId, 128);
+					MiscUtils.sendPacketToAllAround(worldObj, getDescriptionPacket(), xCoord, yCoord, zCoord, this.worldObj.provider.dimensionId, 32);
 				}
 			syncTick = 60;
 		}else

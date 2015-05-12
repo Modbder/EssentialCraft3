@@ -34,6 +34,7 @@ import ec3.common.item.ItemsCore;
 import ec3.common.mod.EssentialCraftCore;
 import ec3.common.registry.ResearchRegistry;
 import ec3.common.world.WorldProviderFirstWorld;
+import ec3.utils.cfg.Config;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -233,9 +234,9 @@ public class PlayerTickHandler{
 	@SideOnly(Side.CLIENT)
 	public void client_manageWorldEvents(EntityPlayer e)
 	{
-		if(e.dimension == 53)
+		if(e.dimension == Config.dimensionID)
 		{
-			if(e.worldObj.provider.dimensionId == 53)
+			if(e.worldObj.provider.dimensionId == Config.dimensionID)
 			{
 				((WorldProviderFirstWorld)(e.worldObj.provider)).generateLightBrightnessTable();
 				if(ECUtils.isEventActive("ec3.event.darkness"))
@@ -363,13 +364,13 @@ public class PlayerTickHandler{
 					{
 						NBTTagCompound tag = CompressedStreamTools.readCompressed(iStream);
 						ECUtils.readOrCreatePlayerData(e, tag);
-						ECUtils.requestSync(e);
+						//ECUtils.requestSync(e);
 					}
 					catch(Exception Ex)
 					{
 						FMLCommonHandler.instance().raiseException(Ex, "EssentialCraft3 Encountered an exception whlist reading playerdata NBT of player "+e.getCommandSenderName()+"! It is totally fine if this is your first time opening the save. If it is not - report the error to the forum - http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2286105", false);
 						ECUtils.readOrCreatePlayerData(e, new NBTTagCompound());
-						ECUtils.requestSync(e);
+						//ECUtils.requestSync(e);
 					}
 					finally
 					{

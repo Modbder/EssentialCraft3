@@ -6,7 +6,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import codechicken.lib.math.MathHelper;
+import net.minecraft.util.MathHelper;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;

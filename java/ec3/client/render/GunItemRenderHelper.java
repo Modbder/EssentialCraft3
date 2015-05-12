@@ -2,13 +2,13 @@ package ec3.client.render;
 
 import org.lwjgl.opengl.GL11;
 
-import codechicken.lib.math.MathHelper;
 import DummyCore.Utils.MiscUtils;
 import ec3.common.item.ItemsCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.IItemRenderer;
 
 public class GunItemRenderHelper implements IItemRenderer{

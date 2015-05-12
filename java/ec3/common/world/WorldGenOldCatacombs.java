@@ -1,7 +1,5 @@
 package ec3.common.world;
 
-import static net.minecraftforge.common.ChestGenHooks.DUNGEON_CHEST;
-
 import java.util.Random;
 
 import DummyCore.Utils.MathUtils;
@@ -13,16 +11,13 @@ import net.minecraft.block.BlockBush;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockVine;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Vec3;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
-import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class WorldGenOldCatacombs extends WorldGenerator{
@@ -125,7 +120,6 @@ public class WorldGenOldCatacombs extends WorldGenerator{
 	
 	public boolean generateCorridor(World w, int x, int y, int z, int length, ForgeDirection direction, boolean green)
 	{
-		Block concrete = BlocksCore.concrete;
 		int generatedLength = 0;
 		Block generateFrom = this.getBlockToGenFrom();
 		boolean gen = true;
@@ -133,7 +127,7 @@ public class WorldGenOldCatacombs extends WorldGenerator{
 		{
 			if(w.rand.nextFloat() < this.destroyedRoomChance)
 				generateBrokenPath(w,x,y,z);
-			Block check_blk = w.getBlock(x, y, z);
+			w.getBlock(x, y, z);
 			if(direction.offsetX >= 0 && direction.offsetZ >= 0)
 			{
 				for(int dx = x-direction.offsetZ*2; dx <= x+direction.offsetZ*2; ++dx)

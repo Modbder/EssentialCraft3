@@ -376,28 +376,31 @@ public class RenderHandlerEC3 {
 			    if(PotionRegistry.paradox != null && mc.thePlayer.getActivePotionEffect(PotionRegistry.paradox) != null)
 			    {
 			    	int duration = mc.thePlayer.getActivePotionEffect(PotionRegistry.paradox).getDuration();
-			    	if(duration % 100 == 0)
-			    		mc.theWorld.playSound(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, "essentialcraft:sound.heartbeat", 100, 1, true);
-			    	if(currentParadoxTicks > 0)
-			    		--currentParadoxTicks;
-			    	if(currentParadoxTicks == 0 && duration < 1600)
-			    	{
+			    	if(duration > 100)
+				    {
+				    	if(duration % 100 == 0)
+				    		mc.theWorld.playSound(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, "essentialcraft:sound.heartbeat", 100, 1, true);
+				    	if(currentParadoxTicks > 0)
+				    		--currentParadoxTicks;
+				    	if(currentParadoxTicks == 0 && duration < 1600)
+				    	{
+				    		paradoxID = -1;
+				    		isParadoxActive = false;
+				    		MiscUtils.setShaders(-1);
+				    	}
+				    	if(duration < 1700 && !isParadoxActive && player.worldObj.rand.nextFloat() < 0.005F)
+				    	{
+				    		//paradoxID = player.worldObj.rand.nextInt(6);
+				    		paradoxID = mc.theWorld.rand.nextInt(4);
+				    		currentParadoxTicks = 200;
+				    		isParadoxActive = true;
+				    	}
+				    }else
+				    {
+				    	currentParadoxTicks = 0;
 			    		paradoxID = -1;
 			    		isParadoxActive = false;
-			    		MiscUtils.setShaders(-1);
-			    	}
-			    	if(duration < 1700 && !isParadoxActive && player.worldObj.rand.nextFloat() < 0.005F)
-			    	{
-			    		//paradoxID = player.worldObj.rand.nextInt(6);
-			    		paradoxID = mc.theWorld.rand.nextInt(4);
-			    		currentParadoxTicks = 200;
-			    		isParadoxActive = true;
-			    	}
-			    }else
-			    {
-			    	currentParadoxTicks = 0;
-		    		paradoxID = -1;
-		    		isParadoxActive = false;
+				    }
 			    }
 			}
 	}

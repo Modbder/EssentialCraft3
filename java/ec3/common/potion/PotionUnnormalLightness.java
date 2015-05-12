@@ -3,12 +3,10 @@ package ec3.common.potion;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 
 public class PotionUnnormalLightness extends Potion{
@@ -52,7 +50,6 @@ public class PotionUnnormalLightness extends Potion{
     }
     
     
-    private int statusIconIndex;
     static final ResourceLocation rl = new ResourceLocation("essentialcraft", "textures/special/potions.png");
 
 }

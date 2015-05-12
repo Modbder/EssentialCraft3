@@ -6,7 +6,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 
 public class PotionWindTouch extends Potion{
@@ -54,7 +53,6 @@ public class PotionWindTouch extends Potion{
     }
     
     
-    private int statusIconIndex;
     static final ResourceLocation rl = new ResourceLocation("essentialcraft", "textures/special/potions.png");
 
 }
