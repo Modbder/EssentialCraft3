@@ -1,19 +1,14 @@
 package ec3.common.world;
 
-import java.lang.reflect.Field;
 import java.util.Random;
 
 import ec3.common.world.structure.MapGenModernShafts;
 import ec3.common.world.structure.MapGenTown;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
-import net.minecraft.world.gen.feature.WorldGenDungeons;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 
 public class ChunkProviderFirstWorld extends ChunkProviderGenerate{
 	
