@@ -650,6 +650,7 @@ public class ECEventHandler {
 			if(maker.index > 3)
 				maker.index = 0;
 			
+			maker.getWorldObj().setBlockMetadataWithNotify(maker.xCoord, maker.yCoord, maker.zCoord, maker.index, 3);
 			event.presser.closeScreen();
 			event.presser.openGui(EssentialCraftCore.core, Config.guiID[0], event.presser.worldObj, event.x, event.y, event.z);
 			
@@ -1050,7 +1051,7 @@ public class ECEventHandler {
 	{
 		if(event.type == EventType.FLOWERS)
 		{
-			if(event.world.provider.dimensionId == 53)
+			if(event.world.provider.dimensionId == Config.dimensionID)
 			{
 				event.setResult(Result.DENY);
 			}
@@ -1065,7 +1066,7 @@ public class ECEventHandler {
 		if(player != null)
 		{
 			int dimID = player.dimension;
-			if(dimID == 53)
+			if(dimID == Config.dimensionID)
 			{
 				event.newColor = 0xff6a58;
 			}
@@ -1114,7 +1115,7 @@ public class ECEventHandler {
 		if(player != null)
 		{
 			int dimID = player.dimension;
-			if(dimID == 53)
+			if(dimID == Config.dimensionID)
 			{
 				if(!(event.biome instanceof BiomeGenCorruption_Chaos) && !(event.biome instanceof BiomeGenCorruption_Frozen) && !(event.biome instanceof BiomeGenCorruption_Magic))
 				{
@@ -1132,7 +1133,7 @@ public class ECEventHandler {
 		if(player != null)
 		{
 			int dimID = player.dimension;
-			if(dimID == 53)
+			if(dimID == Config.dimensionID)
 			{
 				if(!(event.biome instanceof BiomeGenCorruption_Chaos) && !(event.biome instanceof BiomeGenCorruption_Frozen) && !(event.biome instanceof BiomeGenCorruption_Magic))
 				{
