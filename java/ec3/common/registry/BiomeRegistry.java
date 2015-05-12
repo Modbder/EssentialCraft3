@@ -2,6 +2,7 @@ package ec3.common.registry;
 
 import org.apache.logging.log4j.LogManager;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import ec3.common.world.BiomeGenCorruption_Chaos;
 import ec3.common.world.BiomeGenCorruption_Frozen;
 import ec3.common.world.BiomeGenCorruption_Magic;
@@ -11,9 +12,21 @@ import ec3.common.world.BiomeGenFirstWorld_Dreadlands;
 import ec3.utils.cfg.Config;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenBase.Height;
+import net.minecraftforge.common.BiomeManager;
+import net.minecraftforge.event.terraingen.WorldTypeEvent;
 
 public class BiomeRegistry {
 	public static BiomeRegistry core;
+	
+	public BiomeRegistry()
+	{
+		//MinecraftForge.TERRAIN_GEN_BUS.register(this);
+	}
+	
+	@SubscribeEvent
+	public void manageBiomeGen(WorldTypeEvent.InitBiomeGens event)
+	{
+	}
 	
 	public void register()
 	{
@@ -21,6 +34,12 @@ public class BiomeRegistry {
 		frozenCorruption = new BiomeGenCorruption_Frozen(Config.biomeID[1]);
 		shadowCorruption = new BiomeGenCorruption_Shadow(Config.biomeID[2]);
 		magicCorruption = new BiomeGenCorruption_Magic(Config.biomeID[3]);
+		
+		BiomeManager.removeSpawnBiome(chaosCorruption);
+		BiomeManager.removeSpawnBiome(frozenCorruption);
+		BiomeManager.removeSpawnBiome(shadowCorruption);
+		BiomeManager.removeSpawnBiome(magicCorruption);
+		
 		registerFirstWorldBiomes();
 	}
 	
