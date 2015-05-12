@@ -56,13 +56,14 @@ public class Config implements IDummyConfig{
 	
 	public void loadMisc()
 	{
-		biomeID[0] = config.get("Biomes", "ChaosCorruptionID", 134).getInt();
-		biomeID[1] = config.get("Biomes", "FrozenCorruptionID", 135).getInt();
-		biomeID[2] = config.get("Biomes", "ShadowCorruptionID", 136).getInt();
-		biomeID[3] = config.get("Biomes", "MagicCorruptionID", 137).getInt();
-		biomeID[4] = config.get("Biomes", "DesertID", 138).getInt();
-		biomeID[5] = config.get("Biomes", "DreadLandsID", 139).getInt();
+		biomeID[0] = config.get("Biomes", "ChaosCorruptionID", 91).getInt();
+		biomeID[1] = config.get("Biomes", "FrozenCorruptionID", 92).getInt();
+		biomeID[2] = config.get("Biomes", "ShadowCorruptionID", 93).getInt();
+		biomeID[3] = config.get("Biomes", "MagicCorruptionID", 94).getInt();
+		biomeID[4] = config.get("Biomes", "DesertID", 95).getInt();
+		biomeID[5] = config.get("Biomes", "DreadLandsID", 96).getInt();
 		enablePersonalityShatter = config.getBoolean("EnablePersonalityShatter", "Misc", true, "");
+		dimensionID = config.getInt("Hoanna ID", "Misc", 53, Integer.MIN_VALUE, Integer.MAX_VALUE, "");
 		String[] cfgCustomOreParsing = config.getStringList("CustomMagmaticAlloys", "Misc", new String[]{"oreSaltpeter:10065301|5?dustSaltpeter","oreSulfur:16777113|5?dustSulfur"}, "Allows to add custom ores to Magmatic Alloys, where this is an array list, where first part is the ore name in OreDictionary, int after : is the color, int after | is the amount of drops you get from the ore and String after ? is the OreDictionary name of the result.");
 		for(String s : cfgCustomOreParsing)
 		{
@@ -96,6 +97,7 @@ public class Config implements IDummyConfig{
 	public static int blocksCount = 0;
 	public static int genericItemIDS = 13200;
 	public static int itemsCount = 0;
+	public static int dimensionID = 53;
 	public static int[] guiID = new int[48];
 	public static int[] mobID = new int[16];
 	public static int[] enchantID = new int[4];
