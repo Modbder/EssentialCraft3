@@ -26,8 +26,7 @@ public class BloodMagicRegistry {
 		}
 		catch(Exception e)
 		{
-			LogManager.getLogger().error("Unable to add BloodMagic Integration:");
-			e.printStackTrace();
+			LogManager.getLogger().error("Unable to add BloodMagic Integration.");
 			return;
 		}
 	}
