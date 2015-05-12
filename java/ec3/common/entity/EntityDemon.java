@@ -2,7 +2,6 @@ package ec3.common.entity;
 
 import java.util.List;
 
-import codechicken.lib.math.MathHelper;
 import ec3.api.DemonTrade;
 import ec3.common.block.BlockDemonicPentacle;
 import ec3.common.item.ItemsCore;
@@ -20,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
