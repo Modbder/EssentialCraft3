@@ -1,34 +1,8 @@
 package ec3.common.magic;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
-
-
-
-
-
-
-
-
-import org.objectweb.asm.Attribute;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.AbstractInsnNode;
-import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.FieldInsnNode;
-import org.objectweb.asm.tree.FieldNode;
-import org.objectweb.asm.tree.InsnList;
-import org.objectweb.asm.tree.MethodInsnNode;
-import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.VarInsnNode;
-
 import DummyCore.Utils.MiscUtils;
 import DummyCore.Utils.Notifier;
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import ec3.utils.common.ECUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
