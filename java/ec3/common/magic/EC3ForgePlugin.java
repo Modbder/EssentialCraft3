@@ -3,7 +3,6 @@ package ec3.common.magic;
 import java.util.Map;
 
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
-import ec3.common.mod.EssentialCraftCore;
 
 /**
  * 
