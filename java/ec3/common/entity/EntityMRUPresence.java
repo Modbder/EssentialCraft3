@@ -2,7 +2,6 @@ package ec3.common.entity;
 
 import java.util.List;
 
-import codechicken.lib.math.MathHelper;
 import DummyCore.Utils.DummyData;
 import ec3.api.IMRUPressence;
 import ec3.common.block.BlockCorruption_Light;
@@ -20,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
