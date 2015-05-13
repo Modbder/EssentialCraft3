@@ -2,6 +2,7 @@ package ec3.integration.nei;
 
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
+import ec3.common.mod.EssentialCraftCore;
 
 public class NEIEssentialCraftConfig implements IConfigureNEI{
 
@@ -15,6 +16,8 @@ public class NEIEssentialCraftConfig implements IConfigureNEI{
 		API.registerUsageHandler(new MagicalAssemblerRecipeHandler());
 		API.registerRecipeHandler(new MithrilineFurnaceRecipeHandler());
 		API.registerUsageHandler(new MithrilineFurnaceRecipeHandler());
+		
+		API.registerRecipeHandler(new WorldgenRecipeHandler());
 	}
 
 	@Override
@@ -26,7 +29,7 @@ public class NEIEssentialCraftConfig implements IConfigureNEI{
 	@Override
 	public String getVersion() {
 		// TODO Auto-generated method stub
-		return "4.0.172.246dev";
+		return EssentialCraftCore.version;
 	}
 
 }
