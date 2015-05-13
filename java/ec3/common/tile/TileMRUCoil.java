@@ -24,6 +24,7 @@ import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
 import ec3.api.ApiCore;
 import ec3.api.EnumStructureType;
+import ec3.api.IMRUPressence;
 import ec3.api.ITEHasMRU;
 import ec3.common.block.BlocksCore;
 import ec3.common.item.ItemBoundGem;
@@ -211,6 +212,8 @@ public class TileMRUCoil extends TileMRUGeneric{
 						}else
 						{
 							if(!(b instanceof IMob) && !hurtPassive)
+								continue Ford;
+							if(b instanceof IMRUPressence)
 								continue Ford;
 							attack(b);
 							break Ford;
