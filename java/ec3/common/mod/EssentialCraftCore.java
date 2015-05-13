@@ -60,9 +60,8 @@ public class EssentialCraftCore {
 	@SidedProxy(clientSide = "ec3.network.proxy.ClientProxy", serverSide = "ec3.network.proxy.CommonProxy", modId = EssentialCraftCore.modid)
 	public static CommonProxy proxy;
 	public static Config cfg = new Config();
-	//TODO DO NOT F*CKING FORGET TO CHANGE THIS NUMBER EVERY RELEASE, YOU C*NT! IF YOU(ME) CAN'T I'LL WRITE A F*CKING PROGRAMM, THAT INCREASES THIS NUMBER ON IT'S OWN
-	//Please, do not remove the upper line, it's for mine safety.
-	public static final String version = "4.5.1710.169";
+	//TODO Do not forget to change the version number every git commit.
+	public static final String version = "4.5.1710.170";
 	public static final String modid = "essentialcraft";
 	public static ModMetadata metadata;
 	public static SimpleNetworkWrapper network;

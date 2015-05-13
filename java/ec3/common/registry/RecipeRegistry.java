@@ -161,9 +161,6 @@ public class RecipeRegistry {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ItemsCore.genericItem,1,33), new Object[]{
 			"ingotThaumium","ingotThaumium","ingotThaumium","ingotThaumium","ingotThaumium","ingotThaumium","ingotThaumium","ingotThaumium",new ItemStack(ItemsCore.genericItem,1,23)
 		}));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ItemsCore.air_potion,1,0), new Object[]{
-			Items.potionitem,new ItemStack(ItemsCore.elementalFuel,1,3)
-		}));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ItemsCore.playerList,1,0), new Object[]{
 			Items.paper,new ItemStack(ItemsCore.bound_gem,1,0)
 		}));
@@ -1346,6 +1343,7 @@ public class RecipeRegistry {
 	{
 		new WindImbueRecipe(new ItemStack(ItemsCore.soulStone,1,0),new ItemStack(ItemsCore.soulStone,1,0),10000*8);
 		new WindImbueRecipe(new ItemStack(Items.diamond,1,0),new ItemStack(ItemsCore.genericItem,1,55),10000);
+		new WindImbueRecipe(new ItemStack(Items.potionitem,1,0),new ItemStack(ItemsCore.air_potion,1,0),250);
 		//TODO wind recipes
 	}
 	
