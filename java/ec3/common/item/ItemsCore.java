@@ -308,6 +308,7 @@ public class ItemsCore {
 		MagicianTableUpgrades.addUpgrade(new ItemStack(genericItem,1,36), 7.5F, loc("voidCore"));
 		MagicianTableUpgrades.addUpgrade(new ItemStack(genericItem,1,37), 10F, loc("voidReactor"));
 		MagicianTableUpgrades.addUpgrade(new ItemStack(genericItem,1,44),4F, loc("crystal"));
+		MagicianTableUpgrades.addUpgrade(new ItemStack(genericItem,1,53),16F, loc("demonicCore"));
 	}
 	
 	public static ResourceLocation loc(String name)
