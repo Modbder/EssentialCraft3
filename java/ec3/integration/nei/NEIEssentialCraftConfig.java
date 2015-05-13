@@ -1,7 +1,10 @@
 package ec3.integration.nei;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
+import ec3.common.item.ItemsCore;
 import ec3.common.mod.EssentialCraftCore;
 
 public class NEIEssentialCraftConfig implements IConfigureNEI{
@@ -16,8 +19,12 @@ public class NEIEssentialCraftConfig implements IConfigureNEI{
 		API.registerUsageHandler(new MagicalAssemblerRecipeHandler());
 		API.registerRecipeHandler(new MithrilineFurnaceRecipeHandler());
 		API.registerUsageHandler(new MithrilineFurnaceRecipeHandler());
+		API.registerRecipeHandler(new WindImbueRecipeHandler());
+		API.registerUsageHandler(new WindImbueRecipeHandler());
 		
 		API.registerRecipeHandler(new WorldgenRecipeHandler());
+		
+		API.hideItem(new ItemStack(ItemsCore.secret,1,OreDictionary.WILDCARD_VALUE));
 	}
 
 	@Override

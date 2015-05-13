@@ -9,7 +9,6 @@ import org.lwjgl.opengl.GL11;
 
 import DummyCore.Utils.MiscUtils;
 import DummyCore.Utils.UnformedItemStack;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
@@ -189,10 +188,6 @@ public class MithrilineFurnaceRecipeHandler extends TemplateRecipeHandler{
     	int posY = 0;
     	MiscUtils.drawTexturedModalRect(posX, posY, 0, 14, 18, 18, 0);
 		MiscUtils.drawTexturedModalRect(posX, posY+18-n, 18, 14+(18-n), 18, n, 0);
-		
-		GL11.glScalef(2, 2, 2);
-		Minecraft.getMinecraft().fontRenderer.drawString("R", 20, 1, 0x000000);
-		GL11.glScalef(1/2, 1/2, 1/2);
 		
 		GL11.glPopMatrix();
     }
