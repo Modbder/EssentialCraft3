@@ -75,7 +75,7 @@ public class DemonRecipeHandler extends TemplateRecipeHandler{
     @Override
     public void loadCraftingRecipes(String outputId, Object... results)
     {
-    	if(results != null && results[0] instanceof ItemStack)
+    	if(results.length > 0 && results != null && results[0] instanceof ItemStack)
     	{
     		ItemStack stk = ItemStack.class.cast(results[0]);
     		if(stk != null && stk.getItem() instanceof ItemGenericEC3 && stk.getItemDamage() == 52)
