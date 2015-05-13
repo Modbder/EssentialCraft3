@@ -1249,8 +1249,8 @@ public class RecipeRegistry {
 		MagicianTableRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Items.ender_pearl),getItemByNameEC3("genericItem",14),getItemByNameEC3("genericItem",14),getItemByNameEC3("genericItem",14),getItemByNameEC3("genericItem",14)},getItemByNameEC3("storage",2), 100);
 		MagicianTableRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Items.diamond),getItemByNameEC3("genericItem",15),getItemByNameEC3("genericItem",15),getItemByNameEC3("genericItem",15),getItemByNameEC3("genericItem",15)},getItemByNameEC3("storage",3), 250);
 		MagicianTableRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Items.nether_star),getItemByNameEC3("genericItem",16),getItemByNameEC3("genericItem",16),getItemByNameEC3("genericItem",16),getItemByNameEC3("genericItem",16)},getItemByNameEC3("storage",4), 500);
-		MagicianTableRecipes.addRecipeIS(new UnformedItemStack[]{null,new UnformedItemStack("ingotMithriline"),new UnformedItemStack("ingotMithriline"),new UnformedItemStack("ingotMithriline"),new UnformedItemStack("ingotMithriline")},getItemByNameEC3("genericItem",49), 400);
-		MagicianTableRecipes.addRecipeIS(new UnformedItemStack[]{null,new UnformedItemStack("ingotDemonic"),new UnformedItemStack("ingotDemonic"),new UnformedItemStack("ingotDemonic"),new UnformedItemStack("ingotDemonic")},getItemByNameEC3("genericItem",54), 2000);
+		MagicianTableRecipes.addRecipeIS(new UnformedItemStack[]{new UnformedItemStack(getItemByNameEC3("genericItem",7)),new UnformedItemStack("ingotMithriline"),new UnformedItemStack("ingotMithriline"),new UnformedItemStack("ingotMithriline"),new UnformedItemStack("ingotMithriline")},getItemByNameEC3("genericItem",49), 400);
+		MagicianTableRecipes.addRecipeIS(new UnformedItemStack[]{new UnformedItemStack(getItemByNameEC3("genericItem",7)),new UnformedItemStack("ingotDemonic"),new UnformedItemStack("ingotDemonic"),new UnformedItemStack("ingotDemonic"),new UnformedItemStack("ingotDemonic")},getItemByNameEC3("genericItem",54), 2000);
 		ItemStack book_t1 = new ItemStack(ItemsCore.research_book);
 		MiscUtils.getStackTag(book_t1).setInteger("tier", 1);
 		ItemStack book_t2 = new ItemStack(ItemsCore.research_book);
