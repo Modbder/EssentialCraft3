@@ -1,8 +1,11 @@
 package ec3.integration.nei;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Random;
+
 import org.lwjgl.opengl.GL11;
 
 import DummyCore.Utils.MathUtils;
@@ -140,7 +143,32 @@ public class MagicianTableRecipeHandler extends TemplateRecipeHandler{
     				arecipes.add(pair);
     			}
     		}
+    	}else
+    	{
+    		if(outputId.equalsIgnoreCase(getOverlayIdentifier()))
+    		{
+    			Enumeration<MagicianTableRecipe> e = MagicianTableRecipes.recipes.elements();
+    			while(e.hasMoreElements())
+    			{
+	    			MagicianTableRecipe rec = e.nextElement();
+	    			if(rec != null)
+	    			{
+	    				MagicianTableCraftingPair pair = new MagicianTableCraftingPair(rec);
+	    				arecipes.add(pair);
+	    			}
+	    		}
+    		}
     	}
+    }
+    
+    public void loadTransferRects() 
+    {
+    	super.transferRects.add(new RecipeTransferRect(new Rectangle(70,20,32,18), this.getOverlayIdentifier(), new Object[0]));
+    }
+    
+    public String getOverlayIdentifier()
+    {
+        return "magicianTable";
     }
     
     public void loadUsageRecipes(String inputId, Object... ingredients) 
@@ -159,6 +187,10 @@ public class MagicianTableRecipeHandler extends TemplateRecipeHandler{
     		    	arecipes.add(pair);
     			}
     		}
+    	}else
+    	{
+    		if(inputId.equalsIgnoreCase(getOverlayIdentifier()))
+    			loadCraftingRecipes(inputId,ingredients);
     	}
     }
     
@@ -203,6 +235,10 @@ public class MagicianTableRecipeHandler extends TemplateRecipeHandler{
 		
 		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(""+rec.mruRequired/20/60+"Min "+(rec.mruRequired/20-((rec.mruRequired/20/60)*60))+"Sec", posX+2+60, posY+5, 0xffffff);
     	
+		GL11.glScalef(2, 2, 2);
+		Minecraft.getMinecraft().fontRenderer.drawString("R", 40, 10, 0x000000);
+		GL11.glScalef(1/2, 1/2, 1/2);
+		
     	GL11.glPopMatrix();
     }
     

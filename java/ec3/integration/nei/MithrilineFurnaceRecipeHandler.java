@@ -4,8 +4,12 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import org.lwjgl.opengl.GL11;
+
 import DummyCore.Utils.MiscUtils;
 import DummyCore.Utils.UnformedItemStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
@@ -170,6 +174,7 @@ public class MithrilineFurnaceRecipeHandler extends TemplateRecipeHandler{
     @Override
     public void drawBackground(int recipe) {
     	super.drawBackground(recipe);
+    	GL11.glPushMatrix();
     	MiscUtils.bindTexture("essentialcraft", "textures/gui/slot_common.png");
     	MiscUtils.drawTexturedModalRect(18, 0, 0, 0, 18, 18, 0);
     	MiscUtils.drawTexturedModalRect(54, 0, 0, 0, 18, 18, 0);
@@ -184,6 +189,12 @@ public class MithrilineFurnaceRecipeHandler extends TemplateRecipeHandler{
     	int posY = 0;
     	MiscUtils.drawTexturedModalRect(posX, posY, 0, 14, 18, 18, 0);
 		MiscUtils.drawTexturedModalRect(posX, posY+18-n, 18, 14+(18-n), 18, n, 0);
+		
+		GL11.glScalef(2, 2, 2);
+		Minecraft.getMinecraft().fontRenderer.drawString("R", 20, 1, 0x000000);
+		GL11.glScalef(1/2, 1/2, 1/2);
+		
+		GL11.glPopMatrix();
     }
     
     @Override

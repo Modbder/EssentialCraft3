@@ -1,7 +1,10 @@
 package ec3.integration.nei;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
+
 import org.lwjgl.opengl.GL11;
 
 import DummyCore.Utils.MathUtils;
@@ -140,6 +143,21 @@ public class RadiatingChamberRecipeHandler extends TemplateRecipeHandler{
     				arecipes.add(pair);
     			}
     		}
+    	}else
+    	{
+    		if(outputId.equalsIgnoreCase(getOverlayIdentifier()))
+    		{
+    			Enumeration<RadiatingChamberRecipe> e = RadiatingChamberRecipes.recipesByIS.elements();
+    			while(e.hasMoreElements())
+    			{
+    				RadiatingChamberRecipe rec = e.nextElement();
+    				if(rec != null)
+    				{
+        				RadiatingChamberCraftingPair pair = new RadiatingChamberCraftingPair(rec);
+        				arecipes.add(pair);
+    				}
+    			}
+    		}
     	}
     }
     
@@ -179,7 +197,21 @@ public class RadiatingChamberRecipeHandler extends TemplateRecipeHandler{
     				}
     			}
     		}
+    	}else
+    	{
+    		if(inputId.equalsIgnoreCase(getOverlayIdentifier()))
+    			loadCraftingRecipes(inputId,ingredients);
     	}
+    }
+    
+    public void loadTransferRects() 
+    {
+    	super.transferRects.add(new RecipeTransferRect(new Rectangle(18,20,18,18), this.getOverlayIdentifier(), new Object[0]));
+    }
+    
+    public String getOverlayIdentifier()
+    {
+        return "radiatingChamber";
     }
     
     public void drawExtras(int recipe) 
@@ -244,6 +276,10 @@ public class RadiatingChamberRecipeHandler extends TemplateRecipeHandler{
 		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow("MRU/Tick: "+(int)rec.mod, posX+38, 23, 0xffffff);
 		
 		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow("Lower Balance: "+lowerBalance, posX+38, 40, 0xffffff);
+		
+		GL11.glScalef(2, 2, 2);
+		Minecraft.getMinecraft().fontRenderer.drawString("R", 11, 10, 0x000000);
+		GL11.glScalef(1/2, 1/2, 1/2);
 		
     	GL11.glPopMatrix();
     }
