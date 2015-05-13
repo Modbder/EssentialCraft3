@@ -23,6 +23,7 @@ public class NEIEssentialCraftConfig implements IConfigureNEI{
 		API.registerUsageHandler(new WindImbueRecipeHandler());
 		
 		API.registerRecipeHandler(new WorldgenRecipeHandler());
+		API.registerRecipeHandler(new DemonRecipeHandler());
 		
 		API.hideItem(new ItemStack(ItemsCore.secret,1,OreDictionary.WILDCARD_VALUE));
 	}
