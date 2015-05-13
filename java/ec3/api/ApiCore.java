@@ -100,8 +100,11 @@ public class ApiCore {
 	public static DiscoveryEntry findDiscoveryByIS(ItemStack referal)
 	{
 		if(referal == null)return null;
+		int size = referal.stackSize;
 		referal.stackSize = 0;
-		return ApiCore.discoveriesByIS.get(referal.toString());
+		DiscoveryEntry de = ApiCore.discoveriesByIS.get(referal.toString());
+		referal.stackSize = size;
+		return de;
 	}
 	
 	public static void allowItemToSeeMRU(Item i)

@@ -1230,6 +1230,12 @@ public class GuiResearchBook extends GuiScreen{
 			 if(phase == 0)
 			 {
 				 itemRender.renderItemAndEffectIntoGUI(fontRendererObj, this.mc.renderEngine, toDraw, pX, pZ);
+				 if(toDraw.stackSize > 1)
+				 {
+					 GL11.glTranslatef(0, 0, 500);
+					 fontRendererObj.drawString(toDraw.stackSize+"", pX+10, pZ+10, 0x000000);
+					 GL11.glTranslatef(0, 0, -500);
+				 }
 			 }else
 			 {
 				 boolean hover = mX >= pX && mZ >= pZ && mX < pX + 16 && mZ < pZ + 16;

@@ -102,6 +102,34 @@ public class RadiatingChamberRecipes {
 		}
 	}
 	
+	public static boolean addRecipeIS(ItemStack[] craftingPair, ItemStack result, int mruRequired, float[] balanceBounds, int size)
+	{
+		try
+		{
+			RadiatingChamberRecipe addedRecipe = new RadiatingChamberRecipe(craftingPair, result, mruRequired, balanceBounds, size);
+			return addRecipe(addedRecipe);
+		}catch(Exception e)
+		{
+			Side side = FMLCommonHandler.instance().getEffectiveSide();
+			Notifier.notifyCustomMod("EssentialCraftAPI","Unable to add recipe "+Arrays.toString(craftingPair)+" with the result "+result+" on side "+side);
+			return false;
+		}
+	}
+	
+	public static boolean addRecipeIS(ItemStack[] craftingPair, ItemStack result, int mruRequired, float[] balanceBounds, float m, int size)
+	{
+		try
+		{
+			RadiatingChamberRecipe addedRecipe = new RadiatingChamberRecipe(craftingPair, result, mruRequired, balanceBounds, m, size);
+			return addRecipe(addedRecipe);
+		}catch(Exception e)
+		{
+			Side side = FMLCommonHandler.instance().getEffectiveSide();
+			Notifier.notifyCustomMod("EssentialCraftAPI","Unable to add recipe "+Arrays.toString(craftingPair)+" with the result "+result+" on side "+side);
+			return false;
+		}
+	}
+	
 	public static boolean addRecipeIS(ItemStack[] craftingPair, ItemStack result, int mruRequired, float[] balanceBounds)
 	{
 		try

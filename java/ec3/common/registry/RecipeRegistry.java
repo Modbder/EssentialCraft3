@@ -1205,20 +1205,20 @@ public class RecipeRegistry {
 	public void registerRadiatingChamber()
 	{
 		//TODO RadiatingChamberRecipes
-		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Blocks.stone),new ItemStack(Items.iron_ingot)}, getItemByNameEC3("fortifiedStone",0), 10, new float[]{Float.MAX_VALUE,Float.MIN_VALUE});
-		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Blocks.glass),new ItemStack(Items.iron_ingot)}, getItemByNameEC3("fortifiedGlass",0), 10, new float[]{Float.MAX_VALUE,Float.MIN_VALUE});
-		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Items.redstone),new ItemStack(Items.blaze_powder)}, getItemByNameEC3("genericItem",3), 100, new float[]{Float.MAX_VALUE,Float.MIN_VALUE});
-		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{getItemByNameEC3("soulStone",0),null}, getItemByNameEC3("matrixProj",0), 1000, new float[]{Float.MAX_VALUE,Float.MIN_VALUE});
-		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{getItemByNameEC3("matrixProj",0),null}, getItemByNameEC3("matrixProj",1), 10000, new float[]{Float.MAX_VALUE,1.5F});
-		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{getItemByNameEC3("matrixProj",0),null}, getItemByNameEC3("matrixProj",2), 10000, new float[]{0.5F,Float.MIN_VALUE});
-		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{getItemByNameEC3("matrixProj",0),null}, getItemByNameEC3("matrixProj",3), 20000, new float[]{1.49F,0.69F});
-		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Items.dye,1,4),new ItemStack(Items.glowstone_dust)}, getItemByNameEC3("genericItem",38), 250, new float[]{Float.MAX_VALUE,Float.MIN_VALUE},20);
-		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Blocks.lapis_block,1,0),new ItemStack(Items.gold_ingot)}, getItemByNameEC3("genericItem",39), 100, new float[]{Float.MAX_VALUE,Float.MIN_VALUE},80);
-		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{new ItemStack(BlocksCore.blockPale,1,0),new ItemStack(Items.diamond)}, getItemByNameEC3("genericItem",40), 250, new float[]{Float.MAX_VALUE,Float.MIN_VALUE},120);
-		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{new ItemStack(BlocksCore.blockPale,1,0),new ItemStack(Items.emerald)}, getItemByNameEC3("genericItem",40), 300, new float[]{Float.MAX_VALUE,Float.MIN_VALUE},100);
-		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Blocks.stone),new ItemStack(ItemsCore.drops,1,4)}, getItemByNameEC3("genericItem",42), 100, new float[]{Float.MAX_VALUE,Float.MIN_VALUE},10);
-		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Items.iron_ingot),new ItemStack(ItemsCore.genericItem,1,3)}, getItemByNameEC3("genericItem",43), 1000, new float[]{Float.MAX_VALUE,Float.MIN_VALUE},1);
-		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Items.diamond),new ItemStack(Items.emerald)}, getItemByNameEC3("genericItem",44), 100, new float[]{Float.MAX_VALUE,Float.MIN_VALUE},50);
+		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Blocks.stone),new ItemStack(Items.iron_ingot)}, getItemByNameEC3("fortifiedStone",0), 10, new float[]{Float.MAX_VALUE,Float.MIN_VALUE},4);
+		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Blocks.glass),new ItemStack(Items.iron_ingot)}, getItemByNameEC3("fortifiedGlass",0), 10, new float[]{Float.MAX_VALUE,Float.MIN_VALUE},4);
+		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Items.redstone),new ItemStack(Items.blaze_powder)}, getItemByNameEC3("genericItem",3), 100, new float[]{Float.MAX_VALUE,Float.MIN_VALUE},1);
+		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{getItemByNameEC3("soulStone",0),null}, getItemByNameEC3("matrixProj",0), 1000, new float[]{Float.MAX_VALUE,Float.MIN_VALUE},1);
+		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{getItemByNameEC3("matrixProj",0),null}, getItemByNameEC3("matrixProj",1), 10000, new float[]{Float.MAX_VALUE,1.5F},1);
+		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{getItemByNameEC3("matrixProj",0),null}, getItemByNameEC3("matrixProj",2), 10000, new float[]{0.5F,Float.MIN_VALUE},1);
+		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{getItemByNameEC3("matrixProj",0),null}, getItemByNameEC3("matrixProj",3), 20000, new float[]{1.49F,0.69F},1);
+		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Items.dye,1,4),new ItemStack(Items.glowstone_dust)}, getItemByNameEC3("genericItem",38), 250, new float[]{Float.MAX_VALUE,Float.MIN_VALUE},20,1);
+		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Blocks.lapis_block,1,0),new ItemStack(Items.gold_ingot)}, getItemByNameEC3("genericItem",39), 100, new float[]{Float.MAX_VALUE,Float.MIN_VALUE},80,4);
+		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{new ItemStack(BlocksCore.blockPale,1,0),new ItemStack(Items.diamond)}, getItemByNameEC3("genericItem",40), 250, new float[]{Float.MAX_VALUE,Float.MIN_VALUE},120,4);
+		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{new ItemStack(BlocksCore.blockPale,1,0),new ItemStack(Items.emerald)}, getItemByNameEC3("genericItem",40), 300, new float[]{Float.MAX_VALUE,Float.MIN_VALUE},100,4);
+		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Blocks.stone),new ItemStack(ItemsCore.drops,1,4)}, getItemByNameEC3("genericItem",42), 100, new float[]{Float.MAX_VALUE,Float.MIN_VALUE},10,1);
+		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Items.iron_ingot),new ItemStack(ItemsCore.genericItem,1,3)}, getItemByNameEC3("genericItem",43), 1000, new float[]{Float.MAX_VALUE,Float.MIN_VALUE},1,1);
+		RadiatingChamberRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Items.diamond),new ItemStack(Items.emerald)}, getItemByNameEC3("genericItem",44), 100, new float[]{Float.MAX_VALUE,Float.MIN_VALUE},50,1);
 	}
 	
 	public void registerMagicianTable()

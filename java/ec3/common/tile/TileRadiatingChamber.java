@@ -14,9 +14,7 @@ import ec3.api.ApiCore;
 import ec3.api.ITEHasMRU;
 import ec3.api.RadiatingChamberRecipe;
 import ec3.api.RadiatingChamberRecipes;
-import ec3.common.block.BlocksCore;
 import ec3.common.item.ItemBoundGem;
-import ec3.common.item.ItemsCore;
 import ec3.utils.common.ECUtils;
 
 public class TileRadiatingChamber extends TileMRUGeneric{
@@ -142,9 +140,9 @@ public class TileRadiatingChamber extends TileMRUGeneric{
     {
     	if(this.canFunction(this.currentRecipe))
     	{
-    		ItemStack stk = this.currentRecipe.result;
-    		if(stk.getItem().getUnlocalizedName().equals(BlocksCore.fortifiedGlass.getUnlocalizedName()) || stk.getItem().getUnlocalizedName().equals(BlocksCore.fortifiedStone.getUnlocalizedName()) || (stk.getItem() == ItemsCore.genericItem && (stk.getItemDamage() == 39 || stk.getItemDamage() == 40)))
-    			stk.stackSize = 4;
+    		ItemStack stk = this.currentRecipe.result.copy();
+    		
+    		stk.stackSize = this.currentRecipe.recipeSize;
             if (this.getStackInSlot(3) == null)
             {
                 this.setInventorySlotContents(3, stk.copy());
