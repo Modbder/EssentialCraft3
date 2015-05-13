@@ -16,6 +16,7 @@ import ec3.api.GunRegistry.GunType;
 import ec3.api.GunRegistry.LenseMaterial;
 import ec3.api.GunRegistry.ScopeMaterial;
 import ec3.common.entity.EntityMRURay;
+import ec3.common.mod.EssentialCraftCore;
 import ec3.utils.common.ECUtils;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -669,6 +670,8 @@ public class ItemGun extends ItemStoresMRUInNBT
     {
     	if(!stack.hasTagCompound() || !stack.getTagCompound().hasKey("base"))
     	{
+    		Random rnd = new Random((EssentialCraftCore.proxy.getClientWorld().getWorldTime()/20) + (renderPass+1));
+    		
     		if(renderPass == 0)
     			return this.baseIcons[rnd.nextInt(baseIcons.length)];
     		if(renderPass == 1)
