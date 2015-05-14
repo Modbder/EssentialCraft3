@@ -41,31 +41,37 @@ public class TileMatrixAbsorber extends TileMRUGeneric{
 		boolean t = false;
 		if(!this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord))
 		{
-			ItemStack stk = this.getStackInSlot(0);
-			if(stk != null && stk.getItem() instanceof ItemSoulStone)
+			if(!this.worldObj.isRemote)
 			{
-		    	if(stk.getTagCompound() != null)
-		    	{
-		    		String username = stk.getTagCompound().getString("playerName");
-		    		EntityPlayer p = MinecraftServer.getServer().getConfigurationManager().func_152612_a(username);
-		    		if(p != null)
-		    		{
-		    			if(this.getMRU() + mruGenerated <= this.getMaxMRU())
-						{
-							int current = ECUtils.getData(p).getPlayerUBMRU();
-							if(current - mruUsage >= 0)
-							{
-								ECUtils.getData(p).modifyUBMRU((int) (current-mruUsage));
-								this.setMRU((int) (this.getMRU()+mruGenerated));
-						   		for(int o = 0; o < 10; ++o)
-						   		{
-						   			this.worldObj.spawnParticle("reddust", xCoord+0.25D+this.worldObj.rand.nextDouble()/2.2D, yCoord+0.25D+((float)o/20), zCoord+0.25D+this.worldObj.rand.nextDouble()/2.2D, 1.0D, 0.0D, 1.0D);
-						   		}
-						   		t = true;
-							}
-						}
-		    		}
-		    	}
+				ItemStack stk = this.getStackInSlot(0);
+				if(stk != null && stk.getItem() instanceof ItemSoulStone)
+				{
+			    	if(stk.getTagCompound() != null)
+			    	{
+			    		String username = stk.getTagCompound().getString("playerName");
+			    		if(MinecraftServer.getServer() != null && MinecraftServer.getServer().getConfigurationManager() != null)
+			    		{
+				    		EntityPlayer p = MinecraftServer.getServer().getConfigurationManager().func_152612_a(username);
+				    		if(p != null)
+				    		{
+				    			if(this.getMRU() + mruGenerated <= this.getMaxMRU())
+								{
+									int current = ECUtils.getData(p).getPlayerUBMRU();
+									if(current - mruUsage >= 0)
+									{
+										ECUtils.getData(p).modifyUBMRU((int) (current-mruUsage));
+										this.setMRU((int) (this.getMRU()+mruGenerated));
+								   		for(int o = 0; o < 10; ++o)
+								   		{
+								   			this.worldObj.spawnParticle("reddust", xCoord+0.25D+this.worldObj.rand.nextDouble()/2.2D, yCoord+0.25D+((float)o/20), zCoord+0.25D+this.worldObj.rand.nextDouble()/2.2D, 1.0D, 0.0D, 1.0D);
+								   		}
+								   		t = true;
+									}
+								}
+				    		}
+			    		}
+			    	}
+				}
 			}
 			--sndTime;
 			if(t && sndTime <= 0)
