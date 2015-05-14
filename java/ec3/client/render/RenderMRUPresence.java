@@ -3,19 +3,14 @@ package ec3.client.render;
 import java.util.Random;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import ec3.api.IItemAllowsSeeingMRUCU;
 import ec3.common.entity.EntityMRUPresence;
-import ec3.common.mod.EssentialCraftCore;
 import ec3.utils.common.ECUtils;
 
 
@@ -25,14 +20,10 @@ public class RenderMRUPresence extends Render
     
     public void doActualRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
-    	RenderHelper.disableStandardItemLighting();
 		Tessellator var3 = Tessellator.instance;
-        RenderHelper.disableStandardItemLighting();
         float var4 = ((EntityMRUPresence)par1Entity).renderIndex;
         float var5 = 0.0F;
         float stability = ((EntityMRUPresence)par1Entity).getBalance();
-        int color = 0x00ffff;
-        
         float colorRRender = 0.0F;
         float colorGRender = 1.0F;
         float colorBRender = 1.0F;
@@ -73,11 +64,8 @@ public class RenderMRUPresence extends Render
         }
         Random var6 = new Random(432L);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glShadeModel(GL11.GL_SMOOTH);
         GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-        GL11.glDisable(GL11.GL_ALPHA_TEST);
-        GL11.glEnable(GL11.GL_CULL_FACE);
+        GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_SRC_ALPHA);
         GL11.glDepthMask(false);
         GL11.glPushMatrix();
         GL11.glTranslated(par2, par4, par6);
@@ -118,13 +106,9 @@ public class RenderMRUPresence extends Render
 
         GL11.glPopMatrix();
         GL11.glDepthMask(true);
-        GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glDisable(GL11.GL_BLEND);
-        GL11.glShadeModel(GL11.GL_FLAT);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
-        RenderHelper.enableStandardItemLighting();
     }
     
     public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
