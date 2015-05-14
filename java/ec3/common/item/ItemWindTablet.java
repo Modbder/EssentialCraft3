@@ -4,40 +4,15 @@ import java.util.List;
 
 import DummyCore.Utils.MathUtils;
 import ec3.common.block.BlocksCore;
-import ec3.common.registry.PotionRegistry;
 import ec3.utils.common.ECUtils;
 import ec3.utils.common.WindRelations;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPortal;
-import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityAgeable;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 
 public class ItemWindTablet extends ItemStoresMRUInNBT {
 	//24
@@ -52,12 +27,12 @@ public class ItemWindTablet extends ItemStoresMRUInNBT {
 		"The wind rotates around your legs...",//7
 		"The wind tickles you...",//8
 		"The wind stops all other sounds...",//9
-		"§lThe wind whispers 'Owethanna'...",//10
+		"The wind whispers 'Owethanna'...",//10
 		"The wind whispers your name...",//11
 		"The wind brings a very nostalgic smell...",//12
 		"The wind creates a miniature tornado...",//13
 		"The wind thows some leaves around...",//14
-		"§lThe wind says 'Owethanna Else '...",//15
+		"The wind says 'Owethanna Else '...",//15
 		"The wind pushes you upwards...",//16
 		"The wind rotates very fast around you...",//17
 		"The wind goes into your lungs...",//18
@@ -82,15 +57,12 @@ public class ItemWindTablet extends ItemStoresMRUInNBT {
     {
         if((ECUtils.tryToDecreaseMRUInStorage(p_77659_3_, -500) || this.setMRU(p_77659_1_, -500)))
         {
-        		boolean readd = true;
         		int currentWindRev = WindRelations.getPlayerWindRelations(p_77659_3_);
         		int maxWindRev = 3500;
         		String windName = "Owethanna Else Hugaida";
         		int revPos = MathUtils.pixelatedTextureSize(currentWindRev, maxWindRev, windName.length());
         		if(!p_77659_3_.worldObj.isRemote && revPos >= 22)
         		{
-        				readd = false;
-        				MinecraftServer server = MinecraftServer.getServer();
         				if(p_77659_3_.capabilities.isCreativeMode)
         					p_77659_3_.capabilities.isCreativeMode = false;
         				Block b = p_77659_3_.worldObj.getBlock(MathHelper.floor_double(p_77659_3_.posX), MathHelper.floor_double(p_77659_3_.posY), MathHelper.floor_double(p_77659_3_.posZ));
@@ -195,6 +167,7 @@ public class ItemWindTablet extends ItemStoresMRUInNBT {
         return p_77659_1_;
     }
     
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
     {
