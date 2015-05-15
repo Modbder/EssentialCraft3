@@ -10,7 +10,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 
 public class EntitySolarBeam extends EntityWeatherEffect {
@@ -60,7 +59,7 @@ public class EntitySolarBeam extends EntityWeatherEffect {
         if((beamLiveTime%5) == 0)
         	this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "fire.fire", 10.0F, 2F);
         double d0 = 6.0D;
-        List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(this.posX - d0, this.posY - d0, this.posZ - d0, this.posX + d0, this.posY + 128.0D + d0, this.posZ + d0));
+        List<?> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(this.posX - d0, this.posY - d0, this.posZ - d0, this.posX + d0, this.posY + 128.0D + d0, this.posZ + d0));
 
         for (int l = 0; l < list.size(); ++l)
         {

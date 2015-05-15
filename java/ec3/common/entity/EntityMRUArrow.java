@@ -2,7 +2,6 @@ package ec3.common.entity;
 
 import DummyCore.Utils.MathUtils;
 import ec3.common.mod.EssentialCraftCore;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.world.World;
