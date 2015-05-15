@@ -1,24 +1,15 @@
 package ec3.common.inventory;
 
 import ec3.common.item.ItemBoundGem;
-import ec3.common.tile.TileRayTower;
-import ec3.common.tile.TileecAcceptor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
 public class ContainerMRUInfo extends Container{
 	
-    private int lastCookTime = 0;
-    private int lastBurnTime = 0;
-    private int lastItemBurnTime = 0;
-    private int ink;
-    private int research;
-
     public ContainerMRUInfo(InventoryPlayer par1InventoryPlayer, TileEntity par2)
     {
         int i;

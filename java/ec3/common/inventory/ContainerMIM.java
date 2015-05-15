@@ -1,8 +1,6 @@
 package ec3.common.inventory;
 
 import ec3.common.item.ItemBoundGem;
-import ec3.common.tile.TileRayTower;
-import ec3.common.tile.TileecAcceptor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -14,12 +12,6 @@ import net.minecraft.tileentity.TileEntity;
 public class ContainerMIM extends Container{
 	
     private IInventory tile;
-    private int lastCookTime = 0;
-    private int lastBurnTime = 0;
-    private int lastItemBurnTime = 0;
-    private int ink;
-    private int research;
-
     public ContainerMIM(InventoryPlayer par1InventoryPlayer, TileEntity par2)
     {
         this.tile = (IInventory) par2;

@@ -1,7 +1,6 @@
 package ec3.common.inventory;
 
 import ec3.common.item.ItemBoundGem;
-import ec3.common.tile.TileRayTower;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -13,12 +12,6 @@ import net.minecraft.tileentity.TileEntity;
 public class ContainerMonsterHolder extends Container{
 	
     private IInventory rayTower;
-    private int lastCookTime = 0;
-    private int lastBurnTime = 0;
-    private int lastItemBurnTime = 0;
-    private int ink;
-    private int research;
-
     public ContainerMonsterHolder(InventoryPlayer par1InventoryPlayer, TileEntity par2)
     {
         this.rayTower = (IInventory) par2;

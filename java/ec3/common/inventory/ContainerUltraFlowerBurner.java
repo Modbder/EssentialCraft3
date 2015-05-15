@@ -1,7 +1,5 @@
 package ec3.common.inventory;
 
-import ec3.common.item.ItemBoundGem;
-import ec3.common.tile.TileRayTower;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;

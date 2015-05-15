@@ -12,12 +12,6 @@ import net.minecraft.tileentity.TileEntity;
 public class ContainerRayTower extends Container{
 	
     private TileRayTower rayTower;
-    private int lastCookTime = 0;
-    private int lastBurnTime = 0;
-    private int lastItemBurnTime = 0;
-    private int ink;
-    private int research;
-
     public ContainerRayTower(InventoryPlayer par1InventoryPlayer, TileEntity par2)
     {
         this.rayTower = (TileRayTower) par2;

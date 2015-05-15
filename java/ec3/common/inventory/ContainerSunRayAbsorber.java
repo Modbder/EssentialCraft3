@@ -1,7 +1,5 @@
 package ec3.common.inventory;
 
-import ec3.common.item.ItemBoundGem;
-import ec3.common.tile.TileRayTower;
 import ec3.common.tile.TileSunRayAbsorber;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -13,12 +11,6 @@ import net.minecraft.tileentity.TileEntity;
 public class ContainerSunRayAbsorber extends Container{
 	
     private TileSunRayAbsorber rayTower;
-    private int lastCookTime = 0;
-    private int lastBurnTime = 0;
-    private int lastItemBurnTime = 0;
-    private int ink;
-    private int research;
-
     public ContainerSunRayAbsorber(InventoryPlayer par1InventoryPlayer, TileEntity par2)
     {
         this.rayTower = (TileSunRayAbsorber) par2;
