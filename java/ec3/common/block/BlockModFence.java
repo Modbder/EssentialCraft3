@@ -1,6 +1,5 @@
 package ec3.common.block;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.material.Material;
 

@@ -77,10 +77,10 @@ public class BlockRayTower extends BlockContainer{
 	        	{
 	        		if(par1World.getBlockMetadata(par2, par3, par4) == 0)
 	        		{
-	        			par5EntityPlayer.openGui(EssentialCraftCore.core, Config.instance.guiID[0], par1World, par2, par3, par4);
+	        			par5EntityPlayer.openGui(EssentialCraftCore.core, Config.guiID[0], par1World, par2, par3, par4);
 	        		}else
 	        		{
-	        			par5EntityPlayer.openGui(EssentialCraftCore.core, Config.instance.guiID[0], par1World, par2, par3-1, par4);
+	        			par5EntityPlayer.openGui(EssentialCraftCore.core, Config.guiID[0], par1World, par2, par3-1, par4);
 	        		}
 	            	return true;
 	        	}else

@@ -14,7 +14,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import net.minecraftforge.event.ForgeEventFactory;
 
 public class BlockDrops extends Block{
 
@@ -43,7 +42,8 @@ public class BlockDrops extends Block{
         return 2634;
     }
     
-    @SideOnly(Side.CLIENT)
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	@SideOnly(Side.CLIENT)
     public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List p_149666_3_)
     {
     	for(int i = 0; i < 4; ++i)

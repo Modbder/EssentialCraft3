@@ -3,7 +3,6 @@ package ec3.common.block;
 import DummyCore.Utils.MiscUtils;
 import ec3.common.mod.EssentialCraftCore;
 import ec3.common.tile.TileecAcceptor;
-import ec3.common.tile.TileecController;
 import ec3.utils.cfg.Config;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -34,7 +33,7 @@ public class BlockecAcceptor extends BlockContainer{
         {
         	if(!par5EntityPlayer.isSneaking())
         	{
-        		par5EntityPlayer.openGui(EssentialCraftCore.core, Config.instance.guiID[0], par1World, par2, par3, par4);
+        		par5EntityPlayer.openGui(EssentialCraftCore.core, Config.guiID[0], par1World, par2, par3, par4);
             	return true;
         	}else
         	{

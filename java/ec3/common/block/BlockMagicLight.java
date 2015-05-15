@@ -2,7 +2,6 @@ package ec3.common.block;
 
 import java.util.Random;
 
-import DummyCore.Utils.MathUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ec3.common.mod.EssentialCraftCore;

@@ -1,38 +1,15 @@
 package ec3.common.block;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import DummyCore.Utils.MiscUtils;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import ec3.common.item.ItemsCore;
 import ec3.common.mod.EssentialCraftCore;
-import ec3.common.tile.TileColdDistillator;
-import ec3.common.tile.TileCorruption;
-import ec3.common.tile.TileEnderGenerator;
-import ec3.common.tile.TileFlowerBurner;
-import ec3.common.tile.TileHeatGenerator;
 import ec3.common.tile.TileMagicalRepairer;
-import ec3.common.tile.TileMonsterHarvester;
-import ec3.common.tile.TileMoonWell;
-import ec3.common.tile.TilePotionSpreader;
-import ec3.common.tile.TileSunRayAbsorber;
 import ec3.utils.cfg.Config;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.event.ForgeEventFactory;
 
 public class BlockMagicalRepairer extends BlockContainer{
 
@@ -88,7 +65,7 @@ public class BlockMagicalRepairer extends BlockContainer{
 	        {
 	        	if(!par5EntityPlayer.isSneaking())
 	        	{
-	        		par5EntityPlayer.openGui(EssentialCraftCore.core, Config.instance.guiID[0], par1World, par2, par3, par4);
+	        		par5EntityPlayer.openGui(EssentialCraftCore.core, Config.guiID[0], par1World, par2, par3, par4);
 	            	return true;
 	        	}
 	        	else

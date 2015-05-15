@@ -26,12 +26,12 @@ public class BlockFancy extends Block implements IColdBlock{
 	public BlockFancy(Material material) {
 		super(material);
 		if(material == Material.rock)this.setStepSound(soundTypeStone);
-		if(material == Material.anvil)this.setStepSound(this.soundTypeAnvil);
-		if(material == Material.clay || material == Material.ground)this.setStepSound(this.soundTypeGravel);
-		if(material == Material.cloth)this.setStepSound(this.soundTypeCloth);
-		if(material == Material.craftedSnow)this.setStepSound(this.soundTypeSnow);
-		if(material == Material.wood)this.setStepSound(this.soundTypeWood);
-		if(material == Material.glass)this.setStepSound(this.soundTypeGlass);
+		if(material == Material.anvil)this.setStepSound(soundTypeAnvil);
+		if(material == Material.clay || material == Material.ground)this.setStepSound(soundTypeGravel);
+		if(material == Material.cloth)this.setStepSound(soundTypeCloth);
+		if(material == Material.craftedSnow)this.setStepSound(soundTypeSnow);
+		if(material == Material.wood)this.setStepSound(soundTypeWood);
+		if(material == Material.glass)this.setStepSound(soundTypeGlass);
 	}
 	
 	public BlockFancy(Block base, int meta)
@@ -76,7 +76,8 @@ public class BlockFancy extends Block implements IColdBlock{
 		super.registerBlockIcons(r);
     }
 	
-    @SideOnly(Side.CLIENT)
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	@SideOnly(Side.CLIENT)
     public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List p_149666_3_)
     {
     	for(int i = 0; i < overlays.length; ++i)

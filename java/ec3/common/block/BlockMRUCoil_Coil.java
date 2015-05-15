@@ -6,8 +6,6 @@ import DummyCore.Utils.MiscUtils;
 import ec3.common.item.ItemPlayerList;
 import ec3.common.mod.EssentialCraftCore;
 import ec3.common.tile.TileMRUCoil;
-import ec3.common.tile.TileMRUCoil_Hardener;
-import ec3.common.tile.TileecController;
 import ec3.utils.cfg.Config;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -79,7 +77,7 @@ public class BlockMRUCoil_Coil extends BlockContainer{
 	        	{
 	        		if(par5EntityPlayer.capabilities.isCreativeMode)
 	        		{
-		        		par5EntityPlayer.openGui(EssentialCraftCore.core, Config.instance.guiID[0], par1World, par2, par3, par4);
+		        		par5EntityPlayer.openGui(EssentialCraftCore.core, Config.guiID[0], par1World, par2, par3, par4);
 		            	return true;
 	        		}
 	        		TileMRUCoil tile = (TileMRUCoil) par1World.getTileEntity(par2, par3, par4);
@@ -97,7 +95,7 @@ public class BlockMRUCoil_Coil extends BlockContainer{
 			    			String playerName = par5EntityPlayer.getCommandSenderName();
 			    			if(username.equals(playerName))
 			    			{
-				        		par5EntityPlayer.openGui(EssentialCraftCore.core, Config.instance.guiID[0], par1World, par2, par3, par4);
+				        		par5EntityPlayer.openGui(EssentialCraftCore.core, Config.guiID[0], par1World, par2, par3, par4);
 				            	return true;
 			    			}
 			    		}
@@ -105,7 +103,7 @@ public class BlockMRUCoil_Coil extends BlockContainer{
 			    		
 					}else
 					{
-		        		par5EntityPlayer.openGui(EssentialCraftCore.core, Config.instance.guiID[0], par1World, par2, par3, par4);
+		        		par5EntityPlayer.openGui(EssentialCraftCore.core, Config.guiID[0], par1World, par2, par3, par4);
 		            	return true;
 					}
 

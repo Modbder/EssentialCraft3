@@ -1,8 +1,6 @@
 package ec3.common.block;
 
 import ec3.common.tile.TileecRedstoneController;
-import ec3.common.tile.TileecBalancer;
-import ec3.common.tile.TileecController;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;

@@ -1,9 +1,6 @@
 package ec3.common.block;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
-import net.minecraft.block.BlockFlower;
-import net.minecraft.block.material.Material;
 
 public class BlockModFlower extends BlockBush{
 
