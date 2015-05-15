@@ -7,21 +7,13 @@ import java.util.Random;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
-import DummyCore.Utils.DummyDataUtils;
-import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ec3.api.IItemRequiresMRU;
 import ec3.utils.common.ECUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -35,12 +27,10 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.stats.StatList;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
 
 public class ItemElementalSword extends ItemSword implements IItemRequiresMRU /*ItemStoresMRUInNBT*/ {
 	
@@ -93,10 +83,8 @@ public class ItemElementalSword extends ItemSword implements IItemRequiresMRU /*
     public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase par2EntityLivingBase, EntityLivingBase par3EntityLivingBase)
     {
     	String attrib = getPrimaryAttribute(par1ItemStack);
-    	int damage = 0;
     	if(attrib.contains("Fire") )
     	{
-    		damage += 7;
     		if((ECUtils.tryToDecreaseMRUInStorage((EntityPlayer) par3EntityLivingBase, -50) || this.setMRU(par1ItemStack, -50)))
     		{
     			par2EntityLivingBase.setFire(5);
@@ -104,7 +92,6 @@ public class ItemElementalSword extends ItemSword implements IItemRequiresMRU /*
     	}
     	if(attrib.contains("Water"))
     	{
-    		damage += 3;
     		if((ECUtils.tryToDecreaseMRUInStorage((EntityPlayer) par3EntityLivingBase, -50) || this.setMRU(par1ItemStack, -50)))
     		{
 	    		par2EntityLivingBase.addPotionEffect(new PotionEffect(Potion.weakness.id,40,0));
@@ -113,7 +100,6 @@ public class ItemElementalSword extends ItemSword implements IItemRequiresMRU /*
     	}
     	if(attrib.contains("Earth"))
     	{
-    		damage += 8;
     		if((ECUtils.tryToDecreaseMRUInStorage((EntityPlayer) par3EntityLivingBase, -50) || this.setMRU(par1ItemStack, -50)))
     		{
     			par2EntityLivingBase.addPotionEffect(new PotionEffect(Potion.blindness.id,10,0));
@@ -121,20 +107,19 @@ public class ItemElementalSword extends ItemSword implements IItemRequiresMRU /*
     	}
     	if(attrib.contains("Air"))
     	{
-    		damage += 8;
     		if((ECUtils.tryToDecreaseMRUInStorage((EntityPlayer) par3EntityLivingBase, -50) || this.setMRU(par1ItemStack, -50)))
     		{
     			par3EntityLivingBase.addPotionEffect(new PotionEffect(Potion.moveSpeed.id,50,0));
     			par3EntityLivingBase.addPotionEffect(new PotionEffect(Potion.damageBoost.id,50,0));
     		}
     	}
-    	List embers = getEmberEffects(par1ItemStack);
+    	List<String> embers = getEmberEffects(par1ItemStack);
     	if((ECUtils.tryToDecreaseMRUInStorage((EntityPlayer) par3EntityLivingBase, -50) || this.setMRU(par1ItemStack, -50)))
     	{
 	    	for(int i = 0; i < 11; ++i)
 	    	{
-	    		if(embers.contains("Damage +"+i))
-	    			damage += i;
+	    		if(embers.contains("Damage +"+i)) {
+				}
 	    	}
 	    	if(embers.contains("Slowness"))
 	    	{
@@ -212,6 +197,7 @@ public class ItemElementalSword extends ItemSword implements IItemRequiresMRU /*
 		ECUtils.initMRUTag(itemStack, maxMRU);
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
     public Multimap getAttributeModifiers(ItemStack stack)
     {
         Multimap multimap = HashMultimap.create();
@@ -233,7 +219,7 @@ public class ItemElementalSword extends ItemSword implements IItemRequiresMRU /*
     	{
     		damage += 8;
     	}
-    	List embers = getEmberEffects(stack);
+    	List<String> embers = getEmberEffects(stack);
 	    for(int i = 0; i < 11; ++i)
 	    {
 	    	if(embers.contains("Damage +"+i))
@@ -243,6 +229,7 @@ public class ItemElementalSword extends ItemSword implements IItemRequiresMRU /*
         return multimap;
     }
     
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
     {
     	super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
@@ -256,6 +243,7 @@ public class ItemElementalSword extends ItemSword implements IItemRequiresMRU /*
     	par3List.add(ECUtils.getStackTag(par1ItemStack).getInteger("mru") + "/" + ECUtils.getStackTag(par1ItemStack).getInteger("maxMRU") + " MRU");
     }
     
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
     {
@@ -345,7 +333,7 @@ public class ItemElementalSword extends ItemSword implements IItemRequiresMRU /*
     				tag.setString("primary", "Air");
     			}else
     			tag.setString("primary", "Combined");
-    			List<String> secondaryAttribs = new ArrayList();
+    			List<String> secondaryAttribs = new ArrayList<String>();
     			if(fire != 0)
     				secondaryAttribs.add("Fire");
       			if(water != 0)
@@ -432,9 +420,9 @@ public class ItemElementalSword extends ItemSword implements IItemRequiresMRU /*
     	super.registerIcons(par1IconRegister);
     }
     
-    public static List getEmberEffects(ItemStack par1ItemStack)
+    public static List<String> getEmberEffects(ItemStack par1ItemStack)
     {
-    	List<String> ret = new ArrayList();
+    	List<String> ret = new ArrayList<String>();
     	String allEmbers = par1ItemStack.getTagCompound().getString("ember_0")+" "+par1ItemStack.getTagCompound().getString("ember_1")+" "+par1ItemStack.getTagCompound().getString("ember_2")+" "+par1ItemStack.getTagCompound().getString("ember_3");
     	allEmbers = allEmbers.toLowerCase();
     	if(allEmbers.contains("acid") && allEmbers.contains("chaos"))
@@ -558,6 +546,7 @@ public class ItemElementalSword extends ItemSword implements IItemRequiresMRU /*
         return 72000;
     }
 
+    @SuppressWarnings({ "unchecked" })
     @Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {

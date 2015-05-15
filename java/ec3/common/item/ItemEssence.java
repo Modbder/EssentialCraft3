@@ -4,8 +4,6 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import ec3.common.world.WorldGenElderMRUCC;
-import ec3.network.proxy.ClientProxy;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,7 +11,6 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
 
 public class ItemEssence extends Item{
 	public static String[] dropNames = new String[]{"Fire","Water","Earth","Air"};
@@ -40,9 +37,10 @@ public class ItemEssence extends Item{
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int i)
     {
-        return this.itemIcons[convertDamageToIntBefore4(i)];
+        return itemIcons[convertDamageToIntBefore4(i)];
     }
     
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List p_150895_3_)
     {
@@ -53,6 +51,7 @@ public class ItemEssence extends Item{
         }
     }
     
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
     {

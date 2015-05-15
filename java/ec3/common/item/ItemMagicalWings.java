@@ -1,31 +1,17 @@
 package ec3.common.item;
 
-import java.util.List;
-
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
 import ec3.common.mod.EssentialCraftCore;
 import ec3.utils.common.ECUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.stats.StatList;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
 
 public class ItemMagicalWings extends ItemStoresMRUInNBT implements IBauble{
 
@@ -43,7 +29,6 @@ public class ItemMagicalWings extends ItemStoresMRUInNBT implements IBauble{
 		if(entity instanceof EntityPlayer)
 		{
 			EntityPlayer e = (EntityPlayer) entity;
-			int dam = s.getItemDamage();
 			{
 				if(e.getCurrentEquippedItem() == s && (ECUtils.tryToDecreaseMRUInStorage(e, -1) || this.setMRU(s, -1)))
 				{

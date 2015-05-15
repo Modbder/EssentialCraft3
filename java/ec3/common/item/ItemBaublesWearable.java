@@ -92,6 +92,7 @@ public class ItemBaublesWearable extends Item implements IBauble{
     	stk.setTagCompound(bTag);
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void addInformation(ItemStack stack, EntityPlayer p_77624_2_, List p_77624_3_, boolean p_77624_4_) 
     {
 		NBTTagCompound bTag = MiscUtils.getStackTag(stack);

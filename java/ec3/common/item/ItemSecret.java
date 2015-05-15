@@ -2,14 +2,10 @@ package ec3.common.item;
 
 import java.util.List;
 
-import DummyCore.Utils.MiscUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ec3.common.mod.EssentialCraftCore;
 import ec3.common.registry.AchievementRegistry;
-import ec3.common.world.WorldGenElderMRUCC;
-import ec3.network.proxy.ClientProxy;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,7 +32,8 @@ public class ItemSecret extends Item{
 		this.setHasSubtypes(true);
 	}
 	
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
     {
     	super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
     	int metadata = par1ItemStack.getItemDamage();
@@ -97,6 +94,7 @@ public class ItemSecret extends Item{
     	}
     }
     
+	@SuppressWarnings("rawtypes")
 	@Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
@@ -151,10 +149,11 @@ public class ItemSecret extends Item{
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int i)
     {
-        return this.itemIcons[i];
+        return itemIcons[i];
     }
     
-    @SideOnly(Side.CLIENT)
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	@SideOnly(Side.CLIENT)
     public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List p_150895_3_)
     {
         for(int i = 0; i < 7; ++i)

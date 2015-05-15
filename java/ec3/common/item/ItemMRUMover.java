@@ -7,7 +7,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ec3.common.entity.EntityMRUPresence;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,8 +14,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.ArrowNockEvent;
 
 public class ItemMRUMover extends Item{
 	public IIcon theIcon;
@@ -37,11 +34,10 @@ public class ItemMRUMover extends Item{
     public void onUsingTick(ItemStack stack, EntityPlayer player, int count)
     {
     	Vec3 mainLookVec = player.getLookVec();
-    	int mDistance = 0;
-		for(int i = 0; i < 20; ++i)
+    	for(int i = 0; i < 20; ++i)
 		{
 			Vec3 additionalVec = mainLookVec.addVector(mainLookVec.xCoord*i, mainLookVec.yCoord*i, mainLookVec.zCoord*i);
-			List entityList = player.worldObj.getEntitiesWithinAABB(EntityMRUPresence.class, AxisAlignedBB.getBoundingBox(player.posX+additionalVec.xCoord-1, player.posY+additionalVec.yCoord-2, player.posZ+additionalVec.zCoord-1, player.posX+additionalVec.xCoord+1, player.posY+additionalVec.yCoord+2, player.posZ+additionalVec.zCoord+1));
+			List<?> entityList = player.worldObj.getEntitiesWithinAABB(EntityMRUPresence.class, AxisAlignedBB.getBoundingBox(player.posX+additionalVec.xCoord-1, player.posY+additionalVec.yCoord-2, player.posZ+additionalVec.zCoord-1, player.posX+additionalVec.xCoord+1, player.posY+additionalVec.yCoord+2, player.posZ+additionalVec.zCoord+1));
 			if(!entityList.isEmpty())
 			{
 				EntityMRUPresence presence = (EntityMRUPresence) entityList.get(player.worldObj.rand.nextInt(entityList.size()));

@@ -5,30 +5,15 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import DummyCore.Utils.DummyDataUtils;
 import DummyCore.Utils.MiscUtils;
-import ec3.api.ITEHasMRU;
-import ec3.api.ITERequiresMRU;
-import ec3.api.ITEStoresMRU;
-import ec3.api.ITETransfersMRU;
-import ec3.common.block.BlocksCore;
 import ec3.common.mod.EssentialCraftCore;
 import ec3.network.PacketNBT;
 import ec3.utils.common.ECUtils;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -60,7 +45,8 @@ public class ItemSoulStone extends Item {
         return par1ItemStack;
     }
     
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
     {
     	if(par1ItemStack.getTagCompound() != null)
     	{
@@ -131,7 +117,8 @@ public class ItemSoulStone extends Item {
     	}
     }
     
-    public void addBloodMagicDescription(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public void addBloodMagicDescription(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
     {
     	if(par1ItemStack.getTagCompound() != null && MiscUtils.getStackTag(par1ItemStack).getBoolean("bloodInfused"))
     	{

@@ -1,7 +1,6 @@
 package ec3.common.item;
 
 import net.minecraft.item.ItemAxe;
-import net.minecraft.item.ItemPickaxe;
 
 public class ItemAxe_Mod extends ItemAxe{
 

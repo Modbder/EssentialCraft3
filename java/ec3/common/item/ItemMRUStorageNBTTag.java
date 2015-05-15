@@ -50,11 +50,13 @@ public class ItemMRUStorageNBTTag extends Item implements IMRUStorage, IItemRequ
 		ECUtils.initMRUTag(itemStack, maxMRU[itemStack.getItemDamage()]);
 	}
 	
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
     {
     	par3List.add(ECUtils.getStackTag(par1ItemStack).getInteger("mru") + "/" + ECUtils.getStackTag(par1ItemStack).getInteger("maxMRU") + " MRU");
     }
     
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
     {
         for (int var4 = 0; var4 < 5; ++var4)

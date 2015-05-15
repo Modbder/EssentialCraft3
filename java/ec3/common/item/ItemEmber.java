@@ -4,15 +4,11 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import ec3.common.world.WorldGenElderMRUCC;
-import ec3.network.proxy.ClientProxy;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
 
 public class ItemEmber extends Item{
 	public static String[] unlocalisedName = new String[]{"acidic","chaos","common","corrupted","crystal","divine","magical","uncommon"};
@@ -39,9 +35,10 @@ public class ItemEmber extends Item{
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int i)
     {
-        return this.itemIcons[i];
+        return itemIcons[i];
     }
     
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List p_150895_3_)
     {

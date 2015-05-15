@@ -37,6 +37,7 @@ public class ItemFilter extends Item{
     	itemIcons[1] = par1IconRegister.registerIcon("essentialcraft:itemFilterAdvanced");
     }
     
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
     {
         for (int var4 = 0; var4 < 2; ++var4)
@@ -46,6 +47,7 @@ public class ItemFilter extends Item{
         }
     }
     
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
     {
     	if(par1ItemStack.getItemDamage() == 1)

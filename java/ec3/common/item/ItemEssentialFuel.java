@@ -2,23 +2,12 @@ package ec3.common.item;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.stats.StatList;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
 
 public class ItemEssentialFuel extends Item {
 
@@ -46,6 +35,7 @@ public class ItemEssentialFuel extends Item {
     	}
     }
     
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
     {
         for (int var4 = 0; var4 < 4; ++var4)

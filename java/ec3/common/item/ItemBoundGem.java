@@ -6,25 +6,17 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import DummyCore.Utils.MiscUtils;
 import ec3.api.IBoundGemClickable;
-import ec3.api.ITEHasMRU;
 import ec3.api.ITERequiresMRU;
 import ec3.api.ITEStoresMRU;
 import ec3.api.ITETransfersMRU;
 import ec3.common.block.BlocksCore;
-import ec3.utils.common.ECUtils;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
@@ -49,7 +41,6 @@ public class ItemBoundGem extends Item {
     	{
     		if(t instanceof ITERequiresMRU || t instanceof ITETransfersMRU || t instanceof ITEStoresMRU && !world.isRemote)
     		{
-    			ITEHasMRU t_1 = (ITEHasMRU) t;
     			createTag(stack);
     			MiscUtils.getStackTag(stack).setIntArray("pos", new int[]{x,y,z});
     			MiscUtils.getStackTag(stack).setInteger("dim", player.dimension);
@@ -81,6 +72,7 @@ public class ItemBoundGem extends Item {
         return par1ItemStack;
     }
     
+	 @SuppressWarnings({ "unchecked", "rawtypes" })
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
     {
     	if(par1ItemStack.getTagCompound() != null)

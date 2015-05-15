@@ -3,22 +3,16 @@ package ec3.common.item;
 import java.util.ArrayList;
 import java.util.List;
 
-import scala.actors.threadpool.Arrays;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import ec3.common.world.WorldGenElderMRUCC;
-import ec3.network.proxy.ClientProxy;
 import ec3.utils.common.EnumOreColoring;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemMagicalAlloy extends Item{
@@ -37,6 +31,7 @@ public class ItemMagicalAlloy extends Item{
         layerIcon[1] = p_94581_1_.registerIcon("essentialcraft:modular/alloy_layer_1");
     }
     
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List p_150895_3_)
     {
@@ -46,6 +41,7 @@ public class ItemMagicalAlloy extends Item{
         }
     }
     
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List p_77624_3_, boolean p_77624_4_)
     {

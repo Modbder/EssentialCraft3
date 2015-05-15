@@ -5,22 +5,16 @@ import java.util.List;
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import ec3.utils.common.ECUtils;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.stats.StatList;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
 
 public class ItemCharm extends ItemStoresMRUInNBT implements IBauble{
 
@@ -92,7 +86,7 @@ public class ItemCharm extends ItemStoresMRUInNBT implements IBauble{
     		this.icon[i] = par1IconRegister.registerIcon("essentialcraft:tools/charm"+name[i]);
     	}
     }
-    
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
     {
         for (int var4 = 0; var4 < 10; ++var4)

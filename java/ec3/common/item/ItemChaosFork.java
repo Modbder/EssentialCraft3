@@ -2,7 +2,6 @@ package ec3.common.item;
 
 import java.util.List;
 
-import DummyCore.Utils.DummyDataUtils;
 import DummyCore.Utils.MiscUtils;
 
 import com.google.common.collect.HashMultimap;
@@ -11,28 +10,16 @@ import com.google.common.collect.Multimap;
 import ec3.api.IItemRequiresMRU;
 import ec3.utils.common.ECUtils;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityAgeable;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
-import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
@@ -75,12 +62,14 @@ public class ItemChaosFork extends ItemSword implements IItemRequiresMRU {
     	return true;
     }
     
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
     {
     	super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
     	par3List.add(ECUtils.getStackTag(par1ItemStack).getInteger("mru") + "/" + ECUtils.getStackTag(par1ItemStack).getInteger("maxMRU") + " MRU");
     }
 	
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
     {
@@ -128,8 +117,7 @@ public class ItemChaosFork extends ItemSword implements IItemRequiresMRU {
 				EntityPlayer player = (EntityPlayer) p_77644_3_;
 			    if((ECUtils.tryToDecreaseMRUInStorage((EntityPlayer) p_77644_3_, -250) || this.setMRU(p_77644_1_, -250)))
 			    {
-			    	String username = ((EntityPlayer) p_77644_3_).getDisplayName();
-					int att = ECUtils.getData(player).getMatrixTypeID();
+			    	int att = ECUtils.getData(player).getMatrixTypeID();
 					if(att == 1)
 					{
 						PotionEffect eff = p_77644_2_.getActivePotionEffect(Potion.digSlowdown);
@@ -160,6 +148,7 @@ public class ItemChaosFork extends ItemSword implements IItemRequiresMRU {
         return false;
     }
     
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public Multimap getItemAttributeModifiers()
     {
         Multimap multimap = HashMultimap.create();

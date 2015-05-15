@@ -5,33 +5,19 @@ import java.util.List;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
-import DummyCore.Utils.DummyDataUtils;
-import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
 import ec3.api.IItemRequiresMRU;
 import ec3.utils.common.ECUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.stats.StatList;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
 
 public class ItemHolyMace extends ItemSword implements IItemRequiresMRU/*ItemStoresMRUInNBT*/ {
 
@@ -72,12 +58,14 @@ public class ItemHolyMace extends ItemSword implements IItemRequiresMRU/*ItemSto
     	return true;
     }
     
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
     {
     	super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
     	par3List.add(ECUtils.getStackTag(par1ItemStack).getInteger("mru") + "/" + ECUtils.getStackTag(par1ItemStack).getInteger("maxMRU") + " MRU");
     }
 	
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
     {
@@ -118,6 +106,7 @@ public class ItemHolyMace extends ItemSword implements IItemRequiresMRU/*ItemSto
 		ECUtils.initMRUTag(s, maxMRU);
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
     public Multimap getItemAttributeModifiers()
     {
         Multimap multimap = HashMultimap.create();
