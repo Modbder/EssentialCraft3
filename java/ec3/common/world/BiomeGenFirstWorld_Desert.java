@@ -2,13 +2,9 @@ package ec3.common.world;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.gen.feature.WorldGenDesertWells;
 
 public class BiomeGenFirstWorld_Desert extends BiomeGenBase
 {

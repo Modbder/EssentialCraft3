@@ -1,25 +1,16 @@
 package ec3.common.world;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.enchantment.EnchantmentProtection;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityTNTPrimed;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
@@ -27,11 +18,8 @@ import net.minecraft.world.World;
 public class ECExplosion extends Explosion
 {
     private int field_77289_h = 16;
-    private Random explosionRNG = new Random();
     private World worldObj;
-    private Map field_77288_k = new HashMap();
-    private static final String __OBFID = "CL_00000134";
-
+    private Map<Object, Object> field_77288_k = new HashMap<Object, Object>();
     public ECExplosion(World p_i1948_1_, Entity p_i1948_2_, double p_i1948_3_, double p_i1948_5_, double p_i1948_7_, float p_i1948_9_)
     {
     	super(p_i1948_1_, p_i1948_2_, p_i1948_3_, p_i1948_5_, p_i1948_7_, p_i1948_9_);
@@ -41,10 +29,11 @@ public class ECExplosion extends Explosion
     /**
      * Does the first part of the explosion (destroy blocks)
      */
-    public void doExplosionA()
+    @SuppressWarnings("unchecked")
+	public void doExplosionA()
     {
         float f = this.explosionSize;
-        HashSet hashset = new HashSet();
+        HashSet<ChunkPosition> hashset = new HashSet<ChunkPosition>();
         int i;
         int j;
         int k;
@@ -104,19 +93,16 @@ public class ECExplosion extends Explosion
         i = MathHelper.floor_double(this.explosionX - (double)this.explosionSize - 1.0D);
         j = MathHelper.floor_double(this.explosionX + (double)this.explosionSize + 1.0D);
         k = MathHelper.floor_double(this.explosionY - (double)this.explosionSize - 1.0D);
-        int i2 = MathHelper.floor_double(this.explosionY + (double)this.explosionSize + 1.0D);
-        int l = MathHelper.floor_double(this.explosionZ - (double)this.explosionSize - 1.0D);
-        int j2 = MathHelper.floor_double(this.explosionZ + (double)this.explosionSize + 1.0D);
-        Vec3 vec3 = Vec3.createVectorHelper(this.explosionX, this.explosionY, this.explosionZ);
         this.explosionSize = f;
     }
 
     /**
      * Does the second part of the explosion (sound, particles, drop spawn)
      */
-    public void doExplosionB(boolean p_77279_1_)
+    @SuppressWarnings("unchecked")
+	public void doExplosionB(boolean p_77279_1_)
     {
-        Iterator iterator;
+        Iterator<ChunkPosition> iterator;
         ChunkPosition chunkposition;
         int i;
         int j;
@@ -148,7 +134,7 @@ public class ECExplosion extends Explosion
         }
     }
 
-    public Map func_77277_b()
+    public Map<Object, Object> func_77277_b()
     {
         return this.field_77288_k;
     }
