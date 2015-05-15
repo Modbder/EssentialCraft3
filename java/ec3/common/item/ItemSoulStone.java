@@ -10,6 +10,7 @@ import ec3.common.mod.EssentialCraftCore;
 import ec3.network.PacketNBT;
 import ec3.utils.common.ECUtils;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -26,6 +27,15 @@ public class ItemSoulStone extends Item {
 	public ItemSoulStone() {
 		super();
 		this.maxStackSize = 1;
+	}
+	
+	public void onUpdate(ItemStack stk, World w, Entity e, int slotnum, boolean held) 
+	{
+		if(stk.getTagCompound() != null && stk.getItemDamage() == 0 && stk.getTagCompound().hasKey("bloodInfused"))
+		{
+			stk.getTagCompound().removeTag("bloodInfused");
+			stk.setItemDamage(1);
+		}
 	}
 
     
@@ -120,7 +130,7 @@ public class ItemSoulStone extends Item {
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	public void addBloodMagicDescription(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
     {
-    	if(par1ItemStack.getTagCompound() != null && MiscUtils.getStackTag(par1ItemStack).getBoolean("bloodInfused"))
+    	if(par1ItemStack.getItemDamage() == 1 /*par1ItemStack.getTagCompound() != null && MiscUtils.getStackTag(par1ItemStack).getBoolean("bloodInfused")*/)
     	{
     		String username = par1ItemStack.getTagCompound().getString("playerName");
 			
@@ -143,7 +153,7 @@ public class ItemSoulStone extends Item {
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack p_82790_1_, int p_82790_2_)
     {
-    	if(p_82790_1_.getTagCompound() != null && MiscUtils.getStackTag(p_82790_1_).getBoolean("bloodInfused"))
+    	if(p_82790_1_.getItemDamage() == 1 /*p_82790_1_.getTagCompound() != null && MiscUtils.getStackTag(p_82790_1_).getBoolean("bloodInfused")*/)
     	{
     		return 0xff0000;
     	}
