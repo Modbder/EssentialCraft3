@@ -1,25 +1,12 @@
 package ec3.client.regular;
 
-import java.util.Random;
-
-import org.lwjgl.opengl.GL11;
-
-import DummyCore.Utils.MathUtils;
-import DummyCore.Utils.MiscUtils;
-import ec3.api.IItemAllowsSeeingMRUCU;
-import ec3.common.entity.EntityMRUPresence;
-import ec3.common.mod.EssentialCraftCore;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 public class EntityCSpellFX extends EntityFX{
 
-	private float scale;
-    private double mruPosX;
+	private double mruPosX;
     private double mruPosY;
     private double mruPosZ;
 	public EntityCSpellFX(World w, double x, double y,double z, double i, double j,double k) 
@@ -31,8 +18,7 @@ public class EntityCSpellFX extends EntityFX{
         this.mruPosX = this.posX = x;
         this.mruPosY = this.posY = y;
         this.mruPosZ = this.posZ = z;
-        float f = this.rand.nextFloat() * 0.6F + 0.4F;
-        this.scale = this.particleScale = 1F;
+        this.particleScale = 1F;
         this.particleRed = 0;
         this.particleGreen = 0F;
         this.particleBlue = 0.0F;
@@ -43,7 +29,7 @@ public class EntityCSpellFX extends EntityFX{
 
 	public void renderParticle(Tessellator var3, float par2, float par3, float par4, float par5, float par6, float par7)
     {
-	    this.scale = this.particleScale = 1F;
+	    this.particleScale = 1F;
         this.particleRed = 0;
         this.particleGreen = 0F;
         this.particleBlue = 0.0F;
@@ -51,7 +37,7 @@ public class EntityCSpellFX extends EntityFX{
         this.particleRed = 1;
         this.particleGreen = 1F;
         this.particleBlue = 1F;
-        this.scale = this.particleScale = 0.4F;
+        this.particleScale = 0.4F;
     	super.renderParticle(var3, par2, par3, par4, par5, par6, par7);
     }
 

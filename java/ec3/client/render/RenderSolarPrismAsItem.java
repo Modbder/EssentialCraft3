@@ -2,16 +2,9 @@ package ec3.client.render;
 
 import org.lwjgl.opengl.GL11;
 
-import DummyCore.Utils.MathUtils;
-import DummyCore.Utils.MiscUtils;
-import ec3.client.model.ModelCrystal;
 import ec3.client.model.ModelSolarPrism;
-import ec3.common.item.ItemBlockElementalCrystal;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
 

@@ -1,17 +1,9 @@
 package ec3.client.gui.element;
 
-import org.lwjgl.opengl.GL11;
-
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
-import ec3.api.ITEHasMRU;
-import ec3.common.item.ItemBoundGem;
-import ec3.common.mod.EssentialCraftCore;
 import ec3.common.tile.TileMagicianTable;
-import net.minecraft.client.Minecraft;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiProgressBar_MagicianTable extends GuiTextField{

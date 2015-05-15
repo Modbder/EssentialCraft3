@@ -4,9 +4,7 @@ import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 
-import ec3.common.entity.EntityMRUPresence;
 import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.World;
 

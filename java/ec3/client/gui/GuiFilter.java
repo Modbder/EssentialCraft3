@@ -14,7 +14,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
 public class GuiFilter extends GuiContainer{
@@ -26,6 +25,7 @@ public class GuiFilter extends GuiContainer{
 		filter = inv;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void initGui() 
 	{
 	    int k = (this.width - this.xSize) / 2;
@@ -144,7 +144,8 @@ public class GuiFilter extends GuiContainer{
 	     }
     }
     
-    protected void drawHoveringText(List p_146283_1_, int p_146283_2_, int p_146283_3_, FontRenderer font)
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	protected void drawHoveringText(List p_146283_1_, int p_146283_2_, int p_146283_3_, FontRenderer font)
     {
     	GL11.glDisable(GL11.GL_LIGHTING);
         if (!p_146283_1_.isEmpty())
@@ -154,7 +155,7 @@ public class GuiFilter extends GuiContainer{
             GL11.glDisable(GL11.GL_LIGHTING);
             GL11.glDisable(GL11.GL_DEPTH_TEST);
             int k = 0;
-            Iterator iterator = p_146283_1_.iterator();
+            Iterator<String> iterator = p_146283_1_.iterator();
 
             while (iterator.hasNext())
             {

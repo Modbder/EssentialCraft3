@@ -2,8 +2,6 @@ package ec3.client.gui;
 
 import DummyCore.Client.GuiCommon;
 import ec3.api.ITEHasMRU;
-import ec3.client.gui.element.GuiBalanceState;
-import ec3.client.gui.element.GuiBoundGemState;
 import ec3.client.gui.element.GuiMRUState;
 import ec3.client.gui.element.GuiMRUStorage;
 import net.minecraft.inventory.Container;

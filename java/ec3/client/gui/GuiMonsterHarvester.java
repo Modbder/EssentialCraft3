@@ -6,7 +6,6 @@ import ec3.client.gui.element.GuiBalanceState;
 import ec3.client.gui.element.GuiBoundGemState;
 import ec3.client.gui.element.GuiMRUState;
 import ec3.client.gui.element.GuiMRUStorage;
-import ec3.client.gui.element.GuiPotionState;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
 

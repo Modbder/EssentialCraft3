@@ -1,16 +1,10 @@
 package ec3.client.gui.element;
 
-import DummyCore.Utils.MathUtils;
-import DummyCore.Utils.MiscUtils;
-import ec3.api.ITEHasMRU;
-import ec3.common.item.ItemBoundGem;
-import ec3.common.mod.EssentialCraftCore;
 import ec3.common.tile.TileMagicalEnchanter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiEnchantmentState extends GuiTextField{

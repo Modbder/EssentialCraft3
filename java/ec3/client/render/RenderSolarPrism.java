@@ -1,41 +1,26 @@
 package ec3.client.render;
 
-import DummyCore.Utils.MathUtils;
-import DummyCore.Utils.MiscUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelEnderCrystal;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityEnderCrystal;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import ec3.api.ITEHasMRU;
-import ec3.client.model.ModelFloatingCube;
 import ec3.client.model.ModelSolarPrism;
-import ec3.common.item.ItemBoundGem;
-import ec3.common.tile.TileRayTower;
-import ec3.utils.common.ECUtils;
 
 @SideOnly(Side.CLIENT)
 public class RenderSolarPrism extends TileEntitySpecialRenderer
 {
     public static final ResourceLocation textures = new ResourceLocation("essentialcraft:textures/special/models/solarPrism.png");
-    public static ModelSolarPrism field_76995_b;
+    public static ModelSolarPrism model;
 
     public RenderSolarPrism()
     {
-        this.field_76995_b = new ModelSolarPrism();
+    	model = new ModelSolarPrism();
     }
 
     /**
@@ -57,7 +42,7 @@ public class RenderSolarPrism extends TileEntitySpecialRenderer
         GL11.glColor4f(1, 1, 1, 1F);
         GL11.glEnable(GL11.GL_BLEND);
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-        this.field_76995_b.render(0.0625F);
+        model.render(0.0625F);
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glPopMatrix();
         RenderHelper.enableStandardItemLighting();

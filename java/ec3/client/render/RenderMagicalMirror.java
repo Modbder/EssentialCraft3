@@ -1,20 +1,11 @@
 package ec3.client.render;
 
-import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelEnderCrystal;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityEnderCrystal;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
@@ -24,12 +15,7 @@ import net.minecraftforge.client.model.IModelCustom;
 
 import org.lwjgl.opengl.GL11;
 
-import ec3.api.ITEHasMRU;
-import ec3.client.model.ModelFloatingCube;
-import ec3.client.model.ModelSolarPrism;
-import ec3.common.item.ItemBoundGem;
 import ec3.common.tile.TileMagicalMirror;
-import ec3.common.tile.TileRayTower;
 import ec3.utils.common.ECUtils;
 
 @SideOnly(Side.CLIENT)
@@ -78,7 +64,7 @@ public class RenderMagicalMirror extends TileEntitySpecialRenderer
 
         
         this.bindTexture(textures);
-        this.model.renderPart("pCube2");
+        model.renderPart("pCube2");
         this.bindTexture(glass);
         if(tile.pulsing)
         {
@@ -93,9 +79,9 @@ public class RenderMagicalMirror extends TileEntitySpecialRenderer
         	 }
         	 GL11.glColor3f(1, colorIndex, 1);
         }
-        this.model.renderPart("pPlane1");
+        model.renderPart("pPlane1");
         GL11.glRotatef(180, 0, 1, 0);
-        this.model.renderPart("pPlane1");
+        model.renderPart("pPlane1");
         GL11.glColor3f(1, 1, 1);
         GL11.glPopMatrix();
         ECUtils.renderMRUBeam(p_76986_1_, 0, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);

@@ -2,10 +2,8 @@ package ec3.client.gui;
 
 import DummyCore.Utils.MathUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.util.ResourceLocation;
 
 public class GuiButtonNoSound extends GuiButton{
 

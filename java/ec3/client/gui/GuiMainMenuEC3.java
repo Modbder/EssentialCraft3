@@ -45,15 +45,12 @@ public class GuiMainMenuEC3 extends GuiMainMenu implements IMainMenu{
 	 private String splashText;
 	private static final Random rand = new Random(); private static final ResourceLocation splashTexts = new ResourceLocation("texts/splashes.txt");
     private int field_92024_r;
-    private int field_92023_s;
     private int field_92022_t;
     private int field_92021_u;
     private int field_92020_v;
     private int field_92019_w; 
     private String field_92025_p;
     private String field_146972_A;
-    private String field_104024_v;
-    
     public static ResourceLocation buttonTextures = new ResourceLocation("essentialcraft","textures/gui/widgets.png");
 	
     public void initGui()
@@ -63,7 +60,7 @@ public class GuiMainMenuEC3 extends GuiMainMenu implements IMainMenu{
 
         try
         {
-            ArrayList arraylist = new ArrayList();
+            ArrayList<String> arraylist = new ArrayList<String>();
             bufferedreader = new BufferedReader(new InputStreamReader(Minecraft.getMinecraft().getResourceManager().getResource(splashTexts).getInputStream(), Charsets.UTF_8));
             String s;
 

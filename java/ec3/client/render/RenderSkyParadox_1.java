@@ -1,10 +1,7 @@
 package ec3.client.render;
 
-import java.util.Random;
-
 import org.lwjgl.opengl.GL11;
 
-import ec3.utils.common.ECUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -18,8 +15,7 @@ import net.minecraftforge.client.IRenderHandler;
 public class RenderSkyParadox_1  extends IRenderHandler{
     private static final ResourceLocation locationMoonPhasesPng = new ResourceLocation("textures/environment/moon_phases.png");
     private static final ResourceLocation locationSunPng = new ResourceLocation("textures/environment/sun.png");
-    private static final ResourceLocation locationCloudsPng = new ResourceLocation("textures/environment/clouds.png");
-	public float rotation = -90F;
+    public float rotation = -90F;
 	public float rotationSpeed = 0.01F;
     @Override
 	public void render(float partialTicks, WorldClient world, Minecraft mc) {

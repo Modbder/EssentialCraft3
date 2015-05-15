@@ -10,24 +10,14 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.GuiScrollingList;
 import DummyCore.Client.GuiCommon;
 import DummyCore.Client.GuiElement;
-import DummyCore.Client.GuiMenuList;
-import DummyCore.Client.GuiSlotMenuList;
-import DummyCore.Client.MainMenuRegistry;
 import DummyCore.Utils.MiscUtils;
 import DummyCore.Utils.UnformedItemStack;
 import ec3.api.ITEHasMRU;
 import ec3.api.MagicianTableRecipe;
 import ec3.api.RadiatingChamberRecipe;
 import ec3.api.ShapedAssemblerRecipe;
-import ec3.client.gui.element.GuiBalanceState;
-import ec3.client.gui.element.GuiBoundGemState;
-import ec3.client.gui.element.GuiHeightState;
-import ec3.client.gui.element.GuiMRUGenerated;
 import ec3.client.gui.element.GuiMRUState;
 import ec3.client.gui.element.GuiMRUStorage;
-import ec3.client.gui.element.GuiMoonState;
-import ec3.common.tile.TileAMINEjector;
-import ec3.common.tile.TileAMINInjector;
 import ec3.common.tile.TileMagicalAssembler;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -36,7 +26,6 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -63,7 +52,8 @@ public class GuiMagicalAssembler extends GuiCommon{
 		this.elementList.add(new GuiMRUState(25, 58, (ITEHasMRU) tile, 0));
 	}
 	
-    public void initGui()
+    @SuppressWarnings("unchecked")
+	public void initGui()
     {
         super.initGui();
 	    int k = (this.width - this.xSize) / 2;
@@ -132,7 +122,7 @@ public class GuiMagicalAssembler extends GuiCommon{
 	    		}
 	    		RenderHelper.disableStandardItemLighting();
 	    		RenderHelper.enableGUIStandardItemLighting();
-	    		this.itemRender.renderItemAndEffectIntoGUI(fontRendererObj, Minecraft.getMinecraft().renderEngine, assembler.currentCraft, k+30, l+1);
+	    		itemRender.renderItemAndEffectIntoGUI(fontRendererObj, Minecraft.getMinecraft().renderEngine, assembler.currentCraft, k+30, l+1);
 	    		
 	    		
 	    		RenderHelper.enableStandardItemLighting();
@@ -140,12 +130,8 @@ public class GuiMagicalAssembler extends GuiCommon{
 	    		GL11.glDisable(GL11.GL_LIGHTING);
 	    		this.fontRendererObj.drawStringWithShadow(assembler.currentCraft.getDisplayName(), k+48, l+3, 0x00ff00);
 	    		GL11.glEnable(GL11.GL_LIGHTING);
-	    		int listInt = 2;
-        	    Hashtable<String, Integer> isLst = new Hashtable();
-        	    List<ItemStack> items = new ArrayList();
-        	    
-        	    List<UnformedItemStack> hasItems = new ArrayList(assembler.requiredItemsToCraft.size());
-        	    List<UnformedItemStack> hasItemsCopy = new ArrayList(assembler.requiredItemsToCraft.size());
+	    		List<UnformedItemStack> hasItems = new ArrayList<UnformedItemStack>(assembler.requiredItemsToCraft.size());
+        	    List<UnformedItemStack> hasItemsCopy = new ArrayList<UnformedItemStack>(assembler.requiredItemsToCraft.size());
         	    hasItemsCopy.addAll(assembler.requiredItemsToCraft);
 				for(int i = 0; i < assembler.requiredItemsToCraft.size(); ++i)
 				{
@@ -187,14 +173,14 @@ public class GuiMagicalAssembler extends GuiCommon{
 		        	    		Random rnd = new Random(this.genericTile.getWorldObj().getTotalWorldTime()/20%20);
 			        	    	if(drawed.getItemDamage() == -1 || drawed.getItemDamage() == OreDictionary.WILDCARD_VALUE)
 			        	    	{
-			        	    		List<ItemStack> sub = new ArrayList();
+			        	    		List<ItemStack> sub = new ArrayList<ItemStack>();
 			        	    		drawed.getItem().getSubItems(drawed.getItem(), drawed.getItem().getCreativeTab(), sub);
 			        	    		drawed = sub.get(rnd.nextInt(sub.size()));
 			        	    	}
 			        	    	int x = k + 32 + i%5*20;
 			        	    	int y = l + 16 + i/5*20;
 
-			        	    	this.itemRender.renderItemAndEffectIntoGUI(fontRendererObj, Minecraft.getMinecraft().renderEngine, drawed, x, y);
+			        	    	itemRender.renderItemAndEffectIntoGUI(fontRendererObj, Minecraft.getMinecraft().renderEngine, drawed, x, y);
 			        	    	f:for(int n = 0; n < hasItems.size(); ++n)
 			        	    	{
 			        	    		if(hasItems.get(n) != null)
@@ -302,7 +288,8 @@ public class GuiMagicalAssembler extends GuiCommon{
             return (this.getSize()) * 28 + 1;
         }
         
-        @Override
+        @SuppressWarnings("unchecked")
+		@Override
         protected void drawSlot(int listIndex, int var2, int var3, int var4, Tessellator var5)
         {
         	TileMagicalAssembler assembler = (TileMagicalAssembler) this.parent.genericTile;
@@ -332,7 +319,7 @@ public class GuiMagicalAssembler extends GuiCommon{
 	       			this.parent.drawGradientRect(k+12+defaultX, l+16+defaultY, k+12+18+defaultX, l+16+1+defaultY, 0xff660066, 0xff990099);
 	       			if(rendered.getItem() != null)
 	       			{
-	       				this.parent.itemRender.renderItemAndEffectIntoGUI(fontRendererObj, Minecraft.getMinecraft().renderEngine, rendered, k+28, var3);
+	       				itemRender.renderItemAndEffectIntoGUI(fontRendererObj, Minecraft.getMinecraft().renderEngine, rendered, k+28, var3);
 	       			}
         		}
         		
@@ -350,8 +337,8 @@ public class GuiMagicalAssembler extends GuiCommon{
     	        	    
     	        	    Random rnd = new Random(this.parent.genericTile.getWorldObj().getTotalWorldTime()/20%20);
     	        	    String recipeString = "";
-    	        	    Hashtable<String, Integer> isLst = new Hashtable();
-    	        	    List<ItemStack> items = new ArrayList();
+    	        	    Hashtable<String, Integer> isLst = new Hashtable<String, Integer>();
+    	        	    List<ItemStack> items = new ArrayList<ItemStack>();
     	        	    for(int i = 0; i < recipe.getRecipeSize(); ++i)
     	        	    {
     	        	    	if(recipe instanceof ShapedRecipes)
@@ -562,7 +549,7 @@ public class GuiMagicalAssembler extends GuiCommon{
     	        	    	ItemStack drawed = items.get(i).copy();
     	        	    	if(drawed.getItemDamage() == -1 || drawed.getItemDamage() == OreDictionary.WILDCARD_VALUE)
     	        	    	{
-    	        	    		List<ItemStack> sub = new ArrayList();
+    	        	    		List<ItemStack> sub = new ArrayList<ItemStack>();
     	        	    		drawed.getItem().getSubItems(drawed.getItem(), drawed.getItem().getCreativeTab(), sub);
     	        	    		drawed = sub.get(rnd.nextInt(sub.size()));
     	        	    	}
@@ -573,7 +560,7 @@ public class GuiMagicalAssembler extends GuiCommon{
     	        	    			amount = isLst.get(drawed.toString());
 	    	        	    	int x = mouseX + 4 + i%5*20;
 	    	        	    	int y = mouseY + 12 + i/5*20;
-	    	        	    	this.parent.itemRender.renderItemAndEffectIntoGUI(fontRendererObj, Minecraft.getMinecraft().renderEngine, drawed, x, y);
+	    	        	    	itemRender.renderItemAndEffectIntoGUI(fontRendererObj, Minecraft.getMinecraft().renderEngine, drawed, x, y);
 	    	        	    	this.parent.fontRendererObj.drawStringWithShadow("x"+amount+"", x+10, y+10, 0x0000ff);
     	        	    	}
     	        	    	drawed = null;

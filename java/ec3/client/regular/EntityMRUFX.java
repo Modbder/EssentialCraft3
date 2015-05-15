@@ -1,26 +1,17 @@
 package ec3.client.regular;
 
-import java.util.Random;
-
 import org.lwjgl.opengl.GL11;
 
-import DummyCore.Utils.MiscUtils;
-import ec3.api.IItemAllowsSeeingMRUCU;
-import ec3.common.entity.EntityMRUPresence;
-import ec3.common.mod.EssentialCraftCore;
 import ec3.utils.common.ECUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class EntityMRUFX extends EntityFX{
 
-	private float scale;
-    private double mruPosX;
+	private double mruPosX;
     private double mruPosY;
     private double mruPosZ;
     public float tickPos;
@@ -35,8 +26,8 @@ public class EntityMRUFX extends EntityFX{
         this.mruPosX = this.posX = x;
         this.mruPosY = this.posY = y;
         this.mruPosZ = this.posZ = z;
-        float f = this.rand.nextFloat() * 0.6F + 0.4F;
-        this.scale = this.particleScale = 0.5F;
+        this.rand.nextFloat();
+        this.particleScale = 0.5F;
         this.particleRed = 0;
         this.particleGreen = 0F;
         this.particleRed = 0.8F;

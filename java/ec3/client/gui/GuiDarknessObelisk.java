@@ -4,12 +4,8 @@ import DummyCore.Client.GuiCommon;
 import ec3.api.ITEHasMRU;
 import ec3.client.gui.element.GuiBalanceState;
 import ec3.client.gui.element.GuiBoundGemState;
-import ec3.client.gui.element.GuiCrystalState;
-import ec3.client.gui.element.GuiEnchantmentState;
 import ec3.client.gui.element.GuiMRUState;
 import ec3.client.gui.element.GuiMRUStorage;
-import ec3.client.gui.element.GuiPotionState;
-import ec3.client.gui.element.GuiRepairState;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
 

@@ -19,9 +19,6 @@ public class EntityColoredFlameFX extends EntityFX{
         this.motionX = this.motionX * 0.009999999776482582D + mX;
         this.motionY = this.motionY * 0.009999999776482582D + mY;
         this.motionZ = this.motionZ * 0.009999999776482582D + mZ;
-        double d6 = x + (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.05F);
-        d6 = y + (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.05F);
-        d6 = z + (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.05F);
         this.flameScale = this.particleScale;
         this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
         this.particleMaxAge = (int)(8.0D / (Math.random() * 0.8D + 0.2D)) + 4;
@@ -35,9 +32,6 @@ public class EntityColoredFlameFX extends EntityFX{
         this.motionX = this.motionX * 0.009999999776482582D + mX;
         this.motionY = this.motionY * 0.009999999776482582D + mY;
         this.motionZ = this.motionZ * 0.009999999776482582D + mZ;
-        double d6 = x + (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.05F);
-        d6 = y + (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.05F);
-        d6 = z + (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.05F);
         this.flameScale = (float) scale;
         this.particleRed = (float) r;
         this.particleGreen = (float) g;

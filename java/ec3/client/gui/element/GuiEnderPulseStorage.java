@@ -1,15 +1,7 @@
 package ec3.client.gui.element;
 
-import DummyCore.Utils.MathUtils;
-import DummyCore.Utils.MiscUtils;
-import ec3.api.ITEHasMRU;
-import ec3.common.item.ItemBoundGem;
-import ec3.common.mod.EssentialCraftCore;
 import ec3.common.tile.TileMithrilineFurnace;
-import net.minecraft.client.Minecraft;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
@@ -36,7 +28,7 @@ public class GuiEnderPulseStorage extends GuiTextField{
 		TileMithrilineFurnace furnace = (TileMithrilineFurnace) tile;
 		
 		float current = furnace.energy;
-		float max = furnace.maxEnergy;
+		float max = TileMithrilineFurnace.maxEnergy;
 		
     	float m = current/max*100;
     	int n = MathHelper.floor_float(m/100*18);

@@ -4,39 +4,22 @@ import java.util.List;
 
 import DummyCore.Utils.Coord3D;
 import DummyCore.Utils.DummyDistance;
-import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelEnderCrystal;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityEnderCrystal;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 
 import org.lwjgl.opengl.GL11;
 
-import ec3.api.ITEHasMRU;
-import ec3.client.model.ModelFloatingCube;
-import ec3.client.model.ModelSolarPrism;
-import ec3.common.item.ItemBoundGem;
-import ec3.common.tile.TileMagicalQuarry;
 import ec3.common.tile.TileMonsterHolder;
-import ec3.common.tile.TileRayTower;
 import ec3.utils.common.ECUtils;
 import ec3.utils.common.PlayerTickHandler;
 
@@ -55,7 +38,8 @@ public class RenderMonsterHolder extends TileEntitySpecialRenderer
      * (Render<T extends Entity) and this method has signature public void func_76986_a(T entity, double d, double d1,
      * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
      */
-    public void doRender(TileEntity p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_)
+    @SuppressWarnings("unchecked")
+	public void doRender(TileEntity p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_)
     {
     	RenderHelper.disableStandardItemLighting();
     	GL11.glPushMatrix(); 

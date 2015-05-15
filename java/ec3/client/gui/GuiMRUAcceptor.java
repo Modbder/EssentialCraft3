@@ -1,7 +1,6 @@
 package ec3.client.gui;
 
 import DummyCore.Client.GuiCommon;
-import ec3.api.ITEHasMRU;
 import ec3.client.gui.element.GuiBoundGemState;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;

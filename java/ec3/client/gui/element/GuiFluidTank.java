@@ -3,8 +3,6 @@ package ec3.client.gui.element;
 import DummyCore.Client.GuiElement;
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
-import ec3.api.ITEHasMRU;
-import ec3.common.mod.EssentialCraftCore;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;

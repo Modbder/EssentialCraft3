@@ -2,24 +2,12 @@ package ec3.client.gui.element;
 
 import org.lwjgl.opengl.GL11;
 
-import DummyCore.Utils.MathUtils;
-import DummyCore.Utils.MiscUtils;
-import ec3.api.ITEHasMRU;
-import ec3.common.item.ItemBoundGem;
-import ec3.common.item.ItemEssence;
-import ec3.common.mod.EssentialCraftCore;
 import ec3.common.tile.TileCrystalController;
 import ec3.common.tile.TileElementalCrystal;
-import ec3.common.tile.TilePotionSpreader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiCrystalState extends GuiTextField{
