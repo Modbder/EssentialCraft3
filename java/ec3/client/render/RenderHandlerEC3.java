@@ -20,6 +20,7 @@ import ec3.api.WindImbueRecipe;
 import ec3.common.block.BlockWindRune;
 import ec3.common.block.BlocksCore;
 import ec3.common.item.ItemGenericArmor;
+import ec3.common.item.ItemMagicalBuilder;
 import ec3.common.mod.EssentialCraftCore;
 import ec3.common.registry.PotionRegistry;
 import ec3.common.tile.TileWindRune;
@@ -33,11 +34,13 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
@@ -47,6 +50,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
@@ -54,6 +58,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent.SetArmorModel;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -73,6 +78,8 @@ public class RenderHandlerEC3 {
 	public static IRenderHandler skyRenderer;
 	
 	public static boolean isMouseInverted;
+	
+	public static double renderPartialTicksCheck = 0;
 	
 	public static Hashtable<IInventory, Hashtable<Integer,List<ForgeDirection>>> slotsTable = new Hashtable<IInventory, Hashtable<Integer, List<ForgeDirection>>>();
 	
@@ -263,6 +270,79 @@ public class RenderHandlerEC3 {
 	
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
+	public void renderFogEvent(EntityViewRenderEvent.RenderFogEvent event)
+	{
+		if(event.renderPartialTicks == renderPartialTicksCheck)
+			return;
+		
+		EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+		ItemStack is = player.getCurrentEquippedItem();
+		if(is != null)
+		{
+			if(is.getItem() instanceof ItemMagicalBuilder)
+			{
+				ItemMagicalBuilder builder = ItemMagicalBuilder.class.cast(is.getItem());
+				if(builder.hasFirstPoint(is) && !builder.hasSecondPoint(is))
+				{
+					Coord3D c = builder.getFirstPoint(is);
+					
+					GL11.glPushMatrix();
+					
+					double d = 2.8D;
+					
+					GL11.glTranslated(c.x-TileEntityRendererDispatcher.staticPlayerX-player.motionX/d, c.y-TileEntityRendererDispatcher.staticPlayerY-((player.motionY+0.07D)/d), c.z-TileEntityRendererDispatcher.staticPlayerZ-player.motionZ/d);
+					
+					RenderGlobal.drawOutlinedBoundingBox(AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, 1), 0xff00ff);
+					
+					GL11.glPopMatrix();
+				}else if(builder.hasFirstPoint(is) && builder.hasSecondPoint(is))
+				{
+					Coord3D c = builder.getFirstPoint(is);
+					Coord3D c1 = builder.getSecondPoint(is);
+					
+					GL11.glPushMatrix();
+					
+					double d = 2.8D;
+					
+					GL11.glTranslated(c.x-TileEntityRendererDispatcher.staticPlayerX-player.motionX/d, c.y-TileEntityRendererDispatcher.staticPlayerY-((player.motionY+0.07D)/d), c.z-TileEntityRendererDispatcher.staticPlayerZ-player.motionZ/d);
+					
+					double minX = 0;
+					double maxX = c1.x-c.x + 1;
+					double minY = 0;
+					double maxY = c1.y-c.y + 1;
+					double minZ = 0;
+					double maxZ = c1.z-c.z + 1;
+					
+					if(c1.x < c.x)
+					{
+						minX = c1.x-c.x;
+						maxX = 1;
+					}
+					
+					if(c1.y < c.y)
+					{
+						minY = c1.y-c.y;
+						maxY = 1;
+					}
+					
+					if(c1.z < c.z)
+					{
+						minZ = c1.z-c.z;
+						maxZ = 1;
+					}
+					
+					RenderGlobal.drawOutlinedBoundingBox(AxisAlignedBB.getBoundingBox(minX,minY,minZ, maxX, maxY, maxZ), 0xff00ff);
+					
+					GL11.glPopMatrix();
+				}
+			}
+		}
+		
+		renderPartialTicksCheck = event.renderPartialTicks;
+	}
+	
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
 	public void clientGUIRenderTickEvent(RenderTickEvent event)
 	{
 		EntityPlayer player = EssentialCraftCore.proxy.getClientPlayer();
@@ -359,6 +439,9 @@ public class RenderHandlerEC3 {
 					{
 						e.printStackTrace();
 					}
+				}else if(currentScreen == null)
+				{
+
 				}
 			}
 		}

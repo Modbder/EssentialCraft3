@@ -382,6 +382,17 @@ public class RecipeRegistry {
 			'P',"plateVoid",
 			'G',ItemsCore.filter
 		}));
+		addRecipe(new ItemStack(ItemsCore.magicalBuilder,1,0),new Object[]{
+			new ItemStack(BlocksCore.rightClicker,1,OreDictionary.WILDCARD_VALUE),"plateVoid","voidCore",
+			new ItemStack(ItemsCore.filter,1,0),new ItemStack(ItemsCore.magicalDigger,1,0),"plateVoid",
+			"plateMagic",new ItemStack(ItemsCore.filter,1,0),new ItemStack(BlocksCore.rightClicker,1,OreDictionary.WILDCARD_VALUE)
+		});
+		GameRegistry.addShapelessRecipe(new ItemStack(ItemsCore.magicalBuilder,1,1), new ItemStack(ItemsCore.magicalBuilder,1,0));
+		GameRegistry.addShapelessRecipe(new ItemStack(ItemsCore.magicalBuilder,1,2), new ItemStack(ItemsCore.magicalBuilder,1,1));
+		GameRegistry.addShapelessRecipe(new ItemStack(ItemsCore.magicalBuilder,1,3), new ItemStack(ItemsCore.magicalBuilder,1,2));
+		GameRegistry.addShapelessRecipe(new ItemStack(ItemsCore.magicalBuilder,1,4), new ItemStack(ItemsCore.magicalBuilder,1,3));
+		GameRegistry.addShapelessRecipe(new ItemStack(ItemsCore.magicalBuilder,1,0), new ItemStack(ItemsCore.magicalBuilder,1,4));
+		
 		addRecipe(new ItemStack(BlocksCore.ecStateChecker,1,0),new Object[]{
 			"frameMagic","screenMagic","frameMagic",
 			"mruCatcher","elementalCore","conversionMatrix",

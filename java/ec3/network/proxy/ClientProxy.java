@@ -113,6 +113,7 @@ import ec3.client.render.RenderMRUPresence;
 import ec3.client.render.RenderMRURay;
 import ec3.client.render.RenderMRUReactor;
 import ec3.client.render.RenderMagicalAssembler;
+import ec3.client.render.RenderMagicalBuilder;
 import ec3.client.render.RenderMagicalDisplay;
 import ec3.client.render.RenderMagicalEnchanter;
 import ec3.client.render.RenderMagicalJukebox;
@@ -493,6 +494,7 @@ ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/
 		MinecraftForgeClient.registerItemRenderer(ItemsCore.rifle, new GunItemRenderHelper());
 		MinecraftForgeClient.registerItemRenderer(ItemsCore.sniper, new GunItemRenderHelper());
 		MinecraftForgeClient.registerItemRenderer(ItemsCore.gatling, new GunItemRenderHelper());
+		MinecraftForgeClient.registerItemRenderer(ItemsCore.magicalBuilder, new RenderMagicalBuilder());
 		for(int i = 0; i < ItemsCore.magicArmorItems.length; ++i)
 		{
 			if(ItemsCore.magicArmorItems[i] != null)

@@ -23,6 +23,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class BlockRightClicker extends BlockContainer{
 
@@ -66,6 +67,9 @@ public class BlockRightClicker extends BlockContainer{
 	
     public IIcon getIcon(int par1, int par2)
     {
+    	if(par2 == OreDictionary.WILDCARD_VALUE)
+    		par2 = 0;
+    	
         return par1 == 3 ? metaRelatedIcons[par2] : blockIcons[0];
     }
 

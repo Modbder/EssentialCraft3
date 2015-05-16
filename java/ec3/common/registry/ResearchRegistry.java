@@ -1658,7 +1658,20 @@ public class ResearchRegistry {
 					 
 					.apendPage(next("ultraFlower").setText(StatCollector.translateToLocal("ec3.page.ultraFlower_0.txt")))
 					.apendPage(next("ultraFlower").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.ultraFlowerBurner), 2)))
-			)		
+			)	
+			.apendDiscovery(
+					new DiscoveryEntry("ec3.disc.magicalBuilder")
+					.setDisplayStack(new ItemStack(ItemsCore.magicalBuilder,1,0))
+					.setReferal(new ItemStack(ItemsCore.magicalBuilder,1,0))
+					.setNew()
+					.apendPage(next("magicalBuilder").setText(StatCollector.translateToLocal("ec3.page.magicalBuilder_0.txt")))
+					.apendPage(next("magicalBuilder").setText(StatCollector.translateToLocal("ec3.page.magicalBuilder_1.txt")))
+					.apendPage(next("magicalBuilder").setText(StatCollector.translateToLocal("ec3.page.magicalBuilder_2.txt")))
+					.apendPage(next("magicalBuilder").setText(StatCollector.translateToLocal("ec3.page.magicalBuilder_3.txt")))
+					.apendPage(next("magicalBuilder").setText(StatCollector.translateToLocal("ec3.page.magicalBuilder_4.txt")))
+					.apendPage(next("magicalBuilder").setText(StatCollector.translateToLocal("ec3.page.magicalBuilder_5.txt")))
+					.apendPage(next("magicalBuilder").setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.magicalBuilder), 2)))
+			)	
 		;
 	}
 	

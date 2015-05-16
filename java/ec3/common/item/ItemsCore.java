@@ -299,6 +299,7 @@ public class ItemsCore {
 		soul = registerItemSimple(soul,ItemCapturedSoul.class,"soul","creatureSoul",0,false,64);
 		soulScriber = registerItemSimple(soulScriber,ItemSoulScriber.class,"soulScriber","tools/soulScriber",32,true,1);
 
+		magicalBuilder = registerItemSimple(magicalBuilder,ItemMagicalBuilder.class,"magicalBuilder","spells/staff_void",0,true,1);
 		
 		MagicianTableUpgrades.addUpgrade(new ItemStack(genericItem,1,1), 1.2F, loc("elementalCore"));
 		MagicianTableUpgrades.addUpgrade(new ItemStack(genericItem,1,0), 5F, loc("combinedMagicalAlloys"));
@@ -447,6 +448,8 @@ public class ItemsCore {
 	
 	public static Item soul;
 	public static Item soulScriber;
+	
+	public static Item magicalBuilder;
 	
 	public static ArmorMaterial magicArmorMaterial = EnumHelper.addArmorMaterial("MRUFortified", 33, new int[]{3, 8, 6, 3}, 25);
 	public static ArmorMaterial voidArmorMaterial = EnumHelper.addArmorMaterial("VoidFortified", 52, new int[]{3, 8, 6, 3}, 40);
