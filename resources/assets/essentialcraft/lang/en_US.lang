@@ -785,6 +785,7 @@ tile.essentialcraft.blockBreaker.name=Magical Breaker
 tile.essentialcraft.compressed.name=Compressed Drops
 tile.essentialcraft.demonicPentacle.name=Demonic Pentacle
 tile.essentialcraft.weaponMaker.name=Weapon Bench
+tile.essentialcraft.furnaceMagic.name=Magmatic Furnace
 
 
 item.essentialcraft:baublesCore.portableMD.name=Portable Matrix Destructor
@@ -994,6 +995,8 @@ ec3book.discovery_ec3.disc.blockBreaker.name=Magical Breaker
 ec3book.discovery_ec3.disc.blockBreaker.desc=Terrain Smasher 2.0?
 ec3book.discovery_ec3.disc.weaponMaker.name=Weapon Bench
 ec3book.discovery_ec3.disc.weaponMaker.desc=Rays of LOVE <3
+ec3book.discovery_ec3.disc.magmaticFurnace.name=Magmatic Furnace
+ec3book.discovery_ec3.disc.magmaticFurnace.desc=Ore doubling?
 
 ec3.page.magicalActivator_0.txt=This device is able to act like a player - if given a redstone signal it will use the item or block that is placed in it's central slot. It is also able to look like any block placed in it's top right slot. In fact, it looks so natural, that it is able to fool some block tellers like WAILA too!
 ec3.page.magicalActivator_1.txt=It also has a slot for the boung gem and an MRU storage.MRU is not required for this device to work! However, shall you put any MRU requiring item in it's central slot and upon usage of that item MRU will get used from this device's buffer!
@@ -1026,6 +1029,8 @@ ec3.page.weaponMaker_11.txt=Guns will occasionally break. They will never get de
 ec3.page.weaponMaker_12.txt=Guns also require MRU to shoot - the more damage the gun deals the more MRU it requires.
 ec3.page.weaponMaker_13.txt=The MRU ray the guns shoot passes through non-solid blocks. It, however, may get stopped by any solid block. It also passes through entities, dealing damage to each it passes through. It looses no damage upon passing through entity. MRU rays are visible for 3 seconds after the shot has been done.
 ec3.page.weaponMaker_14.txt=The last note is about PVP. The guns are extremly efficent at killing other players. However, it is worth noticing, that MRU rays have a devastating effect on the Matrix of the player it passed through, up to the point of complete matrix destruction.
+
+ec3.page.magmaticFurnace_0.txt=Magmatic Furnaces are your most basic way of doubling your ores! The furnaces use MRU to smelt ores into Magmatic Alloys, and can then smelt those alloys into corresponding ingots!
 
 #Ender
 ec3book.category_ec3.ender.name=The legend of the Enderstar...
