@@ -2,8 +2,6 @@ package ec3.common.tile;
 
 import java.util.UUID;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import DummyCore.Utils.MiscUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -14,7 +12,6 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.INetHandlerPlayClient;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import ec3.api.EnumStructureType;
 import ec3.api.IStructurePiece;
 import ec3.api.ITERequiresMRU;
@@ -246,14 +243,6 @@ public class TileecAcceptor extends TileEntity implements ITERequiresMRU, IStruc
 			return true;
 		return false;
 	}
-	
-    @SideOnly(Side.CLIENT)
-    @Override
-    public AxisAlignedBB getRenderBoundingBox()
-    {
-    	AxisAlignedBB bb = INFINITE_EXTENT_AABB;
-    	return bb;
-    }
 
 	@Override
 	public boolean setMaxMRU(float f) {

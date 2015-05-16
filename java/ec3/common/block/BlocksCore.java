@@ -162,6 +162,7 @@ public class BlocksCore {
 		compressed = registerBlockSimple(BlockCompressedDrops.class,Material.rock,compressed,"compressed","compressed",0.4F,1,15);
 		demonicPentacle = registerBlockSimple(BlockDemonicPentacle.class,Material.rock,demonicPentacle,"demonicPentacle","demonicPentacle",0,0,0);
 		weaponMaker = registerBlockSimple(BlockWeaponMaker.class,Material.rock,weaponMaker,"weaponMaker","fortifiedStone",1,1,15);
+		furnaceMagic = registerBlockSimple(BlockFurnaceMagic.class,Material.rock,furnaceMagic,"furnaceMagic","fortifiedStone",1,1,15);
 	}
 	
 	public static void postInitLoad()
@@ -523,6 +524,7 @@ public class BlocksCore {
 	public static Block compressed;
 	public static Block demonicPentacle;
 	public static Block weaponMaker;
+	public static Block furnaceMagic;
 	
 	public static List<Block> fancyBlocks = new ArrayList<Block>();
 	

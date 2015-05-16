@@ -63,12 +63,18 @@ public class RenderMRUPresence extends Render
         	}
         }
         Random var6 = new Random(432L);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_SRC_ALPHA);
-        GL11.glDepthMask(false);
+        
+        
         GL11.glPushMatrix();
+        
+        GL11.glDepthMask(false);
+		GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+        GL11.glDisable(GL11.GL_ALPHA_TEST);
+        
         GL11.glTranslated(par2, par4, par6);
+        
+        Minecraft.getMinecraft().renderEngine.bindTexture(RenderHandlerEC3.whitebox);
         GL11.glScalef(0.0000075F*mru, 0.0000075F*mru, 0.0000075F*mru);
         for (int var7 = 0; (float)var7 < (((EntityMRUPresence)par1Entity).getMRU())/50; ++var7)
         {
@@ -97,18 +103,19 @@ public class RenderMRUPresence extends Render
             {
             	var3.setColorRGBA_F(colorRRender, colorGRender, colorBRender,10);
             }
-            var3.addVertex(-0.866D * (double)var9, (double)var8, (double)(-0.5F * var9));
-            var3.addVertex(0.866D * (double)var9, (double)var8, (double)(-0.5F * var9));
-            var3.addVertex(0.0D, (double)var8, (double)(1.0F * var9));
-            var3.addVertex(-0.866D * (double)var9, (double)var8, (double)(-0.5F * var9));
+            var3.addVertexWithUV(-0.866D * (double)var9, (double)var8, (double)(-0.5F * var9),0,0);
+            var3.addVertexWithUV(0.866D * (double)var9, (double)var8, (double)(-0.5F * var9),0,1);
+            var3.addVertexWithUV(0.0D, (double)var8, (double)(1.0F * var9),1,1);
+            var3.addVertexWithUV(-0.866D * (double)var9, (double)var8, (double)(-0.5F * var9),1,0);
             var3.draw();
         }
 
-        GL11.glPopMatrix();
-        GL11.glDepthMask(true);
         GL11.glDisable(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
+        GL11.glDepthMask(true);
+        
+        GL11.glPopMatrix();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
     }
     
     public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)

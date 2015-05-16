@@ -19,6 +19,7 @@ import ec3.common.tile.TileElementalCrystal;
 import ec3.common.tile.TileEmberForge;
 import ec3.common.tile.TileEnderGenerator;
 import ec3.common.tile.TileFlowerBurner;
+import ec3.common.tile.TileFurnaceMagic;
 import ec3.common.tile.TileHeatGenerator;
 import ec3.common.tile.TileMIM;
 import ec3.common.tile.TileMINEjector;
@@ -132,6 +133,7 @@ public class TileRegistry {
 		addTileToMapping(TileMagicalHopper.class);
 		addTileToMapping(TileDemonicPentacle.class);
 		addTileToMapping(TileWeaponMaker.class);
+		addTileToMapping(TileFurnaceMagic.class);
 	}
 	
 	public static void addTileToMapping(Class<? extends TileEntity> tile)

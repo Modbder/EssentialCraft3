@@ -1,14 +1,11 @@
 package ec3.common.tile;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.oredict.OreDictionary;
 import DummyCore.Utils.DataStorage;
@@ -139,14 +136,6 @@ public class TileCrystalFormer extends TileMRUGeneric{
     			this.worldObj.spawnParticle("reddust", xCoord+0.1D+this.worldObj.rand.nextDouble()/1.1D, yCoord+((float)o/10), zCoord+0.1D+this.worldObj.rand.nextDouble()/1.1D, -1.0D, 1.0D, 1.0D);
     		}
     	}
-    }
-	
-    @SideOnly(Side.CLIENT)
-    @Override
-    public AxisAlignedBB getRenderBoundingBox()
-    {
-    	AxisAlignedBB bb = INFINITE_EXTENT_AABB;
-    	return bb;
     }
     
     public static void setupConfig(Configuration cfg)

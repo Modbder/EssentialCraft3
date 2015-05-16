@@ -2,8 +2,6 @@ package ec3.common.tile;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -92,14 +90,6 @@ public class TileMonsterHarvester extends TileMRUGeneric{
 	    	}
 		}
 	}
-	
-    @SideOnly(Side.CLIENT)
-    @Override
-    public AxisAlignedBB getRenderBoundingBox()
-    {
-    	AxisAlignedBB bb = INFINITE_EXTENT_AABB;
-    	return bb;
-    }
     
     public static void setupConfig(Configuration cfg)
     {

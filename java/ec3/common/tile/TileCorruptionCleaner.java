@@ -1,13 +1,10 @@
 package ec3.common.tile;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.config.Configuration;
 import DummyCore.Utils.Coord3D;
 import DummyCore.Utils.DataStorage;
@@ -103,14 +100,6 @@ public class TileCorruptionCleaner extends TileMRUGeneric{
 			}
 		}
 	}
-	
-    @SideOnly(Side.CLIENT)
-    @Override
-    public AxisAlignedBB getRenderBoundingBox()
-    {
-    	AxisAlignedBB bb = INFINITE_EXTENT_AABB;
-    	return bb;
-    }
     
 	@Override
     public void readFromNBT(NBTTagCompound i)

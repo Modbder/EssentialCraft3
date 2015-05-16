@@ -1,11 +1,8 @@
 package ec3.common.tile;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.config.Configuration;
 import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
@@ -94,14 +91,6 @@ public class TileChargingChamber extends TileMRUGeneric{
     			}
     		}
     	}
-    }
-	
-    @SideOnly(Side.CLIENT)
-    @Override
-    public AxisAlignedBB getRenderBoundingBox()
-    {
-    	AxisAlignedBB bb = INFINITE_EXTENT_AABB;
-    	return bb;
     }
     
     public static void setupConfig(Configuration cfg)

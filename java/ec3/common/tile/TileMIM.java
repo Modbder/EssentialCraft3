@@ -1,13 +1,10 @@
 package ec3.common.tile;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
 import ec3.api.ApiCore;
@@ -348,12 +345,4 @@ public class TileMIM extends TileMRUGeneric{
 		}
 		return -1;
 	}
-	
-    @SideOnly(Side.CLIENT)
-    @Override
-    public AxisAlignedBB getRenderBoundingBox()
-    {
-    	AxisAlignedBB bb = INFINITE_EXTENT_AABB;
-    	return bb;
-    }
 }

@@ -941,6 +941,17 @@ public class ResearchRegistry {
 					.apendPage(next("weaponMaker").setText(StatCollector.translateToLocal("ec3.page.weaponMaker_13.txt")))
 					.apendPage(next("weaponMaker").setText(StatCollector.translateToLocal("ec3.page.weaponMaker_14.txt")))
 					)
+			.apendDiscovery(
+					new DiscoveryEntry("ec3.disc.magmaticFurnace")
+					.setDisplayStack(new ItemStack(BlocksCore.furnaceMagic))
+					.setReferal(new ItemStack(BlocksCore.furnaceMagic))
+					.setNew()
+					.apendPage(next("magmaticFurnace").setText(StatCollector.translateToLocal("ec3.page.magmaticFurnace_0.txt")))
+					.apendPage(next("magmaticFurnace").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.furnaceMagic,1,0), 2)))
+					.apendPage(next("magmaticFurnace").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.furnaceMagic,1,4), 2)))
+					.apendPage(next("magmaticFurnace").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.furnaceMagic,1,8), 2)))
+					.apendPage(next("magmaticFurnace").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.furnaceMagic,1,12), 2)))
+					)	
 		;
 	}
 	

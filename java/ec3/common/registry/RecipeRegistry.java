@@ -188,6 +188,34 @@ public class RecipeRegistry {
 			'S',Blocks.lapis_block,
 			'E',getItemByNameEC3("genericItem",38)
 		}));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksCore.furnaceMagic,1,0), new Object[]{
+			"III",
+			"IEI",
+			"III",
+			'I',new ItemStack(ItemsCore.genericItem,1,7),
+			'E',"rodHeat"
+		}));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksCore.furnaceMagic,1,4), new Object[]{
+			"III",
+			"IEI",
+			"III",
+			'I',new ItemStack(ItemsCore.genericItem,1,34),
+			'E',new ItemStack(BlocksCore.furnaceMagic,1,0)
+		}));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksCore.furnaceMagic,1,8), new Object[]{
+			"III",
+			"IEI",
+			"III",
+			'I',new ItemStack(ItemsCore.genericItem,1,41),
+			'E',new ItemStack(BlocksCore.furnaceMagic,1,4)
+		}));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksCore.furnaceMagic,1,12), new Object[]{
+			"III",
+			"IEI",
+			"III",
+			'I',new ItemStack(ItemsCore.genericItem,1,35),
+			'E',new ItemStack(BlocksCore.furnaceMagic,1,8)
+		}));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsCore.genericItem,1,1), new Object[]{
 			"ISI",
 			"SES",

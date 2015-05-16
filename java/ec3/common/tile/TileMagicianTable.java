@@ -1,7 +1,5 @@
 package ec3.common.tile;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
 import DummyCore.Utils.MathUtils;
@@ -9,7 +7,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.config.Configuration;
 import ec3.api.ApiCore;
 import ec3.api.ITEHasMRU;
@@ -151,14 +148,6 @@ public class TileMagicianTable extends TileMRUGeneric{
     	i.setFloat("speedFactor", speedFactor);
     	i.setFloat("mruConsume", mruConsume);
     	i.setInteger("upgrade", upgrade);
-    }
-	
-    @SideOnly(Side.CLIENT)
-    @Override
-    public AxisAlignedBB getRenderBoundingBox()
-    {
-    	AxisAlignedBB bb = INFINITE_EXTENT_AABB;
-    	return bb;
     }
     
     public boolean canFunction(MagicianTableRecipe rec)

@@ -2,8 +2,6 @@ package ec3.common.tile;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
 import DummyCore.Utils.MathUtils;
@@ -101,14 +99,6 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     	i.setInteger("miningY", miningY);
     	i.setInteger("miningZ", miningZ);
     	i.setBoolean("localFlag", flag);
-    }
-	
-    @SideOnly(Side.CLIENT)
-    @Override
-    public AxisAlignedBB getRenderBoundingBox()
-    {
-    	AxisAlignedBB bb = INFINITE_EXTENT_AABB;
-    	return bb;
     }
     
     public boolean hasInventoryUpgrade()

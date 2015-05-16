@@ -23,6 +23,7 @@ import ec3.common.inventory.ContainerDemon;
 import ec3.common.inventory.ContainerEnderGenerator;
 import ec3.common.inventory.ContainerFilter;
 import ec3.common.inventory.ContainerFlowerBurner;
+import ec3.common.inventory.ContainerFurnaceMagic;
 import ec3.common.inventory.ContainerHeatGenerator;
 import ec3.common.inventory.ContainerMIM;
 import ec3.common.inventory.ContainerMINEjector;
@@ -66,6 +67,7 @@ import ec3.common.tile.TileCrystalFormer;
 import ec3.common.tile.TileDarknessObelisk;
 import ec3.common.tile.TileEnderGenerator;
 import ec3.common.tile.TileFlowerBurner;
+import ec3.common.tile.TileFurnaceMagic;
 import ec3.common.tile.TileHeatGenerator;
 import ec3.common.tile.TileMIM;
 import ec3.common.tile.TileMINEjector;
@@ -284,6 +286,10 @@ public class CommonProxy implements IGuiHandler{
 			if(tile instanceof TileWeaponMaker)
 			{
 				return new ContainerWeaponBench(player.inventory, tile);
+			}
+			if(tile instanceof TileFurnaceMagic)
+			{
+				return new ContainerFurnaceMagic(player.inventory, tile);
 			}
 		}
 		if(ID == Config.guiID[1])

@@ -2,8 +2,6 @@ package ec3.common.tile;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemPotion;
@@ -150,14 +148,6 @@ public class TilePotionSpreader extends TileMRUGeneric{
 			}
 		}
 	}
-	
-    @SideOnly(Side.CLIENT)
-    @Override
-    public AxisAlignedBB getRenderBoundingBox()
-    {
-    	AxisAlignedBB bb = INFINITE_EXTENT_AABB;
-    	return bb;
-    }
     
 	@Override
     public void readFromNBT(NBTTagCompound i)

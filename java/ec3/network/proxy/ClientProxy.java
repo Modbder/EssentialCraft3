@@ -43,6 +43,7 @@ import ec3.client.gui.GuiDemon;
 import ec3.client.gui.GuiEnderGenerator;
 import ec3.client.gui.GuiFilter;
 import ec3.client.gui.GuiFlowerBurner;
+import ec3.client.gui.GuiFurnaceMagic;
 import ec3.client.gui.GuiHeatGenerator;
 import ec3.client.gui.GuiMIM;
 import ec3.client.gui.GuiMINEjector;
@@ -161,6 +162,7 @@ import ec3.common.inventory.ContainerDemon;
 import ec3.common.inventory.ContainerEnderGenerator;
 import ec3.common.inventory.ContainerFilter;
 import ec3.common.inventory.ContainerFlowerBurner;
+import ec3.common.inventory.ContainerFurnaceMagic;
 import ec3.common.inventory.ContainerHeatGenerator;
 import ec3.common.inventory.ContainerMIM;
 import ec3.common.inventory.ContainerMINEjector;
@@ -208,6 +210,7 @@ import ec3.common.tile.TileDemonicPentacle;
 import ec3.common.tile.TileElementalCrystal;
 import ec3.common.tile.TileEnderGenerator;
 import ec3.common.tile.TileFlowerBurner;
+import ec3.common.tile.TileFurnaceMagic;
 import ec3.common.tile.TileHeatGenerator;
 import ec3.common.tile.TileMIM;
 import ec3.common.tile.TileMINEjector;
@@ -434,6 +437,10 @@ ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/
 			if(tile instanceof TileWeaponMaker)
 			{
 				return new GuiWeaponBench(new ContainerWeaponBench(player.inventory, tile),tile);
+			}
+			if(tile instanceof TileFurnaceMagic)
+			{
+				return new GuiFurnaceMagic(new ContainerFurnaceMagic(player.inventory, tile),tile);
 			}
 			if(tile instanceof TilePlayerPentacle)
 			{

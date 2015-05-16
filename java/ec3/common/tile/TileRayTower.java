@@ -2,8 +2,6 @@ package ec3.common.tile;
 
 import java.util.UUID;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,7 +13,6 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.INetHandlerPlayClient;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import ec3.api.ITEHasMRU;
 import ec3.api.ITETransfersMRU;
 import ec3.common.item.ItemBoundGem;
@@ -235,13 +232,5 @@ public class TileRayTower extends TileEntity implements IInventory, ITETransfers
 			return true;
 		return false;
 	}
-	
-    @SideOnly(Side.CLIENT)
-    @Override
-    public AxisAlignedBB getRenderBoundingBox()
-    {
-    	AxisAlignedBB bb = INFINITE_EXTENT_AABB;
-    	return bb;
-    }
 
 }

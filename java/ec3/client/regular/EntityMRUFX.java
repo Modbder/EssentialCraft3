@@ -69,6 +69,7 @@ public class EntityMRUFX extends EntityFX{
             this.particleBlue = 1F;
             this.particleAlpha = 1F;
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+            var3.setBrightness(512);
     		super.renderParticle(var3, par2, par3, par4, par5, par6, par7);
     		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     		this.particleScale = sc;

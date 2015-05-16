@@ -2,8 +2,6 @@ package ec3.common.tile;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityFallingBlock;
@@ -221,12 +219,4 @@ public class TileMagicalJukebox extends TileMRUGeneric{
 			worldObj.playRecord((String)null, xCoord, yCoord, zCoord);
 		}
 	}
-	
-    @SideOnly(Side.CLIENT)
-    @Override
-    public AxisAlignedBB getRenderBoundingBox()
-    {
-    	AxisAlignedBB bb = INFINITE_EXTENT_AABB;
-    	return bb;
-    }
 }
