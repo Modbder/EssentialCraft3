@@ -786,6 +786,7 @@ tile.essentialcraft.compressed.name=Compressed Drops
 tile.essentialcraft.demonicPentacle.name=Demonic Pentacle
 tile.essentialcraft.weaponMaker.name=Weapon Bench
 tile.essentialcraft.furnaceMagic.name=Magmatic Furnace
+tile.essentialcraft.holopad.name=Holopad
 
 
 item.essentialcraft:baublesCore.portableMD.name=Portable Matrix Destructor
@@ -856,10 +857,13 @@ item.essentialcraft.wind_chestplate.name=Wind Infused Chestplate
 item.essentialcraft.wind_leggings.name=Wind Infused Leggings
 item.essentialcraft.wind_boots.name=Wind Infused Boots
 
+
 item.essentialcraft:soulScriber.name=Soul Scriber
 item.essentialcraft:soul.EntityVillager.name=Captured Soul - Villager
 item.essentialcraft:soul.EntityEnderman.name=Captured Soul - Enderman
 item.essentialcraft:soul.EntityWindMage.name=Captured Soul - Wind Mage
+
+item.essentialcraft:magicalBuilder.name=Magical Building Wand
 
 entity.ec3.common.entity.EntityMRUPresence.name=MRUCU
 entity.ec3.common.entity.EntityMRUArrow.name=MRU Shot
@@ -921,6 +925,9 @@ ec3.gun.txt.balance_4=Lense balance: SHADE
 death.attack.mru=%1$s got penetrated by the ray of LOVE
 death.attack.mru.player=%1$s got penetrated by %2$s's ray of LOVE
 
+death.attack.orbitalStrike=%1$s was melted down by an Orbital Strike
+death.attack.orbitalStrike.player=%1$s was melted down by %2$s's Orbital Strike
+
 ec3.effect.name_0=Slow hands
 ec3.effect.desc_0=Your hands suddently feel too heavy to propely control!
 ec3.effect.name_1=Weak hands
@@ -981,6 +988,24 @@ ec3.txt.layer_3=Height: 3
 ec3.txt.layer_4=Height: 4
 ec3.txt.layer_5=Height: 5
 
+ec3.txt.fillMode.normal=Filling Mode: Replace Air
+ec3.txt.fillMode.air=Filling Mode: Set to Air
+ec3.txt.fillMode.replaceSelected=Filling Mode: Replace only if matches selected
+ec3.txt.fillMode.replaceButSelected=Filling Mode: Replace everything, but selected
+ec3.txt.fillMode.replaceAll=Filling Mode: Replace All
+ec3.txt.p1=Point 1
+ec3.txt.p2=Point 2
+ec3.txt.storedStack=Selected Block
+
+ec3.txt.computer_helmet.props=Endless hunger+breath.
+ec3.txt.computer_chestplate.props=+20 hearts, no potion damage.
+ec3.txt.computer_legs.props=3 Block jump, +Movement speed.
+ec3.txt.computer_boots.props=No fall damage.
+
+ec3.txt.fullset=Full set bonuses:
+ec3.txt.fullset.computer.props=-Return 50% of taken damage.
+ec3.txt.fullset.computer.props_2=-Reactive boost.
+
 ec3.page.drops_11.txt=Stories tell, that MRU was not always in your world as it is. It came in in thousands of powerfull rays, penetrating the matter of the world here and there. Apparently, the effects of those rays started to reveal only now - some rock in all dimensions that had absorbed some of that energy now has that energy in it - a mineable drops ore!
 
 ec3book.discovery_ec3.disc.magicalActivator.name=Magical Activator
@@ -997,6 +1022,8 @@ ec3book.discovery_ec3.disc.weaponMaker.name=Weapon Bench
 ec3book.discovery_ec3.disc.weaponMaker.desc=Rays of LOVE <3
 ec3book.discovery_ec3.disc.magmaticFurnace.name=Magmatic Furnace
 ec3book.discovery_ec3.disc.magmaticFurnace.desc=Ore doubling?
+ec3book.discovery_ec3.disc.magicalBuilder.name=Magical Building Wand
+ec3book.discovery_ec3.disc.magicalBuilder.desc=world.edit();
 
 ec3.page.magicalActivator_0.txt=This device is able to act like a player - if given a redstone signal it will use the item or block that is placed in it's central slot. It is also able to look like any block placed in it's top right slot. In fact, it looks so natural, that it is able to fool some block tellers like WAILA too!
 ec3.page.magicalActivator_1.txt=It also has a slot for the boung gem and an MRU storage.MRU is not required for this device to work! However, shall you put any MRU requiring item in it's central slot and upon usage of that item MRU will get used from this device's buffer!
@@ -1032,6 +1059,13 @@ ec3.page.weaponMaker_14.txt=The last note is about PVP. The guns are extremly ef
 
 ec3.page.magmaticFurnace_0.txt=Magmatic Furnaces are your most basic way of doubling your ores! The furnaces use MRU to smelt ores into Magmatic Alloys, and can then smelt those alloys into corresponding ingots!
 
+ec3.page.magicalBuilder_0.txt=This wand has nearly unlimited powers... But remember - with great power comes great responsibility...
+ec3.page.magicalBuilder_1.txt=Right-click any block to store it's position into a wand. Selecting 2 blocks will form a region between them. This region is the one you will operate with. To reset wand's positions - sneak - right-click the air.
+ec3.page.magicalBuilder_2.txt=Shift-clicking any block will remember the block into the wand. It is worth saying, that the wand can't memorise some blocks like reeds, beds, doors, etc. Inventories are stored, but without remembering their content.
+ec3.page.magicalBuilder_3.txt=To perform any operation just right-click the air. Each operation will cost something: setting blocks costs 25 MRU/block, and also will consume the block from your inventory. Setting blocks to air costs 250 MRU/block!
+ec3.page.magicalBuilder_4.txt=To switch between modes just put the wand into a crafting window. Blocks broken by the wand will get dropped. Things like chests will also drop the corresponding content.
+ec3.page.magicalBuilder_5.txt=The wand can select a region with a maximum length between 2 locations of 48 blocks. Wand can't operate with blocks like bedrock.
+
 #Ender
 ec3book.category_ec3.ender.name=The legend of the Enderstar...
 ec3book.category_ec3.ender.desc=The forgotten knowledge comes into play!
@@ -1048,6 +1082,10 @@ ec3book.discovery_playerPentacle.name=Soul Pentacle
 ec3book.discovery_playerPentacle.desc=Cleanse the soul!
 ec3book.discovery_demonicPentacle.name=Demonic Pentacle
 ec3book.discovery_demonicPentacle.desc=They seek souls and the king... Casual.
+ec3book.discovery_hologram.name=Holographic Projection
+ec3book.discovery_hologram.desc=Nova would like that!
+ec3book.discovery_redSuit.name=Computer Guy's Suit
+ec3book.discovery_redSuit.desc=It is from the future!
 
 
 ec3.page.enderstar_0.txt=The Enderstar. What is it? The Enderstar, or sometimes referenced as 'The Green Sun' is a mysterious object, that exists on the other material plane. It actually is so far from yours, that there is no way to see or feel the enderstar...
@@ -1077,4 +1115,68 @@ ec3.page.playerPentacle_4.txt=Tier 4. This one is the most powerfull, which is n
 ec3.page.demonicPentacle_0.txt=You seem stuck - your Mithriline Crystals are too mundane for some things. All books seem to give you no information... Except for the "Forgotten Necronomicon". That book tells about Ackronite, the metal, that only exists in hell, and only Demons can see and mine it.
 ec3.page.demonicPentacle_1.txt=That material seems to have all the properties you need. So, you need to summon a demon and trade with him. Be aware though, demons only care about themself, and they will try to fool you - do not give them any information related to your world, like maps and such - they will invade your world if you do so.
 ec3.page.demonicPentacle_2.txt=The demon will take everything you give him as a present, so you need to give him as much items of the type he desires at once. If you do not want his offer - punch him and he will dissapear. They always give you some Ackronite as a trade, though you never know how much... 
+ec3.page.demonicPentacle_3.txt=This sacred weapon is able to capture the soul of a creature it kills. Souls can be traded to demons.
 
+ec3.page.hologram_0.txt=There are rumors about this place - some people tell, that the mysterious 'Inquisition' is somewhere here, in Hoaana. However, no matter how hard you try you can't find them. Also, you seem to be stuck on things to do - you may find a use for that Ackronite... But you are clearly missing something...
+ec3.page.hologram_1.txt=You need a way to control the Demonic Plates. Something to make it all work. The AI, the Computer! However, your technology is not advanced enough to make one... Maybe this mysterious inquisition can help you out?
+ec3.page.hologram_2.txt=You have managed to create a device, that should send a great signal throughout the Hoanna. If the Inquisition exists it will get notified, and may contact you... However, you MUST prepare as much, as possible - noone knows, what may happen once you run this device...
+ec3.page.hologram_3.txt=The block must be placed in the Hoanna under an open sky, and then activated with a simple tight-click. Note - once you activate the beacon - there is no way back...
+
+ec3.page.redSuit_0.txt=You may have found a way to create something... Powerfull. Like, really - god level of power. You might be missing some components still, but that problem is solvable. You can create an extremely big contraption, that can be worn as an armor of some sort!
+ec3.page.redSuit_1.txt=You can predict, that the armor will block ALL incoming damage, no matter where it came from. It should also offer protection against things like poison. Also, it should give you some bonuses, which should go like that ->
+ec3.page.redSuit_2.txt=The helmet will have Night Vision, if you want to enable it just press the corresponding key(default - X). The helmet will also allow you to see both the Aura Nodes and the MRU. Last, but not least, the helmet also gives the wearer infinite breath under water and infinite saturation all the time.
+ec3.page.redSuit_3.txt=The chestplate is the most essential component of the suit. It will offer most of the protection. It should also make you really strong using a body support system, that will increase your health up to 60!
+ec3.page.redSuit_4.txt=The leggings will allow you to run super-fast using the integrated thrusters. It will also allow you to jump up to 3 blocks high!
+ec3.page.redSuit_5.txt=The boots will come with an auto-step, or a step assistant feature. They will also negate ALL fall damage.
+ec3.page.redSuit_6.txt=The latest thing is the board. The board, once equipped in the belt slot will allow you to fly! Not only will it allow flight, it will also give you incredible speed while you are flying! 
+ec3.page.redSuit_7.txt=It is also worth noticing, that the armor is crazy powerfull, but it comes with some negatives. It is extremely hard to craft the full suit, and the armor will not work fully, unless you are wearing a full-set of it. The armor will also require EXTREME amounts of MRU to sustain.
+ec3.page.redSuit_?.txt=Are you still alive after all those crafts? Good. `Cause I wasn't.
+
+item.essentialcraft:genItemlogicCore.name=Logic Core
+item.essentialcraft:genItemsoundManager.name=Sound Manager
+item.essentialcraft:genItemforceEmitter.name=Force Emitter
+item.essentialcraft:genItemforceAbsorber.name=Force Absorber
+item.essentialcraft:genItemparticleEmitter.name=Particle Emitter
+item.essentialcraft:genItemparticleCatcher.name=Particle Catcher
+item.essentialcraft:genItemneuronicEnrichedPlating.name=Neuronic Enriched Plating
+item.essentialcraft:genItemforcefieldCore.name=Force Field Core
+item.essentialcraft:genItemvisionLense.name=Vision Lense
+item.essentialcraft:genItemspeakerPlate.name=Speaker Plate
+item.essentialcraft:genItempressureStabiliser.name=Pressure Stabiliser
+item.essentialcraft:genItemthrusterEngine.name=Thruster Engine
+item.essentialcraft:genItemadditionCore.name=Addition Core
+item.essentialcraft:genItemsubstructionCore.name=Substruction Core
+item.essentialcraft:genItemmultiplicationCore.name=Multiplication Core
+item.essentialcraft:genItemdivisionCore.name=Division Core
+item.essentialcraft:genItemcomputerEngine.name=Computer Engine
+item.essentialcraft:genItemrepulsionGenerator.name=Repulsion Generator
+item.essentialcraft:genItemforceFieldPlating.name=Force Field Plating
+item.essentialcraft:genItemforceFieldGenerator.name=Force Field Generator
+
+item.essentialcraft:hologramRec.name=Holographic Record
+item.record.hologram.desc=Kevin MacLeod - Robocalypse
+
+item.essentialcraft:dividerGun.name=Divider's Gun
+item.essentialcraft:orbitalRemote.name=Remote Orbital Strike
+
+item.essentialcraft.computer_chestplate.name=Computer Guy's Chestplate
+item.essentialcraft.computer_leggings.name=Computer Guy's Leggings
+item.essentialcraft.computer_helmet.name=Computer Guy's Helmet
+item.essentialcraft.computer_boots.name=Computer Guy's Boots
+item.essentialcraft:computerBoard.name=Computer Guy's Antigravitational Board
+
+entity.essentialcraft.ec3.common.entity.EntityHologram.name=Holographic Projection
+
+#Achievements
+achievement.hologram=Phantom Fighter
+achievement.hologram.desc=Kill the Holographic Projection Boss
+achievement.hologramBig=Rembo
+achievement.hologramBig.desc=Kill the Holographic Projection Boss without any armor
+achievement.hologramRemote=A Big Red Button
+achievement.hologramRemote.desc=Obtain the Remote from the Holographic Projection Boss
+achievement.hologramGun=The Math of the Universe
+achievement.hologramGun.desc=Obtain the Divider's Gun from the Holographic Projection Boss
+achievement.soulStone=Soul Seer
+achievement.soulStone.desc=Kill another player using his Soul Stone
+achievement.darkSouls=Dark Soul(s)
+achievement.darkSouls.desc=Obtain UBMRU of another player by killing him
