@@ -28,8 +28,10 @@ public class GuiWeaponBench extends GuiCommon{
 	    int k = (this.width - this.xSize) / 2;
 	    int l = (this.height - this.ySize) / 2;
 	    this.buttonList.add(new GuiButton(0, k+145, l+20, 28,12, "Done"));
+	    GuiButton next = new GuiButton(1, k+150, l+60, 20,20, ">>>");
+	    next.enabled = false;
+	    this.buttonList.add(next);
 	    
-	    this.buttonList.add(new GuiButton(1, k+150, l+60, 20,20, ">>>"));
     }
     
     @Override
