@@ -27,6 +27,12 @@ public class EntitiesCore {
 		registerEntity(EntityShadowKnife.class, 32, 1, true);
 		registerEntity(EntityMRURay.class, 128, 1, true);
 		registerEntity(EntityDemon.class, 32, 1, true);
+		registerEntity(EntityHologram.class, 32, 1, true);
+		registerEntity(EntityPlayerClone.class, 32, 1, true);
+		registerEntity(EntityOrbitalStrike.class, 32, 1, true);
+		registerEntity(EntityDivider.class, 32, 1, true);
+		registerEntity(EntityArmorDestroyer.class, 32, 1, true);
+		registerEntity(EntityDividerProjectile.class, 32, 1, true);
 		
 		EntityRegistry.addSpawn(EntityWindMage.class, 2, 1, 6, EnumCreatureType.monster, biomesToSpawn());
 		EntityRegistry.addSpawn(EntityPoisonFume.class, 100, 8, 16, EnumCreatureType.monster, biomesToSpawn());

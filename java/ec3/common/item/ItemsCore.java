@@ -301,6 +301,35 @@ public class ItemsCore {
 
 		magicalBuilder = registerItemSimple(magicalBuilder,ItemMagicalBuilder.class,"magicalBuilder","spells/staff_void",0,true,1);
 		
+		computer_helmet = new ItemComputerArmor(computerArmorMaterial, 0, 0).setUnlocalizedName("essentialcraft.computer_helmet").setTextureName("essentialcraft:armor/computer_helmet").setMaxDamage(16384);
+		ItemRegistry.registerItem(computer_helmet,"computer_helmet", EssentialCraftCore.class);
+		ApiCore.allowItemToSeeMRU(computer_helmet);
+		ApiCore.setArmorProperties(computer_helmet, 1F, 1F, 1F);
+		
+		computer_chestplate = new ItemComputerArmor(computerArmorMaterial, 0, 1).setUnlocalizedName("essentialcraft.computer_chestplate").setTextureName("essentialcraft:armor/computer_chestplate").setMaxDamage(16384);
+		ItemRegistry.registerItem(computer_chestplate,"computer_chestplate", EssentialCraftCore.class);
+		ApiCore.setArmorProperties(computer_chestplate, 1F, 1F, 1F);
+		MiscUtils.registerItemModifier(computer_chestplate, -1, "armor", "02003", 40D, SharedMonsterAttributes.maxHealth, 0);
+		
+		computer_leggings = new ItemComputerArmor(computerArmorMaterial, 0, 2).setUnlocalizedName("essentialcraft.computer_leggings").setTextureName("essentialcraft:armor/computer_leggings").setMaxDamage(16384);
+		ItemRegistry.registerItem(computer_leggings,"computer_leggings", EssentialCraftCore.class);
+		ApiCore.setArmorProperties(computer_leggings, 1F, 1F, 1F);
+		MiscUtils.registerItemModifier(computer_leggings, -1, "armor", "02002", 0.15D, SharedMonsterAttributes.movementSpeed, 0);
+		
+		computer_boots = new ItemComputerArmor(computerArmorMaterial, 0, 3).setUnlocalizedName("essentialcraft.computer_boots").setTextureName("essentialcraft:armor/computer_boots").setMaxDamage(16384);
+		ItemRegistry.registerItem(computer_boots,"computer_boots", EssentialCraftCore.class);
+		ApiCore.setArmorProperties(computer_boots, 1F, 1F, 1F);
+		
+		computerBoard = registerItemSimple(computerBoard,ItemComputerBoard.class,"computerBoard","antigravity_board",0,true,1);
+		
+		orbitalRemote = registerItemSimple(orbitalRemote,ItemOrbitalRemote.class,"orbitalRemote","tools/orbitalStrikeRemote",0,true,1);
+		
+		record_robocalypse = new ItemRecord_Mod("hologram").setUnlocalizedName("essentialcraft:hologramRec").setTextureName("essentialcraft:record_holobattle");
+		
+		dividingGun = registerItemSimple(dividingGun,ItemDividerGun.class,"dividerGun","tools/dividingGun",0,true,1);
+		
+		ItemRegistry.registerItem(record_robocalypse, "robocalypse", EssentialCraftCore.class);
+		
 		MagicianTableUpgrades.addUpgrade(new ItemStack(genericItem,1,1), 1.2F, loc("elementalCore"));
 		MagicianTableUpgrades.addUpgrade(new ItemStack(genericItem,1,0), 5F, loc("combinedMagicalAlloys"));
 		MagicianTableUpgrades.addUpgrade(new ItemStack(genericItem,1,8), 2.5F, loc("enderAlloy"));
@@ -446,16 +475,29 @@ public class ItemsCore {
 	public static Item wind_leggings;
 	public static Item wind_boots;
 	
+	public static Item computer_helmet;
+	public static Item computer_chestplate;
+	public static Item computer_leggings;
+	public static Item computer_boots;
+	
 	public static Item soul;
 	public static Item soulScriber;
 	
 	public static Item magicalBuilder;
 	
+	public static Item computerBoard;
+	
+	public static Item orbitalRemote;
+	
+	public static Item record_robocalypse;
+	
+	public static Item dividingGun;
+	
 	public static ArmorMaterial magicArmorMaterial = EnumHelper.addArmorMaterial("MRUFortified", 33, new int[]{3, 8, 6, 3}, 25);
 	public static ArmorMaterial voidArmorMaterial = EnumHelper.addArmorMaterial("VoidFortified", 52, new int[]{3, 8, 6, 3}, 40);
-	public static ArmorMaterial inquisArmorMaterial = EnumHelper.addArmorMaterial("Inquisitorium", 64, new int[]{10, 10, 10, 10}, 127);
+	public static ArmorMaterial inquisArmorMaterial = EnumHelper.addArmorMaterial("Inquisitorium", 64, new int[]{10, 10, 10, 10}, 60);
 	public static ArmorMaterial windArmorMaterial = EnumHelper.addArmorMaterial("WindElemental", 42, new int[]{4, 10, 7, 4}, 40);
-	
+	public static ArmorMaterial computerArmorMaterial = EnumHelper.addArmorMaterial("Computeric", 256, new int[]{10, 30, 20, 10}, 127);
 	
 	public static ToolMaterial elemental;
 	public static ToolMaterial weakElemental;
