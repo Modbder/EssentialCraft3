@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class RenderSolarBeam extends Render{
 
-	  private static final ResourceLocation field_147523_b = new ResourceLocation("textures/entity/beacon_beam.png");
+	private static final ResourceLocation field_147523_b = new ResourceLocation("textures/entity/beacon_beam.png");
 	  
 	@Override
 	public void doRender(Entity p_76986_1_, double p_147500_2_,

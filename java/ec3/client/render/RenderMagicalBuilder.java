@@ -56,7 +56,7 @@ public class RenderMagicalBuilder implements IItemRenderer{
 					IIcon icon = item.getIconIndex();
 					GL11.glPushMatrix();
 					GL11.glRotatef(90, 1, 1, 0);
-					ItemRenderer.renderItemIn2D(Tessellator.instance, icon.getMinU(), icon.getMaxU(), icon.getMinV(), icon.getMaxV(), icon.getIconWidth(), icon.getIconHeight(), 0.0625F);
+					ItemRenderer.renderItemIn2D(Tessellator.instance, icon.getMinU(), icon.getMinV(), icon.getMaxU(), icon.getMaxV(), icon.getIconWidth(), icon.getIconHeight(), 0.0625F);
 					GL11.glPopMatrix();
 					
 				}
