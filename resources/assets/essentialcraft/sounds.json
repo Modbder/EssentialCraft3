@@ -26,6 +26,15 @@
       }
     ]
   },
+  "records.hologram": {
+    "category": "record",
+    "sounds": [
+      {
+        "name": "records/hologram_battle",
+        "stream": true
+      }
+    ]
+  },
         "sound.pageturn": {"category": "master","sounds":[{"name": "sound/page_turn","stream": false}]},
 		"sound.deepnoise": {"category": "master","sounds":[{"name": "sound/deep_noise","stream": false}]},
 		"sound.tinnitus": {"category": "master","sounds":[{"name": "sound/tinnitus","stream": false}]},
@@ -59,5 +68,29 @@
 			{"category": "hostile","sounds":[
 				"sound/demon_trade_0",
 				"sound/demon_trade_1"
+			]},
+		"sound.mob.hologram.damage.melee": 
+			{"category": "hostile","sounds":[
+				"sound/hologram_damage_melee"
+			]},
+		"sound.mob.hologram.damage.projectile": 
+			{"category": "hostile","sounds":[
+				"sound/hologram_damage_projectile"
+			]},
+		"sound.mob.hologram.shutdown": 
+			{"category": "hostile","sounds":[
+				"sound/hologram_shutdown"
+			]},
+		"sound.mob.hologram.stop": 
+			{"category": "hostile","sounds":[
+				"sound/hologram_rest"
+			]},
+		"sound.mob.hologram.start": 
+			{"category": "hostile","sounds":[
+				"sound/hologram_attack"
+			]},
+		"sound.orbital_strike": 
+			{"category": "master","sounds":[
+				"sound/orbital_charge"
 			]}
 }
