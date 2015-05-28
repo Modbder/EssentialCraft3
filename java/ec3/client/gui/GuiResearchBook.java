@@ -69,9 +69,16 @@ public class GuiResearchBook extends GuiScreen{
 	 
 	 public static final ResourceLocation gui = new ResourceLocation("essentialcraft","textures/gui/research_book_generic.png");
 	 
+	 public static float ticksOpened;
+	 
 	 public GuiResearchBook()
 	 {
 		 super();
+	 }
+	 
+	 public void updateScreen() 
+	 {
+		 ++ticksOpened;
 	 }
 	 
 	 public void initGui() 
@@ -796,7 +803,7 @@ public class GuiResearchBook extends GuiScreen{
 		 
 		 int[] drawingID = new int[9];
 		 
-		 for(int i = 0; i < 9; ++i)
+		 for(int i = 0; i < recipe.getRecipeSize(); ++i)
 		 {
 			 Object drawable = recipe.getInput()[i];
 			 ItemStack needToDraw = null;
@@ -831,7 +838,7 @@ public class GuiResearchBook extends GuiScreen{
 		 
 		 this.drawIS(recipe.getRecipeOutput(), k + 93, l + 41, mouseX, mouseZ, 0);
 		 
-		 for(int i = 0; i < 9; ++i)
+		 for(int i = 0; i < recipe.getRecipeSize(); ++i)
 		 {
 			 Object drawable = recipe.getInput()[i];
 			 ItemStack needToDraw = null;
