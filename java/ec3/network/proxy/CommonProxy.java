@@ -404,4 +404,11 @@ public class CommonProxy implements IGuiHandler{
 	{
 		
 	}
+
+	public void stopSound(String soundID) {
+		
+	}
+
+	public void startSound(String soundID, String soundName) {
+	}
 }
