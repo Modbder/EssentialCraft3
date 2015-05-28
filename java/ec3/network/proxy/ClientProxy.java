@@ -1,6 +1,9 @@
 package ec3.network.proxy;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.lwjgl.input.Keyboard;
 
 import DummyCore.Client.GuiCommon;
 import DummyCore.Client.MainMenuRegistry;
@@ -8,9 +11,13 @@ import DummyCore.Utils.DummyData;
 import DummyCore.Utils.DummyPacketHandler;
 import DummyCore.Utils.DummyPacketIMSG;
 import DummyCore.Utils.MathUtils;
+import DummyCore.Utils.Pair;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.ISound;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.client.settings.GameSettings;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -97,12 +104,14 @@ import ec3.client.render.RenderCrystalFormer;
 import ec3.client.render.RenderDarknessObelisk;
 import ec3.client.render.RenderDemon;
 import ec3.client.render.RenderDemonicPentacle;
+import ec3.client.render.RenderDivider;
 import ec3.client.render.RenderElementalCrystal;
 import ec3.client.render.RenderElementalCrystalAsItem;
 import ec3.client.render.RenderEnderGenerator;
 import ec3.client.render.RenderFlowerBurner;
 import ec3.client.render.RenderHandlerEC3;
 import ec3.client.render.RenderHeatGenerator;
+import ec3.client.render.RenderHologram;
 import ec3.client.render.RenderMIM;
 import ec3.client.render.RenderMINEjector;
 import ec3.client.render.RenderMINInjector;
@@ -113,6 +122,7 @@ import ec3.client.render.RenderMRUPresence;
 import ec3.client.render.RenderMRURay;
 import ec3.client.render.RenderMRUReactor;
 import ec3.client.render.RenderMagicalAssembler;
+import ec3.client.render.RenderMagicalBook;
 import ec3.client.render.RenderMagicalBuilder;
 import ec3.client.render.RenderMagicalDisplay;
 import ec3.client.render.RenderMagicalEnchanter;
@@ -127,6 +137,9 @@ import ec3.client.render.RenderMithrilineCrystal;
 import ec3.client.render.RenderMithrilineFurnace;
 import ec3.client.render.RenderMonsterHarvester;
 import ec3.client.render.RenderMonsterHolder;
+import ec3.client.render.RenderOrbitalRemote;
+import ec3.client.render.RenderOrbitalStrike;
+import ec3.client.render.RenderPlayerClone;
 import ec3.client.render.RenderPlayerPentacle;
 import ec3.client.render.RenderPoisonFume;
 import ec3.client.render.RenderPotionSpreader;
@@ -142,10 +155,16 @@ import ec3.client.render.RenderUltraHeatGenerator;
 import ec3.client.render.RenderWindMage;
 import ec3.client.render.RenderWindRune;
 import ec3.common.block.BlocksCore;
+import ec3.common.entity.EntityArmorDestroyer;
 import ec3.common.entity.EntityDemon;
+import ec3.common.entity.EntityDivider;
+import ec3.common.entity.EntityDividerProjectile;
+import ec3.common.entity.EntityHologram;
 import ec3.common.entity.EntityMRUArrow;
 import ec3.common.entity.EntityMRUPresence;
 import ec3.common.entity.EntityMRURay;
+import ec3.common.entity.EntityOrbitalStrike;
+import ec3.common.entity.EntityPlayerClone;
 import ec3.common.entity.EntityPoisonFume;
 import ec3.common.entity.EntityShadowKnife;
 import ec3.common.entity.EntitySolarBeam;
@@ -254,7 +273,55 @@ import ec3.common.tile.TileecStateChecker;
 import ec3.utils.cfg.Config;
 
 public class ClientProxy extends CommonProxy{
-ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/entities/magician.png");
+	
+	public static final List<Pair<String, ISound>> playingMusic = new ArrayList<Pair<String, ISound>>();
+	
+	public boolean listHasKey(String key)
+	{
+		for(int i = 0; i < playingMusic.size(); ++i)
+		{
+			if(playingMusic.get(i).getFirst().equals(key))
+				return true;
+		}
+		
+		return false;
+	}
+	
+	public int positionOf(String key)
+	{
+		for(int i = 0; i < playingMusic.size(); ++i)
+		{
+			if(playingMusic.get(i).getFirst().equals(key))
+				return i;
+		}
+		
+		return 0;
+	}
+	
+	@Override
+	public void stopSound(String soundID)
+	{
+		if(listHasKey(soundID))
+		{
+			Minecraft.getMinecraft().getSoundHandler().stopSound(playingMusic.get(positionOf(soundID)).getSecond());
+			playingMusic.remove(soundID);
+		}
+	}
+	
+	@Override
+	public void startSound(String soundID, String soundName)
+	{
+		
+		if(!listHasKey(soundID))
+		{
+			PositionedSoundRecord s = PositionedSoundRecord.func_147673_a(new ResourceLocation(soundName));
+			playingMusic.add(new Pair<String, ISound>(soundID, s));
+			Minecraft.getMinecraft().getSoundHandler().stopSounds();
+			Minecraft.getMinecraft().getSoundHandler().playSound(s);
+		}
+	}
+	
+	ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/entities/magician.png");
 	@SuppressWarnings("unchecked")
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world,int x, int y, int z) 
@@ -482,8 +549,14 @@ ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/
 		RenderingRegistry.registerEntityRenderingHandler(EntityWindMage.class, new RenderWindMage());
 		RenderingRegistry.registerEntityRenderingHandler(EntityPoisonFume.class, new RenderPoisonFume());
 		RenderingRegistry.registerEntityRenderingHandler(EntityShadowKnife.class, new RenderSnowball(ItemsCore.shadeKnife));
+		RenderingRegistry.registerEntityRenderingHandler(EntityArmorDestroyer.class, new RenderSnowball(ItemsCore.magicalSlag));
+		RenderingRegistry.registerEntityRenderingHandler(EntityDividerProjectile.class, new RenderSnowball(ItemsCore.magicalSlag));
 		RenderingRegistry.registerEntityRenderingHandler(EntityMRURay.class, new RenderMRURay());
 		RenderingRegistry.registerEntityRenderingHandler(EntityDemon.class, new RenderDemon());
+		RenderingRegistry.registerEntityRenderingHandler(EntityHologram.class, new RenderHologram());
+		RenderingRegistry.registerEntityRenderingHandler(EntityPlayerClone.class, new RenderPlayerClone());
+		RenderingRegistry.registerEntityRenderingHandler(EntityOrbitalStrike.class, new RenderOrbitalStrike());
+		RenderingRegistry.registerEntityRenderingHandler(EntityDivider.class, new RenderDivider());
 		RenderingRegistry.registerBlockHandler(new RenderBlocksECIII());
 		MinecraftForge.EVENT_BUS.register(new ClientRenderHandler());
 		FMLCommonHandler.instance().bus().register(new RenderHandlerEC3());
@@ -495,12 +568,18 @@ ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/
 		MinecraftForgeClient.registerItemRenderer(ItemsCore.sniper, new GunItemRenderHelper());
 		MinecraftForgeClient.registerItemRenderer(ItemsCore.gatling, new GunItemRenderHelper());
 		MinecraftForgeClient.registerItemRenderer(ItemsCore.magicalBuilder, new RenderMagicalBuilder());
+		MinecraftForgeClient.registerItemRenderer(ItemsCore.orbitalRemote, new RenderOrbitalRemote());
+		MinecraftForgeClient.registerItemRenderer(ItemsCore.research_book, new RenderMagicalBook());
 		for(int i = 0; i < ItemsCore.magicArmorItems.length; ++i)
 		{
 			if(ItemsCore.magicArmorItems[i] != null)
 				MinecraftForgeClient.registerItemRenderer(ItemsCore.magicArmorItems[i], new ArmorRenderer());
 		}
 		
+		kbArmorBoost =  new KeyBinding("ComputerArmorBoost", Keyboard.KEY_Z, "key.categories.gameplay");
+		ClientRegistry.registerKeyBinding(kbArmorBoost);
+		kbArmorVision =  new KeyBinding("ComputerArmorNightVision", Keyboard.KEY_X, "key.categories.gameplay");
+		ClientRegistry.registerKeyBinding(kbArmorVision);
 	}
 	
 	@Override
@@ -751,4 +830,7 @@ ResourceLocation villagerSkin = new ResourceLocation("essentialcraft","textures/
 	private static final ModelArmorEC3 chest = new ModelArmorEC3(1.0f);
 	private static final ModelArmorEC3 chest1 = new ModelArmorEC3(0.75f);
 	private static final ModelArmorEC3 legs = new ModelArmorEC3(0.5f);
+	
+	public static KeyBinding kbArmorBoost;
+	public static KeyBinding kbArmorVision;
 }
