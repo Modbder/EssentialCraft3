@@ -75,7 +75,28 @@ public class ItemGenericEC3 extends Item{
 		"ackroniteIngot", //52
 		"demonicCore", //53
 		"demonicPlate", //54
-		"windGem" //55
+		"windGem", //55
+		"computerEngine", //56
+		"forceFieldGenerator", //57
+		"forceFieldPlating", //58
+		"neuronicEnrichedPlating", //59
+		"pressureStabiliser", //60
+		"repulsionGenerator", //61
+		"thrusterEngine", //62
+		"visionLense", //63
+		"speakerPlate", //64
+		"forcefieldCore", //65
+		"particleCatcher", //66
+		"particleEmitter", //67
+		"forceEmitter", //68
+		"logicCore", //69
+		"additionCore", //70
+		"divisionCore", //71
+		"multiplicationCore", //72
+		"substructionCore", //73
+		"forceAbsorber", //74
+		"soundManager", //75
+		"glitchyCore", //76
 		};
 	public static IIcon[] itemIcons = new IIcon[128];
 	
