@@ -1,8 +1,11 @@
 package ec3.common.block;
 
+import java.util.List;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import DummyCore.Utils.MiscUtils;
+import ec3.common.item.ItemsCore;
 import ec3.common.mod.EssentialCraftCore;
 import ec3.common.tile.TileWeaponMaker;
 import ec3.utils.cfg.Config;
@@ -11,6 +14,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -22,6 +26,11 @@ public class BlockWeaponMaker extends BlockContainer{
 	public BlockWeaponMaker() {
 		super(Material.rock);
 	}
+	
+    public int damageDropped(int meta)
+    {
+        return meta;
+    }
 	
     public boolean isOpaqueCube()
     {
@@ -74,5 +83,33 @@ public class BlockWeaponMaker extends BlockContainer{
 	        	}
 	        }
 	    }
+	
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
+    {
+    	switch(par1ItemStack.getItemDamage())
+    	{
+	    	case 0:
+	    	{	
+	    		par3List.add(new ItemStack(ItemsCore.pistol).getDisplayName());
+	    		break;
+	    	}
+	    	case 1:
+	    	{	
+	    		par3List.add(new ItemStack(ItemsCore.rifle).getDisplayName());
+	    		break;
+	    	}
+	    	case 2:
+	    	{	
+	    		par3List.add(new ItemStack(ItemsCore.sniper).getDisplayName());
+	    		break;
+	    	}
+	    	case 3:
+	    	{	
+	    		par3List.add(new ItemStack(ItemsCore.gatling).getDisplayName());
+	    		break;
+	    	}
+    	}
+    }
 	
 }
