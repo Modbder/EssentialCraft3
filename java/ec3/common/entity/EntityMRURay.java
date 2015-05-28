@@ -121,7 +121,8 @@ public class EntityMRURay extends Entity
 		    {
 		        return attacker;
 		    }
-		};
+		}
+		.setProjectile();
 	}
 	
 	@SuppressWarnings("unchecked")
