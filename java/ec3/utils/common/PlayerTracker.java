@@ -2,7 +2,6 @@ package ec3.utils.common;
 
 import java.util.ArrayList;
 
-import baubles.api.BaublesApi;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -16,10 +15,12 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
+import baubles.api.BaublesApi;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import ec3.api.ApiCore;
 import ec3.api.IWindResistance;
+import ec3.common.item.ItemComputerArmor;
 import ec3.common.item.ItemGenericArmor;
 import ec3.common.item.ItemsCore;
 import ec3.common.registry.PotionRegistry;
@@ -106,6 +107,10 @@ public class PlayerTracker{
 			{
 				player.motionY += 0.2D;
 			}
+			if(player.inventory.armorInventory[1] != null && player.inventory.armorInventory[1].getItem() instanceof ItemComputerArmor)
+			{
+				player.motionY += 0.3D;
+			}
 		}
 		
 	}
@@ -126,12 +131,26 @@ public class PlayerTracker{
 				}
 				return;
 			}
+			if(chestplate != null && chestplate.getItem() == ItemsCore.computer_chestplate)
+			{
+				if(event.source != null && (event.source == DamageSource.wither || event.source == DamageSource.magic || event.source == DamageSource.starve))
+					event.setCanceled(true);
+				return;
+			}
 			ItemStack boots = player.inventory.armorInventory[0];
 			if(boots != null && boots.getItem() == ItemsCore.magicArmorItems[7])
 			{
 				if(event.source == DamageSource.fall)
 				{
 					event.ammount -= event.ammount*0.9F;
+				}
+			}
+			if(boots != null && boots.getItem() == ItemsCore.computer_boots)
+			{
+				if(event.source == DamageSource.fall)
+				{
+					event.ammount = 0;
+					return;
 				}
 			}
 			if(player.getActivePotionEffect(PotionRegistry.chaosInfluence) != null)

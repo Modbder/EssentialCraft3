@@ -29,6 +29,8 @@ import ec3.api.WorldEventLibrary;
 import ec3.client.gui.GuiResearchBook;
 import ec3.common.block.BlocksCore;
 import ec3.common.item.BaublesModifier;
+import ec3.common.item.ItemComputerArmor;
+import ec3.common.item.ItemComputerBoard;
 import ec3.common.item.ItemGenericArmor;
 import ec3.common.item.ItemsCore;
 import ec3.common.mod.EssentialCraftCore;
@@ -46,6 +48,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
@@ -59,6 +63,11 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 public class PlayerTickHandler{
 	public Hashtable<EntityPlayer, Integer> ticks = new Hashtable<EntityPlayer, Integer>();
 	public Hashtable<EntityPlayer, Boolean> isWearingBoots = new Hashtable<EntityPlayer, Boolean>();
+	
+	public Hashtable<EntityPlayer, Boolean> isFlightAllowed = new Hashtable<EntityPlayer, Boolean>();
+	
+	public boolean client_flightAllowed;
+	
 	public static int tickAmount;
 	
 	public boolean isRKeyPressed = false;
@@ -403,20 +412,99 @@ public class PlayerTickHandler{
 				client_manageWorldEvents(e);
 			}
 			
+			if(!isFlightAllowed.containsKey(e))
+				isFlightAllowed.put(e, false);
+			
 			//Step assistant, should 100% work with TC's system, not sure about Vazkii's one... If she calls it once per tick, it is fine. If it is only onEquiped(), then his baubles need to be re-equipped in order to work.
 			if(!isWearingBoots.containsKey(e))
 				isWearingBoots.put(e, false);
 			
-			if(e.inventory.armorInventory[0] != null && e.inventory.armorInventory[0].getItem() instanceof ItemGenericArmor && (!isWearingBoots.get(e) || e.stepHeight < 1F))
+			if(e.inventory.armorInventory[0] != null && e.inventory.armorInventory[0].getItem() instanceof ItemComputerArmor)
+			{
+				e.fallDistance = 0;
+			}
+			
+			if(e.inventory.armorInventory[3] != null && e.inventory.armorInventory[3].getItem() instanceof ItemComputerArmor)
+			{
+				e.setAir(300);
+				e.getFoodStats().addStats(1, 1);
+			}
+			
+			if(e.inventory.armorInventory[1] != null && e.inventory.armorInventory[1].getItem() instanceof ItemComputerArmor)
+			{
+				if(e.isBurning() && !e.worldObj.isRemote && e.ticksExisted%20 == 0)
+					e.addPotionEffect(new PotionEffect(Potion.fireResistance.id,100,0,true));
+			}
+			
+			if(e.inventory.armorInventory[0] != null && (e.inventory.armorInventory[0].getItem() instanceof ItemGenericArmor || e.inventory.armorInventory[0].getItem() instanceof ItemComputerArmor) && (!isWearingBoots.get(e) || e.stepHeight < 1F))
 			{
 				isWearingBoots.put(e, true);
 				e.stepHeight = 1F;
 			}
 			
-			if((e.inventory.armorInventory[0] == null || !(e.inventory.armorInventory[0].getItem() instanceof ItemGenericArmor)) && isWearingBoots.get(e))
+			if((e.inventory.armorInventory[0] == null || !(e.inventory.armorInventory[0].getItem() instanceof ItemGenericArmor || e.inventory.armorInventory[0].getItem() instanceof ItemComputerArmor)) && isWearingBoots.get(e))
 			{
 				isWearingBoots.put(e, false);
 				e.stepHeight = 0.5F;
+			}
+			
+			if(BaublesApi.getBaubles(e) != null)
+			{
+				ItemStack belt = BaublesApi.getBaubles(e).getStackInSlot(3);
+				if(belt != null)
+				{
+					if(belt.getItem() instanceof ItemComputerBoard)
+					{
+						Side s = FMLCommonHandler.instance().getEffectiveSide();
+						if(s == Side.CLIENT)
+						{
+							this.client_flightAllowed = true;
+							if(!e.capabilities.allowFlying && !e.capabilities.isCreativeMode)
+							{
+								e.capabilities.allowFlying = true;
+								e.capabilities.setFlySpeed(0.2F);
+							}
+							
+						}else
+						{
+							isFlightAllowed.put(e, true);
+							if(!e.capabilities.allowFlying && !e.capabilities.isCreativeMode)
+							{
+								e.capabilities.allowFlying = true;
+							}
+						}
+					}
+				}else
+				{
+					Side s = FMLCommonHandler.instance().getEffectiveSide();
+					if(s == Side.CLIENT)
+					{
+						if(client_flightAllowed)
+						{
+							client_flightAllowed = false;
+							if(e.capabilities.allowFlying && !e.capabilities.isCreativeMode)
+							{
+								e.capabilities.allowFlying = false;
+								if(e.capabilities.isFlying)
+									e.capabilities.isFlying = false;
+								e.capabilities.setFlySpeed(0.05F);
+							}
+							
+						}
+					}else
+					{
+						if(isFlightAllowed.get(e))
+						{
+							isFlightAllowed.put(e, false);
+							if(e.capabilities.allowFlying && !e.capabilities.isCreativeMode)
+							{
+								e.capabilities.allowFlying = false;
+								if(e.capabilities.isFlying)
+									e.capabilities.isFlying = false;
+							}
+						}
+					}
+				}
 			}
 			
 			//Server overview

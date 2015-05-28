@@ -1672,6 +1672,58 @@ public class ResearchRegistry {
 					.apendPage(next("magicalBuilder").setText(StatCollector.translateToLocal("ec3.page.magicalBuilder_5.txt")))
 					.apendPage(next("magicalBuilder").setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.magicalBuilder), 2)))
 			)	
+			.apendDiscovery(new DiscoveryEntry("hologram")
+					.setNew()
+					.setDisplayStack(new ItemStack(ItemsCore.genericItem,1,76))
+					.setReferal(new ItemStack(ItemsCore.genericItem,1,70),new ItemStack(ItemsCore.genericItem,1,71),new ItemStack(ItemsCore.genericItem,1,72),new ItemStack(ItemsCore.genericItem,1,73),new ItemStack(BlocksCore.holopad,1,0))
+					.apendPage(next("hologram").setText(StatCollector.translateToLocal("ec3.page.hologram_0.txt")))
+					.apendPage(next("hologram").setText(StatCollector.translateToLocal("ec3.page.hologram_1.txt")).setDisplayStacks(new ItemStack(ItemsCore.genericItem,1,70),new ItemStack(ItemsCore.genericItem,1,71),new ItemStack(ItemsCore.genericItem,1,72),new ItemStack(ItemsCore.genericItem,1,73)))
+					.apendPage(next("hologram").setText(StatCollector.translateToLocal("ec3.page.hologram_2.txt")))
+					.apendPage(next("hologram").setText(StatCollector.translateToLocal("ec3.page.hologram_3.txt")).setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.holopad), 2)))
+			)
+			.apendDiscovery(new DiscoveryEntry("redSuit")
+					.setNew()
+					.setDisplayStack(new ItemStack(ItemsCore.computer_helmet,1,0))
+					.setReferal(new ItemStack(ItemsCore.computer_helmet,1,0),new ItemStack(ItemsCore.computer_chestplate,1,0),new ItemStack(ItemsCore.computer_leggings,1,0),new ItemStack(ItemsCore.computer_boots,1,0),new ItemStack(ItemsCore.computerBoard,1,0),gen(56),gen(57),gen(58),gen(59),gen(60),gen(61),gen(62),gen(63),gen(64),gen(65),gen(66),gen(67),gen(68),gen(69),gen(74),gen(75))
+					.apendPage(next("redSuit").setText(StatCollector.translateToLocal("ec3.page.redSuit_0.txt")))
+					.apendPage(next("redSuit").setText(StatCollector.translateToLocal("ec3.page.redSuit_1.txt")))
+					.apendPage(next("redSuit").setText(StatCollector.translateToLocal("ec3.page.redSuit_2.txt")))
+					.apendPage(next("redSuit").setText(StatCollector.translateToLocal("ec3.page.redSuit_3.txt")))
+					.apendPage(next("redSuit").setText(StatCollector.translateToLocal("ec3.page.redSuit_4.txt")))
+					.apendPage(next("redSuit").setText(StatCollector.translateToLocal("ec3.page.redSuit_5.txt")))
+					.apendPage(next("redSuit").setText(StatCollector.translateToLocal("ec3.page.redSuit_6.txt")))
+					.apendPage(next("redSuit").setText(StatCollector.translateToLocal("ec3.page.redSuit_7.txt")))
+					
+					.apendPage(next("redSuit").setRecipe(ECUtils.findRecipeByIS(gen(54), 6)))
+					.apendPage(next("redSuit").setRecipe(ECUtils.findRecipeByIS(gen(53), 2)))
+					.apendPage(next("redSuit").setRecipe(ECUtils.findRecipeByIS(gen(59), 2)))
+					.apendPage(next("redSuit").setRecipe(ECUtils.findRecipeByIS(gen(74), 2)))	
+					.apendPage(next("redSuit").setRecipe(ECUtils.findRecipeByIS(gen(68), 2)))
+					.apendPage(next("redSuit").setRecipe(ECUtils.findRecipeByIS(gen(69), 2)))
+					
+					.apendPage(next("redSuit").setRecipe(ECUtils.findRecipeByIS(gen(56), 2)))
+					.apendPage(next("redSuit").setRecipe(ECUtils.findRecipeByIS(gen(60), 2)))
+					.apendPage(next("redSuit").setRecipe(ECUtils.findRecipeByIS(gen(63), 2)))
+					
+					.apendPage(next("redSuit").setRecipe(ECUtils.findRecipeByIS(gen(65), 2)))
+					.apendPage(next("redSuit").setRecipe(ECUtils.findRecipeByIS(gen(67), 2)))
+					.apendPage(next("redSuit").setRecipe(ECUtils.findRecipeByIS(gen(66), 2)))
+					.apendPage(next("redSuit").setRecipe(ECUtils.findRecipeByIS(gen(58), 2)))
+					
+					.apendPage(next("redSuit").setRecipe(ECUtils.findRecipeByIS(gen(75), 2)))
+					.apendPage(next("redSuit").setRecipe(ECUtils.findRecipeByIS(gen(57), 2)))
+					.apendPage(next("redSuit").setRecipe(ECUtils.findRecipeByIS(gen(64), 2)))
+					.apendPage(next("redSuit").setRecipe(ECUtils.findRecipeByIS(gen(61), 2)))
+					.apendPage(next("redSuit").setRecipe(ECUtils.findRecipeByIS(gen(62), 2)))
+					
+					.apendPage(next("redSuit").setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.computer_helmet), 2)))
+					.apendPage(next("redSuit").setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.computer_chestplate), 2)))
+					.apendPage(next("redSuit").setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.computer_leggings), 2)))
+					.apendPage(next("redSuit").setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.computer_boots), 2)))
+					.apendPage(next("redSuit").setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.computerBoard), 2)))
+					
+					.apendPage(next("redSuit").setText(StatCollector.translateToLocal("ec3.page.redSuit_?.txt")))
+			)		
 		;
 	}
 	
@@ -1680,6 +1732,10 @@ public class ResearchRegistry {
 		return new ItemStack(ItemsCore.genericItem,0,meta);
 	}
 	
+	public static ItemStack gen(int meta)
+	{
+		return new ItemStack(ItemsCore.genericItem,0,meta);
+	}
 	
 	public static void registerEnderCategory()
 	{
@@ -2108,7 +2164,8 @@ public class ResearchRegistry {
 							new StructureBlock(BlocksCore.mithrilineCrystal, 6, -3, 0, 0),
 							new StructureBlock(BlocksCore.mithrilineCrystal, 6, 0, 0, 3),
 							new StructureBlock(BlocksCore.mithrilineCrystal, 6, 0, 0, -3)
-						)))		
+						)))
+					.apendPage(next("demonicPentacle").setText(StatCollector.translateToLocal("ec3.page.demonicPentacle_3.txt")).setRecipe(ECUtils.findRecipeByIS(new ItemStack(ItemsCore.soulScriber), 2)))
 					
 				)
 		;
