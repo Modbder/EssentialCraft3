@@ -80,6 +80,7 @@ public class Config implements IDummyConfig{
 		}
 		oreGenAttempts = config.getInt("oreGenAttempts", "Misc", 4, 0, Integer.MAX_VALUE, "The amount of tries to generate the elemental ore cluster in a chunk. Set to 0 to disable worldgen.");
 		eMRUCUGenAttempts = config.getInt("eMRUCUGenAttempts", "Misc", 1, 0, Integer.MAX_VALUE, "The amount of tries to generate the Elder MRUCU Structure in a chunk. Set to 0 to disable worldgen.");
+		allowPaleItemsInOtherRecipes = config.getBoolean("AllowPaleItemsInOtherRecipes", "Misc", true, "");
 	}
 	
 	public static int getIdForBlock(String name)
@@ -116,6 +117,8 @@ public class Config implements IDummyConfig{
 	public static int[] data_addedOreAmount;
 	public static int oreGenAttempts;
 	public static int eMRUCUGenAttempts;
+	
+	public static boolean allowPaleItemsInOtherRecipes;
 
 	@Override
 	public void load(Configuration config) {
