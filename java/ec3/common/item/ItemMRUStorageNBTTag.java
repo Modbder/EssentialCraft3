@@ -26,6 +26,7 @@ public class ItemMRUStorageNBTTag extends Item implements IMRUStorage, IItemRequ
 	public ItemMRUStorageNBTTag(int[] maxMRU) {
 		super();
 		this.maxMRU = maxMRU;
+		this.setMaxStackSize(1);
 	}
 
 	@Override
