@@ -23,6 +23,7 @@ import ec3.api.ShapedAssemblerRecipe;
 import ec3.api.StructureBlock;
 import ec3.api.StructureRecipe;
 import ec3.common.mod.EssentialCraftCore;
+import ec3.utils.cfg.Config;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -668,13 +669,19 @@ public class GuiResearchBook extends GuiScreen{
 		 }
 		 for(StructureBlock blk : recipe.structure)
 		 {
-			 this.drawSB(blk, k+52+blk.x*10-blk.z*10, l+32+highestStructureBlk*20-blk.y*20+blk.z*10+blk.x*10, mouseX, mouseZ, 0);
+			 if(!Config.renderStructuresFromAbove)
+				 this.drawSB(blk, k+52+blk.x*10-blk.z*10, l+32+highestStructureBlk*20-blk.y*20+blk.z*10+blk.x*10, mouseX, mouseZ, 0);
+			 else
+				 this.drawSB(blk, k+52+blk.x*10, l+32+highestStructureBlk*20+blk.z*10, mouseX, mouseZ, 0);
 		 }
 		 this.drawIS(recipe.referal, k+52, l+144, mouseX, mouseZ, 0);
 		 
 		 for(StructureBlock blk : recipe.structure)
 		 {
-			 this.drawSB(blk, k+52+blk.x*10-blk.z*10, l+32+highestStructureBlk*20-blk.y*20+blk.z*10+blk.x*10, mouseX, mouseZ, 1);
+			 if(!Config.renderStructuresFromAbove)
+				 this.drawSB(blk, k+52+blk.x*10-blk.z*10, l+32+highestStructureBlk*20-blk.y*20+blk.z*10+blk.x*10, mouseX, mouseZ, 1);
+			 else
+				 this.drawSB(blk, k+52+blk.x*10, l+32+highestStructureBlk*20+blk.z*10, mouseX, mouseZ, 1);
 		 }
 		 
 		 this.drawIS(recipe.referal, k+52, l+144, mouseX, mouseZ, 1);

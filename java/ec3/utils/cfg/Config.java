@@ -63,6 +63,7 @@ public class Config implements IDummyConfig{
 		biomeID[4] = config.get("Biomes", "DesertID", 95).getInt();
 		biomeID[5] = config.get("Biomes", "DreadLandsID", 96).getInt();
 		enablePersonalityShatter = config.getBoolean("EnablePersonalityShatter", "Misc", true, "");
+		renderStructuresFromAbove = config.getBoolean("renderStructuresFromAbove", "Misc", true, "");
 		dimensionID = config.getInt("Hoanna ID", "Misc", 53, Integer.MIN_VALUE, Integer.MAX_VALUE, "");
 		String[] cfgCustomOreParsing = config.getStringList("CustomMagmaticAlloys", "Misc", new String[]{"oreSaltpeter:10065301|5?dustSaltpeter","oreSulfur:16777113|5?dustSulfur"}, "Allows to add custom ores to Magmatic Alloys, where this is an array list, where first part is the ore name in OreDictionary, int after : is the color, int after | is the amount of drops you get from the ore and String after ? is the OreDictionary name of the result.");
 		for(String s : cfgCustomOreParsing)
@@ -119,6 +120,8 @@ public class Config implements IDummyConfig{
 	public static int eMRUCUGenAttempts;
 	
 	public static boolean allowPaleItemsInOtherRecipes;
+	
+	public static boolean renderStructuresFromAbove;
 
 	@Override
 	public void load(Configuration config) {
