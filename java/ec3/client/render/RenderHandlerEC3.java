@@ -1035,6 +1035,7 @@ public class RenderHandlerEC3 {
 			    
 			    if(mc.thePlayer.getActivePotionEffect(PotionRegistry.paradox) != null)
 			    {
+			    	/*
 			    	int duration = mc.thePlayer.getActivePotionEffect(PotionRegistry.paradox).getDuration();
 			    	renderImage(whitebox, k, l, (float)(duration-1800)/200,1,1,1);
 			    	if(duration == 1700)MiscUtils.setShaders(-1);
@@ -1052,20 +1053,8 @@ public class RenderHandlerEC3 {
 						WorldProvider prov = w.provider;
 						if(prov.getSkyRenderer() instanceof RenderSkyParadox_1)
 							prov.setSkyRenderer(skyRenderer);
-			    	}
-			    }else
-			    
-			    try
-			    {
-				World w = mc.theWorld;
-				WorldProvider prov = w.provider;
-				if(prov.getSkyRenderer() instanceof RenderSkyParadox_1)
-					prov.setSkyRenderer(skyRenderer);
-			    }catch(Exception e)
-			    {
-			    	return;
+			    	}*/
 			    }
-			    
 			}
 			if(event.type == RenderGameOverlayEvent.ElementType.HEALTH)
 			{
