@@ -1,7 +1,6 @@
 package ec3.utils.common;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -920,40 +919,6 @@ public class ECEventHandler {
 	@SubscribeEvent
 	public void worldTick(WorldTickEvent event)
 	{
-
-		if(event.phase == Phase.END && event.world != null && event.world.provider.dimensionId == 0)
-		{
-			List<Object> hashTableIteratorLst = new ArrayList<Object>();
-			
-			Enumeration<Object> e = ECUtils.inPortalTime.keys();
-			while(e.hasMoreElements())
-			{
-				Object o = e.nextElement();
-				hashTableIteratorLst.add(o);
-			}
-			
-			for(int i = 0; i < hashTableIteratorLst.size(); ++i)
-			{
-				int k = ECUtils.inPortalTime.get(hashTableIteratorLst.get(i));
-				if(hashTableIteratorLst.get(i) instanceof Entity)
-				{
-					Entity en = (Entity) hashTableIteratorLst.get(i);
-					if(!en.isInsideOfMaterial(Material.portal))
-						k -= 4;
-				}
-				--k;
-				if(k <= 0)
-				{
-					ECUtils.inPortalTime.remove(hashTableIteratorLst.get(i));
-				}else
-				{
-					ECUtils.inPortalTime.put(hashTableIteratorLst.get(i), k);
-				}
-			}
-			
-			hashTableIteratorLst = null;
-		}
-		
 		if(!event.world.isRemote)
 		{
 			String worldEvent = DummyDataUtils.getCustomDataForMod("essentialcraft", "worldEvent");
