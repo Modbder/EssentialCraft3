@@ -225,4 +225,9 @@ public class TileMagicianTable extends TileMRUGeneric{
     	}
     }
 
+	@Override
+	public int[] getOutputSlots() {
+		return new int[]{6};
+	}
+
 }

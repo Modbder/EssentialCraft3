@@ -223,4 +223,9 @@ public class TileUltraFlowerBurner extends TileMRUGeneric{
     	super.writeToNBT(i);
     }
 
+	@Override
+	public int[] getOutputSlots() {
+		return new int[0];
+	}
+
 }

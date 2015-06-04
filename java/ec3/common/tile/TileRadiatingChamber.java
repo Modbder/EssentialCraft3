@@ -187,4 +187,9 @@ public class TileRadiatingChamber extends TileMRUGeneric{
     		return;
     	}
     }
+
+	@Override
+	public int[] getOutputSlots() {
+		return new int[]{3};
+	}
 }

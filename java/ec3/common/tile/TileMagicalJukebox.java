@@ -219,4 +219,9 @@ public class TileMagicalJukebox extends TileMRUGeneric{
 			worldObj.playRecord((String)null, xCoord, yCoord, zCoord);
 		}
 	}
+
+	@Override
+	public int[] getOutputSlots() {
+		return new int[]{1};
+	}
 }

@@ -279,4 +279,10 @@ public class TileMRUReactor extends TileMRUGeneric{
     	}
     }
 
+
+	@Override
+	public int[] getOutputSlots() {
+		return new int[0];
+	}
+
 }

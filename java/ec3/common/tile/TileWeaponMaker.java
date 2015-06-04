@@ -556,4 +556,9 @@ public class TileWeaponMaker extends TileMRUGeneric{
     	this.previewWeapon();
     	this.syncTick = 0;
     }
+
+	@Override
+	public int[] getOutputSlots() {
+		return new int[]{0};
+	}
 }

@@ -329,5 +329,10 @@ public class TileRightClicker extends TileMRUGeneric
 					this.worldObj.markBlockRangeForRenderUpdate(xCoord-1, yCoord-1, zCoord-1, xCoord+1, yCoord+1, zCoord+1);
 			}
     }
+
+	@Override
+	public int[] getOutputSlots() {
+		return new int[]{0};
+	}
 	
 }

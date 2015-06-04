@@ -27,5 +27,10 @@ public class TileRedstoneTransmitter extends TileMRUGeneric
 		}else
 			--updateTime;
 	}
+
+	@Override
+	public int[] getOutputSlots() {
+		return new int[]{0};
+	}
 	 
 }

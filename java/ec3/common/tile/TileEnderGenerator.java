@@ -97,4 +97,9 @@ public class TileEnderGenerator extends TileMRUGeneric{
     	}
     }
 
+	@Override
+	public int[] getOutputSlots() {
+		return new int[0];
+	}
+
 }

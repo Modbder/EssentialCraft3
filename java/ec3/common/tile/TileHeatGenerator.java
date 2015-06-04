@@ -187,4 +187,9 @@ public class TileHeatGenerator extends TileMRUGeneric{
     	}
     }
 
+	@Override
+	public int[] getOutputSlots() {
+		return new int[]{1};
+	}
+
 }

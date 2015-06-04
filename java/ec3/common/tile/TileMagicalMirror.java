@@ -404,4 +404,9 @@ public class TileMagicalMirror extends TileMRUGeneric{
     		return;
     	}
     }
+
+	@Override
+	public int[] getOutputSlots() {
+		return new int[0];
+	}
 }

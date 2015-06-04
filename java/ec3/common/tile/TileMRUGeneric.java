@@ -2,6 +2,7 @@ package ec3.common.tile;
 
 import java.util.UUID;
 
+import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
 import DummyCore.Utils.Notifier;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,7 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import ec3.api.ITERequiresMRU;
 import ec3.utils.common.ECUtils;
 
-public class TileMRUGeneric extends TileEntity implements ITERequiresMRU, IInventory, ISidedInventory{
+public abstract class TileMRUGeneric extends TileEntity implements ITERequiresMRU, IInventory, ISidedInventory{
 
 	public TileMRUGeneric()
 	{
@@ -70,6 +71,7 @@ public class TileMRUGeneric extends TileEntity implements ITERequiresMRU, IInven
 		
 	}
 	
+	public abstract int[] getOutputSlots();
 	
 	public void setSlotsNum(int i)
 	{
@@ -273,12 +275,19 @@ public class TileMRUGeneric extends TileEntity implements ITERequiresMRU, IInven
 		{
 			if(side == 1)
 				return new int[]{0};
+			if(side == 0)
+				return getOutputSlots();
 			else
 			{
-				int[] retInt = new int[this.getSizeInventory()-1];
-				for(int i = 1; i < this.getSizeInventory(); ++i)
+				int[] retInt = new int[this.getSizeInventory()-(getOutputSlots().length + 1)];
+				int cnt = 0;
+				for(int i = 0; i < this.getSizeInventory(); ++i)
 				{
-					retInt[i-1] = i;
+					if(i != 0 && !MathUtils.arrayContains(getOutputSlots(), i))
+					{
+						retInt[cnt] = i;
+						++cnt;
+					}
 				}
 				return retInt;
 			}

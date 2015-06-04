@@ -142,4 +142,10 @@ public class TileColdDistillator extends TileMRUGeneric{
     	}
     }
 
+	@Override
+	public int[] getOutputSlots() {
+		// TODO Auto-generated method stub
+		return new int[]{};
+	}
+
 }

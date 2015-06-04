@@ -326,4 +326,9 @@ public class TileMagicalEnchanter extends TileMRUGeneric{
     	}
     }
 
+	@Override
+	public int[] getOutputSlots() {
+		return new int[]{2};
+	}
+
 }

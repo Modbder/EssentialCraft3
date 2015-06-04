@@ -377,4 +377,9 @@ public class TileMagmaticSmelter extends TileMRUGeneric implements IFluidTank{
     		return;
     	}
     }
+
+	@Override
+	public int[] getOutputSlots() {
+		return new int[]{2,4,6,7};
+	}
 }

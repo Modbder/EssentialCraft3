@@ -363,5 +363,10 @@ public class TileMagicalTeleporter extends TileMRUGeneric
     		return;
     	}
     }
+
+	@Override
+	public int[] getOutputSlots() {
+		return new int[]{0,1};
+	}
 	
 }

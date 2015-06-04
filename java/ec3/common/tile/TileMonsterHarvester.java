@@ -124,4 +124,9 @@ public class TileMonsterHarvester extends TileMRUGeneric{
     		return;
     	}
     }
+
+	@Override
+	public int[] getOutputSlots() {
+		return new int[]{1,2,3,4};
+	}
 }
