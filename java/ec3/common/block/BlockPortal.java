@@ -5,7 +5,6 @@ import java.util.Random;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ec3.utils.cfg.Config;
-import ec3.utils.common.ECUtils;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.IIcon;
@@ -41,19 +40,7 @@ public class BlockPortal extends net.minecraft.block.BlockPortal{
     {
     	if(!p_149670_1_.isRemote)
 	    {
-	    	if(ECUtils.inPortalTime.containsKey(p_149670_5_))
-	    	{
-	    		int i = ECUtils.inPortalTime.get(p_149670_5_);
-	    		if(i >= 200 && !p_149670_1_.isRemote)
-	    		{
-	    			i = 0;
-	    			p_149670_5_.travelToDimension(Config.dimensionID);
-	    		}
-	    		ECUtils.inPortalTime.put(p_149670_5_, i+=1);
-	    	}else
-	    	{
-	    		ECUtils.inPortalTime.put(p_149670_5_, 2);
-	    	}
+	    	p_149670_5_.travelToDimension(Config.dimensionID);
     	}
     }
     
