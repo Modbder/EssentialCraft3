@@ -1627,11 +1627,27 @@ public class RecipeRegistry {
 		MithrilineFurnaceRecipes.addRecipe(new ItemStack(Items.skull,1,2), new ItemStack(Items.skull,1,3), 64,1);
 		MithrilineFurnaceRecipes.addRecipe(new ItemStack(Items.skull,1,3), new ItemStack(Items.skull,1,4), 64,1);
 		MithrilineFurnaceRecipes.addRecipe(new ItemStack(Items.skull,1,4), new ItemStack(Items.skull,1,0), 64,1);
+		MithrilineFurnaceRecipes.addRecipe(new ItemStack(Items.wheat,1,0), new ItemStack(Items.leather,1,0), 128,3);
+		MithrilineFurnaceRecipes.addRecipe(new ItemStack(Items.leather,1,0), new ItemStack(Items.wheat,3,0), 128,1);
+		MithrilineFurnaceRecipes.addRecipe(new ItemStack(Items.fish,1,1), new ItemStack(Items.fish,1,2), 24,1);
+		MithrilineFurnaceRecipes.addRecipe(new ItemStack(Items.fish,1,2), new ItemStack(Items.fish,1,3), 24,1);
+		MithrilineFurnaceRecipes.addRecipe(new ItemStack(Items.fish,1,3), new ItemStack(Items.fish,1,1), 24,1);
+		MithrilineFurnaceRecipes.addRecipe(new ItemStack(Items.reeds,1,0), new ItemStack(Items.feather,2,0), 64,3);
+		MithrilineFurnaceRecipes.addRecipe(new ItemStack(Items.feather,1,0), new ItemStack(Items.reeds,3,0), 64,2);
+		MithrilineFurnaceRecipes.addRecipe(new ItemStack(Items.coal,1,0), new ItemStack(Items.coal,1,1), 1,1);
+		MithrilineFurnaceRecipes.addRecipe(new ItemStack(Items.coal,1,1), new ItemStack(Items.coal,1,0), 1,1);
+		MithrilineFurnaceRecipes.addRecipe(new ItemStack(Blocks.fire,1,0), new ItemStack(Blocks.coal_block,1,0), 512,1);
+		MithrilineFurnaceRecipes.addRecipe(new ItemStack(Blocks.coal_block,1,0), new ItemStack(Blocks.fire,1,0), 512,1);
+		MithrilineFurnaceRecipes.addRecipe(new ItemStack(Blocks.ice,1,0), new ItemStack(Blocks.grass,1,0), 1,1);
+		MithrilineFurnaceRecipes.addRecipe(new ItemStack(Blocks.grass,1,0), new ItemStack(Blocks.dirt,1,0), 1,1);
+		MithrilineFurnaceRecipes.addRecipe(new ItemStack(Blocks.dirt,1,0), new ItemStack(Blocks.dirt,1,2), 1,1);
+		MithrilineFurnaceRecipes.addRecipe(new ItemStack(Blocks.dirt,1,2), new ItemStack(Blocks.glass,1,0), 1,1);
+		MithrilineFurnaceRecipes.addRecipe(new ItemStack(Blocks.glass,1,0), new ItemStack(Blocks.ice,1,0), 1,1);
 	}
 	
 	public static void registerWindRecipes()
 	{
-		new WindImbueRecipe(new ItemStack(ItemsCore.soulStone,1,0),new ItemStack(ItemsCore.soulStone,1,0),10000*8);
+		new WindImbueRecipe(new ItemStack(ItemsCore.soulStone,1,0),new ItemStack(ItemsCore.soulStone,1,0),10000*4);
 		new WindImbueRecipe(new ItemStack(Items.diamond,1,0),new ItemStack(ItemsCore.genericItem,1,55),10000);
 		new WindImbueRecipe(new ItemStack(Items.potionitem,1,0),new ItemStack(ItemsCore.air_potion,1,0),250);
 		//TODO wind recipes
