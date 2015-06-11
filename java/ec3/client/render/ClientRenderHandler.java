@@ -11,13 +11,15 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import ec3.common.item.ItemGun;
 
 public class ClientRenderHandler {
 	
 	ResourceLocation loc = new ResourceLocation("essentialcraft","textures/hud/sniper_scope.png");
 
-	
+	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onClientRenderTick(RenderGameOverlayEvent.Pre event)
 	{
