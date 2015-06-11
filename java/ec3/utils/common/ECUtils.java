@@ -743,22 +743,31 @@ public class ECUtils {
 	
 	public static void newWorldEvent(World w)
 	{
-		IWorldEvent event = WorldEventLibrary.selectRandomEffect(w);
-		if(event != null && WorldEventLibrary.currentEvent == null)
+		if(WorldEventLibrary.currentEvent == null)
 		{
-			WorldEventLibrary.currentEvent = event;
-			WorldEventLibrary.currentEventDuration = event.getEventDuration(w);
-			event.onEventBeginning(w);
+			IWorldEvent event = WorldEventLibrary.selectRandomEffect(w);
+			if(event != null && WorldEventLibrary.currentEvent == null)
+			{
+				WorldEventLibrary.currentEvent = event;
+				WorldEventLibrary.currentEventDuration = event.getEventDuration(w);
+				event.onEventBeginning(w);
+			}
 		}
 	}
 	
 	public static void endEvent(World w)
 	{
-		if(WorldEventLibrary.currentEvent != null && --WorldEventLibrary.currentEventDuration <= 0)
+		if(WorldEventLibrary.currentEvent != null)
 		{
-			WorldEventLibrary.currentEvent.onEventEnd(w);
-			WorldEventLibrary.currentEvent = null;
-			WorldEventLibrary.currentEventDuration = -1;
+			if(WorldEventLibrary.currentEventDuration-20 <= 0)
+			{
+				WorldEventLibrary.currentEvent.onEventEnd(w);
+				WorldEventLibrary.currentEvent = null;
+				WorldEventLibrary.currentEventDuration = -1;
+			}else
+			{
+				WorldEventLibrary.currentEventDuration -= 20;
+			}
 		}
 	}
 	
