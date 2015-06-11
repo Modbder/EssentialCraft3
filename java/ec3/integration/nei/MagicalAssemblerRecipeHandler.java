@@ -81,7 +81,7 @@ public class MagicalAssemblerRecipeHandler extends TemplateRecipeHandler{
     @Override
     public Class<? extends GuiContainer> getGuiClass()
     {
-        return ec3.client.gui.GuiMagicalAssembler.class;
+        return null;
     }
     
     @Override

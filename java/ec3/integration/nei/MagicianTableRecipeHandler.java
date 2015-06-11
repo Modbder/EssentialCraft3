@@ -12,14 +12,12 @@ import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
 import DummyCore.Utils.UnformedItemStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import ec3.api.MagicianTableRecipe;
 import ec3.api.MagicianTableRecipes;
-import ec3.client.gui.GuiMagicianTable;
 import ec3.common.mod.EssentialCraftCore;
 
 public class MagicianTableRecipeHandler extends TemplateRecipeHandler{
@@ -121,12 +119,6 @@ public class MagicianTableRecipeHandler extends TemplateRecipeHandler{
 		return "essentialcraft:textures/gui/gui_generic.png";
 	}
 	
-    @Override
-    public Class<? extends GuiContainer> getGuiClass()
-    {
-        return GuiMagicianTable.class;
-    }
-    
     @Override
     public void loadCraftingRecipes(String outputId, Object... results)
     {

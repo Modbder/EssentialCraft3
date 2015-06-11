@@ -10,14 +10,12 @@ import org.lwjgl.opengl.GL11;
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import ec3.api.RadiatingChamberRecipe;
 import ec3.api.RadiatingChamberRecipes;
-import ec3.client.gui.GuiRadiatingChamber;
 import ec3.common.mod.EssentialCraftCore;
 
 public class RadiatingChamberRecipeHandler extends TemplateRecipeHandler{
@@ -120,12 +118,6 @@ public class RadiatingChamberRecipeHandler extends TemplateRecipeHandler{
 	public String getGuiTexture() {
 		return "essentialcraft:textures/gui/gui_generic.png";
 	}
-	
-    @Override
-    public Class<? extends GuiContainer> getGuiClass()
-    {
-        return GuiRadiatingChamber.class;
-    }
     
     @Override
     public void loadCraftingRecipes(String outputId, Object... results)

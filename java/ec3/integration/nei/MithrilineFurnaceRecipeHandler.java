@@ -9,14 +9,12 @@ import org.lwjgl.opengl.GL11;
 
 import DummyCore.Utils.MiscUtils;
 import DummyCore.Utils.UnformedItemStack;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import ec3.api.MithrilineFurnaceRecipe;
 import ec3.api.MithrilineFurnaceRecipes;
-import ec3.client.gui.GuiMagicianTable;
 import ec3.common.tile.TileMithrilineFurnace;
 
 public class MithrilineFurnaceRecipeHandler extends TemplateRecipeHandler{
@@ -91,12 +89,6 @@ public class MithrilineFurnaceRecipeHandler extends TemplateRecipeHandler{
 	public String getGuiTexture() {
 		return "essentialcraft:textures/gui/gui_generic.png";
 	}
-	
-    @Override
-    public Class<? extends GuiContainer> getGuiClass()
-    {
-        return GuiMagicianTable.class;
-    }
     
     @Override
     public void loadCraftingRecipes(String outputId, Object... results)
