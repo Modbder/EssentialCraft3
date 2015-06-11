@@ -79,7 +79,7 @@ public class WindRelations {
 		if(player.getActivePotionEffect(PotionRegistry.paranormalLightness) != null) 
 			mod = player.getActivePotionEffect(PotionRegistry.paranormalLightness).getAmplifier()+1;
 		
-		if(!player.worldObj.isRemote && player.worldObj.rand.nextDouble() < (0.00001F)*mod)
+		if(!player.worldObj.isRemote && player.worldObj.rand.nextDouble() < (0.0002F)*mod)
 		{
 			
 			increasePlayerWindRelations(player,1000);
@@ -125,7 +125,7 @@ public class WindRelations {
 	       		}
 	       	}
 		}
-		if(!player.worldObj.isRemote && player.worldObj.rand.nextDouble() < 0.00005F*mod)
+		if(!player.worldObj.isRemote && player.worldObj.rand.nextDouble() < 0.001F*mod)
 		{
 			if(player.isSprinting())
 			{

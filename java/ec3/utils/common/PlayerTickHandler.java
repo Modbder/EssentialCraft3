@@ -82,7 +82,7 @@ public class PlayerTickHandler{
 	{
 		if(!ticks.containsKey(e))
 		{
-			ticks.put(e, 200);
+			ticks.put(e, 10);
 			ECUtils.requestSync(e);
 		}else
 		{
@@ -90,7 +90,7 @@ public class PlayerTickHandler{
 			
 			if(i <= 0)
 			{
-				i = 200;
+				i = 10;
 				ECUtils.requestSync(e);
 			}else
 				--i;
@@ -250,9 +250,9 @@ public class PlayerTickHandler{
 				((WorldProviderFirstWorld)(e.worldObj.provider)).generateLightBrightnessTable();
 				if(ECUtils.isEventActive("ec3.event.darkness"))
 				{
-					if(e.worldObj.rand.nextFloat() < 0.01F)
+					if(e.worldObj.rand.nextFloat() < 0.2F)
 						e.worldObj.playSound(e.posX,e.posY,e.posZ, "ambient.cave.cave", 1, e.worldObj.rand.nextFloat()*2, true);
-					if(e.worldObj.rand.nextFloat() < 0.001F)
+					if(e.worldObj.rand.nextFloat() < 0.02F)
 					{
 						String[] sound = {"mob.zombie.death","mob.zombie.say","mob.blaze.death","mob.skeleton.step","mob.endermen.stare","mob.spider.step","mob.spider.death","mob.spider.say","mob.creeper.death"};
 						
@@ -278,7 +278,7 @@ public class PlayerTickHandler{
 					e.motionX += MathUtils.randomFloat(e.worldObj.rand)/30;
 					e.motionY += MathUtils.randomFloat(e.worldObj.rand)/30;
 					e.motionZ += MathUtils.randomFloat(e.worldObj.rand)/30;
-					if(e.worldObj.rand.nextFloat() < 0.01F)
+					if(e.worldObj.rand.nextFloat() < 0.2F)
 					{
 						if(!ignoreEarthquake)
 						{
@@ -401,6 +401,11 @@ public class PlayerTickHandler{
 		if(event.phase == Phase.END)
 		{
 			EntityPlayer e = event.player;
+			
+			if(e == null || e.ticksExisted % 20 != 0)
+				return;
+			
+			//TODO lagFix
 			
 			//Sync section
 			if(!e.worldObj.isRemote)
@@ -568,15 +573,12 @@ public class PlayerTickHandler{
 				if(WorldEventLibrary.currentEvent != null)
 					WorldEventLibrary.currentEvent.playerTick(e, WorldEventLibrary.currentEventDuration);
 				
-				if(e.ticksExisted % 30 == 0)
-				{
 					World wrd = e.worldObj;
-					List<EntityItem> itemList = wrd.getEntitiesWithinAABB(EntityItem.class,AxisAlignedBB.getBoundingBox(e.posX-0.5D, e.posY-0.5D, e.posZ-0.5D, e.posX+0.5D, e.posY+0.5D, e.posZ+0.5D).expand(4, 2, 4));
+					List<EntityItem> itemList = wrd.getEntitiesWithinAABB(EntityItem.class,AxisAlignedBB.getBoundingBox(e.posX-0.5D, e.posY-0.5D, e.posZ-0.5D, e.posX+0.5D, e.posY+0.5D, e.posZ+0.5D).expand(2, 1, 2));
 					for(int i = 0; i < itemList.size(); ++i)
 					{
 						doGroundItemChecks((EntityItem) itemList.get(i));
 					}
-				}
 			}
 		}
 	}
@@ -585,199 +587,157 @@ public class PlayerTickHandler{
 	{
 		if(item.getEntityItem().getItem() == Items.blaze_powder)
 		{
-			forLoop:for(int x = -1; x <= 1; ++x)
+			Block b = item.worldObj.getBlock(MathHelper.floor_double(item.posX), MathHelper.floor_double(item.posY)-1, MathHelper.floor_double(item.posZ));
+			if(b == Blocks.netherrack)
 			{
-				for(int z = -1; z <= 1; ++z)
+				Block b_check_b1 = item.worldObj.getBlock(MathHelper.floor_double(item.posX)+1, MathHelper.floor_double(item.posY)-1, MathHelper.floor_double(item.posZ));
+				Block b_check_b2 = item.worldObj.getBlock(MathHelper.floor_double(item.posX)-1, MathHelper.floor_double(item.posY)-1, MathHelper.floor_double(item.posZ));
+				Block b_check_b3 = item.worldObj.getBlock(MathHelper.floor_double(item.posX), MathHelper.floor_double(item.posY)-1, MathHelper.floor_double(item.posZ)+1);
+				Block b_check_b4 = item.worldObj.getBlock(MathHelper.floor_double(item.posX), MathHelper.floor_double(item.posY)-1, MathHelper.floor_double(item.posZ)-1);
+				Block b_check_air = item.worldObj.getBlock(MathHelper.floor_double(item.posX), (int)item.posY, MathHelper.floor_double(item.posZ));
+				if(b_check_air.isAir(item.worldObj,MathHelper.floor_double(item.posX), (int)item.posY, MathHelper.floor_double(item.posZ)) && b_check_b1.getMaterial() == Material.lava && b_check_b4.getMaterial() == Material.lava && b_check_b2.getMaterial() == Material.lava && b_check_b3.getMaterial() == Material.lava)
 				{
-					Block b = item.worldObj.getBlock((int)item.posX+x, (int)item.posY-1, (int)item.posZ+z);
-					if(b == Blocks.netherrack)
+					if(item.getEntityItem().stackSize == 1)
+					item.lifespan = 0;
+					else
 					{
-						Block b_check_b1 = item.worldObj.getBlock((int)item.posX+x+1, (int)item.posY-1, (int)item.posZ+z);
-						Block b_check_b2 = item.worldObj.getBlock((int)item.posX+x-1, (int)item.posY-1, (int)item.posZ+z);
-						Block b_check_b3 = item.worldObj.getBlock((int)item.posX+x, (int)item.posY-1, (int)item.posZ+z+1);
-						Block b_check_b4 = item.worldObj.getBlock((int)item.posX+x, (int)item.posY-1, (int)item.posZ+z-1);
-						Block b_check_air = item.worldObj.getBlock((int)item.posX+x, (int)item.posY, (int)item.posZ+z);
-						if(b_check_air.isAir(item.worldObj,(int)item.posX+x, (int)item.posY, (int)item.posZ+z) && b_check_b1.getMaterial() == Material.lava && b_check_b4.getMaterial() == Material.lava && b_check_b2.getMaterial() == Material.lava && b_check_b3.getMaterial() == Material.lava)
+						item.getEntityItem().stackSize -= 1;
+					}
+					MiscUtils.spawnParticlesOnServer("explode", (float)item.posX, (float)item.posY, (float)item.posZ, 0D, 0D, 0D);
+					if(item.worldObj.rand.nextFloat() <= 0.8F)
+					{
+						item.worldObj.setBlock(MathHelper.floor_double(item.posX), (int)item.posY, MathHelper.floor_double(item.posZ), BlocksCore.drops, 0, 3);
+					}
+				}
+			}
+		}else
+		if(item.getEntityItem().getItem() == Items.clay_ball)
+		{
+			Block b = item.worldObj.getBlock(MathHelper.floor_double(item.posX), MathHelper.floor_double(item.posY)-1, MathHelper.floor_double(item.posZ));
+			if(b == Blocks.ice)
+			{
+				Block b_check_b1 = item.worldObj.getBlock(MathHelper.floor_double(item.posX)+1, MathHelper.floor_double(item.posY)-1, MathHelper.floor_double(item.posZ));
+				Block b_check_b2 = item.worldObj.getBlock(MathHelper.floor_double(item.posX)-1, MathHelper.floor_double(item.posY)-1, MathHelper.floor_double(item.posZ));
+				Block b_check_b3 = item.worldObj.getBlock(MathHelper.floor_double(item.posX), MathHelper.floor_double(item.posY)-1, MathHelper.floor_double(item.posZ)+1);
+				Block b_check_b4 = item.worldObj.getBlock(MathHelper.floor_double(item.posX), MathHelper.floor_double(item.posY)-1, MathHelper.floor_double(item.posZ)-1);
+				Block b_check_air = item.worldObj.getBlock(MathHelper.floor_double(item.posX), (int)item.posY, MathHelper.floor_double(item.posZ));
+				if(b_check_air.isAir(item.worldObj,MathHelper.floor_double(item.posX), (int)item.posY, MathHelper.floor_double(item.posZ)) && b_check_b1.getMaterial() == Material.water && b_check_b4.getMaterial() == Material.water && b_check_b2.getMaterial() == Material.water && b_check_b3.getMaterial() == Material.water)
+				{
+					if(item.getEntityItem().stackSize == 1)
+						item.lifespan = 0;
+					else
+					{
+						item.getEntityItem().stackSize -= 1;
+					}
+					MiscUtils.spawnParticlesOnServer("explode", (float)item.posX, (float)item.posY, (float)item.posZ, 0D, 0D, 0D);
+					if(item.worldObj.rand.nextFloat() <= 0.8F)
+					{
+						item.worldObj.setBlock(MathHelper.floor_double(item.posX), (int)item.posY, MathHelper.floor_double(item.posZ), BlocksCore.drops, 1, 3);
+					}
+				}
+			}
+		}else
+		if(item.getEntityItem().getItem() == Items.slime_ball)
+		{
+			Block b = item.worldObj.getBlock(MathHelper.floor_double(item.posX), MathHelper.floor_double(item.posY)-1, MathHelper.floor_double(item.posZ));
+			if(b == Blocks.grass)
+			{
+				Block b_check_b1 = item.worldObj.getBlock(MathHelper.floor_double(item.posX)+1, MathHelper.floor_double(item.posY)-1, MathHelper.floor_double(item.posZ));
+				Block b_check_b2 = item.worldObj.getBlock(MathHelper.floor_double(item.posX)-1, MathHelper.floor_double(item.posY)-1, MathHelper.floor_double(item.posZ));
+				Block b_check_b3 = item.worldObj.getBlock(MathHelper.floor_double(item.posX), MathHelper.floor_double(item.posY)-1, MathHelper.floor_double(item.posZ)+1);
+				Block b_check_b4 = item.worldObj.getBlock(MathHelper.floor_double(item.posX), MathHelper.floor_double(item.posY)-1, MathHelper.floor_double(item.posZ)-1);
+				Block b_check_air = item.worldObj.getBlock(MathHelper.floor_double(item.posX), (int)item.posY, MathHelper.floor_double(item.posZ));
+				if(b_check_air.isAir(item.worldObj,MathHelper.floor_double(item.posX), (int)item.posY, MathHelper.floor_double(item.posZ)) && b_check_b1 == Blocks.mossy_cobblestone && b_check_b4 == Blocks.mossy_cobblestone && b_check_b2 == Blocks.mossy_cobblestone && b_check_b3 == Blocks.mossy_cobblestone)
+				{
+					if(item.getEntityItem().stackSize == 1)
+						item.lifespan = 0;
+					else
+					{
+						item.getEntityItem().stackSize -= 1;
+					}
+					MiscUtils.spawnParticlesOnServer("explode", (float)item.posX, (float)item.posY, (float)item.posZ, 0D, 0D, 0D);
+					if(item.worldObj.rand.nextFloat() <= 0.8F)
+					{
+						item.worldObj.setBlock(MathHelper.floor_double(item.posX), (int)item.posY, MathHelper.floor_double(item.posZ), BlocksCore.drops, 2, 3);
+					}
+				}
+			}
+		}else
+		if(item.getEntityItem().getItem() == Items.gunpowder)
+		{
+			Block b = item.worldObj.getBlock(MathHelper.floor_double(item.posX), MathHelper.floor_double(item.posY)-1, MathHelper.floor_double(item.posZ));
+			if(b == Blocks.quartz_block)
+			{
+				Block b_check_b1 = item.worldObj.getBlock(MathHelper.floor_double(item.posX)+1, MathHelper.floor_double(item.posY)-1, MathHelper.floor_double(item.posZ));
+				Block b_check_b2 = item.worldObj.getBlock(MathHelper.floor_double(item.posX)-1, MathHelper.floor_double(item.posY)-1, MathHelper.floor_double(item.posZ));
+				Block b_check_b3 = item.worldObj.getBlock(MathHelper.floor_double(item.posX), MathHelper.floor_double(item.posY)-1, MathHelper.floor_double(item.posZ)+1);
+				Block b_check_b4 = item.worldObj.getBlock(MathHelper.floor_double(item.posX), MathHelper.floor_double(item.posY)-1, MathHelper.floor_double(item.posZ)-1);
+				Block b_check_air = item.worldObj.getBlock(MathHelper.floor_double(item.posX), (int)item.posY, MathHelper.floor_double(item.posZ));
+				if(b_check_air.isAir(item.worldObj,MathHelper.floor_double(item.posX), (int)item.posY, MathHelper.floor_double(item.posZ)) && b_check_b1 == Blocks.sand && b_check_b4 == Blocks.sand && b_check_b2 == Blocks.sand && b_check_b3 == Blocks.sand)
+				{
+					if(item.getEntityItem().stackSize == 1)
+						item.lifespan = 0;
+					else
+					{
+						item.getEntityItem().stackSize -= 1;
+					}
+					MiscUtils.spawnParticlesOnServer("explode", (float)item.posX, (float)item.posY, (float)item.posZ, 0D, 0D, 0D);
+					if(item.worldObj.rand.nextFloat() <= 0.8F)
+					{
+						item.worldObj.setBlock(MathHelper.floor_double(item.posX), (int)item.posY, MathHelper.floor_double(item.posZ), BlocksCore.drops, 3, 3);
+					}
+				}
+			}
+		}else
+		{
+			if(item.getEntityItem().getItem() == Items.diamond)
+			{
+				Block b = item.worldObj.getBlock(MathHelper.floor_double(item.posX), MathHelper.floor_double(item.posY)-1, MathHelper.floor_double(item.posZ));
+				if(b == Blocks.emerald_block)
+				{
+					Block b_check_air = item.worldObj.getBlock(MathHelper.floor_double(item.posX), (int)item.posY, MathHelper.floor_double(item.posZ));
+					if(b_check_air.isAir(item.worldObj,MathHelper.floor_double(item.posX), (int)item.posY, MathHelper.floor_double(item.posZ)))
+					{
+						if(item.getEntityItem().stackSize == 1)
+							item.lifespan = 0;
+						else
+						{
+							item.getEntityItem().stackSize -= 1;
+						}
+						MiscUtils.spawnParticlesOnServer("explode", (float)item.posX, (float)item.posY, (float)item.posZ, 0D, 0D, 0D);
+						if(item.worldObj.rand.nextFloat() <= 0.6F)
+						{
+							ECUtils.increaseCorruptionAt(item.worldObj, (float)item.posX, (float)item.posY, (float)item.posZ, 5000);
+						}
+					}
+				}
+			}else
+			{
+				if(item.getEntityItem().getItem() == Items.emerald)
+				{
+					Block b = item.worldObj.getBlock(MathHelper.floor_double(item.posX), MathHelper.floor_double(item.posY)-1, MathHelper.floor_double(item.posZ));
+					if(b == Blocks.emerald_block)
+					{
+						Block b_check_air = item.worldObj.getBlock(MathHelper.floor_double(item.posX), (int)item.posY, MathHelper.floor_double(item.posZ));
+						if(b_check_air.isAir(item.worldObj, MathHelper.floor_double(item.posX), (int)item.posY, MathHelper.floor_double(item.posZ)))
 						{
 							if(item.getEntityItem().stackSize == 1)
-							item.lifespan = 0;
+								item.lifespan = 0;
 							else
 							{
 								item.getEntityItem().stackSize -= 1;
 							}
 							MiscUtils.spawnParticlesOnServer("explode", (float)item.posX, (float)item.posY, (float)item.posZ, 0D, 0D, 0D);
-							if(item.worldObj.rand.nextFloat() <= 0.8F)
+							if(item.worldObj.rand.nextFloat() <= 0.5F)
 							{
-								item.worldObj.setBlock((int)item.posX+x, (int)item.posY, (int)item.posZ+z, BlocksCore.drops, 0, 3);
+								EntityItem soulStone = new EntityItem(item.worldObj,(float)item.posX, (float)item.posY, (float)item.posZ,new ItemStack(ItemsCore.soulStone,1,0));
+								item.worldObj.spawnEntityInWorld(soulStone);
 							}
-							break forLoop;
 						}
 					}
 				}
 			}
-		}else
-			if(item.getEntityItem().getItem() == Items.clay_ball)
-			{
-				forLoop:for(int x = -1; x <= 1; ++x)
-				{
-					for(int z = -1; z <= 1; ++z)
-					{
-						Block b = item.worldObj.getBlock((int)item.posX+x, (int)item.posY-1, (int)item.posZ+z);
-						if(b == Blocks.ice)
-						{
-							Block b_check_b1 = item.worldObj.getBlock((int)item.posX+x+1, (int)item.posY-1, (int)item.posZ+z);
-							Block b_check_b2 = item.worldObj.getBlock((int)item.posX+x-1, (int)item.posY-1, (int)item.posZ+z);
-							Block b_check_b3 = item.worldObj.getBlock((int)item.posX+x, (int)item.posY-1, (int)item.posZ+z+1);
-							Block b_check_b4 = item.worldObj.getBlock((int)item.posX+x, (int)item.posY-1, (int)item.posZ+z-1);
-							Block b_check_air = item.worldObj.getBlock((int)item.posX+x, (int)item.posY, (int)item.posZ+z);
-							if(b_check_air.isAir(item.worldObj,(int)item.posX+x, (int)item.posY, (int)item.posZ+z) && b_check_b1.getMaterial() == Material.water && b_check_b4.getMaterial() == Material.water && b_check_b2.getMaterial() == Material.water && b_check_b3.getMaterial() == Material.water)
-							{
-								if(item.getEntityItem().stackSize == 1)
-								item.lifespan = 0;
-								else
-								{
-									item.getEntityItem().stackSize -= 1;
-								}
-								MiscUtils.spawnParticlesOnServer("explode", (float)item.posX, (float)item.posY, (float)item.posZ, 0D, 0D, 0D);
-								if(item.worldObj.rand.nextFloat() <= 0.8F)
-								{
-									item.worldObj.setBlock((int)item.posX+x, (int)item.posY, (int)item.posZ+z, BlocksCore.drops, 1, 3);
-								}
-								break forLoop;
-							}
-						}
-					}
-				}
-		}else
-			if(item.getEntityItem().getItem() == Items.slime_ball)
-			{
-				forLoop:for(int x = -1; x <= 1; ++x)
-				{
-					for(int z = -1; z <= 1; ++z)
-					{
-						Block b = item.worldObj.getBlock((int)item.posX+x, (int)item.posY-1, (int)item.posZ+z);
-						if(b == Blocks.grass)
-						{
-							Block b_check_b1 = item.worldObj.getBlock((int)item.posX+x+1, (int)item.posY-1, (int)item.posZ+z);
-							Block b_check_b2 = item.worldObj.getBlock((int)item.posX+x-1, (int)item.posY-1, (int)item.posZ+z);
-							Block b_check_b3 = item.worldObj.getBlock((int)item.posX+x, (int)item.posY-1, (int)item.posZ+z+1);
-							Block b_check_b4 = item.worldObj.getBlock((int)item.posX+x, (int)item.posY-1, (int)item.posZ+z-1);
-							Block b_check_air = item.worldObj.getBlock((int)item.posX+x, (int)item.posY, (int)item.posZ+z);
-							if(b_check_air.isAir(item.worldObj,(int)item.posX+x, (int)item.posY, (int)item.posZ+z) && b_check_b1 == Blocks.mossy_cobblestone && b_check_b4 == Blocks.mossy_cobblestone && b_check_b2 == Blocks.mossy_cobblestone && b_check_b3 == Blocks.mossy_cobblestone)
-							{
-								if(item.getEntityItem().stackSize == 1)
-								item.lifespan = 0;
-								else
-								{
-									item.getEntityItem().stackSize -= 1;
-								}
-								MiscUtils.spawnParticlesOnServer("explode", (float)item.posX, (float)item.posY, (float)item.posZ, 0D, 0D, 0D);
-								if(item.worldObj.rand.nextFloat() <= 0.8F)
-								{
-									item.worldObj.setBlock((int)item.posX+x, (int)item.posY, (int)item.posZ+z, BlocksCore.drops, 2, 3);
-								}
-								break forLoop;
-							}
-						}
-					}
-				}
-			}else
-				if(item.getEntityItem().getItem() == Items.gunpowder)
-				{
-					forLoop:for(int x = -1; x <= 1; ++x)
-					{
-						for(int z = -1; z <= 1; ++z)
-						{
-							Block b = item.worldObj.getBlock((int)item.posX+x, (int)item.posY-1, (int)item.posZ+z);
-							if(b == Blocks.quartz_block)
-							{
-								Block b_check_b1 = item.worldObj.getBlock((int)item.posX+x+1, (int)item.posY-1, (int)item.posZ+z);
-								Block b_check_b2 = item.worldObj.getBlock((int)item.posX+x-1, (int)item.posY-1, (int)item.posZ+z);
-								Block b_check_b3 = item.worldObj.getBlock((int)item.posX+x, (int)item.posY-1, (int)item.posZ+z+1);
-								Block b_check_b4 = item.worldObj.getBlock((int)item.posX+x, (int)item.posY-1, (int)item.posZ+z-1);
-								Block b_check_air = item.worldObj.getBlock((int)item.posX+x, (int)item.posY, (int)item.posZ+z);
-								if(b_check_air.isAir(item.worldObj,(int)item.posX+x, (int)item.posY, (int)item.posZ+z) && b_check_b1 == Blocks.sand && b_check_b4 == Blocks.sand && b_check_b2 == Blocks.sand && b_check_b3 == Blocks.sand)
-								{
-									if(item.getEntityItem().stackSize == 1)
-									item.lifespan = 0;
-									else
-									{
-										item.getEntityItem().stackSize -= 1;
-									}
-									MiscUtils.spawnParticlesOnServer("explode", (float)item.posX, (float)item.posY, (float)item.posZ, 0D, 0D, 0D);
-									if(item.worldObj.rand.nextFloat() <= 0.8F)
-									{
-										item.worldObj.setBlock((int)item.posX+x, (int)item.posY, (int)item.posZ+z, BlocksCore.drops, 3, 3);
-									}
-									break forLoop;
-								}
-							}
-						}
-					}
-				}else
-				{
-					if(item.getEntityItem().getItem() == Items.diamond)
-					{
-						forLoop:for(int x = -1; x <= 1; ++x)
-						{
-							for(int z = -1; z <= 1; ++z)
-							{
-								Block b = item.worldObj.getBlock((int)item.posX+x, (int)item.posY-1, (int)item.posZ+z);
-								if(b == Blocks.emerald_block)
-								{
-									Block b_check_air = item.worldObj.getBlock((int)item.posX+x, (int)item.posY, (int)item.posZ+z);
-									if(b_check_air.isAir(item.worldObj,(int)item.posX+x, (int)item.posY, (int)item.posZ+z))
-									{
-										if(item.getEntityItem().stackSize == 1)
-										item.lifespan = 0;
-										else
-										{
-											item.getEntityItem().stackSize -= 1;
-										}
-										MiscUtils.spawnParticlesOnServer("explode", (float)item.posX, (float)item.posY, (float)item.posZ, 0D, 0D, 0D);
-										if(item.worldObj.rand.nextFloat() <= 0.6F)
-										{
-											ECUtils.increaseCorruptionAt(item.worldObj, (float)item.posX, (float)item.posY, (float)item.posZ, 5000);
-										}
-										break forLoop;
-									}
-								}
-							}
-						}
-					}else
-					{
-						if(item.getEntityItem().getItem() == Items.emerald)
-						{
-							forLoop:for(int x = -1; x <= 1; ++x)
-							{
-								for(int z = -1; z <= 1; ++z)
-								{
-									Block b = item.worldObj.getBlock((int)item.posX+x, (int)item.posY-1, (int)item.posZ+z);
-									if(b == Blocks.emerald_block)
-									{
-										Block b_check_air = item.worldObj.getBlock((int)item.posX+x, (int)item.posY, (int)item.posZ+z);
-										if(b_check_air.isAir(item.worldObj, (int)item.posX+x, (int)item.posY, (int)item.posZ+z))
-										{
-											if(item.getEntityItem().stackSize == 1)
-											item.lifespan = 0;
-											else
-											{
-												item.getEntityItem().stackSize -= 1;
-											}
-											MiscUtils.spawnParticlesOnServer("explode", (float)item.posX, (float)item.posY, (float)item.posZ, 0D, 0D, 0D);
-											if(item.worldObj.rand.nextFloat() <= 0.5F)
-											{
-												EntityItem soulStone = new EntityItem(item.worldObj,(float)item.posX, (float)item.posY, (float)item.posZ,new ItemStack(ItemsCore.soulStone,1,0));
-												item.worldObj.spawnEntityInWorld(soulStone);
-											}
-											break forLoop;
-										}
-									}
-								}
-							}
-						}
-					}
-				}
+		}
 	}
 
 }
