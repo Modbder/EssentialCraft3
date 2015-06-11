@@ -230,6 +230,7 @@ public class RenderHandlerEC3 {
 		return null;
 	}
 	
+	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void renderPlayerModel(SetArmorModel event)
 	{
@@ -750,6 +751,7 @@ public class RenderHandlerEC3 {
 		
 	}
 	
+	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void pre(RenderGameOverlayEvent.Pre event)
 	{
@@ -946,7 +948,7 @@ public class RenderHandlerEC3 {
 		}
 	}
 	
-	
+	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void post(RenderGameOverlayEvent.Post event)
 	{
