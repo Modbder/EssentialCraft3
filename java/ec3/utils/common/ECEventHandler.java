@@ -919,7 +919,7 @@ public class ECEventHandler {
 	@SubscribeEvent
 	public void worldTick(WorldTickEvent event)
 	{
-		if(!event.world.isRemote)
+		if(!event.world.isRemote && event.world.getWorldTime() % 20 == 0)
 		{
 			String worldEvent = DummyDataUtils.getCustomDataForMod("essentialcraft", "worldEvent");
 			if(worldEvent != null)
