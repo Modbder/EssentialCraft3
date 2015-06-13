@@ -18,6 +18,7 @@ public class ItemEssentialFuel extends Item {
 		this.setMaxDamage(0);
 		this.maxStackSize = 16;
         this.bFull3D = false;
+        this.setHasSubtypes(true);
 	}
 	
     public IIcon getIconFromDamage(int par1)
