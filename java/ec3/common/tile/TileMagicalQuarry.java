@@ -1,25 +1,33 @@
 package ec3.common.tile;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 
 import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
 import DummyCore.Utils.MathUtils;
-import DummyCore.Utils.MiscUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.util.FakePlayer;
 import ec3.api.ApiCore;
 import ec3.api.ITEHasMRU;
 import ec3.common.item.ItemBoundGem;
 import ec3.common.item.ItemGenericEC3;
+import ec3.common.item.ItemsCore;
 import ec3.utils.common.ECUtils;
 
 public class TileMagicalQuarry extends TileMRUGeneric{
@@ -37,12 +45,35 @@ public class TileMagicalQuarry extends TileMRUGeneric{
 	public static float mruUsage = 8;
 	public static float efficencyPerUpgrade = 0.5F;
 	public static float blockHardnessModifier = 9F;
+	
+	public static final List<Object> voidList = new ArrayList<Object>();
+	
+	static
+	{
+		voidList.add(Blocks.cobblestone);
+		voidList.add(Blocks.dirt);
+		voidList.add(Blocks.grass);
+		voidList.add(Blocks.stone);
+		voidList.add(Blocks.sand);
+		voidList.add(Blocks.sandstone);
+		voidList.add(Blocks.tallgrass);
+		voidList.add(Blocks.red_flower);
+		voidList.add(Blocks.yellow_flower);
+		voidList.add(Blocks.brown_mushroom);
+		voidList.add(Blocks.red_mushroom);
+		voidList.add(Blocks.leaves);
+		voidList.add(Blocks.leaves2);
+		voidList.add(Items.wheat_seeds);
+	}
+	
+	public WeakReference<FakePlayer> quarryFakePlayer;
 	 
 	public TileMagicalQuarry()
 	{
 		 super();
 		this.maxMRU = (int)cfgMaxMRU;
 		this.setSlotsNum(4);
+		
 	}
 	
 	public boolean canGenerateMRU()
@@ -53,6 +84,11 @@ public class TileMagicalQuarry extends TileMRUGeneric{
 	@Override
 	public void updateEntity()
 	{
+		if(!this.worldObj.isRemote)
+		{
+			if(quarryFakePlayer == null || quarryFakePlayer.get() == null)
+				quarryFakePlayer = new WeakReference<FakePlayer>(new FakePlayer((WorldServer) this.worldObj,ECUtils.EC3FakePlayerProfile));
+		}
 		if(this.syncTick == 10)
 			this.syncTick = 0;
 		super.updateEntity();
@@ -112,6 +148,56 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     	return false;
     }
     
+    public boolean hasSmeltingUpgrade()
+    {
+    	ItemStack s = ItemGenericEC3.getStkByName("blazingUpgrade");
+    	for(int i = 0; i < this.getSizeInventory(); ++i)
+    	{
+    		if(this.getStackInSlot(i) != null && this.getStackInSlot(i).isItemEqual(s))
+    			return true;
+    	}
+    	return false;
+    }
+    
+    public boolean hasVoidUpgrade()
+    {
+    	ItemStack s = ItemGenericEC3.getStkByName("voidUpgrade");
+    	for(int i = 0; i < this.getSizeInventory(); ++i)
+    	{
+    		if(this.getStackInSlot(i) != null && this.getStackInSlot(i).isItemEqual(s))
+    			return true;
+    	}
+    	return false;
+    }
+    
+    public boolean hasSilkyUpgrade()
+    {
+    	if(hasSmeltingUpgrade())
+    		return false;
+    	
+    	ItemStack s = ItemGenericEC3.getStkByName("silkyUpgrade");
+    	for(int i = 0; i < this.getSizeInventory(); ++i)
+    	{
+    		if(this.getStackInSlot(i) != null && this.getStackInSlot(i).isItemEqual(s))
+    			return true;
+    	}
+    	return false;
+    }
+    
+    public boolean hasFortuneUpgrade()
+    {
+    	if(hasSilkyUpgrade())
+    		return false;
+    	
+    	ItemStack s = ItemGenericEC3.getStkByName("fortuneUpgrade");
+    	for(int i = 0; i < this.getSizeInventory(); ++i)
+    	{
+    		if(this.getStackInSlot(i) != null && this.getStackInSlot(i).isItemEqual(s))
+    			return true;
+    	}
+    	return false;
+    }
+    
     public boolean hasMiningUpgrade()
     {
     	ItemStack s = ItemGenericEC3.getStkByName("diamondUpgrade");
@@ -155,7 +241,7 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     
     public float getEfficency()
     {
-    	float f = efficencyPerUpgrade;
+    	float f = efficencyPerUpgrade + 1;
     	ItemStack s = ItemGenericEC3.getStkByName("efficencyUpgrade");
     	for(int i = 0; i < this.getSizeInventory(); ++i)
     	{
@@ -164,7 +250,7 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     			f += (float)this.getStackInSlot(i).stackSize*efficencyPerUpgrade;
     		}
     	}
-    	return f;
+    	return hasSmeltingUpgrade() ? f/2 : f;
     }
     
     public int getMiningRange()
@@ -192,7 +278,31 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     
     public boolean shouldInstaMine(Block b)
     {
-    	return (b instanceof BlockLiquid || ignoreLiquids) || b == null || b == Blocks.air;
+    	return (b instanceof BlockLiquid && ignoreLiquids) || b == null || b == Blocks.air;
+    }
+    
+    public int determineFortune()
+    {
+    	int fortune = 0;
+        ItemStack s = ItemGenericEC3.getStkByName("fortuneUpgrade");
+        for(int i = 0; i < this.getSizeInventory(); ++i)
+        {
+        	if(this.getStackInSlot(i) != null && this.getStackInSlot(i).isItemEqual(s))
+        		fortune += this.getStackInSlot(i).stackSize;
+        }
+        
+        if(fortune <= 128)
+        	fortune = 5;
+        if(fortune <= 64)
+        	fortune = 4;
+        if(fortune <= 32)
+        	fortune = 3;
+        if(fortune <= 16)
+        	fortune = 2;
+        if(fortune <= 8)
+        	fortune = 1;
+        
+        return fortune;
     }
     
     public boolean mineBlock(Block b)
@@ -211,9 +321,21 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     			if(this.progressLevel >= required)
     			{
     				progressLevel = 0;
-    				b.breakBlock(worldObj, miningX, miningY, miningY, b, this.worldObj.getBlockMetadata(miningX, miningY, miningZ));
-    				b.onBlockDestroyedByPlayer(worldObj, miningX, miningY, miningZ, 0);
-    				b.dropBlockAsItem(worldObj, miningX, miningY, miningZ, this.worldObj.getBlockMetadata(miningX, miningY, miningZ), 0);
+    				if(this.hasMiningUpgrade())
+    				{
+    					quarryFakePlayer.get().setCurrentItemOrArmor(0, new ItemStack(ItemsCore.wind_elemental_pick));
+    				}else
+    				{
+    					quarryFakePlayer.get().setCurrentItemOrArmor(0, new ItemStack(ItemsCore.weak_elemental_pick));
+    				}
+    				
+    				if(this.hasFortuneUpgrade())
+    					quarryFakePlayer.get().getCurrentEquippedItem().addEnchantment(Enchantment.fortune, this.determineFortune());
+    				if(this.hasSilkyUpgrade())
+    					quarryFakePlayer.get().getCurrentEquippedItem().addEnchantment(Enchantment.silkTouch, 1);
+    				
+    				b.harvestBlock(getWorldObj(), quarryFakePlayer.get(), miningX, miningY, miningZ, this.worldObj.getBlockMetadata(miningX, miningY, miningZ));
+    				
     				this.worldObj.setBlock(miningX, miningY, miningZ, Blocks.air, 0, 3);
     				if(generatesCorruption)
     					ECUtils.increaseCorruptionAt(worldObj, xCoord, yCoord, zCoord, this.worldObj.rand.nextInt(genCorruption));
@@ -230,7 +352,7 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     	while(--r >= 0)
     	{
     		Block b = worldObj.getBlock(xCoord, r, zCoord);
-    		if((b != null && b != Blocks.air && !(b instanceof BlockLiquid || ignoreLiquids) && this.canMineBlock(b)) && this.canMineBlock(b))
+    		if((b != null && b != Blocks.air && !(b instanceof BlockLiquid && ignoreLiquids) && this.canMineBlock(b)) && this.canMineBlock(b))
     		{
     			return false;
     		}
@@ -244,7 +366,7 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     	while(--r >= 0)
     	{
     		Block b = worldObj.getBlock(xCoord, r, zCoord);
-    		if((b != null && b != Blocks.air && !(b instanceof BlockLiquid || ignoreLiquids) && this.canMineBlock(b)) && this.canMineBlock(b))
+    		if((b != null && b != Blocks.air && !(b instanceof BlockLiquid && ignoreLiquids) && this.canMineBlock(b)) && this.canMineBlock(b))
     		{
     			return r;
     		}
@@ -260,7 +382,7 @@ public class TileMagicalQuarry extends TileMRUGeneric{
         	for(int z = -rad; z <= rad; ++z)
         	{
         		Block b = worldObj.getBlock(xCoord+x, miningY, zCoord+z);
-        		if(b != null && b != Blocks.air && !(b instanceof BlockLiquid || ignoreLiquids) && this.canMineBlock(b))
+        		if(b != null && b != Blocks.air && !(b instanceof BlockLiquid && ignoreLiquids) && this.canMineBlock(b))
         		{
         			return false;
         		}
@@ -280,6 +402,7 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     	{
     		if(isMainColomnMined())
     		{
+    			
     			if(!flag)
     			{
     				flag = true;
@@ -337,6 +460,34 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     		{
     			EntityItem item = l.get(i);
     			ItemStack s = item.getEntityItem();
+    			if(this.hasSmeltingUpgrade() && s != null)
+    			{
+    				ItemStack forged = FurnaceRecipes.smelting().getSmeltingResult(s);
+    				if(forged != null)
+    				{
+    					ItemStack copy = forged.copy();
+    					copy.stackSize *= s.stackSize;
+    					if(this.hasFortuneUpgrade())
+    					{
+	    					int fortune = this.determineFortune();
+	    					for(int i1 = 0; i1 < s.stackSize; ++i1)
+	    					{
+	    						copy.stackSize += this.worldObj.rand.nextInt(fortune);
+	    					}
+    					}
+    					s = copy;
+    					item.setEntityItemStack(copy);
+    				}
+    			}
+    			if(this.hasVoidUpgrade())
+    			{
+    				if(voidItemStack(s))
+    				{
+	    	   			item.setPositionAndRotation(0, 0, 0, 0, 0);
+	        			item.setDead();
+	    				return;
+    				}
+    			}
     			item.setPositionAndRotation(0, 0, 0, 0, 0);
     			item.setDead();
     			if(this.hasInventoryUpgrade() && this.hasInventory())
@@ -350,6 +501,11 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     	}
     }
     
+    public boolean voidItemStack(ItemStack s)
+    {
+    	return s == null || voidList.contains(s.getItem() instanceof ItemBlock ? Block.getBlockFromItem(s.getItem()) : s.getItem());
+    }
+    
     public void splitItem(ItemStack s)
     {
     	EntityItem item = new EntityItem(worldObj, xCoord, yCoord, zCoord, s);
@@ -357,13 +513,32 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     	this.worldObj.spawnEntityInWorld(item);
     }
     
-    @SuppressWarnings("deprecation")
-	public void insertItem(ItemStack s)
+    public void insertItem(ItemStack s)
     {
+    	if(s == null)
+    		return;
     	
     	if(this.hasSpaceInInv(this.getInventory()))
     	{
-    		MiscUtils.addItemToInventory(s, getInventory(), this.worldObj.isRemote);
+    		for(int i = 0; i < getInventory().getSizeInventory(); ++i)
+    		{
+    			ItemStack stk = getInventory().getStackInSlot(i);
+    			if(stk != null && stk.isItemEqual(s) && stk.stackSize + s.stackSize <= stk.getMaxStackSize())
+    			{
+    				stk.stackSize += s.stackSize;
+    				return;
+    			}
+    		}
+    		for(int i = 0; i < getInventory().getSizeInventory(); ++i)
+    		{
+    			ItemStack stk = getInventory().getStackInSlot(i);
+    			if(stk == null)
+    			{
+    				getInventory().setInventorySlotContents(i, s);
+    				return;
+    			}
+    		}
+    		this.splitItem(s);
     	}else
     	{
     		this.splitItem(s);

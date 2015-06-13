@@ -657,7 +657,8 @@ public class ResearchRegistry {
 							new ItemStack(ItemsCore.genericItem,0,32),
 							new ItemStack(ItemsCore.genericItem,0,27),
 							new ItemStack(ItemsCore.genericItem,0,30),
-							new ItemStack(ItemsCore.genericItem,0,33)
+							new ItemStack(ItemsCore.genericItem,0,33),
+							new ItemStack(ItemsCore.genericItem,0,79)
 							)
 						.setDisplayStack(new ItemStack(ItemsCore.genericItem,1,14))
 						.apendPage(
@@ -684,6 +685,7 @@ public class ResearchRegistry {
 						.apendPage(next("magicianCrafts").setRecipe(ECUtils.findRecipeByIS(generic(27), 2)))
 						.apendPage(next("magicianCrafts").setRecipe(ECUtils.findRecipeByIS(generic(30), 2)))
 						.apendPage(next("magicianCrafts").setRecipe(ECUtils.findRecipeByIS(generic(33), 2)))
+						.apendPage(next("magicianCrafts").setRecipe(ECUtils.findRecipeByIS(generic(79), 6)))
 					)
 			.apendDiscovery(
 					new DiscoveryEntry("ec3.disc.paleItems")
@@ -1381,7 +1383,7 @@ public class ResearchRegistry {
 				)
 			.apendDiscovery(
 					new DiscoveryEntry("ec3.disc.magicalQuarry") 
-					.setReferal(new ItemStack(BlocksCore.magicalQuarry,1,0),generic(18),generic(19),generic(17))
+					.setReferal(new ItemStack(BlocksCore.magicalQuarry,1,0),generic(18),generic(19),generic(17),generic(80),generic(81),generic(78),generic(77))
 					.setDisplayStack(new ItemStack(BlocksCore.magicalQuarry,1,0))
 					.apendPage(next("magicalQuarry").setText(StatCollector.translateToLocal("ec3.page.magicalQuarry_0.txt")))
 					.apendPage(next("magicalQuarry").setText(StatCollector.translateToLocal("ec3.page.magicalQuarry_1.txt")))
@@ -1390,6 +1392,10 @@ public class ResearchRegistry {
 					.apendPage(next("magicalQuarry").setText(StatCollector.translateToLocal("ec3.page.magicalQuarry_4.txt")).setRecipe(ECUtils.findRecipeByIS(generic(18), 2)))
 					.apendPage(next("magicalQuarry").setText(StatCollector.translateToLocal("ec3.page.magicalQuarry_5.txt")).setRecipe(ECUtils.findRecipeByIS(generic(19), 2)))
 					.apendPage(next("magicalQuarry").setText(StatCollector.translateToLocal("ec3.page.magicalQuarry_6.txt")).setRecipe(ECUtils.findRecipeByIS(generic(17), 2)))
+					.apendPage(next("magicalQuarry").setText(StatCollector.translateToLocal("ec3.page.magicalQuarry_7.txt")).setRecipe(ECUtils.findRecipeByIS(generic(80), 2)))
+					.apendPage(next("magicalQuarry").setText(StatCollector.translateToLocal("ec3.page.magicalQuarry_8.txt")).setRecipe(ECUtils.findRecipeByIS(generic(81), 2)))
+					.apendPage(next("magicalQuarry").setText(StatCollector.translateToLocal("ec3.page.magicalQuarry_9.txt")).setRecipe(ECUtils.findRecipeByIS(generic(78), 2)))
+					.apendPage(next("magicalQuarry").setText(StatCollector.translateToLocal("ec3.page.magicalQuarry_10.txt")).setRecipe(ECUtils.findRecipeByIS(generic(77), 2)))
 					.apendPage(next("magicalQuarry").setRecipe(ECUtils.findRecipeByIS(new ItemStack(BlocksCore.magicalQuarry,1,0), 2)))
 				)		
 			.apendDiscovery(
