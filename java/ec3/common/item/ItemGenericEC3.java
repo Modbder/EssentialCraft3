@@ -97,6 +97,11 @@ public class ItemGenericEC3 extends Item{
 		"forceAbsorber", //74
 		"soundManager", //75
 		"glitchyCore", //76
+		"blazingUpgrade", //77
+		"fortuneUpgrade", //78
+		"magicPurifyedBlazeAlloy", //79
+		"silkyUpgrade", //80
+		"voidUpgrade", //81
 		};
 	public static IIcon[] itemIcons = new IIcon[128];
 	
