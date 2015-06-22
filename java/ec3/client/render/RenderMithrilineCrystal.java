@@ -38,6 +38,7 @@ public class RenderMithrilineCrystal extends TileEntitySpecialRenderer
     	RenderHelper.disableStandardItemLighting();
         GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1, 1, 1, 0.9F);
@@ -52,6 +53,7 @@ public class RenderMithrilineCrystal extends TileEntitySpecialRenderer
         this.bindTexture(meta == 0 ? textures_mithriline : meta == 3 ? textures_pale : meta == 6 ? textures_void : meta == 9 ? textures_demonic : textures_shade);
         model.renderAll();
         GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glPopMatrix();
         
         RenderHelper.enableStandardItemLighting();
