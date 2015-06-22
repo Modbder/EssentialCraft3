@@ -116,14 +116,35 @@ public class TileCrystalFormer extends TileMRUGeneric{
     					s[1].getItem() == Items.water_bucket 
     					&& s[2].getItem() == Items.water_bucket 
     					&& s[3].getItem() == Items.water_bucket 
-    					&& (s[4].getItem() == Item.getItemFromBlock(Blocks.glass) || OreDictionary.getOreName(OreDictionary.getOreIDs(s[4])[0]).contains("glass") || OreDictionary.getOreName(OreDictionary.getOreIDs(s[4])[0]).contains("Glass")) 
-    					&& (s[5].getItem() == Item.getItemFromBlock(Blocks.glass) || OreDictionary.getOreName(OreDictionary.getOreIDs(s[5])[0]).contains("glass") || OreDictionary.getOreName(OreDictionary.getOreIDs(s[5])[0]).contains("Glass")) 
+    					&& isGlassBlock(s[4])
+    					&& isGlassBlock(s[5])
     					&& s[6].getItem() == Items.diamond)
     			{
     				return true;
     			}
     		}
     	}
+    	return false;
+    }
+    
+    public boolean isGlassBlock(ItemStack is)
+    {
+    	if(is == null)
+    		return false;
+    	
+    	if(is.getItem() == Item.getItemFromBlock(Blocks.glass) || is.getItem() == Item.getItemFromBlock(Blocks.stained_glass))
+    		return true;
+    	
+    	if(OreDictionary.getOreIDs(is) != null && OreDictionary.getOreIDs(is).length > 0)
+    	{
+    		for(int i = 0; i < OreDictionary.getOreIDs(is).length; ++i)
+    		{
+    			String name = OreDictionary.getOreName(OreDictionary.getOreIDs(is)[i]);
+    			if(name.equals("blockGlass"))
+    				return true;
+    		}
+    	}
+    	
     	return false;
     }
     
