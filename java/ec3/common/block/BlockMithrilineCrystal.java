@@ -23,7 +23,7 @@ public class BlockMithrilineCrystal extends BlockContainer{
 
     public int damageDropped(int meta)
     {
-    	return meta/3;
+    	return meta/3*3;
     }
 	
 	public BlockMithrilineCrystal() {
