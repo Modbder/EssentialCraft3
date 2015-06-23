@@ -163,7 +163,7 @@ public class BaublesModifier extends Item implements IBauble, IUBMRUGainModifier
 			for(int i = 0; i < peArray.length; ++i)
 			{
 				PotionEffect effect = p.getActivePotionEffect(Potion.potionTypes[peArray[i].getPotionID()]);
-				if(Potion.potionTypes[peArray[i].getPotionID()].isBadEffect())
+				if(isPotionBad(Potion.potionTypes[peArray[i].getPotionID()]))
 				{
 					try
 					{
@@ -182,6 +182,11 @@ public class BaublesModifier extends Item implements IBauble, IUBMRUGainModifier
 				}
 			}
 		}
+	}
+	
+	public static boolean isPotionBad(Potion p)
+	{
+		return p == Potion.wither || p == Potion.poison || p == Potion.hunger || p == Potion.blindness || p == Potion.confusion || p == Potion.digSlowdown || p == Potion.moveSlowdown || p == Potion.weakness;
 	}
 
 	@Override
