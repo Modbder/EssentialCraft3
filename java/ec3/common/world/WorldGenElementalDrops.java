@@ -92,6 +92,9 @@ public class WorldGenElementalDrops extends WorldGenerator{
 	
 	public static int staticGenerate(World w, Random r,int x, int y, int z, int dimID, int generationStep, Block minableReplaceable) 
 	{
+		if(generationStep > 24)
+			return 24;
+		
 		int metadata = 0;
 		if(generationStep < 16)
 		{
@@ -121,15 +124,9 @@ public class WorldGenElementalDrops extends WorldGenerator{
 			}
 		}else
 			return generationStep;
-		int tries = 0;
 		int i = r.nextInt(6);
 		ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[i];
-		while(WorldGenElementalDrops.staticGenerate(w, r, x+dir.offsetX, y+dir.offsetY, z+dir.offsetZ, dimID, generationStep+1, minableReplaceable) < 16 && tries < 8)
-		{
-			i = r.nextInt(6);
-			dir = ForgeDirection.VALID_DIRECTIONS[i];
-			++tries;
-		}
+		WorldGenElementalDrops.staticGenerate(w, r, x+dir.offsetX, y+dir.offsetY, z+dir.offsetZ, dimID, generationStep+1, minableReplaceable);
 		return generationStep;
 	}
 
