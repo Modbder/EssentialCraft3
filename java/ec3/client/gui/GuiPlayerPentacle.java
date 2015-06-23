@@ -154,13 +154,16 @@ public class GuiPlayerPentacle extends GuiScreen{
 		if(eb.enabled)
 		{
 			ArrayList<ICorruptionEffect> effects = (ArrayList<ICorruptionEffect>) ECUtils.getData(Minecraft.getMinecraft().thePlayer).getEffects();
-			ICorruptionEffect effect = effects.get(eb.listIndex);
-			if(effect.getType().ordinal() <= this.pentacle.tier || (GuiScreen.isShiftKeyDown() && Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode))
+			if(effects.size() > p_146284_1_.id)
 			{
-				if(GuiScreen.isShiftKeyDown() && Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode)
-					MiscUtils.handleButtonPress(eb.listIndex, getClass(), eb.getClass(), Minecraft.getMinecraft().thePlayer, this.pentacle.xCoord, this.pentacle.yCoord, this.pentacle.zCoord,"||isCreative:true");
-				else
-					MiscUtils.handleButtonPress(eb.listIndex, getClass(), eb.getClass(), Minecraft.getMinecraft().thePlayer, this.pentacle.xCoord, this.pentacle.yCoord, this.pentacle.zCoord);
+				ICorruptionEffect effect = effects.get(eb.listIndex);
+				if(effect.getType().ordinal() <= this.pentacle.tier || (GuiScreen.isShiftKeyDown() && Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode))
+				{
+					if(GuiScreen.isShiftKeyDown() && Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode)
+						MiscUtils.handleButtonPress(eb.listIndex, getClass(), eb.getClass(), Minecraft.getMinecraft().thePlayer, this.pentacle.xCoord, this.pentacle.yCoord, this.pentacle.zCoord,"||isCreative:true");
+					else
+						MiscUtils.handleButtonPress(eb.listIndex, getClass(), eb.getClass(), Minecraft.getMinecraft().thePlayer, this.pentacle.xCoord, this.pentacle.yCoord, this.pentacle.zCoord);
+				}
 			}
 		}
 		
