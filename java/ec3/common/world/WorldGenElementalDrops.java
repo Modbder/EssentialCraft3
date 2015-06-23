@@ -25,7 +25,8 @@ public class WorldGenElementalDrops extends WorldGenerator{
 			int rndX = chunkX*16 + random.nextInt(16);
 			int rndY = random.nextInt(256);
 			int rndZ = chunkZ*16 + random.nextInt(16);
-			new WorldGenElementalDrops(world.provider.dimensionId).generate(world, random, rndX, rndY, rndZ);
+			Block minableReplaceable = world.provider.dimensionId == -1 ? Blocks.netherrack : world.provider.dimensionId == 1 ? Blocks.end_stone : Blocks.stone;
+			WorldGenElementalDrops.staticGenerate(world, random, rndX, rndY, rndZ, world.provider.dimensionId, 0, minableReplaceable);
 		}
 	}
 	
@@ -55,6 +56,9 @@ public class WorldGenElementalDrops extends WorldGenerator{
 		{
 			metadata = dimID == 1 ? 11+r.nextInt(4) : dimID == -1 ? 6+r.nextInt(4) : 1+r.nextInt(4);
 		}
+		if(!w.blockExists(x, y, z))
+			return false;
+		 
 		Block b = w.getBlock(x, y, z);
 		if(b.isReplaceableOreGen(w, x, y, z, minableReplaceable))
 		{
@@ -84,6 +88,49 @@ public class WorldGenElementalDrops extends WorldGenerator{
 			++tries;
 		}
 		return true;
+	}
+	
+	public static int staticGenerate(World w, Random r,int x, int y, int z, int dimID, int generationStep, Block minableReplaceable) 
+	{
+		int metadata = 0;
+		if(generationStep < 16)
+		{
+			metadata = dimID == 1 ? 10 : dimID == -1 ? 5 : 0;
+		}else
+		{
+			metadata = dimID == 1 ? 11+r.nextInt(4) : dimID == -1 ? 6+r.nextInt(4) : 1+r.nextInt(4);
+		}
+		if(!w.blockExists(x, y, z))
+			return generationStep;
+		 
+		Block b = w.getBlock(x, y, z);
+		if(b.isReplaceableOreGen(w, x, y, z, minableReplaceable))
+		{
+			if(generationStep < 16)
+			{
+				w.setBlock(x, y, z, BlocksCore.oreDrops,metadata,0);
+			}else
+			{
+				if(r.nextInt(generationStep) <= 16)
+					w.setBlock(x, y, z, BlocksCore.oreDrops,metadata,0);
+				else
+				{
+					 w.setBlock(x, y, z, minableReplaceable,metadata,0);
+					return ++generationStep;
+				}
+			}
+		}else
+			return generationStep;
+		int tries = 0;
+		int i = r.nextInt(6);
+		ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[i];
+		while(WorldGenElementalDrops.staticGenerate(w, r, x+dir.offsetX, y+dir.offsetY, z+dir.offsetZ, dimID, generationStep+1, minableReplaceable) < 16 && tries < 8)
+		{
+			i = r.nextInt(6);
+			dir = ForgeDirection.VALID_DIRECTIONS[i];
+			++tries;
+		}
+		return generationStep;
 	}
 
 }
