@@ -423,7 +423,7 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     			    {
     			        for(int z = -rad; z <= rad; ++z)
     			        {
-    			        	if(worldObj.getBlock(xCoord+x, miningY, zCoord+z) != null && worldObj.getBlock(xCoord+x, miningY, zCoord+z) != Blocks.air && !(worldObj.getBlock(xCoord+x, miningY, zCoord+z) instanceof BlockLiquid))
+    			        	if(worldObj.blockExists(xCoord+x, miningY, zCoord+z) && worldObj.getBlock(xCoord+x, miningY, zCoord+z) != null && worldObj.getBlock(xCoord+x, miningY, zCoord+z) != Blocks.air && !(worldObj.getBlock(xCoord+x, miningY, zCoord+z) instanceof BlockLiquid))
     			        	{
     			        		this.miningX = this.xCoord+x;
     			        		this.miningZ = this.zCoord+z;
@@ -439,7 +439,7 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     			this.miningY = this.genMiningColomnY(miningY);
     			this.miningX = this.xCoord;
     			this.miningZ = this.zCoord;
-    			if(worldObj.getBlock(miningX, miningY, miningZ) != null && worldObj.getBlock(miningX, miningY, miningZ) != Blocks.air && !(worldObj.getBlock(miningX, miningY, miningZ) instanceof BlockLiquid))
+    			if(worldObj.blockExists(miningX, miningY, miningZ) && worldObj.getBlock(miningX, miningY, miningZ) != null && worldObj.getBlock(miningX, miningY, miningZ) != Blocks.air && !(worldObj.getBlock(miningX, miningY, miningZ) instanceof BlockLiquid))
     			{
     				if(this.mineBlock(worldObj.getBlock(miningX, miningY, miningZ)))
     				{
