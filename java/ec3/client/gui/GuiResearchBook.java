@@ -232,6 +232,11 @@ public class GuiResearchBook extends GuiScreen{
 	 @SuppressWarnings("unchecked")
 	public void initCategories()
 	 {
+		 if(bookTag == null)
+		 {
+			 bookTag = new NBTTagCompound();
+			 bookTag.setInteger("tier", 3);
+		 }
 		 currentPage_discovery = 0;
 	     int k = (this.width - 256) / 2 + 128;
 	     int l = (this.height - 168) / 2;
