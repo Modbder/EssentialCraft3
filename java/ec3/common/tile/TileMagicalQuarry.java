@@ -320,6 +320,9 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     				this.progressLevel += this.getEfficency();
     			if(this.progressLevel >= required)
     			{
+    				if(quarryFakePlayer == null || quarryFakePlayer.get() == null)
+    					quarryFakePlayer = new WeakReference<FakePlayer>(new FakePlayer((WorldServer) this.worldObj,ECUtils.EC3FakePlayerProfile));
+    				
     				progressLevel = 0;
     				if(this.hasMiningUpgrade())
     				{
