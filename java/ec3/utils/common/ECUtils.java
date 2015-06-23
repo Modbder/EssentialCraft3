@@ -912,9 +912,15 @@ public class ECUtils {
 				returnObj[i] = work;
 			if(work instanceof List)
 			{
-				ItemStack listStk = (ItemStack) ((List<?>)work).get(0);
-				String oreDictName = OreDictionary.getOreName(OreDictionary.getOreIDs(listStk)[0]);
-				returnObj[i] = oreDictName;
+				if(!List.class.cast(work).isEmpty())
+				{
+					ItemStack listStk = (ItemStack) ((List<?>)work).get(0);
+					if(OreDictionary.getOreIDs(listStk) != null && OreDictionary.getOreIDs(listStk).length > 0)
+					{
+						String oreDictName = OreDictionary.getOreName(OreDictionary.getOreIDs(listStk)[0]);
+						returnObj[i] = oreDictName;
+					}
+				}
 			}
 		}
 		ret = new ShapelessOreRecipe(recipe.getRecipeOutput(), returnObj);
