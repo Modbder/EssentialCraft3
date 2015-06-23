@@ -61,7 +61,7 @@ public class EssentialCraftCore {
 	public static CommonProxy proxy;
 	public static Config cfg = new Config();
 	//TODO Do not forget to change the version number every git commit.
-	public static final String version = "4.5.1710.207";
+	public static final String version = "4.5.1710.208";
 	public static final String modid = "essentialcraft";
 	public static ModMetadata metadata;
 	public static SimpleNetworkWrapper network;

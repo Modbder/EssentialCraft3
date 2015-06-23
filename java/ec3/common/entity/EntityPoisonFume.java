@@ -73,6 +73,9 @@ public class EntityPoisonFume extends EntityMob
     @SuppressWarnings("unchecked")
 	public void onLivingUpdate()
     {
+    	if(!(this.dimension == Config.dimensionID && ECUtils.isEventActive("ec3.event.fumes")))
+    		this.setDead();
+    	
         if (!this.worldObj.isRemote)
         {
             --this.heightOffsetUpdateTime;

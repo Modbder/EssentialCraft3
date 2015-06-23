@@ -55,7 +55,7 @@ public class EntityMRUPresence extends EntityLivingBase implements IMRUPressence
 	protected void entityInit(){
 		super.entityInit();
 		//TODO rework data structuring
-			this.dataWatcher.addObject(15, 1000000);
+			this.dataWatcher.addObject(15, 0F);
 			this.dataWatcher.addObject(16, 1);
 			this.dataWatcher.addObject(17, 0);
 			this.dataWatcher.addObject(18, 1);
@@ -66,7 +66,7 @@ public class EntityMRUPresence extends EntityLivingBase implements IMRUPressence
 	{
 		super.readEntityFromNBT(var1);
 		if(!this.worldObj.isRemote)
-		this.setMRU(var1.getInteger("mru"));
+			this.setMRU(var1.getInteger("mru"));
 		this.updateMRU();
 		if(!this.worldObj.isRemote)
 		this.setBalance(var1.getFloat("Balance"));
@@ -286,9 +286,10 @@ public class EntityMRUPresence extends EntityLivingBase implements IMRUPressence
 		{
 			this.setMRU(this.getMRU());
 		}
-		if(this.worldObj.isRemote && !firstTick)
+		if(this.worldObj.isRemote)
 		{
-			this.mruAmount = this.getMRU();
+			if(!firstTick)
+				this.mruAmount = this.getMRU();
 		}
 	}
 	
@@ -317,13 +318,13 @@ public class EntityMRUPresence extends EntityLivingBase implements IMRUPressence
 	
 	public float getBalance()
 	{
-		return ((float)this.dataWatcher.getWatchableObjectInt(15))/1000000;
+		return ((float)this.dataWatcher.getWatchableObjectFloat(15));
 	}
 	
 	public void setBalance(float f)
 	{
 		if(this != null && !this.isDead)
-			this.dataWatcher.updateObject(15, (int)(f*1000000));
+			this.dataWatcher.updateObject(15, f);
 	}
 	
 	public boolean canAlwaysStay()
