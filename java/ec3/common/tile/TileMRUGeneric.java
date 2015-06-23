@@ -279,16 +279,21 @@ public abstract class TileMRUGeneric extends TileEntity implements ITERequiresMR
 				return getOutputSlots();
 			else
 			{
-				int[] retInt = new int[this.getSizeInventory()-(getOutputSlots().length + 1)];
+				int[] retInt;
+				if(this.getSizeInventory()-(getOutputSlots().length + 1) > 0)
+					retInt = new int[this.getSizeInventory()-(getOutputSlots().length + 1)];
+				else
+					retInt = new int[0];
 				int cnt = 0;
-				for(int i = 0; i < this.getSizeInventory(); ++i)
-				{
-					if(i != 0 && !MathUtils.arrayContains(getOutputSlots(), i))
+				if(retInt.length > 0)
+					for(int i = 0; i < this.getSizeInventory(); ++i)
 					{
-						retInt[cnt] = i;
-						++cnt;
+						if(i != 0 && !MathUtils.arrayContains(getOutputSlots(), i))
+						{
+							retInt[cnt] = i;
+							++cnt;
+						}
 					}
-				}
 				return retInt;
 			}
 		}
