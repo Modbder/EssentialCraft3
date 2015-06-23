@@ -275,57 +275,60 @@ public class TileMagicalMirror extends TileMRUGeneric{
 			}
 		}else
 		{
-			IInventory assembler = (IInventory) tile;
-			if(this.inventoryPos != null)
+			if(tile instanceof IInventory)
 			{
-				TileEntity tile1 = this.worldObj.getTileEntity(MathHelper.floor_double(this.inventoryPos.x), MathHelper.floor_double(this.inventoryPos.y), MathHelper.floor_double(this.inventoryPos.z));
-				if(assembler != null && tile1 != null && tile1 instanceof IInventory && !(tile1 instanceof TileMagicalAssembler))
+				IInventory assembler = (IInventory) tile;
+				if(this.inventoryPos != null)
 				{
-					IInventory inv = (IInventory) tile1;
-					CycleF:for(int w = 0; w < assembler.getSizeInventory(); ++w)
+					TileEntity tile1 = this.worldObj.getTileEntity(MathHelper.floor_double(this.inventoryPos.x), MathHelper.floor_double(this.inventoryPos.y), MathHelper.floor_double(this.inventoryPos.z));
+					if(assembler != null && tile1 != null && tile1 instanceof IInventory && !(tile1 instanceof TileMagicalAssembler))
 					{
-						if(assembler.getStackInSlot(w) != null)
+						IInventory inv = (IInventory) tile1;
+						CycleF:for(int w = 0; w < assembler.getSizeInventory(); ++w)
 						{
-							ItemStack is = assembler.getStackInSlot(w);
-							for(int i = 0; i < inv.getSizeInventory(); ++i)
+							if(assembler.getStackInSlot(w) != null)
 							{
-								ItemStack is1 = inv.getStackInSlot(i);
-								if(is1 == null || (is1.isItemEqual(is) && is1.stackSize+1 < is1.getMaxStackSize()+1))
+								ItemStack is = assembler.getStackInSlot(w);
+								for(int i = 0; i < inv.getSizeInventory(); ++i)
 								{
-									this.pulsing = true;
-									this.syncTick = 0;
-									if(!this.worldObj.isRemote && this.transferTime <= 60)
-										++this.transferTime;
-									this.transferingStack = assembler.getStackInSlot(w);
-									double sX = this.xCoord + 0.5D + MathUtils.randomDouble(worldObj.rand)/6;
-									double sY = this.yCoord + 0.5D + MathUtils.randomDouble(worldObj.rand)/6;
-									double sZ = this.zCoord + 0.5D + MathUtils.randomDouble(worldObj.rand)/6;
-									double dX = this.inventoryPos.x + MathUtils.randomDouble(worldObj.rand)/6;
-									double dY = this.inventoryPos.y + MathUtils.randomDouble(worldObj.rand)/6;
-									double dZ = this.inventoryPos.z + MathUtils.randomDouble(worldObj.rand)/6;
-									if(this.transferTime < 20)
+									ItemStack is1 = inv.getStackInSlot(i);
+									if(is1 == null || (is1.isItemEqual(is) && is1.stackSize+1 < is1.getMaxStackSize()+1))
 									{
-										dX = sX;
-										dY = sY;
-										dZ = sZ;
-										sY -= 1;
+										this.pulsing = true;
+										this.syncTick = 0;
+										if(!this.worldObj.isRemote && this.transferTime <= 60)
+											++this.transferTime;
+										this.transferingStack = assembler.getStackInSlot(w);
+										double sX = this.xCoord + 0.5D + MathUtils.randomDouble(worldObj.rand)/6;
+										double sY = this.yCoord + 0.5D + MathUtils.randomDouble(worldObj.rand)/6;
+										double sZ = this.zCoord + 0.5D + MathUtils.randomDouble(worldObj.rand)/6;
+										double dX = this.inventoryPos.x + MathUtils.randomDouble(worldObj.rand)/6;
+										double dY = this.inventoryPos.y + MathUtils.randomDouble(worldObj.rand)/6;
+										double dZ = this.inventoryPos.z + MathUtils.randomDouble(worldObj.rand)/6;
+										if(this.transferTime < 20)
+										{
+											dX = sX;
+											dY = sY;
+											dZ = sZ;
+											sY -= 1;
+										}
+										if(this.worldObj.getWorldTime()%5==0)
+										ECUtils.spawnItemFX(sX, sY, sZ, dX, dY, dZ);
+										if(this.transferTime >= 60)
+										{
+											ItemStack set = is.copy();
+											set.stackSize = 1;
+											if(inv.getStackInSlot(i) == null)
+												inv.setInventorySlotContents(i, set);
+											else
+												++inv.getStackInSlot(i).stackSize;
+											assembler.decrStackSize(w, 1);
+											transferingStack = null;
+											this.transferTime = 0;
+											this.pulsing = false;
+										}
+										break CycleF;
 									}
-									if(this.worldObj.getWorldTime()%5==0)
-									ECUtils.spawnItemFX(sX, sY, sZ, dX, dY, dZ);
-									if(this.transferTime >= 60)
-									{
-										ItemStack set = is.copy();
-										set.stackSize = 1;
-										if(inv.getStackInSlot(i) == null)
-											inv.setInventorySlotContents(i, set);
-										else
-											++inv.getStackInSlot(i).stackSize;
-										assembler.decrStackSize(w, 1);
-										transferingStack = null;
-										this.transferTime = 0;
-										this.pulsing = false;
-									}
-									break CycleF;
 								}
 							}
 						}
