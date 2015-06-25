@@ -36,7 +36,7 @@ public class WorldEvent_Fumes implements IWorldEvent{
 
 	@Override
 	public boolean possibleToApply(World w) {
-		return w.provider.dimensionId == Config.dimensionID;
+		return true;
 	}
 
 	@Override

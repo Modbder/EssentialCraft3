@@ -8,12 +8,14 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
+import org.apache.logging.log4j.Level;
 import org.lwjgl.input.Keyboard;
 
 import baubles.api.BaublesApi;
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
@@ -42,6 +44,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -62,6 +65,8 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 
 public class PlayerTickHandler{
 	public Hashtable<EntityPlayer, Integer> ticks = new Hashtable<EntityPlayer, Integer>();
+	public Hashtable<EntityPlayer, Integer> wticks = new Hashtable<EntityPlayer, Integer>();
+	
 	public Hashtable<EntityPlayer, Boolean> isWearingBoots = new Hashtable<EntityPlayer, Boolean>();
 	
 	public Hashtable<EntityPlayer, Boolean> isFlightAllowed = new Hashtable<EntityPlayer, Boolean>();
@@ -71,6 +76,26 @@ public class PlayerTickHandler{
 	public static int tickAmount;
 	
 	public boolean isRKeyPressed = false;
+	
+	public void manageWorldSync(EntityPlayer e)
+	{
+		if(!wticks.containsKey(e))
+		{
+			wticks.put(e, 10);
+			ECUtils.requestCurrentEventSyncForPlayer((EntityPlayerMP) e);
+		}else
+		{
+			int i = wticks.get(e).intValue();
+			
+			if(i <= 0)
+			{
+				i = 10;
+				ECUtils.requestCurrentEventSyncForPlayer((EntityPlayerMP) e);
+			}else
+				--i;
+			wticks.put(e, i);
+		}
+	}
 	
 	@SubscribeEvent
 	public void tickEvent(WorldTickEvent event)
@@ -250,9 +275,9 @@ public class PlayerTickHandler{
 				((WorldProviderFirstWorld)(e.worldObj.provider)).generateLightBrightnessTable();
 				if(ECUtils.isEventActive("ec3.event.darkness"))
 				{
-					if(e.worldObj.rand.nextFloat() < 0.2F)
+					if(e.worldObj.rand.nextFloat() < 0.01F)
 						e.worldObj.playSound(e.posX,e.posY,e.posZ, "ambient.cave.cave", 1, e.worldObj.rand.nextFloat()*2, true);
-					if(e.worldObj.rand.nextFloat() < 0.02F)
+					if(e.worldObj.rand.nextFloat() < 0.001F)
 					{
 						String[] sound = {"mob.zombie.death","mob.zombie.say","mob.blaze.death","mob.skeleton.step","mob.endermen.stare","mob.spider.step","mob.spider.death","mob.spider.say","mob.creeper.death"};
 						
@@ -278,7 +303,7 @@ public class PlayerTickHandler{
 					e.motionX += MathUtils.randomFloat(e.worldObj.rand)/30;
 					e.motionY += MathUtils.randomFloat(e.worldObj.rand)/30;
 					e.motionZ += MathUtils.randomFloat(e.worldObj.rand)/30;
-					if(e.worldObj.rand.nextFloat() < 0.2F)
+					if(e.worldObj.rand.nextFloat() < 0.01F)
 					{
 						if(!ignoreEarthquake)
 						{
@@ -371,15 +396,26 @@ public class PlayerTickHandler{
 					FileInputStream iStream = new FileInputStream(saveFile);
 					try
 					{
-						NBTTagCompound tag = CompressedStreamTools.readCompressed(iStream);
-						ECUtils.readOrCreatePlayerData(e, tag);
-						//ECUtils.requestSync(e);
+						NBTTagCompound tag = null;
+						try
+						{
+							tag = CompressedStreamTools.readCompressed(iStream);
+						}
+						catch(java.io.EOFException EOFE)
+						{
+							//NBT could not be read, probably a first login.
+							FMLLog.log(Level.WARN, "[EC3]Player data for player "+e.getCommandSenderName()+" could not be read. If it is the first time of the player to log in - it is fine. Otherwise, report the error to the author!");
+						}
+						
+						if(tag != null)
+							ECUtils.readOrCreatePlayerData(e, tag);
+						else 
+							ECUtils.createPlayerData(e);
 					}
 					catch(Exception Ex)
 					{
 						FMLCommonHandler.instance().raiseException(Ex, "EssentialCraft3 Encountered an exception whlist reading playerdata NBT of player "+e.getCommandSenderName()+"! It is totally fine if this is your first time opening the save. If it is not - report the error to the forum - http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2286105", false);
 						ECUtils.readOrCreatePlayerData(e, new NBTTagCompound());
-						//ECUtils.requestSync(e);
 					}
 					finally
 					{
@@ -402,14 +438,17 @@ public class PlayerTickHandler{
 		{
 			EntityPlayer e = event.player;
 			
-			if(e == null || e.ticksExisted % 20 != 0)
+			if(e == null)
 				return;
-			
+				
 			//TODO lagFix
 			
 			//Sync section
 			if(!e.worldObj.isRemote)
+			{
 				manageSync(e);
+				manageWorldSync(e);
+			}
 			//Client overview
 			if(e.worldObj.isRemote)
 			{
@@ -511,6 +550,9 @@ public class PlayerTickHandler{
 					}
 				}
 			}
+			
+			if(e.ticksExisted % 20 != 0)
+				return;
 			
 			//Server overview
 			if(!e.worldObj.isRemote)

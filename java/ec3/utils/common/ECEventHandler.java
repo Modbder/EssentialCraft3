@@ -1,14 +1,21 @@
 package ec3.utils.common;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import org.apache.logging.log4j.Level;
+
 import baubles.api.BaublesApi;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -23,6 +30,7 @@ import ec3.api.GunRegistry.GunType;
 import ec3.api.GunRegistry.ScopeMaterial;
 import ec3.api.GunRegistry;
 import ec3.api.IUBMRUGainModifier;
+import ec3.api.IWorldEvent;
 import ec3.api.WorldEventLibrary;
 import ec3.client.gui.GuiResearchBook;
 import ec3.common.item.BaublesModifier;
@@ -51,7 +59,6 @@ import DummyCore.Events.DummyEvent_OnPacketRecieved;
 import DummyCore.Utils.Coord3D;
 import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
-import DummyCore.Utils.DummyDataUtils;
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
 import net.minecraft.block.material.Material;
@@ -83,6 +90,7 @@ import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
@@ -106,6 +114,7 @@ import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class ECEventHandler {
@@ -917,36 +926,127 @@ public class ECEventHandler {
 	}
 	
 	@SubscribeEvent
+	public void worldLoadEvent(WorldEvent.Load event)
+	{
+		if(event.world != null && !event.world.isRemote && event.world.provider != null && event.world.provider.dimensionId == 0)
+		{
+			File f = event.world.getSaveHandler().getWorldDirectory();
+			if(f != null)
+			{
+				try
+				{
+					String fPath = f.getAbsolutePath();
+					File worldSaveFile = new File(fPath+"//EC3Data.dat");
+					if(worldSaveFile.isDirectory())
+					{
+						throw new IOException("File is a directory! Please, delete the EC3Data.dat(???) folder in your save and launch the game again!");
+					}
+					if(!worldSaveFile.exists())
+					{
+						FMLLog.log(Level.WARN, "[EC3]*Server save file not found. This is completely normal if this is your first launch of the save. Otherwise please, report this to the author!");
+						worldSaveFile.createNewFile();
+					}
+					FileInputStream iStream = new FileInputStream(worldSaveFile);
+					try
+					{
+						ECUtils.ec3WorldTag = CompressedStreamTools.readCompressed(iStream);
+					}
+					catch(Exception ex)
+					{
+						//...
+					}
+					finally
+					{
+						iStream.close();
+					}
+				}
+				catch(Exception e)
+				{
+					//...
+				}
+			}
+		}
+	}
+	
+	@SubscribeEvent
+	public void worldSaveEvent(WorldEvent.Save event)
+	{
+		if(event.world != null && !event.world.isRemote && event.world.provider != null && event.world.provider.dimensionId == 0)
+		{
+			File f = event.world.getSaveHandler().getWorldDirectory();
+			if(f != null)
+			{
+				try
+				{
+					String fPath = f.getAbsolutePath();
+					File worldSaveFile = new File(fPath+"//EC3Data.dat");
+					if(worldSaveFile.isDirectory())
+					{
+						throw new IOException("File is a directory! Please, delete the EC3Data.dat(???) folder in your save and launch the game again!");
+					}
+					if(!worldSaveFile.exists())
+					{
+						worldSaveFile.createNewFile();
+					}
+					FileOutputStream oStream = new FileOutputStream(worldSaveFile);
+					try
+					{
+						CompressedStreamTools.writeCompressed(ECUtils.ec3WorldTag, oStream);
+					}
+					catch(Exception ex)
+					{
+						//...
+					}
+					finally
+					{
+						oStream.close();
+					}
+				}
+				catch(Exception e)
+				{
+					//...
+				}
+			}
+		}
+	}
+	
+	@SubscribeEvent
 	public void worldTick(WorldTickEvent event)
 	{
-		if(!event.world.isRemote && event.world.getWorldTime() % 20 == 0)
+		if(!event.world.isRemote && event.world != null && event.world.provider != null && event.world.provider.dimensionId == Config.dimensionID && event.phase == Phase.END)
 		{
-			String worldEvent = DummyDataUtils.getCustomDataForMod("essentialcraft", "worldEvent");
-			if(worldEvent != null)
+			if(ECUtils.hasActiveEvent())
 			{
-				if(event.phase == Phase.END)
+				if(WorldEventLibrary.currentEvent == null)
 				{
-					if(WorldEventLibrary.currentEvent == null)
-					{
-						worldEvent = "no data";
-					}else
-					{
-						worldEvent = new DummyData(WorldEventLibrary.currentEvent.getEventID(),WorldEventLibrary.currentEventDuration).toString();
-					}
-					ECUtils.endEvent(event.world);
-					ECUtils.newWorldEvent(event.world);
-					DummyDataUtils.writeCustomDataForMod("essentialcraft", "worldEvent", worldEvent);
+					WorldEventLibrary.currentEvent = WorldEventLibrary.gettEffectByID(ECUtils.getActiveEvent());
+					WorldEventLibrary.currentEventDuration = ECUtils.getActiveEventDuration();
 				}else
 				{
-					if(WorldEventLibrary.currentEvent == null && !worldEvent.equals("no data"))
+					ECUtils.ec3WorldTag.setInteger("currentEventDuration", ECUtils.getActiveEventDuration()-1);
+					if(ECUtils.getActiveEventDuration() <= 0)
 					{
-						DummyData[] data = DataStorage.parseData(worldEvent);
-						WorldEventLibrary.currentEvent = WorldEventLibrary.gettEffectByID(data[0].fieldName, event.world);
-						WorldEventLibrary.currentEventDuration = Integer.parseInt(data[0].fieldValue);
+						WorldEventLibrary.currentEvent.onEventEnd(event.world);
+						WorldEventLibrary.currentEvent = null;
+						WorldEventLibrary.currentEventDuration = -1;
+						ECUtils.ec3WorldTag.removeTag("currentEventDuration");
+						ECUtils.ec3WorldTag.removeTag("currentEvent");
+						ECUtils.requestCurrentEventSync();
+					}else
+						WorldEventLibrary.currentEventDuration = ECUtils.getActiveEventDuration();
+				}
+			}else
+			{
+				if(event.world.getWorldTime() % 20 == 0)
+				{
+					IWorldEvent wevent = WorldEventLibrary.selectRandomEffect(event.world);
+					if(wevent != null)
+					{
+						wevent.onEventBeginning(event.world);
+						ECUtils.ec3WorldTag.setString("currentEvent", wevent.getEventID());
+						ECUtils.ec3WorldTag.setInteger("currentEventDuration", wevent.getEventDuration(event.world));
+						ECUtils.requestCurrentEventSync();
 					}
-					if(WorldEventLibrary.currentEvent != null)
-						WorldEventLibrary.currentEvent.worldTick(event.world, WorldEventLibrary.currentEventDuration);
-					DummyDataUtils.writeCustomDataForMod("essentialcraft", "worldEvent", worldEvent);
 				}
 			}
 		}

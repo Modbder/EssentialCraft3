@@ -69,7 +69,7 @@ public class WorldEvent_SunArray implements IWorldEvent{
 
 	@Override
 	public boolean possibleToApply(World w) {
-		return w.provider.dimensionId == Config.dimensionID && w.getWorldTime() % 24000L == 0;
+		return w.getWorldTime() % 24000L == 0;
 	}
 
 	@Override

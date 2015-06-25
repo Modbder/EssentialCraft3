@@ -31,11 +31,11 @@ public class WorldEventLibrary {
 		return null;
 	}
 	
-	public static IWorldEvent gettEffectByID(String id,World w)
+	public static IWorldEvent gettEffectByID(String id)
 	{
 		for(IWorldEvent event : registeredEventList)
 		{
-			if(event.getEventID().equals(id) && event.possibleToApply(w) && event.getEventDuration(w) > 0)
+			if(event.getEventID().equals(id))
 			{
 				return event;
 			}else

@@ -18,9 +18,7 @@ import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import DummyCore.Utils.Coord3D;
-import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
-import DummyCore.Utils.DummyDataUtils;
 import DummyCore.Utils.DummyDistance;
 import DummyCore.Utils.DummyPacketHandler;
 import DummyCore.Utils.DummyPacketIMSG;
@@ -83,6 +81,7 @@ public class ECUtils {
 	public static List<SpellEntry> spells = new ArrayList<SpellEntry>();
 	public static Hashtable<Object,Integer> inPortalTime = new Hashtable<Object, Integer>();
 	public static Hashtable<String,PlayerGenericData> playerDataTable = new Hashtable<String, PlayerGenericData>();
+	public static NBTTagCompound ec3WorldTag = new NBTTagCompound();
 	
 	public static void requestSync(EntityPlayer e)
 	{
@@ -771,16 +770,36 @@ public class ECUtils {
 		}
 	}
 	
+	public static void requestCurrentEventSyncForPlayer(EntityPlayerMP player)
+	{
+		PacketNBT syncPacket = new PacketNBT(ec3WorldTag).setID(2);
+		EssentialCraftCore.network.sendTo(syncPacket, player);
+	}
+	
+	public static void requestCurrentEventSync()
+	{
+		PacketNBT syncPacket = new PacketNBT(ec3WorldTag).setID(2);
+		EssentialCraftCore.network.sendToAll(syncPacket);
+	}
+	
+	public static int getActiveEventDuration()
+	{
+		return ec3WorldTag.getInteger("currentEventDuration");
+	}
+	
+	public static String getActiveEvent()
+	{
+		return ec3WorldTag.getString("currentEvent");
+	}
+	
+	public static boolean hasActiveEvent()
+	{
+		return !ec3WorldTag.hasNoTags() && ec3WorldTag.getString("currentEvent") != null && !ec3WorldTag.getString("currentEvent").isEmpty();
+	}
+	
 	public static boolean isEventActive(String id)
 	{
-		String eventData = DummyDataUtils.getCustomDataForMod("essentialcraft", "worldEvent");
-		if(eventData != null && !eventData.equals("no data"))
-		{
-			DummyData[] dt = DataStorage.parseData(eventData);
-			if(eventData != null && dt[0].fieldName.equals(id))
-				return true;
-		}
-		return false;
+		return ec3WorldTag.getString("currentEvent").equalsIgnoreCase(id);
 	}
 	
 	public static void sendChatMessageToAllPlayersInDim(int dimID,String msg)

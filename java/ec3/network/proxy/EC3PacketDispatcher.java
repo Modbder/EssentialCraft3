@@ -39,6 +39,12 @@ public class EC3PacketDispatcher implements IMessageHandler<PacketNBT,IMessage>{
 					PacketNBT pkt = new PacketNBT(theTag).setID(0);
 					EssentialCraftCore.network.sendTo(pkt, (EntityPlayerMP) clientPlayer);
 				}
+				break;
+			}
+			case 2:
+			{
+				ECUtils.ec3WorldTag = message.theTag;
+				break;
 			}
 		}
 		return null;
