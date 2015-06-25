@@ -321,7 +321,7 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     			if(this.progressLevel >= required)
     			{
     				if(quarryFakePlayer == null || quarryFakePlayer.get() == null)
-    					quarryFakePlayer = new WeakReference<FakePlayer>(new FakePlayer((WorldServer) this.worldObj,ECUtils.EC3FakePlayerProfile));
+    					return false;
     				
     				progressLevel = 0;
     				if(this.hasMiningUpgrade())
@@ -423,7 +423,7 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     			    {
     			        for(int z = -rad; z <= rad; ++z)
     			        {
-    			        	if(worldObj.blockExists(xCoord+x, miningY, zCoord+z) && worldObj.getBlock(xCoord+x, miningY, zCoord+z) != null && worldObj.getBlock(xCoord+x, miningY, zCoord+z) != Blocks.air && !(worldObj.getBlock(xCoord+x, miningY, zCoord+z) instanceof BlockLiquid))
+    			        	if(worldObj.checkChunksExist(xCoord+x-1, miningY-1, zCoord+z-1, xCoord+x+1, miningY+1, zCoord+z+1) && worldObj.blockExists(xCoord+x, miningY, zCoord+z) && worldObj.getBlock(xCoord+x, miningY, zCoord+z) != null && worldObj.getBlock(xCoord+x, miningY, zCoord+z) != Blocks.air && !(worldObj.getBlock(xCoord+x, miningY, zCoord+z) instanceof BlockLiquid))
     			        	{
     			        		this.miningX = this.xCoord+x;
     			        		this.miningZ = this.zCoord+z;
@@ -439,15 +439,18 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     			this.miningY = this.genMiningColomnY(miningY);
     			this.miningX = this.xCoord;
     			this.miningZ = this.zCoord;
-    			if(worldObj.blockExists(miningX, miningY, miningZ) && worldObj.getBlock(miningX, miningY, miningZ) != null && worldObj.getBlock(miningX, miningY, miningZ) != Blocks.air && !(worldObj.getBlock(miningX, miningY, miningZ) instanceof BlockLiquid))
+    			if(worldObj.checkChunksExist(miningX-1, miningY-1, miningZ-1, miningX+1, miningY+1, miningZ+1) && worldObj.blockExists(miningX, miningY, miningZ))
     			{
-    				if(this.mineBlock(worldObj.getBlock(miningX, miningY, miningZ)))
+    				if(worldObj.getBlock(miningX, miningY, miningZ) != null && worldObj.getBlock(miningX, miningY, miningZ) != Blocks.air && !(worldObj.getBlock(miningX, miningY, miningZ) instanceof BlockLiquid))
     				{
-    					--this.miningY;
-    				}
-    			}else
-    			{
-    				--this.miningY;
+	    				if(this.mineBlock(worldObj.getBlock(miningX, miningY, miningZ)))
+	    				{
+	    					--this.miningY;
+	    				}
+    				}else
+        			{
+        				--this.miningY;
+        			}
     			}
     		}
     	}
