@@ -1,8 +1,12 @@
 package ec3.common.item;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.lwjgl.opengl.GL11;
+
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 
 import DummyCore.Utils.DCASMCheck;
 import DummyCore.Utils.ExistanceCheck;
@@ -22,6 +26,8 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -61,6 +67,27 @@ public class ItemArmorMod extends ItemArmor implements IRepairable, IVisDiscount
         }	
     }
     
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public Multimap getAttributeModifiers(ItemStack stack)
+    {
+    	Multimap mods = HashMultimap.create();
+    	
+    	if(this == ItemsCore.magicArmorItems[5])
+    		mods.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), new AttributeModifier(UUID.fromString("1bca943c-3cf5-42cc-a3df-2ed994ae0000"), "hp", 20D, 0));
+    	
+    	if(this == ItemsCore.magicArmorItems[7])
+    		mods.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(UUID.fromString("1bca943c-3cf5-42cc-a3df-2ed994ae0000"), "movespeed", 0.05D, 0));
+    	
+    	if(this == ItemsCore.magicArmorItems[9])
+    		mods.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), new AttributeModifier(UUID.fromString("1bca943c-3cf5-42cc-a3df-2ed994ae0000"), "hp", 30D, 0));
+    	
+    	if(this == ItemsCore.magicArmorItems[11])
+    		mods.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(UUID.fromString("1bca943c-3cf5-42cc-a3df-2ed994ae0000"), "movespeed", 0.1D, 0));
+    	
+    	
+    	
+    	return mods;
+    }
 	
 	@Override 
 	public String getArmorTexture(ItemStack itemstack, Entity entity, int slot, String type)

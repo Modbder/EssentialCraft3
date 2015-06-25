@@ -5,7 +5,6 @@ import ec3.api.MagicianTableUpgrades;
 import ec3.common.mod.EssentialCraftCore;
 import DummyCore.Items.ItemRegistry;
 import DummyCore.Utils.MiscUtils;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
@@ -162,7 +161,6 @@ public class ItemsCore {
 		ItemRegistry.registerItem(magicArmorItems[5], EssentialCraftCore.class);
 		ApiCore.setArmorProperties(magicArmorItems[5], 1F, 0.5F, 0.75F);
 		MiscUtils.registerDescriptionFor(magicArmorItems[5].getUnlocalizedName(), "Can dodge 20% of attacks", EnumChatFormatting.ITALIC);
-		MiscUtils.registerItemModifier(magicArmorItems[5], -1, "armor", "02001", 20D, SharedMonsterAttributes.maxHealth, 0);
 		
 		magicArmorItems[6] = new ItemArmorMod(voidArmorMaterial, 4, 2, 1).setArmorTexture("armorEC3Void").setUnlocalizedName("essentialcraft:legs_void").setMaxDamage(1024*4);
 		Item.itemRegistry.addObject(getIdForItem("legs_void"), "essentialcraft:legs_void", magicArmorItems[6]);
@@ -175,7 +173,6 @@ public class ItemsCore {
 		ItemRegistry.registerItem(magicArmorItems[7], EssentialCraftCore.class);
 		ApiCore.setArmorProperties(magicArmorItems[7], 1F, 0.5F, 0.75F);
 		MiscUtils.registerDescriptionFor(magicArmorItems[7].getUnlocalizedName(), "Negates 90% of falldamage", EnumChatFormatting.ITALIC);
-		MiscUtils.registerItemModifier(magicArmorItems[7], -1, "armor", "02000", 0.05D, SharedMonsterAttributes.movementSpeed, 0);
 	
 		
 		
@@ -191,7 +188,6 @@ public class ItemsCore {
 		ItemRegistry.registerItem(magicArmorItems[9], EssentialCraftCore.class);
 		ApiCore.setArmorProperties(magicArmorItems[9], 1F, 1F, 1F);
 		MiscUtils.registerDescriptionFor(magicArmorItems[9].getUnlocalizedName(), "Be quiet, Dominique!", EnumChatFormatting.ITALIC);
-		MiscUtils.registerItemModifier(magicArmorItems[9], -1, "armor", "02001", 30D, SharedMonsterAttributes.maxHealth, 0);
 		
 		magicArmorItems[10] = new ItemArmorMod(inquisArmorMaterial, 4, 2, 2).setArmorTexture("armorEC3Inquisitorium").setUnlocalizedName("essentialcraft:legs_inq").setMaxDamage(1024*10);
 		Item.itemRegistry.addObject(getIdForItem("legs_inq"), "essentialcraft:legs_inq", magicArmorItems[10]);
@@ -204,7 +200,6 @@ public class ItemsCore {
 		ItemRegistry.registerItem(magicArmorItems[11], EssentialCraftCore.class);
 		ApiCore.setArmorProperties(magicArmorItems[11], 1F, 1F, 1F);
 		MiscUtils.registerDescriptionFor(magicArmorItems[11].getUnlocalizedName(), "Magic shall not prevail!", EnumChatFormatting.ITALIC);
-		MiscUtils.registerItemModifier(magicArmorItems[11], -1, "armor", "02000", 0.1D, SharedMonsterAttributes.movementSpeed, 0);
 		
 		
 		
@@ -286,7 +281,6 @@ public class ItemsCore {
 		wind_chestplate = new ItemGenericArmor(windArmorMaterial, 0, 1).setUnlocalizedName("essentialcraft.wind_chestplate").setTextureName("essentialcraft:armor/wind_chestplate").setMaxDamage(312*4);
 		ItemRegistry.registerItem(wind_chestplate,"wind_chestplate", EssentialCraftCore.class);
 		ApiCore.setArmorProperties(wind_chestplate, 0.5F, 0.75F, 0.5F);
-		MiscUtils.registerItemModifier(wind_chestplate, -1, "armor", "02000", 0.075D, SharedMonsterAttributes.movementSpeed, 0);
 
 		wind_leggings = new ItemGenericArmor(windArmorMaterial, 0, 2).setUnlocalizedName("essentialcraft.wind_leggings").setTextureName("essentialcraft:armor/wind_leggings").setMaxDamage(312*3);
 		ItemRegistry.registerItem(wind_leggings,"wind_leggings", EssentialCraftCore.class);
@@ -309,12 +303,10 @@ public class ItemsCore {
 		computer_chestplate = new ItemComputerArmor(computerArmorMaterial, 0, 1).setUnlocalizedName("essentialcraft.computer_chestplate").setTextureName("essentialcraft:armor/computer_chestplate").setMaxDamage(16384);
 		ItemRegistry.registerItem(computer_chestplate,"computer_chestplate", EssentialCraftCore.class);
 		ApiCore.setArmorProperties(computer_chestplate, 1F, 1F, 1F);
-		MiscUtils.registerItemModifier(computer_chestplate, -1, "armor", "02003", 40D, SharedMonsterAttributes.maxHealth, 0);
 		
 		computer_leggings = new ItemComputerArmor(computerArmorMaterial, 0, 2).setUnlocalizedName("essentialcraft.computer_leggings").setTextureName("essentialcraft:armor/computer_leggings").setMaxDamage(16384);
 		ItemRegistry.registerItem(computer_leggings,"computer_leggings", EssentialCraftCore.class);
 		ApiCore.setArmorProperties(computer_leggings, 1F, 1F, 1F);
-		MiscUtils.registerItemModifier(computer_leggings, -1, "armor", "02002", 0.15D, SharedMonsterAttributes.movementSpeed, 0);
 		
 		computer_boots = new ItemComputerArmor(computerArmorMaterial, 0, 3).setUnlocalizedName("essentialcraft.computer_boots").setTextureName("essentialcraft:armor/computer_boots").setMaxDamage(16384);
 		ItemRegistry.registerItem(computer_boots,"computer_boots", EssentialCraftCore.class);

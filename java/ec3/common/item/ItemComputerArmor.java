@@ -1,6 +1,10 @@
 package ec3.common.item;
 
 import java.util.List;
+import java.util.UUID;
+
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 
 import DummyCore.Utils.DCASMCheck;
 import DummyCore.Utils.ExistanceCheck;
@@ -8,6 +12,8 @@ import DummyCore.Utils.MiscUtils;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -45,6 +51,19 @@ public class ItemComputerArmor extends ItemArmor implements IRepairable, IVisDis
 			default: return "essentialcraft:textures/special/armor/computer_layer_1.png"; 
 		}
 	}
+	
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public Multimap getAttributeModifiers(ItemStack stack)
+    {
+    	Multimap mods = HashMultimap.create();
+    	
+    	if(this == ItemsCore.computer_chestplate)
+    		mods.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), new AttributeModifier(UUID.fromString("1bca943c-3cf5-42cc-a3df-2ed994ae0000"), "hp", 40D, 0));
+    	
+    	if(this == ItemsCore.computer_leggings)
+    		mods.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(UUID.fromString("1bca943c-3cf5-42cc-a3df-2ed994ae0001"), "movespeed", 0.15D, 0));
+    	return mods;
+    }
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)

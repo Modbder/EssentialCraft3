@@ -47,7 +47,7 @@ import ec3.utils.common.CommandSetMRU;
 		modid = EssentialCraftCore.modid,
 		name = "EssentialCraftIII",
 		version = EssentialCraftCore.version,
-		dependencies = "required-after:DummyCore@[1.10,);",
+		dependencies = "required-after:DummyCore@[1.12,);",
 		guiFactory = "ec3.client.regular.ModConfigGuiHandler"
 	)
 public class EssentialCraftCore {
@@ -61,7 +61,7 @@ public class EssentialCraftCore {
 	public static CommonProxy proxy;
 	public static Config cfg = new Config();
 	//TODO Do not forget to change the version number every git commit.
-	public static final String version = "4.5.1710.217";
+	public static final String version = "4.5.1710.222";
 	public static final String modid = "essentialcraft";
 	public static ModMetadata metadata;
 	public static SimpleNetworkWrapper network;
