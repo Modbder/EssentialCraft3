@@ -443,12 +443,6 @@ public class PlayerTickHandler{
 				
 			//TODO lagFix
 			
-			//Sync section
-			if(!e.worldObj.isRemote)
-			{
-				manageSync(e);
-				manageWorldSync(e);
-			}
 			//Client overview
 			if(e.worldObj.isRemote)
 			{
@@ -557,7 +551,8 @@ public class PlayerTickHandler{
 			//Server overview
 			if(!e.worldObj.isRemote)
 			{
-				
+				manageSync(e);
+				manageWorldSync(e);
 				WindRelations.playerTick(e);
 				RadiationManager.playerTick(e);
 				//System.out.println(ECUtils.getData(e).damage);
