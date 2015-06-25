@@ -1057,7 +1057,7 @@ public class ECEventHandler {
     public void onAimZoom(FOVUpdateEvent event)
     {
     	EntityPlayer p = event.entity;
-    	if(p.getCurrentEquippedItem() != null && p.getCurrentEquippedItem().getItem() instanceof ItemGun && p.isSneaking() && p.getCurrentEquippedItem().getTagCompound() != null && p.getCurrentEquippedItem().getTagCompound().hasKey("scope"))
+    	if(p.isSneaking() && p.getCurrentEquippedItem() != null && p.getCurrentEquippedItem().getItem() instanceof ItemGun && p.getCurrentEquippedItem().getTagCompound() != null && p.getCurrentEquippedItem().getTagCompound().hasKey("scope"))
     	{
     		String id = p.getCurrentEquippedItem().getTagCompound().getString("scope");
     		ScopeMaterial s = null;
