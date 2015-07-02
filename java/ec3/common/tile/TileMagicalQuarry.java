@@ -1,8 +1,10 @@
 package ec3.common.tile;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
+import com.mojang.authlib.GameProfile;
 
 import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
@@ -65,8 +67,6 @@ public class TileMagicalQuarry extends TileMRUGeneric{
 		voidList.add(Blocks.leaves2);
 		voidList.add(Items.wheat_seeds);
 	}
-	
-	public WeakReference<FakePlayer> quarryFakePlayer;
 	 
 	public TileMagicalQuarry()
 	{
@@ -84,11 +84,6 @@ public class TileMagicalQuarry extends TileMRUGeneric{
 	@Override
 	public void updateEntity()
 	{
-		if(!this.worldObj.isRemote)
-		{
-			if(quarryFakePlayer == null || quarryFakePlayer.get() == null)
-				quarryFakePlayer = new WeakReference<FakePlayer>(new FakePlayer((WorldServer) this.worldObj,ECUtils.EC3FakePlayerProfile));
-		}
 		if(this.syncTick == 10)
 			this.syncTick = 0;
 		super.updateEntity();
@@ -320,28 +315,29 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     				this.progressLevel += this.getEfficency();
     			if(this.progressLevel >= required)
     			{
-    				if(quarryFakePlayer == null || quarryFakePlayer.get() == null)
-    					return false;
+    				FakePlayer quarryFakePlayer = new FakePlayer((WorldServer) this.worldObj, quarryFakePlayerProfile);
     				
     				progressLevel = 0;
     				if(this.hasMiningUpgrade())
     				{
-    					quarryFakePlayer.get().setCurrentItemOrArmor(0, new ItemStack(ItemsCore.wind_elemental_pick));
+    					quarryFakePlayer.setCurrentItemOrArmor(0, new ItemStack(ItemsCore.wind_elemental_pick));
     				}else
     				{
-    					quarryFakePlayer.get().setCurrentItemOrArmor(0, new ItemStack(ItemsCore.weak_elemental_pick));
+    					quarryFakePlayer.setCurrentItemOrArmor(0, new ItemStack(ItemsCore.weak_elemental_pick));
     				}
     				
     				if(this.hasFortuneUpgrade())
-    					quarryFakePlayer.get().getCurrentEquippedItem().addEnchantment(Enchantment.fortune, this.determineFortune());
+    					quarryFakePlayer.getCurrentEquippedItem().addEnchantment(Enchantment.fortune, this.determineFortune());
     				if(this.hasSilkyUpgrade())
-    					quarryFakePlayer.get().getCurrentEquippedItem().addEnchantment(Enchantment.silkTouch, 1);
+    					quarryFakePlayer.getCurrentEquippedItem().addEnchantment(Enchantment.silkTouch, 1);
     				
-    				b.harvestBlock(getWorldObj(), quarryFakePlayer.get(), miningX, miningY, miningZ, this.worldObj.getBlockMetadata(miningX, miningY, miningZ));
+    				b.harvestBlock(getWorldObj(), quarryFakePlayer, miningX, miningY, miningZ, this.worldObj.getBlockMetadata(miningX, miningY, miningZ));
     				
     				this.worldObj.setBlock(miningX, miningY, miningZ, Blocks.air, 0, 3);
     				if(generatesCorruption)
     					ECUtils.increaseCorruptionAt(worldObj, xCoord, yCoord, zCoord, this.worldObj.rand.nextInt(genCorruption));
+    			
+    				quarryFakePlayer = null;
     			}
     		}
     		
@@ -592,4 +588,5 @@ public class TileMagicalQuarry extends TileMRUGeneric{
 		return new int[]{0};
 	}
 
+	public static GameProfile quarryFakePlayerProfile = new GameProfile(UUID.fromString("5cd89d0b-e9ba-0000-89f4-badbb05963dd"), "[EC3]Quarry");
 }

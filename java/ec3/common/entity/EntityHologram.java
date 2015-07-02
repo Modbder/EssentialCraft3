@@ -272,7 +272,6 @@ public class EntityHologram extends EntityLiving implements IBossDisplayData
 						
 						this.faceEntity(MinecraftServer.getServer().getConfigurationManager().func_152612_a(players.get(i)), 360F, 180F);
 						EntityArmorDestroyer destr = new EntityArmorDestroyer(this.worldObj,this);
-						destr.setAngles(this.worldObj.rand.nextFloat()*360, this.worldObj.rand.nextFloat()*360);
 						
 						this.rotationYaw = this.worldObj.rand.nextFloat()*360;
 						this.rotationPitch = 90-this.worldObj.rand.nextFloat()*180;
