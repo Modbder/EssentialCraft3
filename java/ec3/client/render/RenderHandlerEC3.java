@@ -21,9 +21,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ec3.api.WindImbueRecipe;
 import ec3.common.block.BlockWindRune;
 import ec3.common.block.BlocksCore;
+import ec3.common.item.ItemBoundGem;
 import ec3.common.item.ItemComputerArmor;
 import ec3.common.item.ItemComputerBoard;
 import ec3.common.item.ItemGenericArmor;
+import ec3.common.item.ItemInventoryGem;
 import ec3.common.item.ItemMagicalBuilder;
 import ec3.common.item.ItemOrbitalRemote;
 import ec3.common.item.ItemsCore;
@@ -77,6 +79,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent.SetArmorModel;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -514,14 +517,180 @@ public class RenderHandlerEC3 {
 				}
 			}
 		}
+
+	}
+	
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
+	public void renderBlockOverlays(RenderWorldLastEvent evt)
+	{
+        EntityClientPlayerMP p = mc.thePlayer;
+        double doubleX = p.lastTickPosX + (p.posX - p.lastTickPosX) * evt.partialTicks;
+        double doubleY = p.lastTickPosY + (p.posY - p.lastTickPosY) * evt.partialTicks;
+        double doubleZ = p.lastTickPosZ + (p.posZ - p.lastTickPosZ) * evt.partialTicks;
+        		
+		if(ItemInventoryGem.currentlyClicked != null)
+		{
+			Coord3D c = ItemInventoryGem.currentlyClicked;
+	        float mx = c.x;
+	        float my = c.y;
+	        float mz = c.z;
+	        
+	        double dist = p.getDistance(mx+0.5D, my+0.5D, mz+0.5D);
+	        
+	        if(dist > 24)
+	        	return;
+	        
+	        GL11.glPushMatrix();
+	        
+	        boolean depth = GL11.glIsEnabled(GL11.GL_DEPTH_TEST);
+	        GL11.glDisable(GL11.GL_DEPTH_TEST);
+	        boolean texture = GL11.glIsEnabled(GL11.GL_TEXTURE_2D);
+	        GL11.glDisable(GL11.GL_TEXTURE_2D);
+	        GL11.glDisable(GL11.GL_ALPHA_TEST);
+	        GL11.glEnable(GL11.GL_BLEND);
+	        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+	        
+	        GL11.glColor4d(1, 0, 1, (double)ItemInventoryGem.clickTicks/100D);
+	        GL11.glLineWidth(3);
+	        GL11.glTranslated(-doubleX, -doubleY, -doubleZ);
+	        
+	        GL11.glBegin(GL11.GL_LINES);
+	        
+	        GL11.glVertex3f(mx, my, mz);
+	        GL11.glVertex3f(mx+1, my, mz);
+	        GL11.glVertex3f(mx, my, mz);
+	        GL11.glVertex3f(mx, my, mz+1);
+	        GL11.glVertex3f(mx+1, my, mz+1);
+	        GL11.glVertex3f(mx, my, mz+1);
+	        GL11.glVertex3f(mx+1, my, mz+1);
+	        GL11.glVertex3f(mx+1, my, mz);
+	        
+	        GL11.glVertex3f(mx, my, mz);
+	        GL11.glVertex3f(mx, my+1, mz);
+	        GL11.glVertex3f(mx+1, my, mz+1);
+	        GL11.glVertex3f(mx+1, my+1, mz+1);
+	        GL11.glVertex3f(mx, my, mz+1);
+	        GL11.glVertex3f(mx, my+1, mz+1);
+	        GL11.glVertex3f(mx+1, my, mz);
+	        GL11.glVertex3f(mx+1, my+1, mz);
+	        
+	        GL11.glVertex3f(mx, my+1, mz);
+	        GL11.glVertex3f(mx+1, my+1, mz);
+	        GL11.glVertex3f(mx, my+1, mz);
+	        GL11.glVertex3f(mx, my+1, mz+1);
+	        GL11.glVertex3f(mx+1, my+1, mz+1);
+	        GL11.glVertex3f(mx, my+1, mz+1);
+	        GL11.glVertex3f(mx+1, my+1, mz+1);
+	        GL11.glVertex3f(mx+1, my+1, mz);
+	        
+	        GL11.glEnd();
+	        
+
+	        if (depth) 
+	        {
+	            GL11.glEnable(GL11.GL_DEPTH_TEST);
+	        }
+	        if (texture) 
+	        {
+	            GL11.glEnable(GL11.GL_TEXTURE_2D);
+	        }
+	        
+	        GL11.glDisable(GL11.GL_BLEND);
+	        GL11.glEnable(GL11.GL_ALPHA_TEST);
+
+	        GL11.glPopMatrix();
+		}
+		
+		ItemStack is = p.getCurrentEquippedItem();
+		if(is != null)
+		{
+			if(is.getTagCompound() != null && is.getItem() instanceof ItemBoundGem && is.getTagCompound().hasKey("pos") && is.getTagCompound().getInteger("dim") == p.dimension)
+			{
+				int[] coords = ItemBoundGem.getCoords(is);
+				Coord3D c = new Coord3D(coords[0],coords[1],coords[2]);
+		        float mx = c.x;
+		        float my = c.y;
+		        float mz = c.z;
+		        
+		        double dist = p.getDistance(mx+0.5D, my+0.5D, mz+0.5D);
+		        
+		        if(dist > 24)
+		        	return;
+		        
+		        if(!p.worldObj.blockExists((int)mx, (int)my, (int)mz))
+		        	return;
+		        
+		        AxisAlignedBB aabb = p.worldObj.getBlock((int)mx, (int)my, (int)mz).getSelectedBoundingBoxFromPool(p.worldObj, (int)mx, (int)my, (int)mz);
+		        
+		        GL11.glPushMatrix();
+		        
+		        boolean depth = GL11.glIsEnabled(GL11.GL_DEPTH_TEST);
+		        GL11.glDisable(GL11.GL_DEPTH_TEST);
+		        boolean texture = GL11.glIsEnabled(GL11.GL_TEXTURE_2D);
+		        GL11.glDisable(GL11.GL_TEXTURE_2D);
+		        GL11.glDisable(GL11.GL_ALPHA_TEST);
+		        GL11.glEnable(GL11.GL_BLEND);
+		        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		        
+		        //e6c297
+		        GL11.glColor3d(0.8984375D, 0.7578125D, 0.58984375D);
+		        GL11.glLineWidth(1);
+		        GL11.glTranslated(-doubleX, -doubleY, -doubleZ);
+		        
+		        GL11.glBegin(GL11.GL_LINES);
+		        
+		        GL11.glVertex3d(aabb.minX, aabb.minY, aabb.minZ);
+		        GL11.glVertex3d(aabb.maxX, aabb.minY, aabb.minZ);
+		        GL11.glVertex3d(aabb.minX, aabb.minY, aabb.minZ);
+		        GL11.glVertex3d(aabb.minX, aabb.minY, aabb.maxZ);
+		        GL11.glVertex3d(aabb.maxX, aabb.minY, aabb.maxZ);
+		        GL11.glVertex3d(aabb.minX, aabb.minY, aabb.maxZ);
+		        GL11.glVertex3d(aabb.maxX, aabb.minY, aabb.maxZ);
+		        GL11.glVertex3d(aabb.maxX, aabb.minY, aabb.minZ);
+		        
+		        GL11.glVertex3d(aabb.minX, aabb.minY, aabb.minZ);
+		        GL11.glVertex3d(aabb.minX, aabb.maxY, aabb.minZ);
+		        GL11.glVertex3d(aabb.maxX, aabb.minY, aabb.maxZ);
+		        GL11.glVertex3d(aabb.maxX, aabb.maxY, aabb.maxZ);
+		        GL11.glVertex3d(aabb.minX, aabb.minY, aabb.maxZ);
+		        GL11.glVertex3d(aabb.minX, aabb.maxY, aabb.maxZ);
+		        GL11.glVertex3d(aabb.maxX, aabb.minY, aabb.minZ);
+		        GL11.glVertex3d(aabb.maxX, aabb.maxY, aabb.minZ);
+		        
+		        GL11.glVertex3d(aabb.minX, aabb.maxY, aabb.minZ);
+		        GL11.glVertex3d(aabb.maxX, aabb.maxY, aabb.minZ);
+		        GL11.glVertex3d(aabb.minX, aabb.maxY, aabb.minZ);
+		        GL11.glVertex3d(aabb.minX, aabb.maxY, aabb.maxZ);
+		        GL11.glVertex3d(aabb.maxX, aabb.maxY, aabb.maxZ);
+		        GL11.glVertex3d(aabb.minX, aabb.maxY, aabb.maxZ);
+		        GL11.glVertex3d(aabb.maxX, aabb.maxY, aabb.maxZ);
+		        GL11.glVertex3d(aabb.maxX, aabb.maxY, aabb.minZ);
+		        
+		        GL11.glEnd();
+		        
+
+		        if (depth) 
+		        {
+		            GL11.glEnable(GL11.GL_DEPTH_TEST);
+		        }
+		        if (texture) 
+		        {
+		            GL11.glEnable(GL11.GL_TEXTURE_2D);
+		        }
+		        
+		        GL11.glDisable(GL11.GL_BLEND);
+		        GL11.glEnable(GL11.GL_ALPHA_TEST);
+
+		        GL11.glPopMatrix();
+			}
+		}
 	}
 	
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void clientGUIRenderTickEvent(RenderTickEvent event)
 	{
-		GL11.glDisable(GL11.GL_LIGHTING);
-		
 		EntityPlayer player = EssentialCraftCore.proxy.getClientPlayer();
 		if(player != null)
 		{
@@ -628,6 +797,13 @@ public class RenderHandlerEC3 {
 	@SideOnly(Side.CLIENT)
 	public void onPlayerTick(TickEvent.PlayerTickEvent event)
 	{
+		if(event.phase == Phase.START)
+		{
+			if(ItemInventoryGem.clickTicks > 0)
+				--ItemInventoryGem.clickTicks;
+			if(ItemInventoryGem.clickTicks == 0)
+				ItemInventoryGem.currentlyClicked = null;
+		}
 		for(int i = 0; i < ClientProxy.playingMusic.size(); ++i)
 		{
 			ISound snd = ClientProxy.playingMusic.get(i).getSecond();
