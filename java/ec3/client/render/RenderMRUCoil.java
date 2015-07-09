@@ -12,7 +12,6 @@ import org.lwjgl.opengl.GL11;
 import ec3.client.model.ModelFloatingCube;
 import ec3.common.tile.TileMRUCoil;
 import ec3.common.tile.TileRayTower;
-import ec3.utils.common.ECUtils;
 
 @SideOnly(Side.CLIENT)
 public class RenderMRUCoil extends TileEntitySpecialRenderer
@@ -42,9 +41,6 @@ public class RenderMRUCoil extends TileEntitySpecialRenderer
         f3 += f3 * f3;
         GL11.glScalef(0.2F, 0.2F, 0.2F);
         this.model.render(p_76986_1_, 0.0F, f2 * 3.0F, 0.35F, 0.0F, 0.0F, 0.0625F);
-        GL11.glPopMatrix();
-        ECUtils.renderMRUBeam(p_76986_1_, 0, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
-        GL11.glPushMatrix();
         if(p_76986_1_.localLightning != null)
         	p_76986_1_.localLightning.render(p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_);
         GL11.glPopMatrix();

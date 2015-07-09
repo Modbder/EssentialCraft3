@@ -20,7 +20,6 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import ec3.common.tile.TileMonsterHolder;
-import ec3.utils.common.ECUtils;
 import ec3.utils.common.PlayerTickHandler;
 
 @SideOnly(Side.CLIENT)
@@ -42,9 +41,6 @@ public class RenderMonsterHolder extends TileEntitySpecialRenderer
 	public void doRender(TileEntity p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_)
     {
     	RenderHelper.disableStandardItemLighting();
-    	GL11.glPushMatrix(); 
-    	ECUtils.renderMRUBeam(p_76986_1_, 0, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
-    	GL11.glPopMatrix();
         if(p_76986_1_ instanceof TileMonsterHolder)
         {
         	TileMonsterHolder tile = (TileMonsterHolder) p_76986_1_;

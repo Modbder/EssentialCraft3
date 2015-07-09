@@ -11,8 +11,6 @@ import net.minecraftforge.client.model.IModelCustom;
 
 import org.lwjgl.opengl.GL11;
 
-import ec3.utils.common.ECUtils;
-
 @SideOnly(Side.CLIENT)
 public class RenderCrystalExtractor extends TileEntitySpecialRenderer
 {
@@ -37,7 +35,6 @@ public class RenderCrystalExtractor extends TileEntitySpecialRenderer
         this.bindTexture(textures);
         model.renderAll();
         GL11.glPopMatrix();
-        ECUtils.renderMRUBeam(p_76986_1_, 0, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
         RenderHelper.enableStandardItemLighting();
     }
 

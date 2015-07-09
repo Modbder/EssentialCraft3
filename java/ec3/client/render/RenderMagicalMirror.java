@@ -16,7 +16,6 @@ import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 
 import ec3.common.tile.TileMagicalMirror;
-import ec3.utils.common.ECUtils;
 
 @SideOnly(Side.CLIENT)
 public class RenderMagicalMirror extends TileEntitySpecialRenderer
@@ -84,7 +83,6 @@ public class RenderMagicalMirror extends TileEntitySpecialRenderer
         model.renderPart("pPlane1");
         GL11.glColor3f(1, 1, 1);
         GL11.glPopMatrix();
-        ECUtils.renderMRUBeam(p_76986_1_, 0, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
         RenderHelper.enableStandardItemLighting();
         
         if(tile.transferingStack != null)

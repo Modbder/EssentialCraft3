@@ -12,7 +12,6 @@ import org.lwjgl.opengl.GL11;
 
 import ec3.client.model.ModelFloatingCube;
 import ec3.common.tile.TileRayTower;
-import ec3.utils.common.ECUtils;
 
 @SideOnly(Side.CLIENT)
 public class RenderRayTower extends TileEntitySpecialRenderer
@@ -43,7 +42,6 @@ public class RenderRayTower extends TileEntitySpecialRenderer
         GL11.glScalef(0.4F, 0.4F, 0.4F);
         this.model.render(p_76986_1_, 0.0F, f2 * 3.0F, 0.35F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();
-        ECUtils.renderMRUBeam(p_76986_1_, 0, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
         RenderHelper.enableStandardItemLighting();
     }
 

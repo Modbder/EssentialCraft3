@@ -11,8 +11,6 @@ import net.minecraftforge.client.model.IModelCustom;
 
 import org.lwjgl.opengl.GL11;
 
-import ec3.utils.common.ECUtils;
-
 @SideOnly(Side.CLIENT)
 public class RenderCrystalFormer extends TileEntitySpecialRenderer
 {
@@ -74,10 +72,6 @@ public class RenderCrystalFormer extends TileEntitySpecialRenderer
         GL11.glPopMatrix();
         
     	RenderHelper.enableStandardItemLighting();
-    	
-    	GL11.glPushMatrix(); 
-    	ECUtils.renderMRUBeam(p_76986_1_, 0, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
-    	GL11.glPopMatrix();
     }
 
     /**

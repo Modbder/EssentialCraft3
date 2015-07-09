@@ -2,13 +2,11 @@ package ec3.client.render;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 import ec3.common.tile.TileRayTower;
-import ec3.utils.common.ECUtils;
 
 @SideOnly(Side.CLIENT)
 public class RenderMRULink extends TileEntitySpecialRenderer
@@ -27,9 +25,6 @@ public class RenderMRULink extends TileEntitySpecialRenderer
      */
     public void doRender(TileEntity p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_)
     {
-    	RenderHelper.disableStandardItemLighting();
-        ECUtils.renderMRUBeam(p_76986_1_, 0, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
-        RenderHelper.enableStandardItemLighting();
     }
 
     /**

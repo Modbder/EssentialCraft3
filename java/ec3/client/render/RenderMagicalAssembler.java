@@ -16,7 +16,6 @@ import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 
 import ec3.common.tile.TileMagicalAssembler;
-import ec3.utils.common.ECUtils;
 import ec3.utils.common.PlayerTickHandler;
 
 @SideOnly(Side.CLIENT)
@@ -40,9 +39,6 @@ public class RenderMagicalAssembler extends TileEntitySpecialRenderer
     {
     	TileMagicalAssembler tile = (TileMagicalAssembler) p_76986_1_;
     	RenderHelper.disableStandardItemLighting();
-    	GL11.glPushMatrix(); 
-    	ECUtils.renderMRUBeam(p_76986_1_, 0, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
-    	GL11.glPopMatrix();
     	
         GL11.glPushMatrix();
         GL11.glTranslatef((float)p_76986_2_+0.5F, (float)p_76986_4_, (float)p_76986_6_+0.5F);

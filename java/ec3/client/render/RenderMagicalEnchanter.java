@@ -15,7 +15,6 @@ import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 
 import ec3.common.tile.TileMagicalEnchanter;
-import ec3.utils.common.ECUtils;
 
 @SideOnly(Side.CLIENT)
 public class RenderMagicalEnchanter extends TileEntitySpecialRenderer
@@ -96,8 +95,6 @@ public class RenderMagicalEnchanter extends TileEntitySpecialRenderer
         book.render((Entity)null, f1, f4, f5, f6, 0.0F, 0.0625F);
         GL11.glPopMatrix();
         RenderHelper.enableStandardItemLighting();
-
-    	ECUtils.renderMRUBeam(p_76986_1_, 0, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
     }
 
     /**

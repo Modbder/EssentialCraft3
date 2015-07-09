@@ -11,8 +11,6 @@ import net.minecraftforge.client.model.IModelCustom;
 
 import org.lwjgl.opengl.GL11;
 
-import ec3.utils.common.ECUtils;
-
 @SideOnly(Side.CLIENT)
 public class RenderPotionSpreader extends TileEntitySpecialRenderer
 {
@@ -32,9 +30,6 @@ public class RenderPotionSpreader extends TileEntitySpecialRenderer
     public void doRender(TileEntity p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_)
     {
     	RenderHelper.disableStandardItemLighting();
-    	GL11.glPushMatrix(); 
-    	ECUtils.renderMRUBeam(p_76986_1_, 0, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
-    	GL11.glPopMatrix();
     	
         GL11.glPushMatrix();
         GL11.glTranslatef((float)p_76986_2_+0.5F, (float)p_76986_4_, (float)p_76986_6_+0.5F);

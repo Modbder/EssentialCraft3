@@ -13,7 +13,6 @@ import org.lwjgl.opengl.GL11;
 
 import ec3.api.MagicianTableUpgrades;
 import ec3.common.tile.TileMagicianTable;
-import ec3.utils.common.ECUtils;
 
 @SideOnly(Side.CLIENT)
 public class RenderMagicianTable extends TileEntitySpecialRenderer
@@ -49,7 +48,6 @@ public class RenderMagicianTable extends TileEntitySpecialRenderer
 	        	cube.renderAll();
 	        }
         GL11.glPopMatrix();
-        ECUtils.renderMRUBeam(p_76986_1_, 0, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
         RenderHelper.enableStandardItemLighting();
     }
 

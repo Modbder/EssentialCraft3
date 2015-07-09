@@ -13,7 +13,6 @@ import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 
 import ec3.common.tile.TileRadiatingChamber;
-import ec3.utils.common.ECUtils;
 
 @SideOnly(Side.CLIENT)
 public class RenderRadiatingChamber extends TileEntitySpecialRenderer
@@ -45,9 +44,6 @@ public class RenderRadiatingChamber extends TileEntitySpecialRenderer
         TileRadiatingChamber tile = (TileRadiatingChamber) p_76986_1_;
     	MiscUtils.renderItemStack_Full(tile.getStackInSlot(1),p_76986_1_.xCoord+0.5D,p_76986_1_.yCoord+10D , p_76986_1_.zCoord+0.5D, p_76986_2_, p_76986_4_, p_76986_6_, 90F,90F, 1, 1, 1, 0.6F, 0.95F,0.5F);
     	GL11.glPopMatrix();
-    	
-    	ECUtils.renderMRUBeam(p_76986_1_, 0, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
-    	
     	RenderHelper.enableStandardItemLighting();
     }
 

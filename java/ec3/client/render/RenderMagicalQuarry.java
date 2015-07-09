@@ -12,7 +12,6 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import ec3.common.tile.TileMagicalQuarry;
-import ec3.utils.common.ECUtils;
 import ec3.utils.common.PlayerTickHandler;
 
 @SideOnly(Side.CLIENT)
@@ -42,7 +41,6 @@ public class RenderMagicalQuarry extends TileEntitySpecialRenderer
         		GL11.glPushMatrix();        		
         		float[] o = new float[]{tile.miningX,tile.miningY+0.5F,tile.miningZ};
 		        GL11.glPopMatrix();
-		        ECUtils.renderMRUBeam(p_76986_1_, 0, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
 		        float f21 = (float)0 + p_76986_9_;
 		        float f31 = MathHelper.sin(f21 * 0.2F) / 2.0F + 0.5F;
 		        f31 = (f31 * f31 + f31) * 0.2F;

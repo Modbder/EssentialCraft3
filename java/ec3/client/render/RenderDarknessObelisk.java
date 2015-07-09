@@ -11,7 +11,6 @@ import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 
 import org.lwjgl.opengl.GL11;
-import ec3.utils.common.ECUtils;
 
 @SideOnly(Side.CLIENT)
 public class RenderDarknessObelisk extends TileEntitySpecialRenderer
@@ -33,10 +32,6 @@ public class RenderDarknessObelisk extends TileEntitySpecialRenderer
     public void doRender(TileEntity tile, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_)
     {
     	RenderHelper.disableStandardItemLighting();
-    	
-        GL11.glPushMatrix();
-        	ECUtils.renderMRUBeam(tile, 0, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
-        GL11.glPopMatrix();
         
         GL11.glPushMatrix();
         	Minecraft.getMinecraft().renderEngine.bindTexture(obelisk);
