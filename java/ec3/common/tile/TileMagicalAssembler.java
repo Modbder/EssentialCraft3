@@ -5,19 +5,15 @@ import java.util.Arrays;
 import java.util.List;
 
 import DummyCore.Utils.Coord3D;
-import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.UnformedItemStack;
-import ec3.api.ITEHasMRU;
 import ec3.api.MagicalAssemblerRecipes;
 import ec3.api.MagicianTableRecipe;
 import ec3.api.MagicianTableRecipes;
 import ec3.api.RadiatingChamberRecipe;
 import ec3.api.RadiatingChamberRecipes;
 import ec3.api.ShapedAssemblerRecipe;
-import ec3.common.item.ItemBoundGem;
 import ec3.utils.common.ECUtils;
 import net.minecraft.block.Block;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -143,23 +139,8 @@ public class TileMagicalAssembler extends TileMRUGeneric{
 				mirrors.remove(i);
 		}
 		super.updateEntity();
-		ECUtils.mruIn(this, 0);
-		ECUtils.spawnMRUParticles(this, 0);
-		IInventory inv = this;
-		int slotNum = 0;
-		TileEntity tile = this;
-		if(inv.getStackInSlot(slotNum) != null && inv.getStackInSlot(slotNum).getItem() instanceof ItemBoundGem && inv.getStackInSlot(slotNum).getTagCompound() != null)
-		{
-			ItemStack s = inv.getStackInSlot(slotNum);
-			int[] o = ItemBoundGem.getCoords(s);
-			if(MathUtils.getDifference(tile.xCoord, o[0]) <= 16 && MathUtils.getDifference(tile.yCoord, o[1]) <= 16 && MathUtils.getDifference(tile.zCoord, o[2]) <= 16)
-			{
-    			if(tile.getWorldObj().getTileEntity(o[0], o[1], o[2]) != null && tile.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof ITEHasMRU)
-    			{
-    				this.setBalance(((ITEHasMRU) tile.getWorldObj().getTileEntity(o[0], o[1], o[2])).getBalance());
-    			}
-    		}
-		}
+		ECUtils.manage(this, 0);
+		TileEntity tile;
 		if(this.getStackInSlot(1) != null)
 		{
 			if(this.allRecipes.isEmpty() && this.currentCraft == null)

@@ -9,19 +9,14 @@ import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.config.Configuration;
 import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
-import DummyCore.Utils.MathUtils;
 import ec3.api.ApiCore;
-import ec3.api.ITEHasMRU;
-import ec3.common.item.ItemBoundGem;
 import ec3.utils.common.ECUtils;
 
 public class TileMagicalEnchanter extends TileMRUGeneric{
@@ -57,23 +52,8 @@ public class TileMagicalEnchanter extends TileMRUGeneric{
 	public void updateEntity()
 	{
 		super.updateEntity();
-		ECUtils.mruIn(this, 0);
-		ECUtils.spawnMRUParticles(this, 0);
-		IInventory inv = this;
-		int slotNum = 0;
-		TileEntity tile = this;
-		if(inv.getStackInSlot(slotNum) != null && inv.getStackInSlot(slotNum).getItem() instanceof ItemBoundGem && inv.getStackInSlot(slotNum).getTagCompound() != null)
-		{
-			ItemStack s = inv.getStackInSlot(slotNum);
-			int[] o = ItemBoundGem.getCoords(s);
-			if(MathUtils.getDifference(tile.xCoord, o[0]) <= 16 && MathUtils.getDifference(tile.yCoord, o[1]) <= 16 && MathUtils.getDifference(tile.zCoord, o[2]) <= 16)
-			{
-    			if(tile.getWorldObj().getTileEntity(o[0], o[1], o[2]) != null && tile.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof ITEHasMRU)
-    			{
-    				this.setBalance(((ITEHasMRU) tile.getWorldObj().getTileEntity(o[0], o[1], o[2])).getBalance());
-    			}
-    		}
-		}
+		ECUtils.manage(this, 0);
+		
 		if(!this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord))
 			this.tryEnchant();
 		

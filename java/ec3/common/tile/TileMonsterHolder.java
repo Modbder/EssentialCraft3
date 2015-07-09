@@ -6,9 +6,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.common.config.Configuration;
@@ -16,10 +13,7 @@ import DummyCore.Utils.Coord3D;
 import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
 import DummyCore.Utils.DummyDistance;
-import DummyCore.Utils.MathUtils;
 import ec3.api.ApiCore;
-import ec3.api.ITEHasMRU;
-import ec3.common.item.ItemBoundGem;
 import ec3.utils.common.ECUtils;
 
 public class TileMonsterHolder extends TileMRUGeneric{
@@ -41,26 +35,10 @@ public class TileMonsterHolder extends TileMRUGeneric{
 	public void updateEntity()
 	{
 		super.updateEntity();
-		ECUtils.mruIn(this, 0);
-		ECUtils.spawnMRUParticles(this, 0);
-		IInventory inv = this;
-		int slotNum = 0;
-		TileEntity tile = this;
-		if(inv.getStackInSlot(slotNum) != null && inv.getStackInSlot(slotNum).getItem() instanceof ItemBoundGem && inv.getStackInSlot(slotNum).getTagCompound() != null)
-		{
-			ItemStack s = inv.getStackInSlot(slotNum);
-			int[] o = ItemBoundGem.getCoords(s);
-			if(MathUtils.getDifference(tile.xCoord, o[0]) <= 16 && MathUtils.getDifference(tile.yCoord, o[1]) <= 16 && MathUtils.getDifference(tile.zCoord, o[2]) <= 16)
-			{
-    			if(tile.getWorldObj().getTileEntity(o[0], o[1], o[2]) != null && tile.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof ITEHasMRU)
-    			{
-    				this.setBalance(((ITEHasMRU) tile.getWorldObj().getTileEntity(o[0], o[1], o[2])).getBalance());
-    			}
-    		}
-		}
+		ECUtils.manage(this, 0);
 		if(!this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord))
 		{
-	    	List<EntityLivingBase> lst = tile.getWorldObj().getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(tile.xCoord-32, tile.yCoord-32, tile.zCoord-32, tile.xCoord+32, tile.yCoord+32, tile.zCoord+32));
+	    	List<EntityLivingBase> lst = getWorldObj().getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(xCoord-32, yCoord-32, zCoord-32, xCoord+32, yCoord+32, zCoord+32));
 	    	if(!lst.isEmpty())
 	    	{
 	    		for(int i = 0; i < lst.size(); ++i)
@@ -70,7 +48,7 @@ public class TileMonsterHolder extends TileMRUGeneric{
 	    			{
 	    				if(getMRU() > mruUsage)
 	    				{
-		    				Coord3D tilePos = new Coord3D(tile.xCoord+0.5D,tile.yCoord+0.5D,tile.zCoord+0.5D);
+		    				Coord3D tilePos = new Coord3D(xCoord+0.5D,yCoord+0.5D,zCoord+0.5D);
 		    				Coord3D mobPosition = new Coord3D(e.posX,e.posY,e.posZ);
 		    				DummyDistance dist = new DummyDistance(tilePos,mobPosition);
 		    				if(dist.getDistance() < rad && dist.getDistance() >= rad-3)

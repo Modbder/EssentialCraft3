@@ -185,8 +185,6 @@ public class TileEmberForge extends TileMRUGeneric
     			this.worldObj.spawnParticle("portal", xCoord+0.5, yCoord+0.9, zCoord+0.5, 2, 1, 2);
     				for(int i = 0; i < 10; ++i)
     			this.worldObj.spawnParticle("reddust", xCoord+2.5, yCoord+2.7, zCoord+2.5, 0, 0, 1);
-    				if(!flag)
-    			this.worldObj.playSoundAtEntity(focus_0, "random.fuse", 0.1F, 2.0F);
     		}
     		if(focus_1 != null)
     		{
@@ -198,8 +196,6 @@ public class TileEmberForge extends TileMRUGeneric
     			this.worldObj.spawnParticle("portal", xCoord+0.5, yCoord+0.9, zCoord+0.5, -2, 1, 2);
     				for(int i = 0; i < 10; ++i)
     			this.worldObj.spawnParticle("reddust", xCoord-1.5, yCoord+2.7, zCoord+2.5, 0, 0, 1);
-    				if(!flag)
-    			this.worldObj.playSoundAtEntity(focus_1, "random.fuse", 0.2F, 2.0F);
     		}
     		if(focus_2 != null)
     		{
@@ -211,8 +207,6 @@ public class TileEmberForge extends TileMRUGeneric
     			this.worldObj.spawnParticle("portal", xCoord+0.5, yCoord+0.9, zCoord+0.5, 2, 1, -2);
     				for(int i = 0; i < 10; ++i)
     			this.worldObj.spawnParticle("reddust", xCoord+2.5, yCoord+2.7, zCoord-1.5, 0, 0, 1);
-    				if(!flag)
-    			this.worldObj.playSoundAtEntity(focus_2, "random.fuse", 0.2F, 2.0F);
     		}
     		if(focus_3 != null)
     		{
@@ -224,8 +218,6 @@ public class TileEmberForge extends TileMRUGeneric
     			this.worldObj.spawnParticle("portal", xCoord+0.5, yCoord+0.9, zCoord+0.5, -2, 1, -2);
     				for(int i = 0; i < 10; ++i)
     			this.worldObj.spawnParticle("reddust", xCoord-1.5, yCoord+2.7, zCoord-1.5, 0, 0, 1);
-    				if(!flag)
-    			this.worldObj.playSoundAtEntity(focus_3, "random.fuse", 0.2F, 2.0F);
     		}
     		if(ember_0 != null)
     		{

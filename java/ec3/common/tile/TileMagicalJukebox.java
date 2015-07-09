@@ -10,25 +10,22 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.event.HoverEvent;
 import net.minecraft.event.HoverEvent.Action;
 import net.minecraft.init.Blocks;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemRecord;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import DummyCore.Utils.MathUtils;
 import ec3.api.ApiCore;
-import ec3.api.ITEHasMRU;
-import ec3.common.item.ItemBoundGem;
 import ec3.common.item.ItemsCore;
 import ec3.utils.common.ECUtils;
 
 public class TileMagicalJukebox extends TileMRUGeneric{
 	
 	public int recordCooldownTime, recordPlayed;
+	String[] achievementNames = new String[]{"Top Secret!","Secret Achievement 2014!","Never give up on your secrets!","Go,Go secret rangers!","Such Secrets!","The Secret is a Lie!","Secret Bro!","Secrets, Secrets everywhere!","Secrets,Secrets,Secrets!","Never give up!","Unachievable!","Too much Secrets!","Very Secret!","Top Secret of 2164!","The Secret Paradize!"};
+	String[] monsterNames = new String[]{"jeb_","Bob","Jordan","Monstro","Isaac's Fork","Bucker","Arthem","Cube","2XStuffed","Rainbow!","StringFormatException","java","Secret!!!","Ronny","Clementine","Jack","Roland","The Tower","Judjment","Jorji","EZIC","Roshan","Ursa","Enderbro","Zombie","poodiepie","Cartman","Markiplier","The Game Theorist!","Direwolf20","Pahimar","Eloraam","CoTH","[CoTH]","ForgeDevName","Player000","Herobrine","[DATA REMOVED]","SCP-126","No More!","The longest list!","Much Text","Thanks!","Time","Moon","Sun","Earth","Mars","Theory","Bang!","Poo","Lol 69","146%","2000","1337","OVER 9000!","++i + ++i","Brain","<--->>---<<-","Hello World!","Doge","The Wurm","Spice!","Happy",":3","^_^"};
 	
 	public TileMagicalJukebox()
 	{
@@ -41,26 +38,9 @@ public class TileMagicalJukebox extends TileMRUGeneric{
 	@Override
 	public void updateEntity()
 	{
-		String[] achievementNames = new String[]{"Top Secret!","Secret Achievement 2014!","Never give up on your secrets!","Go,Go secret rangers!","Such Secrets!","The Secret is a Lie!","Secret Bro!","Secrets, Secrets everywhere!","Secrets,Secrets,Secrets!","Never give up!","Unachievable!","Too much Secrets!","Very Secret!","Top Secret of 2164!","The Secret Paradize!"};
-		String[] monsterNames = new String[]{"jeb_","Bob","Jordan","Monstro","Isaac's Fork","Bucker","Arthem","Cube","2XStuffed","Rainbow!","StringFormatException","java","Secret!!!","Ronny","Clementine","Jack","Roland","The Tower","Judjment","Jorji","EZIC","Roshan","Ursa","Enderbro","Zombie","poodiepie","Cartman","Markiplier","The Game Theorist!","Direwolf20","Pahimar","Eloraam","CoTH","[CoTH]","ForgeDevName","Player000","Herobrine","[DATA REMOVED]","SCP-126","No More!","The longest list!","Much Text","Thanks!","Time","Moon","Sun","Earth","Mars","Theory","Bang!","Poo","Lol 69","146%","2000","1337","OVER 9000!","++i + ++i","Brain","<--->>---<<-","Hello World!","Doge","The Wurm","Spice!","Happy",":3","^_^"};
+		
 		super.updateEntity();
-		ECUtils.mruIn(this, 0);
-		ECUtils.spawnMRUParticles(this, 0);
-		IInventory inv = this;
-		int slotNum = 0;
-		TileEntity tile = this;
-		if(inv.getStackInSlot(slotNum) != null && inv.getStackInSlot(slotNum).getItem() instanceof ItemBoundGem && inv.getStackInSlot(slotNum).getTagCompound() != null)
-		{
-			ItemStack s = inv.getStackInSlot(slotNum);
-			int[] o = ItemBoundGem.getCoords(s);
-			if(MathUtils.getDifference(tile.xCoord, o[0]) <= 16 && MathUtils.getDifference(tile.yCoord, o[1]) <= 16 && MathUtils.getDifference(tile.zCoord, o[2]) <= 16)
-			{
-    			if(tile.getWorldObj().getTileEntity(o[0], o[1], o[2]) != null && tile.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof ITEHasMRU)
-    			{
-    				this.setBalance(((ITEHasMRU) tile.getWorldObj().getTileEntity(o[0], o[1], o[2])).getBalance());
-    			}
-    		}
-		}
+		ECUtils.manage(this, 0);
 		
 		if(this.getStackInSlot(1) != null && this.getStackInSlot(1).getItem() == ItemsCore.record_secret && this.recordCooldownTime <= 0)
 		{

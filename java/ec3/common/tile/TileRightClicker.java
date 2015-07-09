@@ -4,8 +4,6 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 
 import ec3.api.IItemRequiresMRU;
-import ec3.api.ITEHasMRU;
-import ec3.common.item.ItemBoundGem;
 import ec3.utils.common.ECUtils;
 import DummyCore.Utils.MathUtils;
 import net.minecraft.block.Block;
@@ -13,7 +11,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemRedstone;
 import net.minecraft.item.ItemReed;
 import net.minecraft.item.ItemStack;
@@ -22,7 +19,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.INetHandlerPlayClient;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
@@ -253,23 +249,7 @@ public class TileRightClicker extends TileMRUGeneric
     {
     	super.updateEntity();
     	
-		ECUtils.mruIn(this, 0);
-		ECUtils.spawnMRUParticles(this, 0);
-		IInventory inv = this;
-		int slotNum = 0;
-		TileEntity tile = this;
-		if(inv.getStackInSlot(slotNum) != null && inv.getStackInSlot(slotNum).getItem() instanceof ItemBoundGem && inv.getStackInSlot(slotNum).getTagCompound() != null)
-		{
-			ItemStack s = inv.getStackInSlot(slotNum);
-			int[] o = ItemBoundGem.getCoords(s);
-			if(MathUtils.getDifference(tile.xCoord, o[0]) <= 16 && MathUtils.getDifference(tile.yCoord, o[1]) <= 16 && MathUtils.getDifference(tile.zCoord, o[2]) <= 16)
-			{
-    			if(tile.getWorldObj().getTileEntity(o[0], o[1], o[2]) != null && tile.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof ITEHasMRU)
-    			{
-    				this.setBalance(((ITEHasMRU) tile.getWorldObj().getTileEntity(o[0], o[1], o[2])).getBalance());
-    			}
-    		}
-		}
+    	ECUtils.manage(this, 0);
     	
     	if(this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) && !wasPowered && canAct())
     	{

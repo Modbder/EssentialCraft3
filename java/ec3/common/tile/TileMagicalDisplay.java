@@ -2,6 +2,7 @@ package ec3.common.tile;
 
 import DummyCore.Utils.MiscUtils;
 import DummyCore.Utils.Notifier;
+import DummyCore.Utils.TileStatTracker;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -11,7 +12,6 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.INetHandlerPlayClient;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import ec3.common.tile.TileMRUGeneric.TileStatTracker;
 
 public class TileMagicalDisplay extends TileEntity implements IInventory{
 	public int syncTick;

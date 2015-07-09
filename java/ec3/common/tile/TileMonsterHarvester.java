@@ -5,20 +5,15 @@ import java.util.List;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.FakePlayer;
 import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
-import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
 import ec3.api.ApiCore;
-import ec3.api.ITEHasMRU;
-import ec3.common.item.ItemBoundGem;
 import ec3.utils.common.ECUtils;
 
 public class TileMonsterHarvester extends TileMRUGeneric{
@@ -45,30 +40,14 @@ public class TileMonsterHarvester extends TileMRUGeneric{
 	public void updateEntity()
 	{
 		super.updateEntity();
-		ECUtils.mruIn(this, 0);
-		ECUtils.spawnMRUParticles(this, 0);
-		IInventory inv = this;
-		int slotNum = 0;
-		TileEntity tile = this;
-		if(inv.getStackInSlot(slotNum) != null && inv.getStackInSlot(slotNum).getItem() instanceof ItemBoundGem && inv.getStackInSlot(slotNum).getTagCompound() != null)
-		{
-			ItemStack s = inv.getStackInSlot(slotNum);
-			int[] o = ItemBoundGem.getCoords(s);
-			if(MathUtils.getDifference(tile.xCoord, o[0]) <= 16 && MathUtils.getDifference(tile.yCoord, o[1]) <= 16 && MathUtils.getDifference(tile.zCoord, o[2]) <= 16)
-			{
-    			if(tile.getWorldObj().getTileEntity(o[0], o[1], o[2]) != null && tile.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof ITEHasMRU)
-    			{
-    				this.setBalance(((ITEHasMRU) tile.getWorldObj().getTileEntity(o[0], o[1], o[2])).getBalance());
-    			}
-    		}
-		}
+		ECUtils.manage(this, 0);
 		if(!this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord))
 		{
 			++destrTick;
 			if(destrTick >= mobDestructionTimer)
 			{
 				destrTick = 0;
-		    	List<EntityLivingBase> lst = tile.getWorldObj().getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(tile.xCoord-16, tile.yCoord-16, tile.zCoord-16, tile.xCoord+16, tile.yCoord+16, tile.zCoord+16));
+		    	List<EntityLivingBase> lst = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(xCoord-16, yCoord-16, zCoord-16, xCoord+16, yCoord+16, zCoord+16));
 		    	if(!lst.isEmpty() && !this.worldObj.isRemote)
 		    	{
 		    		for(int i = 0; i < lst.size(); ++i)

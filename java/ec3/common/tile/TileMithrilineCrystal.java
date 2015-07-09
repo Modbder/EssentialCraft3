@@ -4,6 +4,7 @@ import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
 import DummyCore.Utils.MiscUtils;
 import DummyCore.Utils.Notifier;
+import DummyCore.Utils.TileStatTracker;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -11,7 +12,6 @@ import net.minecraft.network.play.INetHandlerPlayClient;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.config.Configuration;
-import ec3.common.tile.TileMRUGeneric.TileStatTracker;
 
 public class TileMithrilineCrystal extends TileEntity{
 	

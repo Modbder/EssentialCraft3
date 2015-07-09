@@ -6,6 +6,7 @@ import DummyCore.Utils.DummyData;
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
 import DummyCore.Utils.Notifier;
+import DummyCore.Utils.TileStatTracker;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -23,7 +24,6 @@ import ec3.api.MithrilineFurnaceRecipes;
 import ec3.common.block.BlockMithrilineCrystal;
 import ec3.common.block.BlocksCore;
 import ec3.common.mod.EssentialCraftCore;
-import ec3.common.tile.TileMRUGeneric.TileStatTracker;
 
 public class TileMithrilineFurnace extends TileEntity implements IInventory{
 	

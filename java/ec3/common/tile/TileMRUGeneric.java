@@ -5,6 +5,7 @@ import java.util.UUID;
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
 import DummyCore.Utils.Notifier;
+import DummyCore.Utils.TileStatTracker;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -34,42 +35,7 @@ public abstract class TileMRUGeneric extends TileEntity implements ITERequiresMR
 	public int innerRotation;
 	private ItemStack[] items = new ItemStack[1];
 	private TileStatTracker tracker;
-	
-	public static class TileStatTracker
-	{
-		public TileEntity trackedTile;
-		public NBTTagCompound trackedTag;
-		
-		public TileStatTracker(TileEntity tracked)
-		{
-			trackedTile = tracked;
-		}
-		
-		public boolean tileNeedsSyncing()
-		{
-			if(trackedTile == null) return false;
-			NBTTagCompound currentTag = new NBTTagCompound();
-			if(trackedTag == null)
-			{
-				trackedTag = new NBTTagCompound();
-				trackedTile.writeToNBT(trackedTag);
-				return true;
-			}else
-			{
-				trackedTile.writeToNBT(currentTag);
-				if(currentTag.equals(trackedTag))
-				{
-					trackedTile.writeToNBT(trackedTag);
-					return false;
-				}else
-				{
-					trackedTile.writeToNBT(trackedTag);
-					return true;
-				}
-			}
-		}
-		
-	}
+	public boolean slot0IsBoundGem = true;
 	
 	public abstract int[] getOutputSlots();
 	
@@ -273,25 +239,33 @@ public abstract class TileMRUGeneric extends TileEntity implements ITERequiresMR
 	public int[] getAccessibleSlotsFromSide(int side) {
 		if(this.getSizeInventory() > 0)
 		{
-			if(side == 1)
+			if(side == 1 && slot0IsBoundGem)
 				return new int[]{0};
+			
 			if(side == 0)
 				return getOutputSlots();
 			else
 			{
 				int[] retInt;
-				if(this.getSizeInventory()-(getOutputSlots().length + 1) > 0)
-					retInt = new int[this.getSizeInventory()-(getOutputSlots().length + 1)];
+				if(this.getSizeInventory()-(getOutputSlots().length + (slot0IsBoundGem ? 1 : 0)) > 0)
+					retInt = new int[this.getSizeInventory()-(getOutputSlots().length + (slot0IsBoundGem ? 1 : 0))];
 				else
 					retInt = new int[0];
 				int cnt = 0;
 				if(retInt.length > 0)
 					for(int i = 0; i < this.getSizeInventory(); ++i)
 					{
-						if(i != 0 && !MathUtils.arrayContains(getOutputSlots(), i))
+						if((i != 0 && slot0IsBoundGem) && !MathUtils.arrayContains(getOutputSlots(), i))
 						{
 							retInt[cnt] = i;
 							++cnt;
+						}else
+						{
+							if(!MathUtils.arrayContains(getOutputSlots(), i))
+							{
+								retInt[cnt] = i;
+								++cnt;
+							}
 						}
 					}
 				return retInt;

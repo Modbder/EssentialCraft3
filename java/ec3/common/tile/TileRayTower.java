@@ -2,7 +2,6 @@ package ec3.common.tile;
 
 import java.util.UUID;
 
-import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -13,7 +12,6 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.INetHandlerPlayClient;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import ec3.api.ITEHasMRU;
 import ec3.api.ITETransfersMRU;
 import ec3.common.item.ItemBoundGem;
 import ec3.utils.common.ECUtils;
@@ -55,23 +53,7 @@ public class TileRayTower extends TileEntity implements IInventory, ITETransfers
 			syncTick = 10;
 		}else
 			--this.syncTick;
-		ECUtils.spawnMRUParticles(this,0);
-		ECUtils.mruIn(this, 0);
-		IInventory inv = this;
-		int slotNum = 0;
-		TileEntity tile = this;
-		if(inv.getStackInSlot(slotNum) != null && inv.getStackInSlot(slotNum).getItem() instanceof ItemBoundGem && inv.getStackInSlot(slotNum).getTagCompound() != null)
-		{
-			ItemStack s = inv.getStackInSlot(slotNum);
-			int[] o = ItemBoundGem.getCoords(s);
-			if(MathUtils.getDifference(tile.xCoord, o[0]) <= 16 && MathUtils.getDifference(tile.yCoord, o[1]) <= 16 && MathUtils.getDifference(tile.zCoord, o[2]) <= 16)
-			{
-    			if(tile.getWorldObj().getTileEntity(o[0], o[1], o[2]) != null && tile.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof ITEHasMRU)
-    			{
-    				this.setBalance(((ITEHasMRU) tile.getWorldObj().getTileEntity(o[0], o[1], o[2])).getBalance());
-    			}
-    		}
-		}
+		ECUtils.manage(this, 0);
 	}
 	
 	@Override
