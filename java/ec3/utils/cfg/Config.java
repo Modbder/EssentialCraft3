@@ -82,6 +82,7 @@ public class Config implements IDummyConfig{
 		oreGenAttempts = config.getInt("oreGenAttempts", "Misc", 4, 0, Integer.MAX_VALUE, "The amount of tries to generate the elemental ore cluster in a chunk. Set to 0 to disable worldgen.");
 		eMRUCUGenAttempts = config.getInt("eMRUCUGenAttempts", "Misc", 1, 0, Integer.MAX_VALUE, "The amount of tries to generate the Elder MRUCU Structure in a chunk. Set to 0 to disable worldgen.");
 		allowPaleItemsInOtherRecipes = config.getBoolean("AllowPaleItemsInOtherRecipes", "Misc", true, "");
+		allowHologramInOtherDimensions = config.getBoolean("allowHologramInOtherDimensions", "Mobs", false, "Is the hologram boss allowed to spawn in the overworld/nether/anything but Hoanna");
 	}
 	
 	public static int getIdForBlock(String name)
@@ -122,6 +123,7 @@ public class Config implements IDummyConfig{
 	public static boolean allowPaleItemsInOtherRecipes;
 	
 	public static boolean renderStructuresFromAbove;
+	public static boolean allowHologramInOtherDimensions;
 
 	@Override
 	public void load(Configuration config) {
