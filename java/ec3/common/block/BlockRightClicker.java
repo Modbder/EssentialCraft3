@@ -38,6 +38,11 @@ public class BlockRightClicker extends BlockContainer{
     {
         return false;
     }
+    
+    public int damageDropped(int meta)
+    {
+    	return meta;
+    }
 	
 	@Override
     @SideOnly(Side.CLIENT)
