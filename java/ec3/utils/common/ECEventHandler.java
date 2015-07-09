@@ -620,6 +620,20 @@ public class ECEventHandler {
 			}
 			is.setTagCompound(itemTag);
 		}
+		if(event.client_ParentClassPath.equalsIgnoreCase("ec3.client.gui.GuiCraftingFrame"))
+		{
+			EntityPlayer p = event.presser;
+			ItemStack is = p.getCurrentEquippedItem();
+			NBTTagCompound itemTag = MiscUtils.getStackTag(is);
+			if(event.buttonID == 0)
+			{
+				if(itemTag.getBoolean("ignoreOreDict"))
+					itemTag.setBoolean("ignoreOreDict", false);
+				else
+					itemTag.setBoolean("ignoreOreDict", true);
+			}
+			is.setTagCompound(itemTag);
+		}
 		if(event.client_ParentClassPath.equalsIgnoreCase("ec3.client.gui.GuiAMINEjector"))
 		{
 			TileAMINEjector tile = (TileAMINEjector) event.presser.worldObj.getTileEntity(event.x, event.y, event.z);
