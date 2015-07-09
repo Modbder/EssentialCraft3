@@ -6,9 +6,9 @@ import java.util.UUID;
 
 import com.mojang.authlib.GameProfile;
 
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
-import DummyCore.Utils.MathUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.enchantment.Enchantment;
@@ -26,10 +26,10 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.FakePlayer;
 import ec3.api.ApiCore;
-import ec3.api.ITEHasMRU;
-import ec3.common.item.ItemBoundGem;
 import ec3.common.item.ItemGenericEC3;
 import ec3.common.item.ItemsCore;
+import ec3.common.mod.EssentialCraftCore;
+import ec3.network.PacketNBT;
 import ec3.utils.common.ECUtils;
 
 public class TileMagicalQuarry extends TileMRUGeneric{
@@ -88,26 +88,11 @@ public class TileMagicalQuarry extends TileMRUGeneric{
 			this.syncTick = 0;
 		super.updateEntity();
 		if(!this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord))
-    	mine();
+			mine();
     	if(!this.worldObj.isRemote)
     		collectItems();
-		ECUtils.mruIn(this, 0);
-		ECUtils.spawnMRUParticles(this, 0);
-		IInventory inv = this;
-		int slotNum = 0;
-		TileEntity tile = this;
-		if(inv.getStackInSlot(slotNum) != null && inv.getStackInSlot(slotNum).getItem() instanceof ItemBoundGem && inv.getStackInSlot(slotNum).getTagCompound() != null)
-		{
-			ItemStack s = inv.getStackInSlot(slotNum);
-			int[] o = ItemBoundGem.getCoords(s);
-			if(MathUtils.getDifference(tile.xCoord, o[0]) <= 16 && MathUtils.getDifference(tile.yCoord, o[1]) <= 16 && MathUtils.getDifference(tile.zCoord, o[2]) <= 16)
-			{
-    			if(tile.getWorldObj().getTileEntity(o[0], o[1], o[2]) != null && tile.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof ITEHasMRU)
-    			{
-    				this.setBalance(((ITEHasMRU) tile.getWorldObj().getTileEntity(o[0], o[1], o[2])).getBalance());
-    			}
-    		}
-		}
+
+    	ECUtils.manage(this, 0);
 	}
 	
 	@Override
@@ -304,6 +289,16 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     {
     	if(canMineBlock(b))
     	{
+    		NBTTagCompound currentMinedCoords = new NBTTagCompound();
+        	currentMinedCoords.setInteger("x", xCoord);
+        	currentMinedCoords.setInteger("y", yCoord);
+        	currentMinedCoords.setInteger("z", zCoord);
+        	currentMinedCoords.setInteger("mx", miningX);
+        	currentMinedCoords.setInteger("my", miningY);
+        	currentMinedCoords.setInteger("mz", miningZ);
+        	PacketNBT packet = new PacketNBT(currentMinedCoords).setID(4);
+        	EssentialCraftCore.network.sendToAllAround(packet, new TargetPoint(this.worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 16+this.getMiningRange()));
+        	
     		if(shouldInstaMine(b))
     		{
     			this.worldObj.setBlock(miningX, miningY, miningZ, Blocks.air, 0, 3);
@@ -351,7 +346,7 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     	while(--r >= 0)
     	{
     		Block b = worldObj.getBlock(xCoord, r, zCoord);
-    		if((b != null && b != Blocks.air && !(b instanceof BlockLiquid && ignoreLiquids) && this.canMineBlock(b)) && this.canMineBlock(b))
+    		if((b != null && b.getBlockHardness(worldObj,xCoord, r, zCoord) != -1 && b != Blocks.air && !(b instanceof BlockLiquid && ignoreLiquids) && this.canMineBlock(b)) && this.canMineBlock(b))
     		{
     			return false;
     		}
@@ -365,7 +360,7 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     	while(--r >= 0)
     	{
     		Block b = worldObj.getBlock(xCoord, r, zCoord);
-    		if((b != null && b != Blocks.air && !(b instanceof BlockLiquid && ignoreLiquids) && this.canMineBlock(b)) && this.canMineBlock(b))
+    		if((b != null && b.getBlockHardness(worldObj,xCoord, r, zCoord) != -1 && b != Blocks.air && !(b instanceof BlockLiquid && ignoreLiquids) && this.canMineBlock(b)) && this.canMineBlock(b))
     		{
     			return r;
     		}
@@ -381,7 +376,7 @@ public class TileMagicalQuarry extends TileMRUGeneric{
         	for(int z = -rad; z <= rad; ++z)
         	{
         		Block b = worldObj.getBlock(xCoord+x, miningY, zCoord+z);
-        		if(b != null && b != Blocks.air && !(b instanceof BlockLiquid && ignoreLiquids) && this.canMineBlock(b))
+        		if(b != null && b.getBlockHardness(worldObj,xCoord+x, miningY, zCoord+z) != -1 && b != Blocks.air && !(b instanceof BlockLiquid && ignoreLiquids) && this.canMineBlock(b))
         		{
         			return false;
         		}
@@ -419,7 +414,7 @@ public class TileMagicalQuarry extends TileMRUGeneric{
     			    {
     			        for(int z = -rad; z <= rad; ++z)
     			        {
-    			        	if(worldObj.checkChunksExist(xCoord+x-1, miningY-1, zCoord+z-1, xCoord+x+1, miningY+1, zCoord+z+1) && worldObj.blockExists(xCoord+x, miningY, zCoord+z) && worldObj.getBlock(xCoord+x, miningY, zCoord+z) != null && worldObj.getBlock(xCoord+x, miningY, zCoord+z) != Blocks.air && !(worldObj.getBlock(xCoord+x, miningY, zCoord+z) instanceof BlockLiquid))
+    			        	if(worldObj.checkChunksExist(xCoord+x-1, miningY-1, zCoord+z-1, xCoord+x+1, miningY+1, zCoord+z+1) && worldObj.blockExists(xCoord+x, miningY, zCoord+z) && worldObj.getBlock(xCoord+x, miningY, zCoord+z) != null && worldObj.getBlock(xCoord+x, miningY, zCoord+z).getBlockHardness(worldObj,xCoord+x, miningY, zCoord+z) != -1 && worldObj.getBlock(xCoord+x, miningY, zCoord+z) != Blocks.air && !(worldObj.getBlock(xCoord+x, miningY, zCoord+z) instanceof BlockLiquid))
     			        	{
     			        		this.miningX = this.xCoord+x;
     			        		this.miningZ = this.zCoord+z;
