@@ -30,6 +30,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.item.Item;
@@ -1118,8 +1119,25 @@ public class GuiResearchBook extends GuiScreen{
 	    		 }
 	    		 else if(disc.displayTexture != null)
 	    		 {
+	    			 RenderHelper.enableStandardItemLighting();
+	    			 
+	    			 GL11.glEnable(GL11.GL_BLEND);
+	    			 
 	    			 this.mc.renderEngine.bindTexture(disc.displayTexture);
-	    			 func_146110_a(btn.xPosition+2, btn.yPosition+2, 0, 0, 16, 16, 16, 16);
+	    		     Tessellator tec = Tessellator.instance;
+	    		     tec.startDrawingQuads();
+	    		     
+	    		     tec.addVertexWithUV(btn.xPosition+2, btn.yPosition+2, 0, 0, 0);
+	    		     tec.addVertexWithUV(btn.xPosition+2, btn.yPosition+2+16, 0, 0, 1);
+	    		     tec.addVertexWithUV(btn.xPosition+2+16, btn.yPosition+2+16, 0, 1, 1);
+	    		     tec.addVertexWithUV(btn.xPosition+2+16, btn.yPosition+2, 0, 1, 0);
+	    		     
+	    		     tec.draw();
+	    		     
+	    		     GL11.glDisable(GL11.GL_BLEND);
+	    			
+		    		 RenderHelper.disableStandardItemLighting();
+		    		 RenderHelper.enableGUIStandardItemLighting();
 	    		 }
 	    		 
 	    		 RenderHelper.enableStandardItemLighting();
