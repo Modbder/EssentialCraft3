@@ -30,7 +30,7 @@ public class GuiFilter extends GuiContainer{
 	{
 	    int k = (this.width - this.xSize) / 2;
 	    int l = (this.height - this.ySize) / 2;
-		if(this.filter.filterStack.getItemDamage() == 1)
+		if(this.filter.filterStack.getItemDamage() == 1 || this.filter.filterStack.getItemDamage() == 3)
 		{
 			this.buttonList.add(new GuiButton(0, k+20, l+6, 20, 20, ""));
 			this.buttonList.add(new GuiButton(1, k+20, l+30, 20, 20, ""));

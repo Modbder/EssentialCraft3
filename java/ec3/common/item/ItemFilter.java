@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 
 public class ItemFilter extends Item{
 	
-	public IIcon[] itemIcons = new IIcon[2];
+	public IIcon[] itemIcons = new IIcon[4];
 	
     public ItemStack onItemRightClick(ItemStack is, World w, EntityPlayer p)
     {
@@ -35,12 +35,14 @@ public class ItemFilter extends Item{
     {
     	itemIcons[0] = par1IconRegister.registerIcon("essentialcraft:itemFilter");
     	itemIcons[1] = par1IconRegister.registerIcon("essentialcraft:itemFilterAdvanced");
+    	itemIcons[2] = par1IconRegister.registerIcon("essentialcraft:itemFilterB");
+    	itemIcons[3] = par1IconRegister.registerIcon("essentialcraft:itemFilterAdvancedB");
     }
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-        for (int var4 = 0; var4 < 2; ++var4)
+        for (int var4 = 0; var4 < 4; ++var4)
         {
         	ItemStack min = new ItemStack(par1, 1, var4);
             par3List.add(min);
@@ -50,8 +52,12 @@ public class ItemFilter extends Item{
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
     {
-    	if(par1ItemStack.getItemDamage() == 1)
+    	if(par1ItemStack.getItemDamage() == 1 || par1ItemStack.getItemDamage() == 3)
     		par3List.add(StatCollector.translateToLocal("ec3.txt.desc.advanced"));
+    	if(par1ItemStack.getItemDamage() > 1)
+    		par3List.add(StatCollector.translateToLocal("ec3.txt.desc.blacklist"));
+    	else
+    		par3List.add(StatCollector.translateToLocal("ec3.txt.desc.whitelist"));
     }
     
     public IIcon getIconFromDamage(int par1)
