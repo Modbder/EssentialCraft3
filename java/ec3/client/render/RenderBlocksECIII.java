@@ -25,6 +25,7 @@ import ec3.common.block.BlockCrystalFormer;
 import ec3.common.block.BlockDarknessObelisk;
 import ec3.common.block.BlockDrops;
 import ec3.common.block.BlockDropsOre;
+import ec3.common.block.BlockEC3Chest;
 import ec3.common.block.BlockEnderGenerator;
 import ec3.common.block.BlockFancy;
 import ec3.common.block.BlockFlowerBurner;
@@ -52,6 +53,7 @@ import ec3.common.block.BlockMithrilineFurnace;
 import ec3.common.block.BlockMonsterHarvester;
 import ec3.common.block.BlockMonsterHolder;
 import ec3.common.block.BlockMoonWell;
+import ec3.common.block.BlockNewMIM;
 import ec3.common.block.BlockPotionSpreader;
 import ec3.common.block.BlockRadiatingChamber;
 import ec3.common.block.BlockRayTower;
@@ -68,6 +70,29 @@ public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelId,
 			RenderBlocks renderer) {
+		if(block instanceof BlockNewMIM)
+		{
+	        GL11.glPushMatrix();
+	        GL11.glTranslatef(0F,-0.5F,0F);
+	        GL11.glScalef(0.5F, 0.5F, 0.5F);
+	        Minecraft.getMinecraft().renderEngine.bindTexture(RenderNewMIM.vtextures);
+	        RenderNewMIM.model.renderPart("Cube.001_Cube.002");
+	        RenderNewMIM.model.renderPart("Cube_Cube.001");
+	        GL11.glRotatef(Minecraft.getMinecraft().thePlayer.ticksExisted, 0, 1, 0);
+	        Minecraft.getMinecraft().renderEngine.bindTexture(RenderNewMIM.textures);
+	        RenderNewMIM.model.renderPart("Cube.002_Cube.003");
+	        
+	        GL11.glPopMatrix();
+		}
+		if(block instanceof BlockEC3Chest)
+		{
+	        GL11.glPushMatrix();
+	        GL11.glRotated(180, 1, 0, 0);
+	        GL11.glTranslatef(-0.5F, -0.5F,-0.5F);
+	        Minecraft.getMinecraft().renderEngine.bindTexture(metadata == 0 ? RenderMagicalChest.magicalTextures : RenderMagicalChest.voidTextures);
+	        RenderMagicalChest.inventoryChest.renderAll();
+	        GL11.glPopMatrix();
+		}
 		if(block instanceof BlockCrystalExtractor)
 		{
 	        GL11.glPushMatrix();
@@ -485,8 +510,8 @@ public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 		}
 		if(block instanceof BlockMIM)
 		{
-			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.mim.getIcon(0, 0),1F,0.1F,1F,0,-0.5F,0);
-			renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.mim.getIcon(0, 0),0.1F,1F,0.1F,0,0F,0);
+			//renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.mim.getIcon(0, 0),1F,0.1F,1F,0,-0.5F,0);
+			//renderInventoryBlockWithSize(renderer,Blocks.glass,BlocksCore.mim.getIcon(0, 0),0.1F,1F,0.1F,0,0F,0);
 		}
 		if(block instanceof BlockMagicalDisplay)
 		{
