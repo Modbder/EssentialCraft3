@@ -1,6 +1,7 @@
 package ec3.common.tile;
 
 import DummyCore.Utils.MiscUtils;
+import DummyCore.Utils.UnformedItemStack;
 import ec3.api.GunRegistry;
 import ec3.api.GunRegistry.GunMaterial;
 import ec3.api.GunRegistry.LenseMaterial;
@@ -11,7 +12,6 @@ import ec3.common.item.ItemMRUStorageNBTTag;
 import ec3.common.item.ItemsCore;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class TileWeaponMaker extends TileMRUGeneric{
 	
@@ -449,14 +449,23 @@ public class TileWeaponMaker extends TileMRUGeneric{
 		return scopeName;
 	}
 	
+	public boolean isOreDict(ItemStack stk, String target)
+	{
+		UnformedItemStack s = new UnformedItemStack(target);
+		boolean ret = s.itemStackMatches(stk);
+		s.possibleStacks.clear();
+		s = null;
+		return ret;
+	}
+	
 	public boolean areIngridientsCorrect()
 	{
 		//If output is empty
 		if(this.getStackInSlot(0) == null)
 		{
-			if(this.getStackInSlot(1) != null && OreDictionary.getOreIDs(this.getStackInSlot(1)).length > 0 && OreDictionary.getOreName(OreDictionary.getOreIDs(this.getStackInSlot(1))[0]).equalsIgnoreCase("elementalCore"))
+			if(this.getStackInSlot(1) != null && isOreDict(this.getStackInSlot(1),"elementalCore"))
 			{
-				if(this.getStackInSlot(2) != null && this.getStackInSlot(2).getItem() instanceof ItemMRUStorageNBTTag && this.getStackInSlot(2).getItemDamage() == 1)
+				if(this.getStackInSlot(2) != null && this.getStackInSlot(2).getItem() instanceof ItemMRUStorageNBTTag && this.getStackInSlot(2).getItemDamage() >= 1)
 				{
 					String base = this.getBase();
 					String handle = this.getHandle();
@@ -494,9 +503,9 @@ public class TileWeaponMaker extends TileMRUGeneric{
 		this.previewStack = null;
 		if(this.getStackInSlot(0) == null)
 		{
-			if(this.getStackInSlot(1) != null && OreDictionary.getOreIDs(this.getStackInSlot(1)).length > 0 && OreDictionary.getOreName(OreDictionary.getOreIDs(this.getStackInSlot(1))[0]).equalsIgnoreCase("elementalCore"))
+			if(this.getStackInSlot(1) != null && isOreDict(this.getStackInSlot(1),"elementalCore"))
 			{
-				if(this.getStackInSlot(2) != null && this.getStackInSlot(2).getItem() instanceof ItemMRUStorageNBTTag && this.getStackInSlot(2).getItemDamage() == 1)
+				if(this.getStackInSlot(2) != null && this.getStackInSlot(2).getItem() instanceof ItemMRUStorageNBTTag && this.getStackInSlot(2).getItemDamage() >= 1)
 				{
 					if(this.index == 0)
 						this.previewStack = new ItemStack(ItemsCore.pistol);
