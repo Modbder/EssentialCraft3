@@ -1,15 +1,11 @@
 package ec3.common.block;
 
-import java.util.List;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -48,13 +44,11 @@ public class BlockBlockBreaker extends Block{
         return true;
     }
     
-    @SuppressWarnings("unchecked")
-	public void onNeighborBlockChange(World w, int x, int y, int z, Block n) 
+    public void onNeighborBlockChange(World w, int x, int y, int z, Block n) 
     {
     	if(w.isBlockIndirectlyGettingPowered(x, y, z))
     	{
     		ForgeDirection d = ForgeDirection.values()[w.getBlockMetadata(x, y, z)];
-    		ForgeDirection o = d.getOpposite();
     		Block broken = w.getBlock(x+d.offsetX, y+d.offsetY, z+d.offsetZ);
     		if(!broken.isAir(w, x+d.offsetX, y+d.offsetY, z+d.offsetZ))
     		{
@@ -73,12 +67,6 @@ public class BlockBlockBreaker extends Block{
     	    				b.onBlockDestroyedByPlayer(w, dX, dY, dZ, w.getBlockMetadata(dX, dY, dZ));
     	    				b.dropBlockAsItem(w, dX, dY, dZ, w.getBlockMetadata(dX, dY, dZ), 0);
     	    				w.setBlock(dX, dY, dZ, Blocks.air, 0, 2);
-    	    				AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(dX, dY, dZ, dX+1, dY+1, dZ+1);
-    	    				List<EntityItem> items = w.getEntitiesWithinAABB(EntityItem.class, aabb);
-    	    				for(EntityItem e : items)
-    	    				{
-    	    					e.setPositionAndRotation(x+0.5D+o.offsetX, y+0.5D+o.offsetY, z+0.5D+o.offsetZ, 0, 0);
-    	    				}
     					}else
     						break;
     				}
