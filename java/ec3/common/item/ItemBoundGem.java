@@ -26,12 +26,14 @@ public class ItemBoundGem extends Item {
 	public IIcon active_icon;
 	public ItemBoundGem() {
 		super();
-		this.maxStackSize = 1;
 	}
     
 	@Override
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
     {
+		if(stack.getTagCompound() != null && MiscUtils.getStackTag(stack).hasKey("pos"))
+			return false;
+		
     	if(world.getBlock(x, y, z) == BlocksCore.rayTower && world.getBlockMetadata(x, y, z) == 1)
     	{
     		y-=1;
@@ -39,11 +41,20 @@ public class ItemBoundGem extends Item {
     	TileEntity t = world.getTileEntity(x, y, z);
     	if(t != null && !world.isRemote)
     	{
-    		if(t instanceof ITERequiresMRU || t instanceof ITETransfersMRU || t instanceof ITEStoresMRU && !world.isRemote)
+    		if(t instanceof ITERequiresMRU || t instanceof ITETransfersMRU || t instanceof ITEStoresMRU)
     		{
-    			createTag(stack);
-    			MiscUtils.getStackTag(stack).setIntArray("pos", new int[]{x,y,z});
-    			MiscUtils.getStackTag(stack).setInteger("dim", player.dimension);
+    			ItemStack is = createTag(stack);
+    			MiscUtils.getStackTag(is).setIntArray("pos", new int[]{x,y,z});
+    			MiscUtils.getStackTag(is).setInteger("dim", player.dimension);
+    			if(stack.stackSize <= 0)
+    				player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+    			
+    			if(!player.inventory.addItemStackToInventory(is))
+    				player.dropPlayerItemWithRandomChoice(is, false);
+    			
+    			if(player.openContainer != null)
+    				player.openContainer.detectAndSendChanges();
+    			
     			world.playSoundAtEntity(player, "random.levelup", 1.0F, 2.0F);
     			return true;
     		}
@@ -51,10 +62,19 @@ public class ItemBoundGem extends Item {
     	{
     		if(world.getBlock(x, y, z) instanceof IBoundGemClickable)
     		{
-    			createTag(stack);
-    			MiscUtils.getStackTag(stack).setIntArray("pos", new int[]{x,y,z});
-    			MiscUtils.getStackTag(stack).setInteger("dim", player.dimension);
+    			ItemStack is = createTag(stack);
+    			MiscUtils.getStackTag(is).setIntArray("pos", new int[]{x,y,z});
+    			MiscUtils.getStackTag(is).setInteger("dim", player.dimension);
+    			if(stack.stackSize <= 0)
+    				player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+    			
     			world.playSoundAtEntity(player, "random.levelup", 1.0F, 2.0F);
+    			if(!player.inventory.addItemStackToInventory(is))
+    				player.dropPlayerItemWithRandomChoice(is, false);
+    			
+    			if(player.openContainer != null)
+    				player.openContainer.detectAndSendChanges();
+    			
     			return true;
     		}
     	}
@@ -91,27 +111,27 @@ public class ItemBoundGem extends Item {
     	return MiscUtils.getStackTag(stack).getIntArray("pos");
     }
     
-    public boolean hasEffect(ItemStack par1ItemStack)
-    {
-        return par1ItemStack.getTagCompound() != null;
-    }
-    
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
         return par1ItemStack.getTagCompound() != null ? EnumRarity.epic : EnumRarity.common;
     }
 
     
-    public boolean createTag(ItemStack stack)
+    public ItemStack createTag(ItemStack stack)
     {
-    	if(stack.getTagCompound() == null)
+    	ItemStack retStk = stack.copy();
+    	retStk.stackSize = 1;
+    	stack.stackSize -= 1;
+    	
+    	if(retStk.getTagCompound() == null)
     	{
     		NBTTagCompound tag = new NBTTagCompound();
     		tag.setIntArray("pos", new int[]{0,0,0});
-    		return true;
+    		retStk.setTagCompound(tag);
+    		return retStk;
     	}
-    	return false;
-    }
+    	return retStk;
+    }    
     
     @Override
     public void registerIcons(IIconRegister par1IconRegister)
@@ -121,8 +141,22 @@ public class ItemBoundGem extends Item {
         this.itemIcon = par1IconRegister.registerIcon("essentialcraft:gem_bound");
     }
     
+    @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIconIndex(ItemStack i)
+    {
+        if(i.hasTagCompound())
+        {
+        	return this.active_icon;
+        }else
+        {
+        	return this.icon;
+        }
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(ItemStack i, int pass)
     {
         if(i.hasTagCompound())
         {
