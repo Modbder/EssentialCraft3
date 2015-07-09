@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
 public class ItemEmber extends Item{
-	public static String[] unlocalisedName = new String[]{"acidic","chaos","common","corrupted","crystal","divine","magical","uncommon"};
+	public static String[] unlocalisedName = new String[]{"acidic","chaos","common","corrupted","crystal","divine","magical","flame"};
 	public static IIcon[] itemIcons  = new IIcon[128];
 	
 	public ItemEmber()
