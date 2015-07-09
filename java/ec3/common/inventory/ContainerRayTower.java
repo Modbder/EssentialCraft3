@@ -1,21 +1,21 @@
 package ec3.common.inventory;
 
 import ec3.common.item.ItemBoundGem;
-import ec3.common.tile.TileRayTower;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
 public class ContainerRayTower extends Container{
 	
-    private TileRayTower rayTower;
+    private TileEntity rayTower;
     public ContainerRayTower(InventoryPlayer par1InventoryPlayer, TileEntity par2)
     {
-        this.rayTower = (TileRayTower) par2;
-        this.addSlotToContainer(new SlotBoundEssence(rayTower, 0, 29, 32));
+        this.rayTower = par2;
+        this.addSlotToContainer(new SlotBoundEssence((IInventory) rayTower, 0, 29, 32));
         int i;
 
         for (i = 0; i < 3; ++i)
@@ -34,8 +34,7 @@ public class ContainerRayTower extends Container{
 
 	@Override
 	public boolean canInteractWith(EntityPlayer p_75145_1_) {
-		// TODO Auto-generated method stub
-		return rayTower.isUseableByPlayer(p_75145_1_);
+		return true;
 	}
 
 	@Override
