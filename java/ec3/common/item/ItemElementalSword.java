@@ -429,7 +429,7 @@ public class ItemElementalSword extends ItemSword implements IItemRequiresMRU /*
     	{
     		ret.add("Damage +4");
     	}
-    	if(allEmbers.contains("acid") && allEmbers.contains("fire"))
+    	if(allEmbers.contains("acid") && allEmbers.contains("common"))
     	{
     		ret.add("Damage +2");
     	}
@@ -453,7 +453,7 @@ public class ItemElementalSword extends ItemSword implements IItemRequiresMRU /*
     	{
     		ret.add("Damage +8");
     	}
-    	if(allEmbers.contains("chaos") && allEmbers.contains("fire"))
+    	if(allEmbers.contains("chaos") && allEmbers.contains("common"))
     	{
     		ret.add("Damage Self");
     		ret.add("Damage +7");
@@ -478,23 +478,23 @@ public class ItemElementalSword extends ItemSword implements IItemRequiresMRU /*
     	{
     		ret.add("Damage +4");
     	}
-    	if(allEmbers.contains("fire") && allEmbers.contains("corruption"))
+    	if(allEmbers.contains("common") && allEmbers.contains("corruption"))
     	{
     		ret.add("Weakness");
     	}
-       	if(allEmbers.contains("fire") && allEmbers.contains("crystal"))
+       	if(allEmbers.contains("common") && allEmbers.contains("crystal"))
     	{
     		ret.add("Damage +3");
     	}
-       	if(allEmbers.contains("fire") && allEmbers.contains("divine"))
+       	if(allEmbers.contains("common") && allEmbers.contains("divine"))
     	{
     		ret.add("Damage Boost");
     	}
-       	if(allEmbers.contains("fire") && allEmbers.contains("magic"))
+       	if(allEmbers.contains("common") && allEmbers.contains("magic"))
     	{
     		ret.add("Speed Boost");
     	}
-       	if(allEmbers.contains("fire") && allEmbers.contains("flame"))
+       	if(allEmbers.contains("common") && allEmbers.contains("flame"))
     	{
     		ret.add("Damage +11");
     	}
