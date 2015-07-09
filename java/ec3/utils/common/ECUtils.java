@@ -2,7 +2,6 @@ package ec3.utils.common;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -15,8 +14,6 @@ import baubles.api.BaublesApi;
 import com.mojang.authlib.GameProfile;
 
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import DummyCore.Utils.Coord3D;
 import DummyCore.Utils.DummyData;
 import DummyCore.Utils.DummyDistance;
@@ -330,6 +327,7 @@ public class ECUtils {
 		{
 			IInventory inv = (IInventory) tile;
 			ITEHasMRU mrut = (ITEHasMRU) tile;
+			
 			if(inv.getStackInSlot(slotNum) != null && inv.getStackInSlot(slotNum).getItem() instanceof ItemBoundGem && inv.getStackInSlot(slotNum).getTagCompound() != null)
 			{
 				ItemStack s = inv.getStackInSlot(slotNum);
@@ -359,6 +357,8 @@ public class ECUtils {
 	    			}
 				}
 			}
+			if(mrut.getMRU() < 0)
+				mrut.setMRU(0);
 		}
 	}
 	
@@ -542,164 +542,6 @@ public class ECUtils {
 		}
 	}
 	
-	@SideOnly(Side.CLIENT)
-	public static void renderMRUBeam(TileEntity p_76986_1_, int slotNum, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_)
-	{
-	    	{
-	    		/*
-		        float stability = ((ITEHasMRU)p_76986_1_).getBalance();
-		        int color = 0x00ffff;
-		        
-		        float colorRRender = 0.0F;
-		        float colorGRender = 1.0F;
-		        float colorBRender = 1.0F;
-		        
-		        float colorRNormal = 0.0F;
-		        float colorGNormal = 1.0F;
-		        float colorBNormal = 1.0F;
-		        
-		        float colorRChaos = 1.0F;
-		        float colorGChaos = 0.0F;
-		        float colorBChaos = 0.0F;
-		        
-		        float colorRFrozen = 0.0F;
-		        float colorGFrozen = 0.0F;
-		        float colorBFrozen = 1.0F;
-		        if(stability!=1.0F)
-		        {
-		        	if(stability<1.0F)
-		        	{
-		            	float diff = stability;
-		            	if(diff < 0.01F)
-		            		diff = 0.0F;
-		            	colorRRender = (colorRNormal*diff) + (colorRFrozen*(1.0F-diff));
-		            	colorGRender = (colorGNormal*diff) + (colorGFrozen*(1.0F-diff));
-		            	colorBRender = (colorBNormal*diff) + (colorBFrozen*(1.0F-diff));
-		        	}
-		        	if(stability>1.0F)
-		        	{
-		            	float diff = 2.0F-stability;
-		            	if(diff < 0.01F)
-		            		diff = 0.0F;
-		            	colorRRender = (colorRNormal*diff) + (colorRChaos*(1.0F-diff));
-		            	colorGRender = (colorGNormal*diff) + (colorGChaos*(1.0F-diff));
-		            	colorBRender = (colorBNormal*diff) + (colorBChaos*(1.0F-diff));
-		        	}
-		        }
-				IInventory inv = (IInventory) p_76986_1_;
-				if(inv.getStackInSlot(0) != null && inv.getStackInSlot(0).getItem() instanceof ItemBoundGem && inv.getStackInSlot(0).getTagCompound() != null)
-				{
-					ItemStack s = inv.getStackInSlot(0);
-					int[] o = ItemBoundGem.getCoords(s);
-					if(MathUtils.getDifference(p_76986_1_.xCoord, o[0]) <= 16 && MathUtils.getDifference(p_76986_1_.yCoord, o[1]) <= 16 && MathUtils.getDifference(p_76986_1_.zCoord, o[2]) <= 16)
-					{
-		    			if(p_76986_1_.getWorldObj().getTileEntity(o[0], o[1], o[2]) != null && p_76986_1_.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof ITEHasMRU)
-		    			{
-		    		        float f21 = 0 + p_76986_9_;
-		    		        float f31 = MathHelper.sin(f21 * 0.2F) / 2.0F + 0.5F;
-		    		        f31 = (f31 * f31 + f31) * 0.2F;
-		    		        float f4;
-		    		        float f5;
-		    		        float f6;
-		    		        GL11.glPushMatrix();
-		    		        //Is the main tile a RayTower
-		    		        if(p_76986_1_.getWorldObj().getTileEntity(p_76986_1_.xCoord, p_76986_1_.yCoord, p_76986_1_.zCoord) instanceof TileRayTower)
-		    		        {
-		    		        	//Is the transfering tile a RayTower
-			    		        if(p_76986_1_.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof TileRayTower || p_76986_1_.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof TileMRUReactor)
-			    		        {
-			    		        	TileEntity y = p_76986_1_.getWorldObj().getTileEntity(o[0], o[1], o[2]);
-			    		        	if(y instanceof TileRayTower)
-			    		        	{
-					    		        f4 = (float)(o[0] - p_76986_1_.xCoord);
-							            f5 = (float)(o[1] - (double)(f31 + p_76986_1_.yCoord-0.15F));
-					    		        f6 = (float)(o[2] - p_76986_1_.zCoord);
-			    		        	}else
-			    		        	{
-					    		        f4 = (float)(o[0] - p_76986_1_.xCoord);
-							            f5 = (float)(o[1] - (double)(f31 + p_76986_1_.yCoord+0.6F));
-					    		        f6 = (float)(o[2] - p_76986_1_.zCoord);
-			    		        	}
-			    		        }else
-			    		        {
-				    		        f4 = (float)(o[0] - p_76986_1_.xCoord);
-						            f5 = (float)(o[1] - (double)(f31 + p_76986_1_.yCoord+1.3F));
-				    		        f6 = (float)(o[2] - p_76986_1_.zCoord);
-			    		        }
-		    		        	GL11.glTranslatef((float)p_76986_2_+0.5F, (float)p_76986_4_ + 1.9F, (float)p_76986_6_+0.5F);
-		    		        }else
-		    		        {
-		    		        	//Is the transfering tile a RayTower
-			    		        if(p_76986_1_.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof TileRayTower || p_76986_1_.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof TileMRUReactor)
-			    		        {
-			    		        	TileEntity y = p_76986_1_.getWorldObj().getTileEntity(o[0], o[1], o[2]);
-			    		        	if(y instanceof TileRayTower)
-			    		        	{
-					    		        f4 = (float)(o[0] - p_76986_1_.xCoord);
-							            f5 = (float)(o[1] - (double)(f31 + p_76986_1_.yCoord-1.55F));
-					    		        f6 = (float)(o[2] - p_76986_1_.zCoord);
-					    		        GL11.glTranslatef((float)p_76986_2_+0.5F, (float)p_76986_4_ + 0.5F, (float)p_76986_6_+0.5F);
-			    		        	}else
-			    		        	{
-			    		        		 f4 = (float)(o[0] - p_76986_1_.xCoord);
-								         f5 = (float)(o[1] - (double)(f31 + p_76986_1_.yCoord-0.7F));
-						    		     f6 = (float)(o[2] - p_76986_1_.zCoord);
-						    		     GL11.glTranslatef((float)p_76986_2_+0.5F, (float)p_76986_4_ + 0.5F, (float)p_76986_6_+0.5F);
-			    		        	}
-			    		        }else
-			    		        {
-				    		        f4 = (float)(o[0] - p_76986_1_.xCoord);
-						            f5 = (float)(o[1] - (double)(f31 + p_76986_1_.yCoord-0.15F));
-				    		        f6 = (float)(o[2] - p_76986_1_.zCoord);
-				    		        GL11.glTranslatef((float)p_76986_2_+0.5F, (float)p_76986_4_ + 0.5F, (float)p_76986_6_+0.5F);
-			    		        }
-		    		        	
-		    		        }
-		    		        float f7 = MathHelper.sqrt_float(f4 * f4 + f6 * f6);
-		    		        float f8 = MathHelper.sqrt_float(f4 * f4 + f5 * f5 + f6 * f6);
-		    		        GL11.glRotatef((float)(-Math.atan2((double)f6, (double)f4)) * 180.0F / (float)Math.PI - 90.0F, 0.0F, 1.0F, 0.0F);
-		    		        GL11.glRotatef((float)(-Math.atan2((double)f7, (double)f5)) * 180.0F / (float)Math.PI - 90.0F, 1.0F, 0.0F, 0.0F);
-		    		        Tessellator tessellator = Tessellator.instance;
-		    		        RenderHelper.disableStandardItemLighting();
-		    		        GL11.glDisable(GL11.GL_CULL_FACE);
-		    		        MiscUtils.bindTexture("essentialcraft","textures/special/mru_beam.png");
-		    		        GL11.glShadeModel(GL11.GL_SMOOTH);
-		    		        GL11.glEnable(GL11.GL_BLEND);
-		    		        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		    		        GL11.glDisable(GL11.GL_ALPHA_TEST);
-		    		        GL11.glDisable(GL11.GL_LIGHTING);
-		    	            float f9 = 0.0F - ((float)Minecraft.getMinecraft().thePlayer.ticksExisted + p_76986_9_) * 0.01F;
-		    	            float f10 = MathHelper.sqrt_float(f4 * f4 + f5 * f5 + f6 * f6) / 32.0F - ((float)Minecraft.getMinecraft().thePlayer.ticksExisted + p_76986_9_) * 0.01F;
-		    		        tessellator.startDrawing(5);
-		    		        byte b0 = 8;
-		
-		    		        for (int i = 0; i <= b0; ++i)
-		    		        {
-		    		            float f11 = MathHelper.sin((float)(i % b0) * (float)Math.PI * 2.0F / (float)b0) * 0.75F * 0.2F;
-		    		            float f12 = MathHelper.cos((float)(i % b0) * (float)Math.PI * 2.0F / (float)b0) * 0.75F * 0.2F;
-		    		            float f13 = (float)(i % b0) * 1.0F / (float)b0;
-		    		            tessellator.setColorRGBA_F(colorRRender, colorGRender, colorBRender, 1);
-		    		            tessellator.addVertexWithUV((double)(f11), (double)(f12), 0.0D, (double)f13, (double)f10);
-		    		            tessellator.setColorRGBA_F(colorRRender, colorGRender, colorBRender, 1);
-		    		            tessellator.addVertexWithUV((double)f11, (double)f12, (double)f8, (double)f13, (double)f9);
-		    		        }
-		
-		    		        tessellator.draw();
-		    		        GL11.glEnable(GL11.GL_CULL_FACE);
-		    		        GL11.glDisable(GL11.GL_BLEND);
-		    		        GL11.glShadeModel(GL11.GL_FLAT);
-		    		        GL11.glEnable(GL11.GL_ALPHA_TEST);
-		    		        GL11.glEnable(GL11.GL_LIGHTING);
-		    		        RenderHelper.enableStandardItemLighting();
-		    		        GL11.glPopMatrix();
-		    			}
-					}
-				}
-				*/
-			}
-			
-    	}
-	
 	public static float getGenResistance(int index, EntityPlayer p)
 	{
 		float resistance = 0F;
@@ -874,7 +716,7 @@ public class ECUtils {
 						return copyShapelessOreRecipe(mRecipe);
 				}
 			}
-			//A compathability patch
+			//A compatibility patch
 			return !MagicalAssemblerRecipes.findRecipes(searched).isEmpty() ? MagicalAssemblerRecipes.findRecipes(searched).get(0) : null;
 		}
 		if(recipeType == 4)
@@ -973,9 +815,33 @@ public class ECUtils {
 		return ret;
 	}
 	
+	
+	public static boolean oreDictionaryCompare(ItemStack stk, ItemStack stk1)
+	{
+		if(stk == null || stk1 == null)
+			return false;
+		
+		if(OreDictionary.getOreIDs(stk) == null || OreDictionary.getOreIDs(stk).length == 0 || OreDictionary.getOreIDs(stk1) == null || OreDictionary.getOreIDs(stk1).length == 0)
+			return false;
+		
+		int[] ids = OreDictionary.getOreIDs(stk);
+		int[] ids1 = OreDictionary.getOreIDs(stk1);
+		
+		for(int i = 0; i < ids.length; ++i)
+		{
+			for(int j = 0; j < ids1.length; ++j)
+			{
+				if(ids[i] == ids1[j])
+					return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	public static boolean canFilterAcceptItem(IInventory filterInventory, ItemStack is, ItemStack filter)
 	{
-		if(filter.getItemDamage() == 0)
+		if(filter.getItemDamage() == 0 || filter.getItemDamage() == 2)
 		{
 			for(int i = 0; i < filterInventory.getSizeInventory(); ++i)
 			{
@@ -984,11 +850,21 @@ public class ECUtils {
 				{
 					if(f.getItem() instanceof ItemFilter)
 					{
-						if(canFilterAcceptItem(new InventoryMagicFilter(f),is,f))return true;
+						if(canFilterAcceptItem(new InventoryMagicFilter(f),is,f))
+							return true;
 					}else
 					{
-						if(f.isItemEqual(is) && ItemStack.areItemStackTagsEqual(f, is))
-							return true;
+						if(filter.getItemDamage() == 2)
+						{
+							if(!f.isItemEqual(is) || !ItemStack.areItemStackTagsEqual(f, is))
+								return true;
+							else
+								return false;
+						}else
+						{
+							if(f.isItemEqual(is) && ItemStack.areItemStackTagsEqual(f, is))
+								return true;
+						}
 					}
 				}
 			}
@@ -1004,31 +880,55 @@ public class ECUtils {
 				{
 					if(f.getItem() instanceof ItemFilter)
 					{
-						if(canFilterAcceptItem(new InventoryMagicFilter(f),is,f))return true;
+						if(canFilterAcceptItem(new InventoryMagicFilter(f),is,f))
+							return true;
 					}else
 					{
-						List<?> oreDictConversion = Arrays.asList(OreDictionary.getOreIDs(is));
-						List<?> oreDictConversion_Filter = Arrays.asList(OreDictionary.getOreIDs(f));
-						if(oreDictConversion_Filter.toString().equals(oreDictConversion.toString()) || ignoreOreDict)
+						if(filter.getItemDamage() == 1)
 						{
-							 if(ItemStack.areItemStackTagsEqual(f, is) || ignoreNBT)
-							 {
-								 return true;
-							 }
+							if(oreDictionaryCompare(is,f) || ignoreOreDict)
+							{
+								if(ItemStack.areItemStackTagsEqual(f, is) || ignoreNBT)
+								{
+									return true;
+								}
+							}else
+							{
+								if(ItemStack.areItemStacksEqual(is, f) || (is.getItem() == f.getItem() && ignoreMeta))
+								{
+									if(ItemStack.areItemStackTagsEqual(f, is) || ignoreNBT)
+									{
+										return true;
+									}
+								}
+							}
 						}else
 						{
-							 if(ItemStack.areItemStackTagsEqual(f, is) || ignoreNBT)
-							 {
-								 if(is.getItem() == f.getItem() && (is.getItemDamage() == f.getItemDamage() || ignoreMeta))
-									 return true;
-							 }
+							if(!oreDictionaryCompare(is,f) || ignoreOreDict)
+							{
+								if(!ItemStack.areItemStackTagsEqual(f, is) || ignoreNBT)
+								{
+									return true;
+								}else
+									return false;
+							}else
+							{
+								if(!ItemStack.areItemStacksEqual(is, f) || (is.getItem() == f.getItem() && ignoreMeta))
+								{
+									if(!ItemStack.areItemStackTagsEqual(f, is) || ignoreNBT)
+									{
+										return true;
+									}else
+										return false;
+								}else
+									return false;
+							}
 						}
 					}
 				}
 			}
 		}
-		
-		return false;
+		return filter.getItemDamage() > 1;
 	}
 	
 	public static void spawnItemFX(TileEntity source, TileEntity destination)
@@ -1058,6 +958,34 @@ public class ECUtils {
 		dataString += "||mX:"+mX+"||mY:"+mY+"||mZ:"+mZ;
 		DummyPacketIMSG pkt = new DummyPacketIMSG(dataString);
 		DummyPacketHandler.sendToAll(pkt);
+	}
+	
+	public static void balanceIn(TileEntity tile, int slotNum)
+	{
+		if(tile instanceof IInventory && tile instanceof ITEHasMRU)
+		{
+			IInventory inv = (IInventory) tile;
+			ITEHasMRU mrut = (ITEHasMRU) tile;
+			if(inv.getStackInSlot(slotNum) != null && inv.getStackInSlot(slotNum).getItem() instanceof ItemBoundGem && inv.getStackInSlot(slotNum).getTagCompound() != null)
+			{
+				ItemStack s = inv.getStackInSlot(slotNum);
+				int[] o = ItemBoundGem.getCoords(s);
+				if(MathUtils.getDifference(tile.xCoord, o[0]) <= 16 && MathUtils.getDifference(tile.yCoord, o[1]) <= 16 && MathUtils.getDifference(tile.zCoord, o[2]) <= 16)
+				{
+	    			if(tile.getWorldObj().getTileEntity(o[0], o[1], o[2]) != null && tile.getWorldObj().getTileEntity(o[0], o[1], o[2]) instanceof ITEHasMRU)
+	    			{
+	    				mrut.setBalance(((ITEHasMRU) tile.getWorldObj().getTileEntity(o[0], o[1], o[2])).getBalance());
+	    			}
+	    		}
+			}
+		}
+	}
+	
+	public static void manage(TileEntity tile, int slotNum)
+	{
+		mruIn(tile, 0);
+		spawnMRUParticles(tile, 0);
+		balanceIn(tile, 0);
 	}
 	
 	public static GameProfile EC3FakePlayerProfile = new GameProfile(UUID.fromString("5cd89d0b-e9ba-0000-89f4-b5dbb05963da"), "[EC3]");
