@@ -15,6 +15,8 @@ import ec3.common.inventory.ContainerAMINInjector;
 import ec3.common.inventory.ContainerChargingChamber;
 import ec3.common.inventory.ContainerColdDistillator;
 import ec3.common.inventory.ContainerCorruptionCleaner;
+import ec3.common.inventory.ContainerCrafter;
+import ec3.common.inventory.ContainerCraftingFrame;
 import ec3.common.inventory.ContainerCrystalController;
 import ec3.common.inventory.ContainerCrystalExtractor;
 import ec3.common.inventory.ContainerCrystalFormer;
@@ -26,12 +28,15 @@ import ec3.common.inventory.ContainerFlowerBurner;
 import ec3.common.inventory.ContainerFurnaceMagic;
 import ec3.common.inventory.ContainerHeatGenerator;
 import ec3.common.inventory.ContainerMIM;
+import ec3.common.inventory.ContainerMIMCraftingManager;
+import ec3.common.inventory.ContainerMIMInventoryStorage;
 import ec3.common.inventory.ContainerMINEjector;
 import ec3.common.inventory.ContainerMINInjector;
 import ec3.common.inventory.ContainerMRUAcceptor;
 import ec3.common.inventory.ContainerMRUCoil;
 import ec3.common.inventory.ContainerMRUInfo;
 import ec3.common.inventory.ContainerMagicalAssembler;
+import ec3.common.inventory.ContainerMagicalChest;
 import ec3.common.inventory.ContainerMagicalEnchanter;
 import ec3.common.inventory.ContainerMagicalFurnace;
 import ec3.common.inventory.ContainerMagicalHopper;
@@ -46,6 +51,9 @@ import ec3.common.inventory.ContainerMithrilineFurnace;
 import ec3.common.inventory.ContainerMonsterHarvester;
 import ec3.common.inventory.ContainerMonsterHolder;
 import ec3.common.inventory.ContainerMoonWell;
+import ec3.common.inventory.ContainerNewMIM;
+import ec3.common.inventory.ContainerNewMIMScreen;
+import ec3.common.inventory.ContainerNewMIMSimpleNode;
 import ec3.common.inventory.ContainerPotionSpreader;
 import ec3.common.inventory.ContainerRadiatingChamber;
 import ec3.common.inventory.ContainerRayTower;
@@ -55,12 +63,16 @@ import ec3.common.inventory.ContainerSunRayAbsorber;
 import ec3.common.inventory.ContainerUltraFlowerBurner;
 import ec3.common.inventory.ContainerUltraHeatGenerator;
 import ec3.common.inventory.ContainerWeaponBench;
+import ec3.common.inventory.InventoryCraftingFrame;
 import ec3.common.inventory.InventoryMagicFilter;
 import ec3.common.tile.TileAMINEjector;
 import ec3.common.tile.TileAMINInjector;
+import ec3.common.tile.TileAdvancedBlockBreaker;
+import ec3.common.tile.TileAnimalSeparator;
 import ec3.common.tile.TileChargingChamber;
 import ec3.common.tile.TileColdDistillator;
 import ec3.common.tile.TileCorruptionCleaner;
+import ec3.common.tile.TileCrafter;
 import ec3.common.tile.TileCrystalController;
 import ec3.common.tile.TileCrystalExtractor;
 import ec3.common.tile.TileCrystalFormer;
@@ -74,6 +86,7 @@ import ec3.common.tile.TileMINEjector;
 import ec3.common.tile.TileMINInjector;
 import ec3.common.tile.TileMRUCoil;
 import ec3.common.tile.TileMagicalAssembler;
+import ec3.common.tile.TileMagicalChest;
 import ec3.common.tile.TileMagicalEnchanter;
 import ec3.common.tile.TileMagicalFurnace;
 import ec3.common.tile.TileMagicalHopper;
@@ -88,6 +101,12 @@ import ec3.common.tile.TileMithrilineFurnace;
 import ec3.common.tile.TileMonsterHarvester;
 import ec3.common.tile.TileMonsterHolder;
 import ec3.common.tile.TileMoonWell;
+import ec3.common.tile.TileNewMIM;
+import ec3.common.tile.TileNewMIMCraftingManager;
+import ec3.common.tile.TileNewMIMExportNode;
+import ec3.common.tile.TileNewMIMImportNode;
+import ec3.common.tile.TileNewMIMInventoryStorage;
+import ec3.common.tile.TileNewMIMScreen;
 import ec3.common.tile.TilePotionSpreader;
 import ec3.common.tile.TileRadiatingChamber;
 import ec3.common.tile.TileRayTower;
@@ -117,6 +136,12 @@ public class CommonProxy implements IGuiHandler{
 				{
 					InventoryMagicFilter inventory = new InventoryMagicFilter(player.getCurrentEquippedItem());
 					return new ContainerFilter(player, inventory);
+				}
+				//Item: Crafting Frame
+				if(x == 0 && y == -2 && z == 0)
+				{
+					InventoryCraftingFrame inventory = new InventoryCraftingFrame(player.getCurrentEquippedItem());
+					return new ContainerCraftingFrame(player, inventory);
 				}
 			}
 			if(tile instanceof TileRayTower)
@@ -290,6 +315,38 @@ public class CommonProxy implements IGuiHandler{
 			if(tile instanceof TileFurnaceMagic)
 			{
 				return new ContainerFurnaceMagic(player.inventory, tile);
+			}
+			if(tile instanceof TileMagicalChest)
+			{
+				return new ContainerMagicalChest(player.inventory, (TileMagicalChest) tile);
+			}
+			if(tile instanceof TileNewMIMInventoryStorage)
+			{
+				return new ContainerMIMInventoryStorage(player.inventory, (TileNewMIMInventoryStorage) tile);
+			}
+			if(tile instanceof TileNewMIM)
+			{
+				return new ContainerNewMIM(player.inventory, tile);
+			}
+			if(tile instanceof TileNewMIMScreen)
+			{
+				return new ContainerNewMIMScreen(player.inventory, tile);
+			}
+			if(tile instanceof TileNewMIMCraftingManager)
+			{
+				return new ContainerMIMCraftingManager(player.inventory, (TileNewMIMCraftingManager) tile);
+			}
+			if(tile instanceof TileNewMIMExportNode || tile instanceof TileNewMIMImportNode || tile instanceof TileAdvancedBlockBreaker)
+			{
+				return new ContainerNewMIMSimpleNode(player.inventory, tile);
+			}
+			if(tile instanceof TileCrafter)
+			{
+				return new ContainerCrafter(player.inventory, (TileCrafter) tile);
+			}
+			if(tile instanceof TileAnimalSeparator)
+			{
+				return new ContainerRayTower(player.inventory, tile);
 			}
 		}
 		if(ID == Config.guiID[1])

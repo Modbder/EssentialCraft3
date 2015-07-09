@@ -8,6 +8,7 @@ import ec3.common.item.ItemBlockElementalCrystal;
 import ec3.common.item.ItemBlockFancy;
 import ec3.common.item.ItemBlockGeneric;
 import ec3.common.item.ItemBlockMithrilineCrystal;
+import ec3.common.item.ItemBlockRDNS;
 import ec3.common.item.ItemsCore;
 import ec3.common.mod.EssentialCraftCore;
 import DummyCore.Blocks.BlocksRegistry;
@@ -129,9 +130,9 @@ public class BlocksCore {
 		air = registerBlockSimple(Block.class,Material.rock,air,"air","glass",-1,-1,0);
 		air.setBlockName("air");
 		air.setBlockTextureName("cauldron_top");
-		minEjector = registerBlockSimple(BlockMINEjector.class,Material.rock,minEjector,"minEjector","fortifiedStone",1,1,0);
-		minInjector = registerBlockSimple(BlockMINInjector.class,Material.rock,minInjector,"minInjector","fortifiedStone",1,1,0);
-		mim = registerBlockSimple(BlockMIM.class,Material.rock,mim,"mim","voidStone",1,1,0);
+		//minEjector = registerBlockSimple(BlockMINEjector.class,Material.rock,minEjector,"minEjector","fortifiedStone",1,1,0);
+		//minInjector = registerBlockSimple(BlockMINInjector.class,Material.rock,minInjector,"minInjector","fortifiedStone",1,1,0);
+		//mim = registerBlockSimple(BlockMIM.class,Material.rock,mim,"mim","voidStone",1,1,0);
 		//Its 8ack!
 		darknessObelisk = registerBlockSimple(BlockDarknessObelisk.class,Material.rock,darknessObelisk,"darknessObelisk","voidStone",1,1,0);
 		
@@ -164,6 +165,19 @@ public class BlocksCore {
 		weaponMaker = registerBlockSimple(BlockWeaponMaker.class,Material.rock,weaponMaker,"weaponMaker","fortifiedStone",1,1,15);
 		furnaceMagic = registerBlockSimple(BlockFurnaceMagic.class,Material.rock,furnaceMagic,"furnaceMagic","fortifiedStone",1,1,15);
 		holopad = registerBlockSimple(BlockHologramSpawner.class,Material.rock,holopad,"holopad","holopad",1,1,15);
+		chest = registerBlockSimple(BlockEC3Chest.class,Material.rock,chest,"chest","null",1,1,0);
+		mimInvStorage = registerBlockSimple(BlockNewMIMInventoryStorage.class,Material.rock,mimInvStorage,"mimInvStorage","null",1,1,15);
+		newMim = registerBlockSimple(BlockNewMIM.class,Material.rock,newMim,"newMim","voidStone",1,1,0);
+		mimScreen = registerBlockSimple(BlockMIMScreen.class,Material.rock,mimScreen,"mimScreen","null",1,1,15);
+		mimCrafter = registerBlockSimple(BlockNewMIMCraftingManager.class,Material.rock,mimCrafter,"mimCrafter","null",1,1,15);
+		mimEjector = registerBlockSimple(BlockNewMIMExporter.class,Material.rock,mimEjector,"mimEjector","mimNode_Ejection",1,1,0);
+		mimInjector = registerBlockSimple(BlockNewMIMImporter.class,Material.rock,mimInjector,"mimInjector","mimNode_Injection",1,1,0);
+		device = new BlockRedstoneDeviceNotSided().setHardness(1).setResistance(1).setBlockName("essentialcraft.device");
+		BlocksRegistry.registerBlock(device, "essentialcraft.device", EssentialCraftCore.class, ItemBlockRDNS.class);
+		//device = registerBlockSimple(BlockRedstoneDeviceNotSided.class,Material.rock,device,"device","null",1,1,15);
+		advBreaker = registerBlockSimple(BlockAdvBlockBreaker.class,Material.rock,advBreaker,"advBreaker","fortifiedStone",1,1,0);
+		mimEjectorP = registerBlockSimple(BlockNewMIMExporter_Persistant.class,Material.rock,mimEjectorP,"mimEjectorP","mimNode_EjectionP",1,1,0);
+		mimInjectorP = registerBlockSimple(BlockNewMIMImporter_Persistant.class,Material.rock,mimInjectorP,"mimInjectorP","mimNode_InjectionP",1,1,0);
 	}
 	
 	public static void postInitLoad()
@@ -500,9 +514,9 @@ public class BlocksCore {
 	
 	public static Block air;
 	
-	public static Block minEjector;
-	public static Block minInjector;
-	public static Block mim;
+	//public static Block minEjector;
+	//public static Block minInjector;
+	//public static Block mim;
 	public static Block darknessObelisk;
 	public static Block ultraHeatGen;
 	public static Block ultraFlowerBurner;
@@ -528,6 +542,17 @@ public class BlocksCore {
 	public static Block furnaceMagic;
 	
 	public static Block holopad;
+	public static Block chest;
+	public static Block mimInvStorage;
+	public static Block newMim;
+	public static Block mimScreen;
+	public static Block mimCrafter;
+	public static Block mimEjector;
+	public static Block mimInjector;
+	public static Block device;
+	public static Block advBreaker;
+	public static Block mimEjectorP;
+	public static Block mimInjectorP;
 	
 	public static List<Block> fancyBlocks = new ArrayList<Block>();
 	

@@ -49,7 +49,7 @@ public class ItemsCore {
 		elemental_sword = new ItemSword_Mod(elemental).setUnlocalizedName("essentialcraft:elemental_sword").setTextureName("essentialcraft:tools/elemental_sword").setMaxStackSize(1).setFull3D();
 		Item.itemRegistry.addObject(getIdForItem("elemental_sword"), "essentialcraft:elemental_sword", elemental_sword);
 		ItemRegistry.registerItem(elemental_sword, EssentialCraftCore.class);
-		bound_gem = new ItemBoundGem().setUnlocalizedName("essentialcraft:bound_gem").setTextureName("essentialcraft:gem_bound").setFull3D();
+		bound_gem = new ItemBoundGem().setUnlocalizedName("essentialcraft:bound_gem").setTextureName("essentialcraft:gem_bound");
 		Item.itemRegistry.addObject(getIdForItem("bound_gem"), "essentialcraft:bound_gem", bound_gem);
 		ItemRegistry.registerItem(bound_gem, EssentialCraftCore.class);
 		magicMonocle=registerItemSimple(magicMonocle,ItemMonocle.class,"magicMonocle","tools/magicMonocle",16,true,1);
@@ -322,6 +322,9 @@ public class ItemsCore {
 		
 		ItemRegistry.registerItem(record_robocalypse, "robocalypse", EssentialCraftCore.class);
 		
+		inventoryGem = registerItemSimple(inventoryGem,ItemInventoryGem.class,"inventoryGem","null",0,false,64);
+		craftingFrame = registerItemSimple(craftingFrame,ItemCraftingFrame.class,"craftingFrame","itemCrafter",0,false,1);
+		
 		MagicianTableUpgrades.addUpgrade(new ItemStack(genericItem,1,1), 1.2F, loc("elementalCore"));
 		MagicianTableUpgrades.addUpgrade(new ItemStack(genericItem,1,0), 5F, loc("combinedMagicalAlloys"));
 		MagicianTableUpgrades.addUpgrade(new ItemStack(genericItem,1,8), 2.5F, loc("enderAlloy"));
@@ -484,6 +487,9 @@ public class ItemsCore {
 	public static Item record_robocalypse;
 	
 	public static Item dividingGun;
+	
+	public static Item inventoryGem;
+	public static Item craftingFrame;
 	
 	public static ArmorMaterial magicArmorMaterial = EnumHelper.addArmorMaterial("MRUFortified", 33, new int[]{3, 8, 6, 3}, 25);
 	public static ArmorMaterial voidArmorMaterial = EnumHelper.addArmorMaterial("VoidFortified", 52, new int[]{3, 8, 6, 3}, 40);

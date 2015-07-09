@@ -512,6 +512,7 @@ public class RecipeRegistry {
 			"conversionMatrix","elementalCore","conversionMatrix",
 			"plateMagic","mruLink","worldInteractor",
 		});
+		/*
 		addRecipe(new ItemStack(BlocksCore.minEjector,2,0),2000,new Object[]{
 			"frameMagic","screenMagic","frameMagic",
 			"frameMagic","elementalCore","frameMagic",
@@ -532,7 +533,7 @@ public class RecipeRegistry {
 			"frameMagic","elementalCore","frameMagic",
 			getItemByNameEC3("genericItem",41),"conversionMatrix",getItemByNameEC3("genericItem",41),
 		});
-		
+		*/
 		addRecipe(new ItemStack(BlocksCore.ecAcceptor,1,0),new Object[]{
 			"frameMagic","mruCatcher","frameMagic",
 			"screenMagic","elementalCore","conversionMatrix",
@@ -1106,6 +1107,200 @@ public class RecipeRegistry {
 			'D',"gemWind"
 		}));
 		
+		//TODO 4.6 Recipes
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksCore.chest,1,0), new Object[]{
+			"###",
+			"# #",
+			"###",
+			'#',new ItemStack(BlocksCore.magicPlating,1,OreDictionary.WILDCARD_VALUE)
+		}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksCore.chest,1,1), new Object[]{
+			"###",
+			"# #",
+			"###",
+			'#',new ItemStack(BlocksCore.voidStone,1,OreDictionary.WILDCARD_VALUE)
+		}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksCore.device,1,0), new Object[]{
+			"#@#",
+			"#R#",
+			"###",
+			'#',new ItemStack(BlocksCore.fortifiedStone,1,OreDictionary.WILDCARD_VALUE),
+			'R',"dustRedstone",
+			'@',ItemsCore.weak_elemental_hoe
+		}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksCore.device,1,1), new Object[]{
+			"#@#",
+			"#R#",
+			"###",
+			'#',new ItemStack(BlocksCore.fortifiedStone,1,OreDictionary.WILDCARD_VALUE),
+			'R',"dustRedstone",
+			'@',Items.water_bucket
+		}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksCore.device,1,2), new Object[]{
+			"#@#",
+			"#R#",
+			"#@#",
+			'#',new ItemStack(BlocksCore.fortifiedStone,1,OreDictionary.WILDCARD_VALUE),
+			'R',"dustRedstone",
+			'@',Blocks.crafting_table
+		}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksCore.device,1,3), new Object[]{
+			"#@#",
+			"#R#",
+			"###",
+			'#',new ItemStack(BlocksCore.fortifiedStone,1,OreDictionary.WILDCARD_VALUE),
+			'R',"dustRedstone",
+			'@',Blocks.hay_block
+		}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksCore.device,1,5), new Object[]{
+			"#@#",
+			"#R#",
+			"###",
+			'#',new ItemStack(BlocksCore.fortifiedStone,1,OreDictionary.WILDCARD_VALUE),
+			'R',"dustRedstone",
+			'@',Items.shears
+		}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksCore.device,1,6), new Object[]{
+			"#@#",
+			"#R#",
+			"###",
+			'#',new ItemStack(BlocksCore.fortifiedStone,1,OreDictionary.WILDCARD_VALUE),
+			'R',"dustRedstone",
+			'@',Items.golden_apple
+		}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksCore.device,1,7), new Object[]{
+			"#@#",
+			"#R#",
+			"###",
+			'#',new ItemStack(BlocksCore.fortifiedStone,1,OreDictionary.WILDCARD_VALUE),
+			'R',"dustRedstone",
+			'@',Items.apple
+		}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksCore.advBreaker,1,0), new Object[]{
+			" R ",
+			"RBR",
+			" C ",
+			'B',BlocksCore.blockBreaker,
+			'R',"dustRedstone",
+			'C',Blocks.chest
+		}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsCore.craftingFrame,1,0), new Object[]{
+			"#@#",
+			"@#@",
+			"#@#",
+			'#',Blocks.crafting_table,
+			'@',"plateFortified"
+		}));
+		
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ItemsCore.inventoryGem,1,0),new Object[]{
+			"shardElemental",gen(12)
+		}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsCore.filter,1,2), new Object[]{
+			" @ ",
+			"@#@",
+			" @ ",
+			'#',Blocks.crafting_table,
+			'@',"plateObsidian"
+		}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsCore.filter,1,3), new Object[]{
+			" @ ",
+			"@#@",
+			" @ ",
+			'#',new ItemStack(ItemsCore.filter,1,2),
+			'@',"plateVoid"
+		}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksCore.mimEjector), new Object[]{
+			" @ ",
+			"#C#",
+			"#E#",
+			'#',gen(34),
+			'@',"ec3:gemEnderPearl",
+			'C',"elementalCore",
+			'E',"plateEnder"
+		}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksCore.mimInjector), new Object[]{
+			" @ ",
+			"#C#",
+			"#E#",
+			'#',gen(34),
+			'@',gen(23),
+			'C',"elementalCore",
+			'E',"plateEnder"
+		}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksCore.mimEjectorP), new Object[]{
+			" @ ",
+			"#C#",
+			"#E#",
+			'#',"plateMithriline",
+			'@',"ec3:gemEnderPearl",
+			'C',"elementalCore",
+			'E',"plateEnder"
+		}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksCore.mimInjectorP), new Object[]{
+			" @ ",
+			"#C#",
+			"#E#",
+			'#',"plateMithriline",
+			'@',gen(23),
+			'C',"elementalCore",
+			'E',"plateEnder"
+		}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksCore.newMim), new Object[]{
+			"VPV",
+			"CRC",
+			"PMP",
+			'P',"plateVoid",
+			'V',new ItemStack(BlocksCore.chest,1,1),
+			'C',"voidCore",
+			'R',"voidMRU",
+			'M',"redSoulMatter"
+		}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksCore.mimScreen), new Object[]{
+			"DDD",
+			"PCP",
+			"PMP",
+			'P',"plateMagic",
+			'D',"screenMagic",
+			'C',"elementalCore",
+			'M',"mruCatcher"
+		}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksCore.mimInvStorage), new Object[]{
+			"PPP",
+			"SCS",
+			"PPP",
+			'P',"plateMagic",
+			'C',"elementalCore",
+			'S',BlocksCore.chest
+		}));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlocksCore.mimCrafter), new Object[]{
+			"PPP",
+			"SCS",
+			"PPP",
+			'P',"plateMagic",
+			'C',"elementalCore",
+			'S',Blocks.crafting_table
+		}));
+		
 		
 		addRecipe(new ItemStack(BlocksCore.voidStone,16,0),new Object[]{
 			"titanite","plateObsidian","titanite",
@@ -1290,6 +1485,7 @@ public class RecipeRegistry {
 			"plateMagic","voidCore","plateMagic",
 			"plateVoid","matterOfEternity","plateVoid",
 		});
+		/*
 		addRecipe(new ItemStack(BlocksCore.mim,1,0),10000,new Object[]{
 			"screenMagic","voidMRU","screenMagic",
 			"plateVoid","voidCore","plateVoid",
@@ -1300,6 +1496,7 @@ public class RecipeRegistry {
 			"plateVoid","matterOfEternity","plateVoid",
 			"plateVoid","voidMRU","plateVoid",
 		});
+		*/
 		addRecipe(new ItemStack(BlocksCore.ultraHeatGen,1,0),5000,new Object[]{
 			"plateVoid","voidMRU","plateVoid",
 			"voidCore",new ItemStack(BlocksCore.heatGenerator),"voidCore",
@@ -1565,7 +1762,7 @@ public class RecipeRegistry {
 		ItemStack book_t2 = new ItemStack(ItemsCore.research_book);
 		MiscUtils.getStackTag(book_t2).setInteger("tier", 2);
 		MagicianTableRecipes.addRecipeIS(new ItemStack[]{book_t1,null,null,null,null},book_t2, 100);
-	
+		MagicianTableRecipes.addRecipeIS(new ItemStack[]{new ItemStack(BlocksCore.voidStone),null,null,null,null},getItemByNameEC3("genericItem",35), 1000);
 	}
 	
 	public void registerMithrilineFurnace()

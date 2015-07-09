@@ -1,5 +1,40 @@
 To know about the changes from 4.5.1710.125 to 4.6.1710.32 look at .git commits, they are pretty informative too. I just do not have enough time to write all the changes here. From 4.6 the changelog will be continued normaly.
 
+4.6.1710.32
+	+API: Added a tiny bit of documentation.
+	-API: Removed some deprecated functions.
+
+	+Added: Config option to spawn the Hologram in the overworld
+	+Added: 2 new chests - 54 and 119 slots
+	+Added: Advanced Block Breaker - the same as the regular, but breaks blocks specified by the filter
+	+Added: New Magical Inventory Manager - much better than the previous, also with some nifty functions, like autocraftng!
+	+Added: Auto-crafter and Crafting Frames.
+	+Added: Filters now have 2 types - a whitelist and a blacklist
+	+Added: Bound gems are now stackable.
+	+Added: Inventory Gems - the same as Bound Gems, but for Inventories instead of MRU Storages.
+	+Added: Bound gems will now show the tile they are linked to if held in the hand.
+	+Added: Inventory gems will now show the Inventory they are liked to if right-clicked.
+	+Added: Auto-planter
+	+Added: Item random mover
+	+Added: Auto-crafter
+	+Added: Auto-breeder
+	+Added: Creative MRU Source
+	+Added: Shearing Station
+	+Added: Animal Separators
+
+	+Changed: Bound gems will no longer bind to the device if they are already bound to another
+
+	-Fixed: Block breaker creating ghost items.
+	-Fixed: Magical Activator always dropping the one with metadata 0
+	-Fixed: An issue #8(devices being able to reach negative power)
+	-Fixed: Filters with disabled OreDictionary check being able to pull any items.
+	-Fixed: Incorrect rendering of icons for discoveries if they were trying to render a texture rather than ItemStack
+	-Fixed: a bug with embers due to incorrect name mapping.
+	-Fixed: You can now use a Pale elemental Core in the weapon bench.
+	-Fixed: Any kind of MRU storage above and including a Soul Sphere can now be used to make a weapon
+	-Fixed: Issue #7(crash)
+	-Fixed: Issue #10(added the ability to skip bedrock)
+
 4.5.1710.125
 	+API: Added IPlayerData to view and modify all Player related stats
 	+API: Performing any changes to FakePlayers now has no effect.
