@@ -383,7 +383,7 @@ public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 	        	}
 	        	case 3:
 	        	{
-	        		GL11.glColor3f(0.4F, 0.3F, 0.3F);
+	        		GL11.glColor3f(0.48828125F, 0.3515625F, 0.2265625F);
 	        		break;
 	        	}
 	        	case 4:
@@ -774,7 +774,7 @@ public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 	        GL11.glPushMatrix();
 	        BlockDropsOre dr = (BlockDropsOre) block;
 	        renderer.setOverrideBlockTexture(metadata < 5 ? dr.icons[0] : metadata >= 5 && metadata < 10 ? dr.icons[1] : dr.icons[2]);
-	        float s = 1.001F;
+	        float s = 1.0019F;
 	        renderer.setRenderBounds(1-s, 1-s, 1-s, s, s, s);
 	        renderer.renderStandardBlock(Blocks.stone, x, y, z);
 	       
@@ -804,9 +804,9 @@ public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 	        	}
 	        	case 3:
 	        	{
-	        		r = 0.4F;
-	        		g = 0.3F;
-	        		b = 0.3F;
+	        		r = 0.48828125F;
+	        		g = 0.3515625F;
+	        		b = 0.2265625F;
 	        		break;
 	        	}
 	        	case 4:
@@ -822,7 +822,8 @@ public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 	        
 	       
 	        renderer.renderAllFaces = false;
-			renderTesselatedTextureByPoints(world,block,renderer,x,y,z,r,g,b,1D,127,dr.icons[3],
+	        renderer.useInventoryTint = false;
+			renderTesselatedTextureByPoints(world,block,renderer,x,y,z,r,g,b,1D,247,dr.icons[3],
 					1D,1D,1D, //SOUTH-TOP-EAST
 					0D,1D,1D, //SOUTH-TOP-WEST
 					1D,1D,0D, //SOUTH-TOP-EAST
@@ -832,7 +833,7 @@ public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 					1D,0D,0D, //SOUTH-BOT-EAST
 					0D,0D,0D  //NORTH-BOT-WEST
 					);
-	        //renderer.renderStandardBlockWithColorMultiplier(Blocks.stone, x, y, z, r, g, b);
+			renderer.useInventoryTint = true;
 	        GL11.glPopMatrix();
 		}
 		

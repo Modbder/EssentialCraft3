@@ -12,7 +12,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockFancy extends Block implements IColdBlock{
 	
@@ -43,6 +45,10 @@ public class BlockFancy extends Block implements IColdBlock{
 		this.setStepSound(base.stepSound);
 	}
 	
+	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side)
+	{
+		return true;
+	}
     
     public boolean isOpaqueCube()
     {

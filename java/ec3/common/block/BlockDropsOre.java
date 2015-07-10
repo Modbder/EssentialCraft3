@@ -14,7 +14,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockDropsOre extends Block{
 
@@ -38,6 +40,11 @@ public class BlockDropsOre extends Block{
 	
 	public BlockDropsOre() {
 		super(Material.rock);
+	}
+	
+	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side)
+	{
+		return true;
 	}
 	
     public boolean isOpaqueCube()
