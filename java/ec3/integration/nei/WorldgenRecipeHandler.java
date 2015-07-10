@@ -85,7 +85,7 @@ public class WorldgenRecipeHandler extends TemplateRecipeHandler{
     				{
     					if(meta == 51)
     					{
-    						this.arecipes.add(new WorldgenCraftingPair(new ItemStack(Blocks.lapis_ore),stk,12,21,true));
+    						this.arecipes.add(new WorldgenCraftingPair(new ItemStack(Blocks.lapis_ore),stk,3,10,true));
     					}
     				}
     				
