@@ -438,7 +438,7 @@ public class ECEventHandler {
         	}
         	if(hasLapis)
         	{
-        		event.drops.add(new ItemStack(ItemsCore.genericItem,12+event.harvester.worldObj.rand.nextInt(8*(event.fortuneLevel+1)),51));
+        		event.drops.add(new ItemStack(ItemsCore.genericItem,3+event.harvester.worldObj.rand.nextInt(8*(event.fortuneLevel+1)),51));
         	}
 		}
 	}
