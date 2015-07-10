@@ -1,5 +1,13 @@
 To know about the changes from 4.5.1710.125 to 4.6.1710.32 look at .git commits, they are pretty informative too. I just do not have enough time to write all the changes here. From 4.6 the changelog will be continued normaly.
 
+4.6.1710.35
+	+Changed: Elemental Ore will now use vanilla's algorithm for ore generation. This should be more optimizes and will look better overhaul.
+	=Changed: Elemental Drops Ore now has a different texture
+	-Changed: Lapis ore now drops 3-10 Mithriline, instead of 12-21. The fortune bonus is still the same(+8 to max per level)
+
+	-Fixed: Incorrect brightness on rendering the Elemental Ore(sadly can't fix the flickering textures with optiFine)
+	-Fixed: Issue #11(crash with Magmatic Smeltery)
+
 4.6.1710.32
 	+API: Added a tiny bit of documentation.
 	-API: Removed some deprecated functions.
