@@ -1046,7 +1046,7 @@ ec3.page.metadataManager_0.txt=This block will output a redstone signal with the
 ec3.page.blockBreaker_0.txt=This device upon recieving a redstone signal will break up to 12 blocks in front of itself, which have the same HARDNESS(the amount of time required to break the block). It will also try to collect drops from the broken blocks and split them out of the back of itself.
 
 ec3.page.weaponMaker_0.txt=You already know that MRU is a dangerous thing. But MRU is radiation, right? You think, that you might be able to create a weapon, that will create concentrated MRU rays, which should kill everything that exists.
-ec3.page.weaponMaker_1.txt=The weapon bench is able to create guns for you. Opening it up brings an interesting GUI. There are 4 types of weapons, which you can made, and to switch between the crafting patterns press the >>> button at the bottom.
+ec3.page.weaponMaker_1.txt=The weapon bench is able to create guns for you. Opening it up brings an interesting GUI. There are 4 types of weapons, which you can made, and to switch between the crafting patterns just put the bench in the crafting window.
 ec3.page.weaponMaker_2.txt=The Pistol, which is the most basic gun. It requires a Base, a Handle and a Mechanism to be created. The pistol cools down much faster, than any other gun.
 ec3.page.weaponMaker_3.txt=The Rifle shoots much faster than the pistol. It also is able to shoot more rays before overheating. However, the shots have much less accuracy. It requires a Base, a Handle and a Mechanism to be created.
 ec3.page.weaponMaker_4.txt=The Sniper Rifle is a very slow weapon. It, however, deals massive damage. It requires a Base, a Handle, a Mechanism and a Scope to be created. It's scopes can also provide up to 16x zoom on things.
