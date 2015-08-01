@@ -27,6 +27,9 @@ public class ItemSpawnerCollector extends ItemStoresMRUInNBT {
     	Block b = world.getBlock(x, y, z);
     	if(b != null && b instanceof BlockMobSpawner)
     	{
+    		if(world.getTileEntity(x, y, z) == null || !(world.getTileEntity(x, y, z) instanceof TileEntityMobSpawner))
+    			return false;
+    		
         	if(ECUtils.tryToDecreaseMRUInStorage(player, -5000) || this.setMRU(stack, -5000))
         	{
 	    		TileEntityMobSpawner t = (TileEntityMobSpawner) world.getTileEntity(x, y, z);
