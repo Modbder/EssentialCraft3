@@ -236,4 +236,20 @@ public class TileFurnaceMagic extends TileMRUGeneric{
 	public int[] getOutputSlots() {
 		return new int[]{2};
 	}
+	
+	@Override
+	public int[] getAccessibleSlotsFromSide(int side) 
+	{
+		if(side == 1)
+		{
+			return new int[]{0};
+		}else
+			if(side == 0)
+			{
+				return getOutputSlots();
+			}else
+			{
+				return new int[]{1};
+			}
+	}
 }

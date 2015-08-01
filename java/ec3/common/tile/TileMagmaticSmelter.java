@@ -35,7 +35,7 @@ public class TileMagmaticSmelter extends TileMRUGeneric implements IFluidTank{
 	
 	public TileMagmaticSmelter()
 	{
-		 super();
+		super();
 		this.maxMRU = (int)cfgMaxMRU;
 		this.setSlotsNum(8);
 	}
@@ -361,5 +361,21 @@ public class TileMagmaticSmelter extends TileMRUGeneric implements IFluidTank{
 	@Override
 	public int[] getOutputSlots() {
 		return new int[]{2,4,6,7};
+	}
+	
+	@Override
+	public int[] getAccessibleSlotsFromSide(int side) 
+	{
+		if(side == 1)
+		{
+			return new int[]{0};
+		}else
+			if(side == 0)
+			{
+				return getOutputSlots();
+			}else
+			{
+				return new int[]{1,3,5};
+			}
 	}
 }
