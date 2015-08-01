@@ -76,6 +76,7 @@ public class TileMoonWell extends TileMRUGeneric{
 					break;
 				}
 			}
+			float mruGenerated = TileMoonWell.mruGenerated;
 			mruGenerated *= moonFactor;
 			float heightFactor = 1.0F;
 			if(yCoord > 80)
