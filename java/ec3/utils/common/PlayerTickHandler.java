@@ -511,6 +511,36 @@ public class PlayerTickHandler{
 								e.capabilities.allowFlying = true;
 							}
 						}
+					}else
+					{
+						Side s = FMLCommonHandler.instance().getEffectiveSide();
+						if(s == Side.CLIENT)
+						{
+							if(client_flightAllowed)
+							{
+								client_flightAllowed = false;
+								if(e.capabilities.allowFlying && !e.capabilities.isCreativeMode)
+								{
+									e.capabilities.allowFlying = false;
+									if(e.capabilities.isFlying)
+										e.capabilities.isFlying = false;
+									e.capabilities.setFlySpeed(0.05F);
+								}
+								
+							}
+						}else
+						{
+							if(isFlightAllowed.get(e))
+							{
+								isFlightAllowed.put(e, false);
+								if(e.capabilities.allowFlying && !e.capabilities.isCreativeMode)
+								{
+									e.capabilities.allowFlying = false;
+									if(e.capabilities.isFlying)
+										e.capabilities.isFlying = false;
+								}
+							}
+						}
 					}
 				}else
 				{
