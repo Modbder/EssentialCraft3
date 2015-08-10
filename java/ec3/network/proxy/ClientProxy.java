@@ -104,6 +104,7 @@ import ec3.client.render.RenderBlocksECIII;
 import ec3.client.render.RenderChargingChamber;
 import ec3.client.render.RenderCloudsFirstWorld;
 import ec3.client.render.RenderColdDistillator;
+import ec3.client.render.RenderCollectedSpawner;
 import ec3.client.render.RenderCorruptionCleaner;
 import ec3.client.render.RenderCrystalController;
 import ec3.client.render.RenderCrystalExtractor;
@@ -631,6 +632,7 @@ public class ClientProxy extends CommonProxy{
 		MinecraftForgeClient.registerItemRenderer(ItemsCore.magicalBuilder, new RenderMagicalBuilder());
 		MinecraftForgeClient.registerItemRenderer(ItemsCore.orbitalRemote, new RenderOrbitalRemote());
 		MinecraftForgeClient.registerItemRenderer(ItemsCore.research_book, new RenderMagicalBook());
+		MinecraftForgeClient.registerItemRenderer(ItemsCore.collectedSpawner, new RenderCollectedSpawner());
 		for(int i = 0; i < ItemsCore.magicArmorItems.length; ++i)
 		{
 			if(ItemsCore.magicArmorItems[i] != null)

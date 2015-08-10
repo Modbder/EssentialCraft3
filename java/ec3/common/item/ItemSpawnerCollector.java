@@ -1,14 +1,13 @@
 package ec3.common.item;
 
+import DummyCore.Utils.MiscUtils;
 import ec3.utils.common.ECUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockMobSpawner;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.world.World;
 
@@ -33,16 +32,16 @@ public class ItemSpawnerCollector extends ItemStoresMRUInNBT {
         	if(ECUtils.tryToDecreaseMRUInStorage(player, -5000) || this.setMRU(stack, -5000))
         	{
 	    		TileEntityMobSpawner t = (TileEntityMobSpawner) world.getTileEntity(x, y, z);
-	    		Block id = world.getBlock(x, y, z);
-	    		Entity e = EntityList.createEntityByName(t.func_145881_a().getEntityNameToSpawn(), world);
-	    		int meta = EntityList.getEntityID(e);
-	    		e.setDead();
-	    		ItemStack s = new ItemStack(id,1,meta);
-	    		EntityItem item = new EntityItem(world, x, y+1, z, s);
+	    		NBTTagCompound mobTag = new NBTTagCompound();
+	    		t.writeToNBT(mobTag);
+	    		ItemStack collectedSpawner = new ItemStack(ItemsCore.collectedSpawner,1,0);
+	    		MiscUtils.getStackTag(collectedSpawner).setTag("monsterSpawner", mobTag);
+	    		EntityItem item = new EntityItem(world,x+0.5D,y+0.5D,z+0.5D,collectedSpawner);
 	    		if(!world.isRemote)
 	    			world.spawnEntityInWorld(item);
+	    		
+	    		world.setBlockToAir(x, y, z);
 	    		player.swingItem();
-	    		world.setBlock(x, y, z, Blocks.air,0,3);
         	}
     	}
 

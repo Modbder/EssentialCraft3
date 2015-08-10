@@ -324,6 +324,7 @@ public class ItemsCore {
 		
 		inventoryGem = registerItemSimple(inventoryGem,ItemInventoryGem.class,"inventoryGem","null",0,false,64);
 		craftingFrame = registerItemSimple(craftingFrame,ItemCraftingFrame.class,"craftingFrame","itemCrafter",0,false,1);
+		collectedSpawner = registerItemSimple(collectedSpawner,ItemCollectedMonsterSpawner.class,"collectedSpawner","collectedSpawner",0,false,64);
 		
 		MagicianTableUpgrades.addUpgrade(new ItemStack(genericItem,1,1), 1.2F, loc("elementalCore"));
 		MagicianTableUpgrades.addUpgrade(new ItemStack(genericItem,1,0), 5F, loc("combinedMagicalAlloys"));
@@ -490,6 +491,7 @@ public class ItemsCore {
 	
 	public static Item inventoryGem;
 	public static Item craftingFrame;
+	public static Item collectedSpawner;
 	
 	public static ArmorMaterial magicArmorMaterial = EnumHelper.addArmorMaterial("MRUFortified", 33, new int[]{3, 8, 6, 3}, 25);
 	public static ArmorMaterial voidArmorMaterial = EnumHelper.addArmorMaterial("VoidFortified", 52, new int[]{3, 8, 6, 3}, 40);
