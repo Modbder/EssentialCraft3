@@ -92,8 +92,9 @@ public class TileNewMIMExportNode extends TileMRUGeneric{
 									if(copied.stackSize >= inv.getInventoryStackLimit())
 										copied.stackSize = inv.getInventoryStackLimit();
 									
-									inv.setInventorySlotContents(slots[j], copied);
-									parent.retrieveItemStackFromSystem(copied, false, true);
+									if(parent.retrieveItemStackFromSystem(copied, false, true) == 0)
+										inv.setInventorySlotContents(slots[j], copied);
+									
 								}else
 								{
 									ItemStack copied = itemsToExport.get(i).copy();
@@ -102,16 +103,16 @@ public class TileNewMIMExportNode extends TileMRUGeneric{
 									
 									if(inv.getStackInSlot(slots[j]).stackSize + copied.stackSize <= inv.getInventoryStackLimit() && inv.getStackInSlot(slots[j]).stackSize + copied.stackSize <= copied.getMaxStackSize())
 									{
-										inv.getStackInSlot(slots[j]).stackSize += copied.stackSize;
-										parent.retrieveItemStackFromSystem(copied, false, true);
+										if(parent.retrieveItemStackFromSystem(copied, false, true) == 0)
+											inv.getStackInSlot(slots[j]).stackSize += copied.stackSize;
 									}else
 									{
 										int reduceBy = copied.stackSize - inv.getStackInSlot(slots[j]).stackSize;
 										if(reduceBy > 0)
 										{
 											copied.stackSize = reduceBy;
-											inv.getStackInSlot(slots[j]).stackSize += reduceBy;
-											parent.retrieveItemStackFromSystem(copied, false, true);
+											if(parent.retrieveItemStackFromSystem(copied, false, true) == 0)
+												inv.getStackInSlot(slots[j]).stackSize += reduceBy;
 										}
 									}
 								}
@@ -125,22 +126,24 @@ public class TileNewMIMExportNode extends TileMRUGeneric{
 									
 									if(inv.getStackInSlot(slots[j]) == null)
 									{
-										inv.setInventorySlotContents(slots[j], copied);
-										parent.retrieveItemStackFromSystem(copied, false, true);
+										if(parent.retrieveItemStackFromSystem(copied, false, true) == 0)
+											inv.setInventorySlotContents(slots[j], copied);
+										
 									}else
 									{
 										if(inv.getStackInSlot(slots[j]).stackSize + copied.stackSize <= inv.getInventoryStackLimit() && inv.getStackInSlot(slots[j]).stackSize + copied.stackSize <= copied.getMaxStackSize())
 										{
-											inv.getStackInSlot(slots[j]).stackSize += copied.stackSize;
-											parent.retrieveItemStackFromSystem(copied, false, true);
+											if(parent.retrieveItemStackFromSystem(copied, false, true) == 0)
+												inv.getStackInSlot(slots[j]).stackSize += copied.stackSize;
 										}else
 										{
 											int reduceBy = copied.stackSize - inv.getStackInSlot(slots[j]).stackSize;
 											if(reduceBy > 0)
 											{
 												copied.stackSize = reduceBy;
-												inv.getStackInSlot(slots[j]).stackSize += reduceBy;
-												parent.retrieveItemStackFromSystem(copied, false, true);
+												if(parent.retrieveItemStackFromSystem(copied, false, true) == 0)
+													inv.getStackInSlot(slots[j]).stackSize += reduceBy;
+												
 											}
 										}
 									}
@@ -175,8 +178,9 @@ public class TileNewMIMExportNode extends TileMRUGeneric{
 									if(copied.stackSize >= iinv.getInventoryStackLimit())
 										copied.stackSize = iinv.getInventoryStackLimit();
 									
-									iinv.setInventorySlotContents(j, copied);
-									parent.retrieveItemStackFromSystem(copied, false, true);
+									if(parent.retrieveItemStackFromSystem(copied, false, true) == 0)
+										iinv.setInventorySlotContents(j, copied);
+									
 								}else
 								{
 									ItemStack copied = itemsToExport.get(i).copy();
@@ -185,16 +189,18 @@ public class TileNewMIMExportNode extends TileMRUGeneric{
 									
 									if(iinv.getStackInSlot(j).stackSize + copied.stackSize <= iinv.getInventoryStackLimit() && iinv.getStackInSlot(j).stackSize + copied.stackSize <= copied.getMaxStackSize())
 									{
-										iinv.getStackInSlot(j).stackSize += copied.stackSize;
-										parent.retrieveItemStackFromSystem(copied, false, true);
+										if(parent.retrieveItemStackFromSystem(copied, false, true) == 0)
+											iinv.getStackInSlot(j).stackSize += copied.stackSize;
+										
 									}else
 									{
 										int reduceBy = copied.stackSize - iinv.getStackInSlot(j).stackSize;
 										if(reduceBy > 0)
 										{
 											copied.stackSize = reduceBy;
-											iinv.getStackInSlot(j).stackSize += reduceBy;
-											parent.retrieveItemStackFromSystem(copied, false, true);
+											if(parent.retrieveItemStackFromSystem(copied, false, true) == 0)
+												iinv.getStackInSlot(j).stackSize += reduceBy;
+											
 										}
 									}
 								}
@@ -208,22 +214,25 @@ public class TileNewMIMExportNode extends TileMRUGeneric{
 									
 									if(iinv.getStackInSlot(j) == null)
 									{
-										iinv.setInventorySlotContents(j, copied);
-										parent.retrieveItemStackFromSystem(copied, false, true);
+										if(parent.retrieveItemStackFromSystem(copied, false, true) == 0)
+											iinv.setInventorySlotContents(j, copied);
+										
 									}else
 									{
 										if(iinv.getStackInSlot(j).stackSize + copied.stackSize <= iinv.getInventoryStackLimit() && iinv.getStackInSlot(j).stackSize + copied.stackSize <= copied.getMaxStackSize())
 										{
-											iinv.getStackInSlot(j).stackSize += copied.stackSize;
-											parent.retrieveItemStackFromSystem(copied, false, true);
+											if(parent.retrieveItemStackFromSystem(copied, false, true) == 0)
+												iinv.getStackInSlot(j).stackSize += copied.stackSize;
+											
 										}else
 										{
 											int reduceBy = copied.stackSize - iinv.getStackInSlot(j).stackSize;
 											if(reduceBy > 0)
 											{
 												copied.stackSize = reduceBy;
-												iinv.getStackInSlot(j).stackSize += reduceBy;
-												parent.retrieveItemStackFromSystem(copied, false, true);
+												if(parent.retrieveItemStackFromSystem(copied, false, true) == 0)
+													iinv.getStackInSlot(j).stackSize += reduceBy;
+												
 											}
 										}
 									}
