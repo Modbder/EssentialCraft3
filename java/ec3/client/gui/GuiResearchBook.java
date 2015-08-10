@@ -417,25 +417,17 @@ public class GuiResearchBook extends GuiScreen{
 	     }
 	     if(page.pageText != null && !page.pageText.isEmpty())
 	     {
-	    	 List<String> display = parse(page.pageText);
-	    	 for(int i = 0; i < display.size(); ++i)
-	    	 {
-	    	     GL11.glColor3f(1, 1, 1);
-	             GL11.glEnable(GL11.GL_LIGHTING);
-	             GL11.glEnable(GL11.GL_DEPTH_TEST);
-	             RenderHelper.enableStandardItemLighting();
-	             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-	             //TODO f
-	             if(!Minecraft.getMinecraft().fontRenderer.getUnicodeFlag())
-	             {
-		             GL11.glScalef(0.8F, 0.8F, 0.8F);
-		    		 this.fontRendererObj.drawString(display.get(i), (int) ((k+18)*1.25F), (int) ((l+25+i*8)*1.25F), 0x222222);
-		    		 GL11.glScalef(1.25F, 1.25F, 1.25F);
-	             }else
-	             {
-	            	 this.fontRendererObj.drawString(display.get(i), (int) ((k+18)), (int) ((l+25+i*8)), 0x222222);
-	             }
-	    	 }
+	    	 RenderHelper.enableStandardItemLighting();
+	    	 GL11.glEnable(GL11.GL_BLEND);
+    		 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+    		 GL11.glDisable(GL11.GL_LIGHTING);
+             this.fontRendererObj.setUnicodeFlag(true);
+	    	 this.fontRendererObj.drawSplitString(page.pageText, k+12, l+25, 110, currentCategory.textColor);
+	    	 this.fontRendererObj.setUnicodeFlag(false);
+	    	 GL11.glEnable(GL11.GL_LIGHTING);
+	    	 GL11.glDisable(GL11.GL_BLEND);
+	    	 RenderHelper.disableStandardItemLighting();
+	    	 RenderHelper.enableGUIStandardItemLighting();
 	     }
 	 }
 	 
@@ -497,20 +489,18 @@ public class GuiResearchBook extends GuiScreen{
 		    	 List<String> display = parse(page.pageText);
 		    	 for(int i = 0; i < display.size(); ++i)
 		    	 {
-		    	     GL11.glColor3f(1, 1, 1);
-		             GL11.glEnable(GL11.GL_LIGHTING);
-		             GL11.glEnable(GL11.GL_DEPTH_TEST);
-		             RenderHelper.enableStandardItemLighting();
-		             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-		             if(!Minecraft.getMinecraft().fontRenderer.getUnicodeFlag())
-		             {
-			             GL11.glScalef(0.8F, 0.8F, 0.8F);
-			    		 this.fontRendererObj.drawString(display.get(i), (int) ((k+18)*1.25F), (int) ((l+25+i*8)*1.25F), 0x222222);
-			    		 GL11.glScalef(1.25F, 1.25F, 1.25F);
-		             }else
-		             {
-		            	 this.fontRendererObj.drawString(display.get(i), (int) ((k+18)), (int) ((l+25+i*8)), 0x222222);
-		             }
+		    		 
+		    		 RenderHelper.enableStandardItemLighting();
+		    		 GL11.glEnable(GL11.GL_BLEND);
+		    		 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		    		 GL11.glDisable(GL11.GL_LIGHTING);
+		             this.fontRendererObj.setUnicodeFlag(true);
+			    	 this.fontRendererObj.drawSplitString(page.pageText, k+12, l+25, 110, currentCategory.textColor);
+			    	 this.fontRendererObj.setUnicodeFlag(false);
+			    	 GL11.glEnable(GL11.GL_LIGHTING);
+			    	 GL11.glDisable(GL11.GL_BLEND);
+			    	 RenderHelper.disableStandardItemLighting();
+			    	 RenderHelper.enableGUIStandardItemLighting();
 		    	 }
 		     }
 
@@ -676,18 +666,18 @@ public class GuiResearchBook extends GuiScreen{
 		 for(StructureBlock blk : recipe.structure)
 		 {
 			 if(!Config.renderStructuresFromAbove)
-				 this.drawSB(blk, k+52+blk.x*10-blk.z*10, l+32+highestStructureBlk*20-blk.y*20+blk.z*10+blk.x*10, mouseX, mouseZ, 0);
+				 this.drawSB(blk, k+52+blk.x*12-blk.z*12, l+32+highestStructureBlk*20-blk.y*20+blk.z*12+blk.x*12, mouseX, mouseZ, 0);
 			 else
-				 this.drawSB(blk, k+52+blk.x*10, l+32+highestStructureBlk*20+blk.z*10, mouseX, mouseZ, 0);
+				 this.drawSB(blk, k+52+blk.x*12, l+32+highestStructureBlk*20+blk.z*12, mouseX, mouseZ, 0);
 		 }
 		 this.drawIS(recipe.referal, k+52, l+144, mouseX, mouseZ, 0);
 		 
 		 for(StructureBlock blk : recipe.structure)
 		 {
 			 if(!Config.renderStructuresFromAbove)
-				 this.drawSB(blk, k+52+blk.x*10-blk.z*10, l+32+highestStructureBlk*20-blk.y*20+blk.z*10+blk.x*10, mouseX, mouseZ, 1);
+				 this.drawSB(blk, k+52+blk.x*12-blk.z*12, l+32+highestStructureBlk*20-blk.y*20+blk.z*12+blk.x*12, mouseX, mouseZ, 1);
 			 else
-				 this.drawSB(blk, k+52+blk.x*10, l+32+highestStructureBlk*20+blk.z*10, mouseX, mouseZ, 1);
+				 this.drawSB(blk, k+52+blk.x*12, l+32+highestStructureBlk*20+blk.z*12, mouseX, mouseZ, 1);
 		 }
 		 
 		 this.drawIS(recipe.referal, k+52, l+144, mouseX, mouseZ, 1);
@@ -1122,6 +1112,8 @@ public class GuiResearchBook extends GuiScreen{
 	    			 RenderHelper.enableStandardItemLighting();
 	    			 
 	    			 GL11.glEnable(GL11.GL_BLEND);
+	    			 GL11.glColor3f(1, 1, 1);
+	    			 GL11.glDisable(GL11.GL_LIGHTING);
 	    			 
 	    			 this.mc.renderEngine.bindTexture(disc.displayTexture);
 	    		     Tessellator tec = Tessellator.instance;
@@ -1134,6 +1126,7 @@ public class GuiResearchBook extends GuiScreen{
 	    		     
 	    		     tec.draw();
 	    		     
+	    		     GL11.glEnable(GL11.GL_LIGHTING);
 	    		     GL11.glDisable(GL11.GL_BLEND);
 	    			
 		    		 RenderHelper.disableStandardItemLighting();

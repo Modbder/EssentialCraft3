@@ -26,6 +26,8 @@ public class CategoryEntry {
 	
 	public ResourceLocation specificBookTextures;
 	
+	public int textColor = 0x222222;
+	
 	public CategoryEntry(String i)
 	{
 		id = i;
@@ -40,6 +42,12 @@ public class CategoryEntry {
 	public CategoryEntry setTier(int i)
 	{
 		reqTier = i;
+		return this;
+	}
+	
+	public CategoryEntry setTextColor(int i)
+	{
+		textColor = i;
 		return this;
 	}
 	
