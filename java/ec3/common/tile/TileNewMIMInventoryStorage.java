@@ -197,7 +197,7 @@ public class TileNewMIMInventoryStorage extends TileMRUGeneric{
 			for(int j = 0; j < inv.getSizeInventory(); ++j)
 			{
 				ItemStack stk = inv.getStackInSlot(j);
-				if(stk == null)
+				if(stk == null && inv.isItemValidForSlot(j, is))
 				{
 					inv.setInventorySlotContents(j, is.copy());
 					return true;
@@ -228,7 +228,7 @@ public class TileNewMIMInventoryStorage extends TileMRUGeneric{
 			for(int j = 0; j < countedT.get(i).getSizeInventory(); ++j)
 			{
 				ItemStack stk = countedT.get(i).getStackInSlot(j);
-				if(stk != null)
+				if(stk != null && stk.stackSize > 0)
 				{
 					String id = GameRegistry.findUniqueIdentifierFor(stk.getItem()).toString()+"@"+stk.getItemDamage();
 					if(stk.getTagCompound() == null || stk.getTagCompound().hasNoTags())
