@@ -2,6 +2,7 @@ package ec3.common.tile;
 
 import java.util.List;
 
+import cpw.mods.fml.common.Loader;
 import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
 import net.minecraft.entity.monster.EntityEnderman;
@@ -40,7 +41,23 @@ public class TileEnderGenerator extends TileMRUGeneric{
 		}
 		if(!this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord))
 		{
-			List<EntityEnderman> l = this.worldObj.getEntitiesWithinAABB(EntityEnderman.class, AxisAlignedBB.getBoundingBox(xCoord-endermenCatchRadius, yCoord-endermenCatchRadius, zCoord-endermenCatchRadius, xCoord+endermenCatchRadius, yCoord+endermenCatchRadius, zCoord+endermenCatchRadius));
+			AxisAlignedBB endermenTPRadius = AxisAlignedBB.getBoundingBox(xCoord-endermenCatchRadius, yCoord-endermenCatchRadius, zCoord-endermenCatchRadius, xCoord+endermenCatchRadius, yCoord+endermenCatchRadius, zCoord+endermenCatchRadius);
+			List<EntityEnderman> l = this.worldObj.getEntitiesWithinAABB(EntityEnderman.class, endermenTPRadius);
+			if(Loader.isModLoaded("HardcoreEnderExpansion"))
+			{
+				try
+				{
+					l.addAll(this.worldObj.getEntitiesWithinAABB(Class.forName("chylex.hee.entity.mob.EntityMobAngryEnderman"), endermenTPRadius));
+					l.addAll(this.worldObj.getEntitiesWithinAABB(Class.forName("chylex.hee.entity.mob.EntityMobBabyEnderman"), endermenTPRadius));
+					l.addAll(this.worldObj.getEntitiesWithinAABB(Class.forName("chylex.hee.entity.mob.EntityMobEndermage"), endermenTPRadius));
+					l.addAll(this.worldObj.getEntitiesWithinAABB(Class.forName("chylex.hee.entity.mob.EntityMobEnderman"), endermenTPRadius));
+					l.addAll(this.worldObj.getEntitiesWithinAABB(Class.forName("chylex.hee.entity.mob.EntityMobParalyzedEnderman"), endermenTPRadius));
+				}
+				catch(ClassNotFoundException e)
+				{
+					e.printStackTrace();
+				}
+			}
 			if(!l.isEmpty())
 			{
 					for(int i = 0; i < l.size(); ++i)
@@ -48,7 +65,23 @@ public class TileEnderGenerator extends TileMRUGeneric{
 						l.get(i).setPositionAndRotation(xCoord+0.5D, yCoord+1D, zCoord+0.5D, 0, 0);
 					}
 			}
-			List<EntityEnderman> l1 = this.worldObj.getEntitiesWithinAABB(EntityEnderman.class, AxisAlignedBB.getBoundingBox(xCoord-2, yCoord-2, zCoord-2, xCoord+2, yCoord+2, zCoord+2));
+			AxisAlignedBB endermanAttackRad = AxisAlignedBB.getBoundingBox(xCoord-2, yCoord-2, zCoord-2, xCoord+2, yCoord+2, zCoord+2);
+			List<EntityEnderman> l1 = this.worldObj.getEntitiesWithinAABB(EntityEnderman.class, endermanAttackRad);
+			if(Loader.isModLoaded("HardcoreEnderExpansion"))
+			{
+				try
+				{
+					l1.addAll(this.worldObj.getEntitiesWithinAABB(Class.forName("chylex.hee.entity.mob.EntityMobAngryEnderman"), endermanAttackRad));
+					l1.addAll(this.worldObj.getEntitiesWithinAABB(Class.forName("chylex.hee.entity.mob.EntityMobBabyEnderman"), endermanAttackRad));
+					l1.addAll(this.worldObj.getEntitiesWithinAABB(Class.forName("chylex.hee.entity.mob.EntityMobEndermage"), endermanAttackRad));
+					l1.addAll(this.worldObj.getEntitiesWithinAABB(Class.forName("chylex.hee.entity.mob.EntityMobEnderman"), endermanAttackRad));
+					l1.addAll(this.worldObj.getEntitiesWithinAABB(Class.forName("chylex.hee.entity.mob.EntityMobParalyzedEnderman"), endermanAttackRad));
+				}
+				catch(ClassNotFoundException e)
+				{
+					e.printStackTrace();
+				}
+			}
 			if(!l1.isEmpty())
 			{
 				if(!this.worldObj.isRemote)
