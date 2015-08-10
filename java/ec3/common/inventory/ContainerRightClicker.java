@@ -44,7 +44,7 @@ public class ContainerRightClicker extends Container{
  	        });
         	}
         }
-        this.addSlotToContainer(new Slot(inv, 2, 156, 4){
+        this.addSlotToContainer(new Slot(inv, 10, 156, 4){
         	
      	   @SideOnly(Side.CLIENT)
 	   	    public IIcon getBackgroundIconIndex()

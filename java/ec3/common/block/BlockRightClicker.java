@@ -83,7 +83,7 @@ public class BlockRightClicker extends BlockContainer{
     {
     	int meta = w.getBlockMetadata(x, y, z);
     	 TileRightClicker tile = TileRightClicker.class.cast(w.getTileEntity(x, y, z));
-    	 return tile.getStackInSlot(2) != null && tile.getStackInSlot(2).getItem() instanceof ItemBlock ? ItemBlock.class.cast(tile.getStackInSlot(2).getItem()).field_150939_a.getIcon(side, tile.getStackInSlot(2).getItemDamage()) : side == tile.rotation ? metaRelatedIcons[meta] : blockIcons[0];
+    	 return tile.getStackInSlot(10) != null && tile.getStackInSlot(10).getItem() instanceof ItemBlock ? ItemBlock.class.cast(tile.getStackInSlot(10).getItem()).field_150939_a.getIcon(side, tile.getStackInSlot(10).getItemDamage()) : side == tile.rotation ? metaRelatedIcons[meta] : blockIcons[0];
     }
 
 	@Override

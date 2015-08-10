@@ -30,7 +30,7 @@ public class WailaDataProvider implements IWailaDataProvider{
 			if(accessor.getTileEntity() instanceof TileRightClicker)
 			{
 				TileRightClicker tile = (TileRightClicker) accessor.getTileEntity();
-				return tile.getStackInSlot(2) != null && tile.getStackInSlot(2).getItem() instanceof ItemBlock ? tile.getStackInSlot(2) : null;
+				return tile.getStackInSlot(10) != null && tile.getStackInSlot(10).getItem() instanceof ItemBlock ? tile.getStackInSlot(10) : null;
 			}
 		}
 		return null;

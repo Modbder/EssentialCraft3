@@ -303,7 +303,7 @@ public class TileRightClicker extends TileMRUGeneric
 		if(net.getNetHandler() instanceof INetHandlerPlayClient)
 			if(pkt.func_148853_f() == -10)
 			{
-				boolean reRender = pkt.func_148857_g().getInteger("rotation") != this.rotation || ItemStack.loadItemStackFromNBT(NBTTagList.class.cast(pkt.func_148857_g().getTagList("Items", 10)).getCompoundTagAt(2)) != this.getStackInSlot(2);
+				boolean reRender = pkt.func_148857_g().getInteger("rotation") != this.rotation || ItemStack.loadItemStackFromNBT(NBTTagList.class.cast(pkt.func_148857_g().getTagList("Items", 10)).getCompoundTagAt(10)) != this.getStackInSlot(10);
 				this.readFromNBT(pkt.func_148857_g());
 				if(reRender)
 					this.worldObj.markBlockRangeForRenderUpdate(xCoord-1, yCoord-1, zCoord-1, xCoord+1, yCoord+1, zCoord+1);
