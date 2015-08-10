@@ -25,6 +25,12 @@ public class GuiCraftingFrame extends GuiContainer{
 		crafter = inv;
 	}
 	
+	@Override
+    protected boolean checkHotbarKeys(int slot)
+    {
+		return false;
+    }
+	
 	@SuppressWarnings("unchecked")
 	public void initGui() 
 	{

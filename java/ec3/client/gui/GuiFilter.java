@@ -25,6 +25,12 @@ public class GuiFilter extends GuiContainer{
 		filter = inv;
 	}
 	
+	@Override
+    protected boolean checkHotbarKeys(int slot)
+    {
+		return false;
+    }
+	
 	@SuppressWarnings("unchecked")
 	public void initGui() 
 	{
