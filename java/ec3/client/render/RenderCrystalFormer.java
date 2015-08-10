@@ -44,7 +44,7 @@ public class RenderCrystalFormer extends TileEntitySpecialRenderer
         GL11.glScalef(scale, scale, scale);
         GL11.glRotatef(180, 1, 0, 0);
         this.bindTexture(RenderElementalCrystal.neutral);
-        RenderElementalCrystal.crystal.renderModel(0.0625F);;
+        RenderElementalCrystal.crystal.renderModel(0.0625F);
         GL11.glPopMatrix();
         
         GL11.glPushMatrix();
@@ -52,7 +52,7 @@ public class RenderCrystalFormer extends TileEntitySpecialRenderer
         GL11.glScalef(scale, scale, scale);
         GL11.glRotatef(180, 1, 0, 0);
         this.bindTexture(RenderElementalCrystal.neutral);
-        RenderElementalCrystal.crystal.renderModel(0.0625F);;
+        RenderElementalCrystal.crystal.renderModel(0.0625F);
         GL11.glPopMatrix();
         
         GL11.glPushMatrix();
@@ -60,7 +60,7 @@ public class RenderCrystalFormer extends TileEntitySpecialRenderer
         GL11.glScalef(scale, scale, scale);
         GL11.glRotatef(180, 1, 0, 0);
         this.bindTexture(RenderElementalCrystal.neutral);
-        RenderElementalCrystal.crystal.renderModel(0.0625F);;
+        RenderElementalCrystal.crystal.renderModel(0.0625F);
         GL11.glPopMatrix();
         
         GL11.glPushMatrix();
@@ -68,7 +68,7 @@ public class RenderCrystalFormer extends TileEntitySpecialRenderer
         GL11.glScalef(scale, scale, scale);
         GL11.glRotatef(180, 1, 0, 0);
         this.bindTexture(RenderElementalCrystal.neutral);
-        RenderElementalCrystal.crystal.renderModel(0.0625F);;
+        RenderElementalCrystal.crystal.renderModel(0.0625F);
         GL11.glPopMatrix();
         
     	RenderHelper.enableStandardItemLighting();

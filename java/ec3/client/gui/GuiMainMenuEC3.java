@@ -85,7 +85,7 @@ public class GuiMainMenuEC3 extends GuiMainMenu implements IMainMenu{
         }
         catch (IOException ioexception1)
         {
-            ;
+            
         }
         finally
         {
@@ -97,7 +97,7 @@ public class GuiMainMenuEC3 extends GuiMainMenu implements IMainMenu{
                 }
                 catch (IOException ioexception)
                 {
-                    ;
+                    
                 }
             }
         }

@@ -1330,7 +1330,7 @@ public class ECEventHandler {
 						if(wings != null)
 						{
 							ItemMagicalWings w = (ItemMagicalWings) wings.getItem();
-							if(ECUtils.tryToDecreaseMRUInStorage(player, -1) || w.setMRU(wings, -1));
+							if(ECUtils.tryToDecreaseMRUInStorage(player, -1) || w.setMRU(wings, -1)){}
 						}
 					}
 					if(modData.fieldName.equalsIgnoreCase("mod") && modData.fieldValue.equalsIgnoreCase("ec3.player.position"))

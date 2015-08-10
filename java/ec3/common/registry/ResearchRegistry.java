@@ -2342,7 +2342,7 @@ public class ResearchRegistry {
 	public static final CategoryEntry mru = new CategoryEntry("ec3.mru").setTier(1);
 	public static final CategoryEntry eng = new CategoryEntry("ec3.eng").setTier(2);
 	public static final CategoryEntry ender = new CategoryEntry("ec3.ender").setTier(2);
-	public static final CategoryEntry hoanna = new CategoryEntry("ec3.hoanna").setTier(3).setSpecificTexture(new ResourceLocation("essentialcraft","textures/gui/research_book_hoanna.png"));
+	public static final CategoryEntry hoanna = new CategoryEntry("ec3.hoanna").setTier(3).setSpecificTexture(new ResourceLocation("essentialcraft","textures/gui/research_book_hoanna.png")).setTextColor(0xcccccc);
 	public static final CategoryEntry shade = new CategoryEntry("ec3.shade").setTier(4);
 
 }

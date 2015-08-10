@@ -53,7 +53,7 @@ public class RenderMagicalEnchanter extends TileEntitySpecialRenderer
 
         for (f2 = p_147500_1_.field_145928_o - p_147500_1_.field_145925_p; f2 >= (float)Math.PI; f2 -= ((float)Math.PI * 2F))
         {
-            ;
+            
         }
 
         while (f2 < -(float)Math.PI)

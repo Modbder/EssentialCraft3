@@ -36,7 +36,6 @@ public class EntityMRUPresence extends EntityLivingBase implements IMRUPressence
 	public boolean firstTick = true;
     public EntityMRUPresence(World par1World)
     {
-    	//FIXME Attribute implementation
         super(par1World);
         this.setBalance(1.0F);
     }
@@ -45,7 +44,6 @@ public class EntityMRUPresence extends EntityLivingBase implements IMRUPressence
     {
         super.applyEntityAttributes();
         
-        //FIXME Reika's mods compathability patch?
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20);
         this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(1);
         
@@ -54,7 +52,6 @@ public class EntityMRUPresence extends EntityLivingBase implements IMRUPressence
 	@Override
 	protected void entityInit(){
 		super.entityInit();
-		//TODO rework data structuring
 			this.dataWatcher.addObject(15, 0F);
 			this.dataWatcher.addObject(16, 1);
 			this.dataWatcher.addObject(17, 0);
@@ -151,7 +148,6 @@ public class EntityMRUPresence extends EntityLivingBase implements IMRUPressence
 					id = BlocksCore.lightCorruption[0];
 					diff = getBalance()-1F;
 				}
-				//TODO better chance function, exponent maybe?
 				float mainMRUState = (diff*getMRU()/60000F)*10F;
 				Vec3 vec = Vec3.createVectorHelper(1, 0, 0);
 				//Spinning the vec right 'round...
@@ -259,7 +255,6 @@ public class EntityMRUPresence extends EntityLivingBase implements IMRUPressence
 			}
 		}else
 		{
-			//TODO replace the noise! Too annoying.
 			if(this.worldObj.rand.nextFloat() < 0.025F)
 				this.worldObj.playSound(posX, posY, posZ, "essentialcraft:sound.mrucu_noise", (float)this.getMRU()/60000F, 0.1F+this.worldObj.rand.nextFloat(), false);
 		}

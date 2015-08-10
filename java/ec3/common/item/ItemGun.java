@@ -256,7 +256,7 @@ public class ItemGun extends ItemStoresMRUInNBT
     			iGun.gunType.equalsIgnoreCase("sniper") ? GunType.SNIPER :
     			iGun.gunType.equalsIgnoreCase("gatling") ? GunType.GATLING :
     			GunType.PISTOL;
-    	;
+    	
     	
     	if(gunTag.hasKey("base"))
     	{

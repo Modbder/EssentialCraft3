@@ -25,7 +25,6 @@ import ec3.common.block.BlocksCore;
 import ec3.common.entity.EntityWindMage;
 import ec3.common.item.ItemsCore;
 import ec3.utils.common.RecipeArmorDyesHandler;
-
 import static ec3.utils.cfg.Config.allowPaleItemsInOtherRecipes;
 
 public class RecipeRegistry {
@@ -1870,6 +1869,7 @@ public class RecipeRegistry {
 		MithrilineFurnaceRecipes.addRecipe(new ItemStack(Blocks.glass,1,0), new ItemStack(Blocks.ice,1,0), 1,1);
 	}
 	
+	@SuppressWarnings("unused")
 	public static void registerWindRecipes()
 	{
 		new WindImbueRecipe(new ItemStack(ItemsCore.soulStone,1,0),new ItemStack(ItemsCore.soulStone,1,0),10000*4);
@@ -1878,6 +1878,7 @@ public class RecipeRegistry {
 		//TODO wind recipes
 	}
 	
+	@SuppressWarnings("unused")
 	public static void registerDemonTrades()
 	{
 		//TODO demon trades
