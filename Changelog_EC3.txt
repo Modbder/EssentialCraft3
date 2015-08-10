@@ -1,5 +1,21 @@
 To know about the changes from 4.5.1710.125 to 4.6.1710.32 look at .git commits, they are pretty informative too. I just do not have enough time to write all the changes here. From 4.6 the changelog will be continued normaly.
 
+4.6.1710.42
+        +Added: HEE compatibility - it's angry endermen should now be grabbed by the ender generator aswell
+        +Added: Magmatic Smeltery and the Magmatic Furnaces now have all their slots correctly assigned with the outputs and inputs
+        
+        +Changed: The Book of Knowledge's line wrapping switched to vanilla's way - makes the book better and more readable. Also adds support for localization
+        +Changed: The Spawner collector will now collect spawners correctly 
+        
+        -Fixed: Mismatching slots in the magical activator.
+        -Fixed: The dupe bug with hotkeys while in the Magical Filter's gui
+        -Fixed: A dupe bug with JABBA barrels and inventories like those
+        -Fixed: A dupe issue with Magical Inventory Manager Export nodes
+        -Fixed: The flight ability being carried over servers
+        -Fixed: HEE crash
+        -Fixed: Book of Knowledge saying wrong information about the weapon bench
+        -Fixed: Moon well not producing MRU
+        
 4.6.1710.35
 	+Changed: Elemental Ore will now use vanilla's algorithm for ore generation. This should be more optimizes and will look better overhaul.
 	=Changed: Elemental Drops Ore now has a different texture
