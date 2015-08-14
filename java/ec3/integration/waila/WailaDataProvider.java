@@ -88,13 +88,16 @@ public class WailaDataProvider implements IWailaDataProvider{
 					if(accessor.getTileEntity() instanceof IInventory)
 					{
 						IInventory tInv = (IInventory) accessor.getTileEntity();
-						ItemStack tryBoundGem = tInv.getStackInSlot(0);
-						if(tryBoundGem != null)
+						if(tInv.getSizeInventory() > 0)
 						{
-							if(tryBoundGem.getItem() instanceof ItemBoundGem)
+							ItemStack tryBoundGem = tInv.getStackInSlot(0);
+							if(tryBoundGem != null)
 							{
-								ItemBoundGem itm = (ItemBoundGem) tryBoundGem.getItem();
-								itm.addInformation(tryBoundGem, null, currenttip, true);
+								if(tryBoundGem.getItem() instanceof ItemBoundGem)
+								{
+									ItemBoundGem itm = (ItemBoundGem) tryBoundGem.getItem();
+									itm.addInformation(tryBoundGem, null, currenttip, true);
+								}
 							}
 						}
 					}
