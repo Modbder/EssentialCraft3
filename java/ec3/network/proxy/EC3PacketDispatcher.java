@@ -7,6 +7,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -141,6 +143,34 @@ public class EC3PacketDispatcher implements IMessageHandler<PacketNBT,IMessage>{
 			}case 6:
 			{
 				GuiNewMIMScreen.packetArrived = true;
+				break;
+			}
+			case 7:
+			{
+				NBTTagCompound tag = message.theTag;
+				if(tag != null && !tag.hasNoTags())
+				{
+					String playername = tag.getString("playername");
+					EntityPlayer requester = MinecraftServer.getServer().getConfigurationManager().func_152612_a(playername);
+					if(requester != null)
+					{
+						int dimID = tag.getInteger("dim");
+						WorldServer world = DimensionManager.getWorld(dimID);
+						if(world != null)
+						{
+							int x = tag.getInteger("x");
+							int y = tag.getInteger("y");
+							int z = tag.getInteger("z");
+							if(world.blockExists(x, y, z))
+							{
+								if(world.getTileEntity(x, y, z) != null)
+								{
+									ECUtils.requestScheduledTileSync(world.getTileEntity(x, y, z), requester);
+								}
+							}
+						}
+					}
+				}
 				break;
 			}
 			

@@ -1,5 +1,7 @@
 package ec3.common.tile;
 
+import ec3.common.mod.EssentialCraftCore;
+import ec3.utils.common.ECUtils;
 import DummyCore.Utils.DataStorage;
 import DummyCore.Utils.DummyData;
 import DummyCore.Utils.MiscUtils;
@@ -22,6 +24,7 @@ public class TileMithrilineCrystal extends TileEntity{
 	public float energy;
 	private TileStatTracker tracker;
 	public int syncTick;
+	public boolean requestSync = true;
 
 	public TileMithrilineCrystal()
 	{
@@ -65,6 +68,12 @@ public class TileMithrilineCrystal extends TileEntity{
 			float energyGenerated = this.worldObj.provider != null && this.worldObj.provider.dimensionId == 1 ? energyEachTick_End : energyEachTick;
 			if(energy < maxEnergy)
 				energy += energyGenerated;
+		}
+		
+		if(requestSync  && this.worldObj.isRemote)
+		{
+			requestSync = false;
+			ECUtils.requestScheduledTileSync(this, EssentialCraftCore.proxy.getClientPlayer());
 		}
 	}
 	

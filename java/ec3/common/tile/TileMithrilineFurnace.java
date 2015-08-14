@@ -24,6 +24,7 @@ import ec3.api.MithrilineFurnaceRecipes;
 import ec3.common.block.BlockMithrilineCrystal;
 import ec3.common.block.BlocksCore;
 import ec3.common.mod.EssentialCraftCore;
+import ec3.utils.common.ECUtils;
 
 public class TileMithrilineFurnace extends TileEntity implements IInventory{
 	
@@ -34,6 +35,7 @@ public class TileMithrilineFurnace extends TileEntity implements IInventory{
 	private TileStatTracker tracker;
 	public int syncTick;
 	public ItemStack[] items = new ItemStack[2];
+	public boolean requestSync = true;
 
 	public TileMithrilineFurnace()
 	{
@@ -76,6 +78,12 @@ public class TileMithrilineFurnace extends TileEntity implements IInventory{
 			syncTick = 60;
 		}else
 			--this.syncTick;
+		
+		if(requestSync  && this.worldObj.isRemote)
+		{
+			requestSync = false;
+			ECUtils.requestScheduledTileSync(this, EssentialCraftCore.proxy.getClientPlayer());
+		}
 		
 		if(correct)
 		{

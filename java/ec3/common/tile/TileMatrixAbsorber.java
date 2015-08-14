@@ -18,11 +18,11 @@ public class TileMatrixAbsorber extends TileMRUGeneric{
 	public static float cfgBalance = 1F;
 	public static float mruGenerated = 1;
 	public static float mruUsage = 10;
-	
+	public static boolean requestImmidiateSync;
 	
 	public TileMatrixAbsorber()
 	{
-		 super();
+		super();
 		this.balance = cfgBalance;
 		this.maxMRU = (int)cfgMaxMRU;
 		this.setSlotsNum(1);
@@ -60,6 +60,11 @@ public class TileMatrixAbsorber extends TileMRUGeneric{
 									if(current - mruUsage >= 0)
 									{
 										ECUtils.getData(p).modifyUBMRU((int) (current-mruUsage));
+										if(requestImmidiateSync)
+										{
+											ECUtils.requestSync(p);
+											this.syncTick = 0;
+										}
 										this.setMRU((int) (this.getMRU()+mruGenerated));
 								   		for(int o = 0; o < 10; ++o)
 								   		{
@@ -105,7 +110,8 @@ public class TileMatrixAbsorber extends TileMRUGeneric{
 	    			"Max MRU:"+ApiCore.GENERATOR_MAX_MRU_GENERIC/10,
 	    			"Default balance:1.0",
 	    			"MRU generated per tick:1",
-	    			"UBMRU Used per tick:10"
+	    			"UBMRU Used per tick:10",
+	    			"Request Immidiate Data Sync:true"
 	    			},"");
 	    	String dataString="";
 	    	
@@ -118,6 +124,7 @@ public class TileMatrixAbsorber extends TileMRUGeneric{
 	    	cfgBalance = Float.parseFloat(data[1].fieldValue);
 	    	mruGenerated = Float.parseFloat(data[2].fieldValue);
 	    	mruUsage = Float.parseFloat(data[3].fieldValue);
+	    	requestImmidiateSync = Boolean.parseBoolean(data[4].fieldValue);
 	    	
 	    	cfg.save();
     	}catch(Exception e)

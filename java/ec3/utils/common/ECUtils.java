@@ -13,7 +13,9 @@ import baubles.api.BaublesApi;
 
 import com.mojang.authlib.GameProfile;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+import cpw.mods.fml.relauncher.Side;
 import DummyCore.Utils.Coord3D;
 import DummyCore.Utils.DummyData;
 import DummyCore.Utils.DummyDistance;
@@ -21,6 +23,7 @@ import DummyCore.Utils.DummyPacketHandler;
 import DummyCore.Utils.DummyPacketIMSG;
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
+import DummyCore.Utils.Notifier;
 import ec3.api.ApiCore;
 import ec3.api.EnumStructureType;
 import ec3.api.IItemAllowsSeeingMRUCU;
@@ -78,6 +81,7 @@ public class ECUtils {
 	public static List<SpellEntry> spells = new ArrayList<SpellEntry>();
 	public static Hashtable<Object,Integer> inPortalTime = new Hashtable<Object, Integer>();
 	public static Hashtable<String,PlayerGenericData> playerDataTable = new Hashtable<String, PlayerGenericData>();
+	private static final List<ScheduledServerAction> actions = new ArrayList<ScheduledServerAction>();
 	public static NBTTagCompound ec3WorldTag = new NBTTagCompound();
 	
 	public static void requestSync(EntityPlayer e)
@@ -958,6 +962,51 @@ public class ECUtils {
 		dataString += "||mX:"+mX+"||mY:"+mY+"||mZ:"+mZ;
 		DummyPacketIMSG pkt = new DummyPacketIMSG(dataString);
 		DummyPacketHandler.sendToAll(pkt);
+	}
+	
+	protected static void actionsTick()
+	{
+		if(!actions.isEmpty())
+			for(int i = 0; i < actions.size(); ++i)
+			{
+				ScheduledServerAction ssa = actions.get(i);
+				--ssa.actionTime;
+				if(ssa.actionTime <= 0)
+				{
+					ssa.execute();
+					actions.remove(i);
+				}
+			}
+	}
+	
+	public static void addScheduledAction(ScheduledServerAction ssa)
+	{
+		if(FMLCommonHandler.instance().getEffectiveSide() != Side.SERVER)
+			Notifier.notifyCustomMod("EssentialCraft", "[WARNING][SEVERE]Trying to add a scheduled server action not on server side, aborting!");
+		
+		actions.add(ssa);
+	}
+	
+	public static void requestScheduledTileSync(TileEntity tile, EntityPlayer requester)
+	{
+		Side s = FMLCommonHandler.instance().getEffectiveSide();
+		if(s == Side.CLIENT)
+		{
+			if(tile.getWorldObj() == null || tile.getWorldObj().provider == null)
+				return;
+			
+			NBTTagCompound clientData = new NBTTagCompound();
+			clientData.setString("playername", requester.getCommandSenderName());
+			clientData.setInteger("x", tile.xCoord);
+			clientData.setInteger("y", tile.yCoord);
+			clientData.setInteger("z", tile.zCoord);
+			clientData.setInteger("dim", tile.getWorldObj().provider.dimensionId);
+			PacketNBT packet = new PacketNBT(clientData).setID(7);
+			EssentialCraftCore.network.sendToServer(packet);
+		}else
+		{
+			addScheduledAction(new ServerToClientSyncAction(requester, tile));
+		}
 	}
 	
 	public static void balanceIn(TileEntity tile, int slotNum)

@@ -21,6 +21,7 @@ import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
+import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -120,7 +121,14 @@ import net.minecraftforge.oredict.OreDictionary;
 public class ECEventHandler {
 	
 	public String lastTickLanguage;
-
+	
+	
+	@SubscribeEvent
+	public void serverTickEvent(ServerTickEvent event)
+	{
+		ECUtils.actionsTick();
+	}
+	
 	@SubscribeEvent
 	public void anvilEvent(AnvilUpdateEvent event)
 	{

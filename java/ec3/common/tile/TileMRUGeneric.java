@@ -17,6 +17,7 @@ import net.minecraft.network.play.INetHandlerPlayClient;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import ec3.api.ITERequiresMRU;
+import ec3.common.mod.EssentialCraftCore;
 import ec3.utils.common.ECUtils;
 
 public abstract class TileMRUGeneric extends TileEntity implements ITERequiresMRU, IInventory, ISidedInventory{
@@ -36,6 +37,7 @@ public abstract class TileMRUGeneric extends TileEntity implements ITERequiresMR
 	private ItemStack[] items = new ItemStack[1];
 	private TileStatTracker tracker;
 	public boolean slot0IsBoundGem = true;
+	public boolean requestSync = true;
 	
 	public abstract int[] getOutputSlots();
 	
@@ -76,6 +78,12 @@ public abstract class TileMRUGeneric extends TileEntity implements ITERequiresMR
 			syncTick = 60;
 		}else
 			--this.syncTick;
+		
+		if(requestSync && this.worldObj.isRemote)
+		{
+			requestSync = false;
+			ECUtils.requestScheduledTileSync(this, EssentialCraftCore.proxy.getClientPlayer());
+		}
 	}
 	
 	@Override
