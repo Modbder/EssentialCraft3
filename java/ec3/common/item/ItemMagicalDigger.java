@@ -10,11 +10,15 @@ import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldSettings.GameType;
+import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 
 public class ItemMagicalDigger extends ItemPickaxe implements IItemRequiresMRU {
 	
@@ -161,9 +165,18 @@ public class ItemMagicalDigger extends ItemPickaxe implements IItemRequiresMRU {
     	if(this.canBreak(s))
     	{
     		Block b = e.worldObj.getBlock(x, y, z);
-    		b.harvestBlock(e.worldObj, e, x, y, z, e.worldObj.getBlockMetadata(x, y, z));
-    		//b.breakBlock(e.worldObj,  x, y, z, b.blockID, e.worldObj.getBlockMetadata(x, y, z));
-    		e.worldObj.setBlock(x, y, z, Blocks.air, 0, 3);
+			GameType type = GameType.SURVIVAL;
+			if(e.capabilities.isCreativeMode)
+				type = GameType.CREATIVE;
+			if(!e.capabilities.allowEdit)
+				type = GameType.ADVENTURE;
+			
+			BreakEvent be = ForgeHooks.onBlockBreakEvent(e.worldObj, type, (EntityPlayerMP) e, z, y, z);
+			if(!be.isCanceled())
+			{
+	    		b.harvestBlock(e.worldObj, e, x, y, z, e.worldObj.getBlockMetadata(x, y, z));
+	    		e.worldObj.setBlock(x, y, z, Blocks.air, 0, 3);
+			}
     	}
     }
     
