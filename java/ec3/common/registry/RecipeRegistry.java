@@ -675,7 +675,7 @@ public class RecipeRegistry {
 			'C',gen(74)
 		}));
 		
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsCore.genericItem,1,59),new Object[]{
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemsCore.genericItem,2,59),new Object[]{
 			"#C#",
 			"@#@",
 			"#C#",
@@ -1754,7 +1754,7 @@ public class RecipeRegistry {
 		MagicianTableRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Items.diamond),getItemByNameEC3("genericItem",15),getItemByNameEC3("genericItem",15),getItemByNameEC3("genericItem",15),getItemByNameEC3("genericItem",15)},getItemByNameEC3("storage",3), 250);
 		MagicianTableRecipes.addRecipeIS(new ItemStack[]{new ItemStack(Items.nether_star),getItemByNameEC3("genericItem",16),getItemByNameEC3("genericItem",16),getItemByNameEC3("genericItem",16),getItemByNameEC3("genericItem",16)},getItemByNameEC3("storage",4), 500);
 		MagicianTableRecipes.addRecipeIS(new UnformedItemStack[]{new UnformedItemStack(getItemByNameEC3("genericItem",7)),new UnformedItemStack("ingotMithriline"),new UnformedItemStack("ingotMithriline"),new UnformedItemStack("ingotMithriline"),new UnformedItemStack("ingotMithriline")},getItemByNameEC3("genericItem",49), 400);
-		MagicianTableRecipes.addRecipeIS(new UnformedItemStack[]{new UnformedItemStack(getItemByNameEC3("genericItem",7)),new UnformedItemStack("ingotDemonic"),new UnformedItemStack("ingotDemonic"),new UnformedItemStack("ingotDemonic"),new UnformedItemStack("ingotDemonic")},getItemByNameEC3("genericItem",54), 2000);
+		MagicianTableRecipes.addRecipeIS(new UnformedItemStack[]{new UnformedItemStack(getItemByNameEC3("genericItem",7)),new UnformedItemStack("ingotDemonic"),new UnformedItemStack("ingotDemonic"),new UnformedItemStack("ingotDemonic"),new UnformedItemStack("ingotDemonic")},new ItemStack(ItemsCore.genericItem,4,54), 2000);
 		MagicianTableRecipes.addRecipeIS(new ItemStack[]{getItemByNameEC3("genericItem",7),new ItemStack(Items.blaze_powder),new ItemStack(Items.blaze_powder),new ItemStack(Items.blaze_powder),new ItemStack(Items.blaze_powder)},getItemByNameEC3("genericItem",79), 500);
 		ItemStack book_t1 = new ItemStack(ItemsCore.research_book);
 		MiscUtils.getStackTag(book_t1).setInteger("tier", 1);
