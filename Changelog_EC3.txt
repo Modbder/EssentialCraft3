@@ -1,5 +1,33 @@
 To know about the changes from 4.5.1710.125 to 4.6.1710.32 look at .git commits, they are pretty informative too. I just do not have enough time to write all the changes here. From 4.6 the changelog will be continued normaly.
 
+4.6.1710.63
+        +Added: Elemental Drops ore now drops some XP
+        +Added: Some EC3 blocks are now registered in the OreDictionary. Good for things like digital miner
+        +Added: a gamerule(ec3:weaponMatrixDamage) to control weapons damaging player matrixes
+        +Added: Improved the book of knowledge - now recognizes more mouse inputs and keyboard(essentially the book can now be fully controlled and browsed even without a mouse, but the question why remains...)
+        
+        +Changed: Magmatic wand now fires a BreakEvent - good for things like WorldGuard
+        +Changed: Magical Digger now fires a BreakEvent - good for things like WorldGuard
+        +Changed: Magical Building wand now fires both BreakEvent and PlaceEvent - good for things like WorldGuard
+        +Changed: Orbital strike's ability to melt down blocks now follows the mobGriefing gamerule
+        +Changed: Demons are now much easier to summon
+        +Changed: the networking system will now make sure the client will recieve the sync message from the server after 20 ticks the tile has been loaded on the CLIENT side. This ensures clients always knowing the full tile information witout spamming unnecessary packets. For players that means that they should no longer see things like No MRU in the device even though there is some.
+        +Changed: Some recipes for ackronite stuff. More Ackronite plates are produced - the same goes to Neuronic Enriched Plating
+        
+        -Fixed: Player clones from the hologram bossfight dropping player equipment
+        -Fixed: Buttons appearing in the Soul Pentacle's GUI for 1 frame
+        -Fixed: Magical Building Wand now renders the outline between points in the same way the BoundGem does, effectivly removing all render glitches.
+        -Fixed: MRUCUs creating corruption blocks even if the allowCorruption is disabled in the config
+        -Fixed: MRU guns corrupting matrix even with PVP off
+        -Fixed: MRU guns corrupting matrix f players on the same team
+        -Fixed: Issue #15(crash with some weird data damage, not EC3's fault, but a safety check can never harm)
+        -Fixed: Demons counting just the Demonic Pentacles(without the actual structure) a sufficient reason to stay.
+        -Fixed: The drops ore in the world should no longer flicker(sadly no OF support yet)
+        -Fixed: a bug where all items would render as a monster spawner from a first person view perspective after the player has hold a spawner in their hand
+        -Fixed: Fixed: a possible <ERROR> in the WAILA description of EC3 machines without a bound gem slot
+        
+        Also that is a 200'th commit on my github! Yay!
+
 4.6.1710.42
         +Added: HEE compatibility - it's angry endermen should now be grabbed by the ender generator aswell
         +Added: Magmatic Smeltery and the Magmatic Furnaces now have all their slots correctly assigned with the outputs and inputs
