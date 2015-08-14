@@ -112,9 +112,11 @@ public class EntityMRURay extends Entity
 				{
 					EntityPlayer attackerPlayer = (EntityPlayer) attacker;
 					if(attackerPlayer.getTeam() == null || player == null || !(player.getTeam().isSameTeam(attackerPlayer.getTeam())))
-						ECUtils.getData(player).modifyOverhaulDamage(ECUtils.getData(player).getOverhaulDamage() + MathHelper.floor_double(this.damage*100));
+						if(!this.worldObj.getGameRules().getGameRuleBooleanValue("ec3:weaponMatrixDamage"))
+							ECUtils.getData(player).modifyOverhaulDamage(ECUtils.getData(player).getOverhaulDamage() + MathHelper.floor_double(this.damage*100));
 				}else
-					ECUtils.getData(player).modifyOverhaulDamage(ECUtils.getData(player).getOverhaulDamage() + MathHelper.floor_double(this.damage*100));
+					if(!this.worldObj.getGameRules().getGameRuleBooleanValue("ec3:weaponMatrixDamage"))
+						ECUtils.getData(player).modifyOverhaulDamage(ECUtils.getData(player).getOverhaulDamage() + MathHelper.floor_double(this.damage*100));
 			}
 			if(this.balance == 4)
 			{
