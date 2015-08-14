@@ -6,6 +6,7 @@ import DummyCore.Utils.DummyData;
 import ec3.api.IMRUPressence;
 import ec3.common.block.BlockCorruption_Light;
 import ec3.common.block.BlocksCore;
+import ec3.utils.cfg.Config;
 import ec3.utils.common.ECUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -179,20 +180,23 @@ public class EntityMRUPresence extends EntityLivingBase implements IMRUPressence
 							resistance = 1F;
 						}
 						dt = null;
-						if(!(blk1 instanceof BlockCorruption_Light) && !(blk instanceof BlockCorruption_Light) && blk1 != Blocks.air && blk == Blocks.air)
+						if(Config.isCorruptionAllowed)
 						{
-							if(!this.worldObj.isRemote && this.worldObj.rand.nextInt((int) (1000*resistance)) <= mainMRUState)
+							if(!(blk1 instanceof BlockCorruption_Light) && !(blk instanceof BlockCorruption_Light) && blk1 != Blocks.air && blk == Blocks.air)
 							{
-								this.worldObj.setBlock((int)(vc.xCoord+posX),(int)(vc.yCoord+posY),(int)(vc.zCoord+posZ), id, 0, 3);
-								break;
+								if(!this.worldObj.isRemote && this.worldObj.rand.nextInt((int) (1000*resistance)) <= mainMRUState)
+								{
+									this.worldObj.setBlock((int)(vc.xCoord+posX),(int)(vc.yCoord+posY),(int)(vc.zCoord+posZ), id, 0, 3);
+									break;
+								}
 							}
-						}
-						if(blk instanceof BlockCorruption_Light)
-						{
-							int metadata = this.worldObj.getBlockMetadata((int)(vc.xCoord+posX),(int)(vc.yCoord+posY),(int)(vc.zCoord+posZ));
-							if(metadata < 7 && this.worldObj.rand.nextInt((int) (1000*resistance)) <= mainMRUState)
+							if(blk instanceof BlockCorruption_Light)
 							{
-								this.worldObj.setBlockMetadataWithNotify((int)(vc.xCoord+posX),(int)(vc.yCoord+posY),(int)(vc.zCoord+posZ), metadata+1, 3);
+								int metadata = this.worldObj.getBlockMetadata((int)(vc.xCoord+posX),(int)(vc.yCoord+posY),(int)(vc.zCoord+posZ));
+								if(metadata < 7 && this.worldObj.rand.nextInt((int) (1000*resistance)) <= mainMRUState)
+								{
+									this.worldObj.setBlockMetadataWithNotify((int)(vc.xCoord+posX),(int)(vc.yCoord+posY),(int)(vc.zCoord+posZ), metadata+1, 3);
+								}
 							}
 						}
 					}
@@ -234,7 +238,7 @@ public class EntityMRUPresence extends EntityLivingBase implements IMRUPressence
 						{
 							float genResistance = ECUtils.getGenResistance(0, player);
 							if(genResistance >= 1.0F)genResistance = 0.99F;
-							float matrixDamage = 2 * ((this.getMRU() / 20000) / (10-(genResistance*10)));
+							float matrixDamage = 4 * ((this.getMRU() / 10000) / (10-(genResistance*10)));
 							if(matrixDamage >= 1)
 							{
 								ECUtils.getData(player).modifyOverhaulDamage(ECUtils.getData(player).getOverhaulDamage()+MathHelper.floor_double(matrixDamage));
