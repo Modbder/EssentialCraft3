@@ -108,7 +108,13 @@ public class EntityMRURay extends Entity
 			EntityPlayer player = EntityPlayer.class.cast(attacked);
 			if(!player.worldObj.isRemote && MinecraftServer.getServer().isPVPEnabled())
 			{
-				ECUtils.getData(player).modifyOverhaulDamage(ECUtils.getData(player).getOverhaulDamage() + MathHelper.floor_double(this.damage*100));
+				if(attacker instanceof EntityPlayer)
+				{
+					EntityPlayer attackerPlayer = (EntityPlayer) attacker;
+					if(attackerPlayer.getTeam() == null || player == null || !(player.getTeam().isSameTeam(attackerPlayer.getTeam())))
+						ECUtils.getData(player).modifyOverhaulDamage(ECUtils.getData(player).getOverhaulDamage() + MathHelper.floor_double(this.damage*100));
+				}else
+					ECUtils.getData(player).modifyOverhaulDamage(ECUtils.getData(player).getOverhaulDamage() + MathHelper.floor_double(this.damage*100));
 			}
 			if(this.balance == 4)
 			{
