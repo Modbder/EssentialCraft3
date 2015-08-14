@@ -105,59 +105,60 @@ public class EntityOrbitalStrike extends Entity
 			for(int i = 0; i < 20; ++i)
 				this.worldObj.spawnParticle("hugeexplosion", posX+MathUtils.randomDouble(rand), posY+MathUtils.randomDouble(rand), posZ+MathUtils.randomDouble(rand), 0, 0, 0);
 		
-			for(int dx = -2; dx <= 2; ++dx)
-			{
-				int x = MathHelper.floor_double(posX) + dx;
-				for(int dy = -2; dy <= 2; ++dy)
+			if(this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"))
+				for(int dx = -2; dx <= 2; ++dx)
 				{
-					int y = MathHelper.floor_double(posY) + dy;
-					for(int dz = -2; dz <= 2; ++dz)
+					int x = MathHelper.floor_double(posX) + dx;
+					for(int dy = -2; dy <= 2; ++dy)
 					{
-						int z = MathHelper.floor_double(posZ) + dz;
-						Block b = this.worldObj.getBlock(x, y, z);
-						if(!b.isAir(worldObj, x, y, z))
+						int y = MathHelper.floor_double(posY) + dy;
+						for(int dz = -2; dz <= 2; ++dz)
 						{
-							if(b.getMaterial() == Material.water || b.getMaterial() == Material.ice || b.getMaterial() == Material.snow)
+							int z = MathHelper.floor_double(posZ) + dz;
+							Block b = this.worldObj.getBlock(x, y, z);
+							if(!b.isAir(worldObj, x, y, z))
 							{
-								if(!this.worldObj.isRemote)
-									this.worldObj.setBlock(x, y, z, Blocks.air,0,2);
-								
-								worldObj.playSoundEffect((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), "random.fizz", 0.5F, 2.6F + (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.8F);
-			                   
-								for (int l = 0; l < 8; ++l)
-			                    {
-			                    	worldObj.spawnParticle("largesmoke", (double)x + Math.random(), (double)y + Math.random(), (double)z + Math.random(), 0.0D, 0.0D, 0.0D);
-			                    }
-								
-								continue;
-							}
-							ItemStack is = new ItemStack(b,1,worldObj.getBlockMetadata(x, y, z));
-							ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(is);
-							if(result != null)
-							{
-								if(result.getItem() instanceof ItemBlock)
-								{
-									Block setTo = ItemBlock.class.cast(result.getItem()).field_150939_a;
-									if(setTo != null && !this.worldObj.isRemote)
-										this.worldObj.setBlock(x, y, z, setTo,result.getItemDamage(),2);
-								}else
+								if(b.getMaterial() == Material.water || b.getMaterial() == Material.ice || b.getMaterial() == Material.snow)
 								{
 									if(!this.worldObj.isRemote)
 										this.worldObj.setBlock(x, y, z, Blocks.air,0,2);
 									
-									EntityItem itm = new EntityItem(this.worldObj,x,y,z,result.copy());
+									worldObj.playSoundEffect((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), "random.fizz", 0.5F, 2.6F + (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.8F);
+				                   
+									for (int l = 0; l < 8; ++l)
+				                    {
+				                    	worldObj.spawnParticle("largesmoke", (double)x + Math.random(), (double)y + Math.random(), (double)z + Math.random(), 0.0D, 0.0D, 0.0D);
+				                    }
 									
-									if(!this.worldObj.isRemote)
-										this.worldObj.spawnEntityInWorld(itm);
+									continue;
 								}
+								ItemStack is = new ItemStack(b,1,worldObj.getBlockMetadata(x, y, z));
+								ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(is);
+								if(result != null)
+								{
+									if(result.getItem() instanceof ItemBlock)
+									{
+										Block setTo = ItemBlock.class.cast(result.getItem()).field_150939_a;
+										if(setTo != null && !this.worldObj.isRemote)
+											this.worldObj.setBlock(x, y, z, setTo,result.getItemDamage(),2);
+									}else
+									{
+										if(!this.worldObj.isRemote)
+											this.worldObj.setBlock(x, y, z, Blocks.air,0,2);
+										
+										EntityItem itm = new EntityItem(this.worldObj,x,y,z,result.copy());
+										
+										if(!this.worldObj.isRemote)
+											this.worldObj.spawnEntityInWorld(itm);
+									}
+								}
+								
+								is = null;
+								result = null;
 							}
-							
-							is = null;
-							result = null;
-						}
-					}	
+						}	
+					}
 				}
-			}
 		}
 		
 		if(this.worldObj.isRemote)
