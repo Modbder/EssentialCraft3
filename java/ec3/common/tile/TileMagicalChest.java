@@ -1,5 +1,7 @@
 package ec3.common.tile;
 
+import ec3.common.mod.EssentialCraftCore;
+import ec3.utils.common.ECUtils;
 import DummyCore.Utils.MiscUtils;
 import DummyCore.Utils.Notifier;
 import DummyCore.Utils.TileStatTracker;
@@ -28,6 +30,7 @@ public class TileMagicalChest extends TileEntity implements IInventory, ISidedIn
     public int syncTick;
     public int rotation;
     private TileStatTracker tracker;
+	public boolean requestSync = true;
 
     public TileMagicalChest(int metaData)
     {
@@ -174,6 +177,12 @@ public class TileMagicalChest extends TileEntity implements IInventory, ISidedIn
 			syncTick = 60;
 		}else
 			--this.syncTick;
+		
+		if(requestSync  && this.worldObj.isRemote)
+		{
+			requestSync = false;
+			ECUtils.requestScheduledTileSync(this, EssentialCraftCore.proxy.getClientPlayer());
+		}
 		
         if (++ticksSinceSync % 20 * 4 == 0)
         {
