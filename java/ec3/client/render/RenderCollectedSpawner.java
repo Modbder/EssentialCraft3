@@ -3,6 +3,7 @@ package ec3.client.render;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import ec3.common.item.ItemCollectedMonsterSpawner;
 import DummyCore.Utils.MiscUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -31,6 +32,9 @@ public class RenderCollectedSpawner implements IItemRenderer{
 	@Override
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data)
 	{
+		if(item == null || item.getItem() == null || !(item.getItem() instanceof ItemCollectedMonsterSpawner))
+			return;
+		
 		RenderBlocks rb = (RenderBlocks) data[0];
 		
 		if(type == ItemRenderType.EQUIPPED_FIRST_PERSON)
@@ -39,6 +43,7 @@ public class RenderCollectedSpawner implements IItemRenderer{
 		Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
 		rb.setOverrideBlockTexture(Blocks.mob_spawner.getIcon(0, 0));
 		rb.renderBlockAsItem(Blocks.glass, 0, 1);
+		rb.clearOverrideBlockTexture();
 		
 		NBTTagCompound tag = MiscUtils.getStackTag(item);
 		
