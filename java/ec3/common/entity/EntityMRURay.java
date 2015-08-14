@@ -13,6 +13,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -105,7 +106,7 @@ public class EntityMRURay extends Entity
 		if(attacked instanceof EntityPlayer)
 		{
 			EntityPlayer player = EntityPlayer.class.cast(attacked);
-			if(!player.worldObj.isRemote)
+			if(!player.worldObj.isRemote && MinecraftServer.getServer().isPVPEnabled())
 			{
 				ECUtils.getData(player).modifyOverhaulDamage(ECUtils.getData(player).getOverhaulDamage() + MathHelper.floor_double(this.damage*100));
 			}
