@@ -11,6 +11,7 @@ import org.lwjgl.opengl.GL12;
 
 import DummyCore.Utils.MathUtils;
 import DummyCore.Utils.MiscUtils;
+import DummyCore.Utils.Notifier;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import ec3.api.ApiCore;
@@ -73,6 +74,12 @@ public class GuiResearchBook extends GuiScreen{
 	 
 	 public static float ticksOpened;
 	 
+	 public static int ticksBeforePressing;
+	 
+	 public String numberString = "";
+	 
+	 public int pressDelay;
+	 
 	 public GuiResearchBook()
 	 {
 		 super();
@@ -81,6 +88,71 @@ public class GuiResearchBook extends GuiScreen{
 	 public void updateScreen() 
 	 {
 		 ++ticksOpened;
+		 --ticksBeforePressing;
+		 --pressDelay;
+		 if(!numberString.isEmpty() && pressDelay <= 0)
+		 {
+			 int buttonID = -1;
+			 try
+			 {
+				 buttonID = Integer.parseInt(numberString);
+			 }
+			 catch(NumberFormatException e)
+			 {
+				 Notifier.notifyCustomMod("EssentialCraft", "[ERROR]"+numberString+" is not a valid number!");
+			 }
+			 if(buttonID > -1)
+			 {
+				 buttonID -= 1;
+				 if(currentCategory != null && currentDiscovery == null)
+				 {
+					 buttonID += 3;
+				 }
+				 if(buttonID >= 0)
+					 if(buttonList.size() > buttonID)
+					 {
+						 GuiButton button = GuiButton.class.cast(buttonList.get(buttonID));
+						 if(button.enabled)
+							 this.actionPerformed(button);
+					 }
+			 }
+			 numberString = "";
+			 
+		 }
+	 }
+	 
+	 @Override
+	 protected void keyTyped(char typed, int keyID)
+	 {
+		 super.keyTyped(typed, keyID);
+		 if(keyID == 14 && currentCategory != null)
+		 {
+			 if(this.buttonList.size() > 0)
+			 {
+				 GuiButton button = (GuiButton) this.buttonList.get(0);
+				 if(button.enabled)
+					 this.actionPerformed(button);
+			 }
+		 }
+		 if(typed == '0' || typed == '1' || typed == '2' || typed == '3' || typed == '4' || typed == '5' || typed == '6' || typed == '7' || typed == '8' || typed == '9' || typed == '0')
+		 {
+			 numberString += typed;
+			 pressDelay = 20;
+		 }
+		 if(keyID == 28)
+		 {
+			 pressDelay = 0;
+		 }
+		 if(currentCategory != null && (keyID == 205 || keyID == 203))
+		 {
+			 int press = keyID == 205 ? 2 : 1;
+			 if(this.buttonList.size() > press)
+			 {
+				 GuiButton button = (GuiButton) this.buttonList.get(press);
+				 if(button.enabled)
+					 this.actionPerformed(button);
+			 }
+		 }
 	 }
 	 
 	 public void initGui() 
@@ -98,6 +170,8 @@ public class GuiResearchBook extends GuiScreen{
 	    	 initDiscoveries();
 	     if(currentCategory != null && currentDiscovery != null)
 	    	 initPage();
+	     
+	     ticksBeforePressing = 1;
 	 }
 	 
 	 public void drawBackground(int p_146278_1_)
@@ -129,11 +203,58 @@ public class GuiResearchBook extends GuiScreen{
 	 @Override
 	 public void drawScreen(int p_73863_1_, int p_73863_2_, float p_73863_3_)
 	 {
+	     int k = (this.width - 256) / 2;
+	     int l = (this.height - 168) / 2;
 		 try
 		 {
 		 }catch(Exception e)
 		 {
 			 e.printStackTrace();return;
+		 }
+		 int dWheel = Mouse.getDWheel();
+		 if(currentDiscovery != null)
+		 {
+			 if(dWheel < 0)
+			 {
+				 if(this.buttonList.size() > 1)
+				 {
+					 GuiButton button = (GuiButton) this.buttonList.get(2);
+					 if(button.enabled)
+						 this.actionPerformed(button);
+				 }
+			 }
+			 if(dWheel > 0)
+			 {
+				 if(this.buttonList.size() > 1)
+				 {
+					 GuiButton button = (GuiButton) this.buttonList.get(1);
+					 if(button.enabled)
+						 this.actionPerformed(button);
+				 }
+			 }
+		 }else
+		 {
+			 if(currentCategory != null)
+			 {
+				 if(dWheel < 0)
+				 {
+					 if(this.buttonList.size() > 1)
+					 {
+						 GuiButton button = (GuiButton) this.buttonList.get(2);
+						 if(button.enabled)
+							 this.actionPerformed(button);
+					 }
+				 }
+				 if(dWheel > 0)
+				 {
+					 if(this.buttonList.size() > 1)
+					 {
+						 GuiButton button = (GuiButton) this.buttonList.get(1);
+						 if(button.enabled)
+							 this.actionPerformed(button);
+					 }
+				 }
+			 }
 		 }
 		 if(isRightMouseKeyPressed && !Mouse.isButtonDown(1))
 		 {
@@ -177,6 +298,17 @@ public class GuiResearchBook extends GuiScreen{
 			 drawPage(p_73863_1_,p_73863_2_);
 		 }
 		 drawAllText();
+		 if(!this.numberString.isEmpty())
+		 {
+			 RenderHelper.disableStandardItemLighting();
+			 RenderHelper.enableGUIStandardItemLighting();
+			 GL11.glTranslated(0, 0, 100);
+			 GL11.glColor3f(1/(float)(5F-(float)pressDelay), 1/(float)(5F-(float)pressDelay), 1/(float)(5F-(float)pressDelay));
+			 this.drawCenteredString(fontRendererObj, numberString, k+128, l+172, 0xffffff);
+			 GL11.glColor3f(1, 1, 1);
+			 GL11.glTranslated(0, 0, -100);
+			 RenderHelper.enableStandardItemLighting();
+		 }
 	 }
 	 
     @SuppressWarnings("unchecked")
@@ -218,6 +350,9 @@ public class GuiResearchBook extends GuiScreen{
 	    	 page_right.enabled = true;
 	     }else
 	    	 page_right.enabled = false;
+	     
+	     this.buttonList.add(page_left);
+	     this.buttonList.add(page_right);
 	     for(int i = 48*(currentPage_discovery); i < discAmount - 48*(currentPage_discovery); ++i)
 	     {
 	    	 int dx = k + (22*(i/6)) + 12;
@@ -226,8 +361,7 @@ public class GuiResearchBook extends GuiScreen{
 	    	 GuiButtonNoSound btnAdd = new GuiButtonNoSound(i + 3, dx, dy, 20, 20, "");
 	    	 this.buttonList.add(btnAdd);
 	     }
-	     this.buttonList.add(page_left);
-	     this.buttonList.add(page_right);
+
 	 }
 	 
 	 @SuppressWarnings("unchecked")
@@ -1133,6 +1267,15 @@ public class GuiResearchBook extends GuiScreen{
 		    		 RenderHelper.enableGUIStandardItemLighting();
 	    		 }
 	    		 
+	    		 if(isCtrlKeyDown())
+	    		 {
+	    			 GL11.glTranslated(0, 0, 100);
+	    			 GL11.glColor3f(1, 1, 1);
+	    			 this.drawString(fontRendererObj, btn.id-2+"", btn.xPosition+15, btn.yPosition+14, 0xffffff);
+	    			 GL11.glColor3f(1, 1, 1);
+	    			 GL11.glTranslated(0, 0, -100);
+	    		 }
+	    		 
 	    		 RenderHelper.enableStandardItemLighting();
 	    	 }
 	     }
@@ -1222,6 +1365,13 @@ public class GuiResearchBook extends GuiScreen{
 	    			 this.mc.renderEngine.bindTexture(cat.displayTexture);
 	    			 func_146110_a(btn.xPosition+2, btn.yPosition+2, 0, 0, 16, 16, 16, 16);
 	    		 }
+	    		 if(isCtrlKeyDown())
+	    		 {
+	    			 GL11.glTranslated(0, 0, 100);
+	    			 this.drawString(fontRendererObj, btn.id+1+"", btn.xPosition+15, btn.yPosition+14, 0xffffff);
+	    			 GL11.glColor3f(1, 1, 1);
+	    			 GL11.glTranslated(0, 0, -100);
+	    		 }
 	    	 }
 	     }
 	     RenderHelper.enableStandardItemLighting();
@@ -1272,22 +1422,22 @@ public class GuiResearchBook extends GuiScreen{
 	    		 if(hover)
 	    		 {
 	    			  List<String> catStr = toDraw.getTooltip(this.mc.thePlayer, false);
-	    			  if(ApiCore.findDiscoveryByIS(toDraw) != null)
+	    			  DiscoveryEntry ds = ApiCore.findDiscoveryByIS(toDraw);
+	    			  if(ds != null && ds != currentDiscovery)
 	    			  {
 	    				  catStr.add(EnumChatFormatting.ITALIC + StatCollector.translateToLocal("ec3.txt.is.press"));
 	    				  if(Mouse.isButtonDown(0) && !isLeftMouseKeyPressed)
 	    				  {
 	    					  prevState.add(new Object[]{currentDiscovery,currentPage,currentPage_discovery});
 	    					  isLeftMouseKeyPressed = true;
-	    					  DiscoveryEntry switchTo = ApiCore.findDiscoveryByIS(toDraw);
 	    					  currentPage = 0;
 	    					  currentPage_discovery = 0;
-	    					  currentDiscovery = switchTo;
-	    					  if(switchTo != null)
+	    					  currentDiscovery = ds;
+	    					  if(ds != null)
 	    					  {
-	    						  f:for(int i = 0; i < switchTo.pages.size(); ++i)
+	    						  f:for(int i = 0; i < ds.pages.size(); ++i)
 	    						  {
-	    							  PageEntry entry = switchTo.pages.get(i);
+	    							  PageEntry entry = ds.pages.get(i);
 	    							  if(entry != null)
 	    							  {
 	    								  if(entry.displayedItems != null && entry.displayedItems.length > 0)
@@ -1395,6 +1545,9 @@ public class GuiResearchBook extends GuiScreen{
 	 
 	 protected void actionPerformed(GuiButton b) 
 	 {
+		 if(ticksBeforePressing > 0)
+			 return;
+		 
 		 if(currentCategory == null)
 		 {
 			 CategoryEntry cat = ApiCore.categories.get(b.id);
