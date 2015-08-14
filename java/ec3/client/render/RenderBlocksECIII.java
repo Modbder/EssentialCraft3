@@ -823,16 +823,18 @@ public class RenderBlocksECIII implements ISimpleBlockRenderingHandler{
 	       
 	        renderer.renderAllFaces = false;
 	        renderer.useInventoryTint = false;
+	        GL11.glPushMatrix();
 			renderTesselatedTextureByPoints(world,block,renderer,x,y,z,r,g,b,1D,247,dr.icons[3],
-					1D,1D,1D, //SOUTH-TOP-EAST
-					0D,1D,1D, //SOUTH-TOP-WEST
-					1D,1D,0D, //SOUTH-TOP-EAST
-					0D,1D,0D, //NORTH-TOP-WEST
-					1D,0D,1D, //SOUTH-BOT-EAST
-					0D,0D,1D, //SOUTH-BOT-WEST
-					1D,0D,0D, //SOUTH-BOT-EAST
-					0D,0D,0D  //NORTH-BOT-WEST
+					0.99D,0.99D,0.99D, //SOUTH-TOP-EAST
+					0.01D,0.99D,0.99D, //SOUTH-TOP-WEST
+					0.99D,0.99D,0.01D, //SOUTH-TOP-EAST
+					0.01D,0.99D,0.01D, //NORTH-TOP-WEST
+					0.99D,0.01D,0.99D, //SOUTH-BOT-EAST
+					0.01D,0.01D,0.99D, //SOUTH-BOT-WEST
+					0.99D,0.01D,0.01D, //SOUTH-BOT-EAST
+					0.01D,0.01D,0.01D  //NORTH-BOT-WEST
 					);
+			GL11.glPopMatrix();
 			renderer.useInventoryTint = true;
 	        GL11.glPopMatrix();
 		}
