@@ -44,7 +44,6 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -335,63 +334,6 @@ public class RenderHandlerEC3 {
 		ItemStack is = player.getCurrentEquippedItem();
 		if(is != null)
 		{
-			if(is.getItem() instanceof ItemMagicalBuilder)
-			{
-				ItemMagicalBuilder builder = ItemMagicalBuilder.class.cast(is.getItem());
-				if(builder.hasFirstPoint(is) && !builder.hasSecondPoint(is))
-				{
-					Coord3D c = builder.getFirstPoint(is);
-					
-					GL11.glPushMatrix();
-					
-					double d = 2.8D;
-					
-					GL11.glTranslated(c.x-TileEntityRendererDispatcher.staticPlayerX-player.motionX/d, c.y-TileEntityRendererDispatcher.staticPlayerY-((player.motionY+0.07D)/d), c.z-TileEntityRendererDispatcher.staticPlayerZ-player.motionZ/d);
-					
-					RenderGlobal.drawOutlinedBoundingBox(AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, 1), 0xff00ff);
-					
-					GL11.glPopMatrix();
-				}else if(builder.hasFirstPoint(is) && builder.hasSecondPoint(is))
-				{
-					Coord3D c = builder.getFirstPoint(is);
-					Coord3D c1 = builder.getSecondPoint(is);
-					
-					GL11.glPushMatrix();
-					
-					double d = 2.8D;
-					
-					GL11.glTranslated(c.x-TileEntityRendererDispatcher.staticPlayerX-player.motionX/d, c.y-TileEntityRendererDispatcher.staticPlayerY-((player.motionY+0.07D)/d), c.z-TileEntityRendererDispatcher.staticPlayerZ-player.motionZ/d);
-					
-					double minX = 0;
-					double maxX = c1.x-c.x + 1;
-					double minY = 0;
-					double maxY = c1.y-c.y + 1;
-					double minZ = 0;
-					double maxZ = c1.z-c.z + 1;
-					
-					if(c1.x < c.x)
-					{
-						minX = c1.x-c.x;
-						maxX = 1;
-					}
-					
-					if(c1.y < c.y)
-					{
-						minY = c1.y-c.y;
-						maxY = 1;
-					}
-					
-					if(c1.z < c.z)
-					{
-						minZ = c1.z-c.z;
-						maxZ = 1;
-					}
-					
-					RenderGlobal.drawOutlinedBoundingBox(AxisAlignedBB.getBoundingBox(minX,minY,minZ, maxX, maxY, maxZ), 0xff00ff);
-					
-					GL11.glPopMatrix();
-				}
-			}
 			if(is.getItem() instanceof ItemOrbitalRemote)
 			{
 				//ItemOrbitalRemote remote = ItemOrbitalRemote.class.cast(is.getItem());
@@ -528,7 +470,7 @@ public class RenderHandlerEC3 {
         double doubleX = p.lastTickPosX + (p.posX - p.lastTickPosX) * evt.partialTicks;
         double doubleY = p.lastTickPosY + (p.posY - p.lastTickPosY) * evt.partialTicks;
         double doubleZ = p.lastTickPosZ + (p.posZ - p.lastTickPosZ) * evt.partialTicks;
-        		
+        
 		if(ItemInventoryGem.currentlyClicked != null)
 		{
 			Coord3D c = ItemInventoryGem.currentlyClicked;
@@ -683,6 +625,145 @@ public class RenderHandlerEC3 {
 		        GL11.glEnable(GL11.GL_ALPHA_TEST);
 
 		        GL11.glPopMatrix();
+			}
+			
+			if(is.getItem() instanceof ItemMagicalBuilder)
+			{
+				ItemMagicalBuilder builder = ItemMagicalBuilder.class.cast(is.getItem());
+				if(builder.hasFirstPoint(is) && !builder.hasSecondPoint(is))
+				{
+					Coord3D c = builder.getFirstPoint(is);
+					
+			        AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(c.x, c.y, c.z, c.x+1, c.y+1, c.z+1);
+			        
+			        GL11.glPushMatrix();
+			        
+			        boolean depth = GL11.glIsEnabled(GL11.GL_DEPTH_TEST);
+			        GL11.glDisable(GL11.GL_DEPTH_TEST);
+			        boolean texture = GL11.glIsEnabled(GL11.GL_TEXTURE_2D);
+			        GL11.glDisable(GL11.GL_TEXTURE_2D);
+			        GL11.glDisable(GL11.GL_ALPHA_TEST);
+			        GL11.glEnable(GL11.GL_BLEND);
+			        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			        
+			        GL11.glColor3d(1, 0, 1);
+			        GL11.glLineWidth(2);
+			        GL11.glTranslated(-doubleX, -doubleY, -doubleZ);
+			        
+			        GL11.glBegin(GL11.GL_LINES);
+			        
+			        GL11.glVertex3d(aabb.minX, aabb.minY, aabb.minZ);
+			        GL11.glVertex3d(aabb.maxX, aabb.minY, aabb.minZ);
+			        GL11.glVertex3d(aabb.minX, aabb.minY, aabb.minZ);
+			        GL11.glVertex3d(aabb.minX, aabb.minY, aabb.maxZ);
+			        GL11.glVertex3d(aabb.maxX, aabb.minY, aabb.maxZ);
+			        GL11.glVertex3d(aabb.minX, aabb.minY, aabb.maxZ);
+			        GL11.glVertex3d(aabb.maxX, aabb.minY, aabb.maxZ);
+			        GL11.glVertex3d(aabb.maxX, aabb.minY, aabb.minZ);
+			        
+			        GL11.glVertex3d(aabb.minX, aabb.minY, aabb.minZ);
+			        GL11.glVertex3d(aabb.minX, aabb.maxY, aabb.minZ);
+			        GL11.glVertex3d(aabb.maxX, aabb.minY, aabb.maxZ);
+			        GL11.glVertex3d(aabb.maxX, aabb.maxY, aabb.maxZ);
+			        GL11.glVertex3d(aabb.minX, aabb.minY, aabb.maxZ);
+			        GL11.glVertex3d(aabb.minX, aabb.maxY, aabb.maxZ);
+			        GL11.glVertex3d(aabb.maxX, aabb.minY, aabb.minZ);
+			        GL11.glVertex3d(aabb.maxX, aabb.maxY, aabb.minZ);
+			        
+			        GL11.glVertex3d(aabb.minX, aabb.maxY, aabb.minZ);
+			        GL11.glVertex3d(aabb.maxX, aabb.maxY, aabb.minZ);
+			        GL11.glVertex3d(aabb.minX, aabb.maxY, aabb.minZ);
+			        GL11.glVertex3d(aabb.minX, aabb.maxY, aabb.maxZ);
+			        GL11.glVertex3d(aabb.maxX, aabb.maxY, aabb.maxZ);
+			        GL11.glVertex3d(aabb.minX, aabb.maxY, aabb.maxZ);
+			        GL11.glVertex3d(aabb.maxX, aabb.maxY, aabb.maxZ);
+			        GL11.glVertex3d(aabb.maxX, aabb.maxY, aabb.minZ);
+			        
+			        GL11.glEnd();
+			        
+
+			        if (depth) 
+			        {
+			            GL11.glEnable(GL11.GL_DEPTH_TEST);
+			        }
+			        if (texture) 
+			        {
+			            GL11.glEnable(GL11.GL_TEXTURE_2D);
+			        }
+			        
+			        GL11.glDisable(GL11.GL_BLEND);
+			        GL11.glEnable(GL11.GL_ALPHA_TEST);
+
+			        GL11.glPopMatrix();
+			        
+				}
+				else if(builder.hasFirstPoint(is) && builder.hasSecondPoint(is))
+				{
+					Coord3D c = builder.getFirstPoint(is);
+					Coord3D c1 = builder.getSecondPoint(is);
+					
+			        AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(c1.x < c.x ? c.x+1 : c.x, c1.y < c.y ? c.y+1 : c.y, c1.z < c.z ? c.z+1 : c.z, c1.x < c.x ? c1.x : c1.x+1, c1.y < c.y ? c1.y : c1.y+1, c1.z < c.z ? c1.z : c1.z+1);
+			        
+			        GL11.glPushMatrix();
+			        
+			        boolean depth = GL11.glIsEnabled(GL11.GL_DEPTH_TEST);
+			        GL11.glDisable(GL11.GL_DEPTH_TEST);
+			        boolean texture = GL11.glIsEnabled(GL11.GL_TEXTURE_2D);
+			        GL11.glDisable(GL11.GL_TEXTURE_2D);
+			        GL11.glDisable(GL11.GL_ALPHA_TEST);
+			        GL11.glEnable(GL11.GL_BLEND);
+			        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			        
+			        GL11.glColor3d(1, 0, 1);
+			        GL11.glLineWidth(2);
+			        GL11.glTranslated(-doubleX, -doubleY, -doubleZ);
+			        
+			        GL11.glBegin(GL11.GL_LINES);
+			        
+			        GL11.glVertex3d(aabb.minX, aabb.minY, aabb.minZ);
+			        GL11.glVertex3d(aabb.maxX, aabb.minY, aabb.minZ);
+			        GL11.glVertex3d(aabb.minX, aabb.minY, aabb.minZ);
+			        GL11.glVertex3d(aabb.minX, aabb.minY, aabb.maxZ);
+			        GL11.glVertex3d(aabb.maxX, aabb.minY, aabb.maxZ);
+			        GL11.glVertex3d(aabb.minX, aabb.minY, aabb.maxZ);
+			        GL11.glVertex3d(aabb.maxX, aabb.minY, aabb.maxZ);
+			        GL11.glVertex3d(aabb.maxX, aabb.minY, aabb.minZ);
+			        
+			        GL11.glVertex3d(aabb.minX, aabb.minY, aabb.minZ);
+			        GL11.glVertex3d(aabb.minX, aabb.maxY, aabb.minZ);
+			        GL11.glVertex3d(aabb.maxX, aabb.minY, aabb.maxZ);
+			        GL11.glVertex3d(aabb.maxX, aabb.maxY, aabb.maxZ);
+			        GL11.glVertex3d(aabb.minX, aabb.minY, aabb.maxZ);
+			        GL11.glVertex3d(aabb.minX, aabb.maxY, aabb.maxZ);
+			        GL11.glVertex3d(aabb.maxX, aabb.minY, aabb.minZ);
+			        GL11.glVertex3d(aabb.maxX, aabb.maxY, aabb.minZ);
+			        
+			        GL11.glVertex3d(aabb.minX, aabb.maxY, aabb.minZ);
+			        GL11.glVertex3d(aabb.maxX, aabb.maxY, aabb.minZ);
+			        GL11.glVertex3d(aabb.minX, aabb.maxY, aabb.minZ);
+			        GL11.glVertex3d(aabb.minX, aabb.maxY, aabb.maxZ);
+			        GL11.glVertex3d(aabb.maxX, aabb.maxY, aabb.maxZ);
+			        GL11.glVertex3d(aabb.minX, aabb.maxY, aabb.maxZ);
+			        GL11.glVertex3d(aabb.maxX, aabb.maxY, aabb.maxZ);
+			        GL11.glVertex3d(aabb.maxX, aabb.maxY, aabb.minZ);
+			        
+			        GL11.glEnd();
+			        
+
+			        if (depth) 
+			        {
+			            GL11.glEnable(GL11.GL_DEPTH_TEST);
+			        }
+			        if (texture) 
+			        {
+			            GL11.glEnable(GL11.GL_TEXTURE_2D);
+			        }
+			        
+			        GL11.glDisable(GL11.GL_BLEND);
+			        GL11.glEnable(GL11.GL_ALPHA_TEST);
+
+			        GL11.glPopMatrix();
+				}
 			}
 		}
 	}
