@@ -6,6 +6,7 @@ import ec3.api.DemonTrade;
 import ec3.common.block.BlockDemonicPentacle;
 import ec3.common.item.ItemsCore;
 import ec3.common.mod.EssentialCraftCore;
+import ec3.common.tile.TileDemonicPentacle;
 import ec3.utils.cfg.Config;
 import DummyCore.Utils.MathUtils;
 import net.minecraft.block.Block;
@@ -111,7 +112,11 @@ public class EntityDemon extends EntityLiving implements IInventory{
 				{
 					Block b = this.worldObj.getBlock(MathHelper.floor_double(posX)+dx, MathHelper.floor_double(posY), MathHelper.floor_double(posZ)+dz);
 					if(b instanceof BlockDemonicPentacle)
-						return;
+					{
+						TileDemonicPentacle tile = (TileDemonicPentacle) this.worldObj.getTileEntity(MathHelper.floor_double(posX)+dx, MathHelper.floor_double(posY), MathHelper.floor_double(posZ)+dz);
+						if(tile.tier >= 0)
+							return;
+					}
 				}
 			}
 			this.attackEntityFrom(DamageSource.outOfWorld, 1);

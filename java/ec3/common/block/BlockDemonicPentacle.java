@@ -51,7 +51,7 @@ public class BlockDemonicPentacle extends BlockContainer{
 	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
 	{
 		TileDemonicPentacle pentacle = (TileDemonicPentacle) par1World.getTileEntity(par2, par3, par4);
-		if(pentacle.consumeEnderstarEnergy(5000))
+		if(pentacle.consumeEnderstarEnergy(666))
 		{
 			EntityDemon demon = new EntityDemon(par1World);
 			demon.setPositionAndRotation(par2+0.5D, par3+0.1D, par4+0.5D, 0, 0);
