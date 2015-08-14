@@ -38,6 +38,15 @@ public class GuiPlayerPentacle extends GuiScreen{
 		{
 			super(id,x,y,sX,sY,name);
 			listIndex = index;
+	    	PlayerGenericData data = ECUtils.getData(Minecraft.getMinecraft().thePlayer);
+	    	ArrayList<ICorruptionEffect> effects = (ArrayList<ICorruptionEffect>) data.getEffects();
+	    	if(effects.size() <= listIndex)
+	    		this.enabled = false;
+	    	else
+	    	{
+	    		if(effects.get(listIndex) == null)
+	    			this.enabled = false;
+	    	}
 		}
 		
 	    public void drawButton(Minecraft mc, int mX, int mY)
@@ -214,7 +223,7 @@ public class GuiPlayerPentacle extends GuiScreen{
         GL11.glColor4f(0F, 0.7F, 1F, 0.6F*opacityIndex);
         GL11.glScalef(2, 2, 2);
         Minecraft.getMinecraft().renderEngine.bindTexture(field_147526_d);
-        drawTexturedModalRect(0, 0, (int)(Minecraft.getMinecraft().theWorld.getWorldTime()%24000L), (int)(Minecraft.getMinecraft().theWorld.getWorldTime()%24000L), res.getScaledWidth(), res.getScaledHeight());
+        drawTexturedModalRect(0, 0, (int)(Minecraft.getMinecraft().thePlayer.ticksExisted%24000L), (int)(Minecraft.getMinecraft().thePlayer.ticksExisted%24000L), res.getScaledWidth(), res.getScaledHeight());
         GL11.glScalef(0.5F, 0.5F, 0.5F);
         GL11.glPopMatrix();
         
