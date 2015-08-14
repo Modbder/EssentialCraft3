@@ -6,6 +6,8 @@ import ec3.utils.common.ECUtils;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,6 +19,9 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldSettings.GameType;
+import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import DummyCore.Utils.Coord3D;
 import DummyCore.Utils.DummyDistance;
 import DummyCore.Utils.MathUtils;
@@ -323,16 +328,28 @@ public class ItemMagicalBuilder extends ItemStoresMRUInNBT
 						else
 							dz = (int) (start.z + z);
 						
+						ItemStack settedTo = setTo != null ? setTo.copy() : new ItemStack(Blocks.air,1,0);
+						
 						if(is.getItemDamage() == 0)
 						{
 							if(e.worldObj.isAirBlock(dx, dy, dz))
 							{
+								if(!e.canPlayerEdit(dx, dy, dz, 0, settedTo))
+									continue;
+								
 								if(!(ECUtils.tryToDecreaseMRUInStorage(e, -25) || this.setMRU(is, -25)))
 									return itemsSet;
 									
-								slotNum = this.decreasePlayerStackInSlot(e, setTo, slotNum);
-								e.worldObj.setBlock(dx, dy, dz, Block.getBlockFromItem(setTo.getItem()), setTo.getItemDamage(), 3);
-								++itemsSet;
+								slotNum = this.decreasePlayerStackInSlot(e, settedTo, slotNum);
+								//e.worldObj.setBlock(dx, dy, dz, Block.getBlockFromItem(setTo.getItem()), setTo.getItemDamage(), 3);
+								if(ForgeHooks.onPlaceItemIntoWorld(settedTo, e, e.worldObj, dx, dy, dz, 0, 0, 0, 0))
+									++itemsSet;
+								else
+								{
+									settedTo.stackSize = 1;
+									if(!e.inventory.addItemStackToInventory(settedTo))
+										e.dropPlayerItemWithRandomChoice(settedTo, false);
+								}
 								
 								if(slotNum == -1)
 									return itemsSet;
@@ -340,19 +357,35 @@ public class ItemMagicalBuilder extends ItemStoresMRUInNBT
 						}
 						if(is.getItemDamage() == 1)
 						{
+							if(!e.canPlayerEdit(dx, dy, dz, 0, settedTo))
+								continue;
+							
 							if(!(ECUtils.tryToDecreaseMRUInStorage(e, -250) || this.setMRU(is, -250)))
 								return itemsSet;
-							if(e.worldObj.getBlock(dx, dy, dz).getBlockHardness(e.worldObj, dx, dy, dz) >= 0)
+							
+							if(e.worldObj.getBlock(dx, dy, dz).getBlockHardness(e.worldObj, dx, dy, dz) >= 0 && !e.worldObj.isRemote)
 							{
-								e.worldObj.getBlock(dx, dy, dz).dropBlockAsItem(e.worldObj, dx, dy, dz, e.worldObj.getBlockMetadata(dx, dy, dz), 0);
-								e.worldObj.setBlockToAir(dx, dy, dz);
-								++itemsSet;
+								GameType type = GameType.SURVIVAL;
+								if(e.capabilities.isCreativeMode)
+									type = GameType.CREATIVE;
+								if(!e.capabilities.allowEdit)
+									type = GameType.ADVENTURE;
+								
+								BreakEvent be = ForgeHooks.onBlockBreakEvent(e.worldObj, type, (EntityPlayerMP) e, dx, dy, dz);
+								if(!be.isCanceled())
+								{
+									e.worldObj.getBlock(dx, dy, dz).dropBlockAsItem(e.worldObj, dx, dy, dz, e.worldObj.getBlockMetadata(dx, dy, dz), 0);
+									e.worldObj.setBlockToAir(dx, dy, dz);
+									++itemsSet;
+								}
 							}
 						}
 						if(is.getItemDamage() == 2)
 						{
-
-							if(e.worldObj.getBlock(dx, dy, dz).getBlockHardness(e.worldObj, dx, dy, dz) >= 0)
+							if(!e.canPlayerEdit(dx, dy, dz, 0, settedTo))
+								continue;
+							
+							if(e.worldObj.getBlock(dx, dy, dz).getBlockHardness(e.worldObj, dx, dy, dz) >= 0 && !e.worldObj.isRemote)
 							{
 								ItemStack worldStack = new ItemStack(e.worldObj.getBlock(dx, dy, dz),1,e.worldObj.getBlockMetadata(dx, dy, dz));
 								if(worldStack != null && setTo.isItemEqual(worldStack))
@@ -360,16 +393,29 @@ public class ItemMagicalBuilder extends ItemStoresMRUInNBT
 									if(!(ECUtils.tryToDecreaseMRUInStorage(e, -250) || this.setMRU(is, -250)))
 										return itemsSet;
 									
-									e.worldObj.getBlock(dx, dy, dz).dropBlockAsItem(e.worldObj, dx, dy, dz, e.worldObj.getBlockMetadata(dx, dy, dz), 0);
-									e.worldObj.setBlockToAir(dx, dy, dz);
-									++itemsSet;
+									GameType type = GameType.SURVIVAL;
+									if(e.capabilities.isCreativeMode)
+										type = GameType.CREATIVE;
+									if(!e.capabilities.allowEdit)
+										type = GameType.ADVENTURE;
+									
+									BreakEvent be = ForgeHooks.onBlockBreakEvent(e.worldObj, type, (EntityPlayerMP) e, dx, dy, dz);
+									if(!be.isCanceled())
+									{
+										e.worldObj.getBlock(dx, dy, dz).dropBlockAsItem(e.worldObj, dx, dy, dz, e.worldObj.getBlockMetadata(dx, dy, dz), 0);
+										e.worldObj.setBlockToAir(dx, dy, dz);
+										++itemsSet;
+									}
 								}
 								worldStack = null;
 							}
 						}
 						if(is.getItemDamage() == 3)
 						{
-							if(e.worldObj.getBlock(dx, dy, dz).getBlockHardness(e.worldObj, dx, dy, dz) >= 0)
+							if(!e.canPlayerEdit(dx, dy, dz, 0, settedTo))
+								continue;
+							
+							if(e.worldObj.getBlock(dx, dy, dz).getBlockHardness(e.worldObj, dx, dy, dz) >= 0 && !e.worldObj.isRemote)
 							{
 								ItemStack worldStack = new ItemStack(e.worldObj.getBlock(dx, dy, dz),1,e.worldObj.getBlockMetadata(dx, dy, dz));
 								if(worldStack != null && !setTo.isItemEqual(worldStack))
@@ -377,42 +423,75 @@ public class ItemMagicalBuilder extends ItemStoresMRUInNBT
 									if(!(ECUtils.tryToDecreaseMRUInStorage(e, -250) || this.setMRU(is, -250)))
 										return itemsSet;
 									
-									e.worldObj.getBlock(dx, dy, dz).dropBlockAsItem(e.worldObj, dx, dy, dz, e.worldObj.getBlockMetadata(dx, dy, dz), 0);
-									e.worldObj.setBlockToAir(dx, dy, dz);
-									++itemsSet;
+									GameType type = GameType.SURVIVAL;
+									if(e.capabilities.isCreativeMode)
+										type = GameType.CREATIVE;
+									if(!e.capabilities.allowEdit)
+										type = GameType.ADVENTURE;
+									
+									BreakEvent be = ForgeHooks.onBlockBreakEvent(e.worldObj, type, (EntityPlayerMP) e, dx, dy, dz);
+									if(!be.isCanceled())
+									{
+										e.worldObj.getBlock(dx, dy, dz).dropBlockAsItem(e.worldObj, dx, dy, dz, e.worldObj.getBlockMetadata(dx, dy, dz), 0);
+										e.worldObj.setBlockToAir(dx, dy, dz);
+										++itemsSet;
+									}
 								}
 								worldStack = null;
 							}
 						}
 						if(is.getItemDamage() == 4)
 						{
+							if(!e.canPlayerEdit(dx, dy, dz, 0, settedTo))
+								continue;
+							
 							if(e.worldObj.isAirBlock(dx, dy, dz))
 							{
 								if(!(ECUtils.tryToDecreaseMRUInStorage(e, -25) || this.setMRU(is, -25)))
 									return itemsSet;
+								
 								slotNum = this.decreasePlayerStackInSlot(e, setTo, slotNum);
-								e.worldObj.setBlock(dx, dy, dz, Block.getBlockFromItem(setTo.getItem()), setTo.getItemDamage(), 3);
-								++itemsSet;
+								
+								if(ForgeHooks.onPlaceItemIntoWorld(settedTo, e, e.worldObj, dx, dy, dz, 0, 0, 0, 0))
+									++itemsSet;
+								else
+								{
+									settedTo.stackSize = 1;
+									if(!e.inventory.addItemStackToInventory(settedTo))
+										e.dropPlayerItemWithRandomChoice(settedTo, false);
+								}
 								
 								if(slotNum == -1)
 									return itemsSet;
 							}else
 							{
-								if(e.worldObj.getBlock(dx, dy, dz).getBlockHardness(e.worldObj, dx, dy, dz) >= 0)
+								if(e.worldObj.getBlock(dx, dy, dz).getBlockHardness(e.worldObj, dx, dy, dz) >= 0 && !e.worldObj.isRemote)
 								{
 									slotNum = this.decreasePlayerStackInSlot(e, setTo, slotNum);
 									
 									if(!(ECUtils.tryToDecreaseMRUInStorage(e, -300) || this.setMRU(is, -300)))
 										return itemsSet;
-									e.worldObj.getBlock(dx, dy, dz).dropBlockAsItem(e.worldObj, dx, dy, dz, e.worldObj.getBlockMetadata(dx, dy, dz), 0);
-									e.worldObj.setBlock(dx, dy, dz, Block.getBlockFromItem(setTo.getItem()), setTo.getItemDamage(), 3);
-									++itemsSet;
+									
+									GameType type = GameType.SURVIVAL;
+									if(e.capabilities.isCreativeMode)
+										type = GameType.CREATIVE;
+									if(!e.capabilities.allowEdit)
+										type = GameType.ADVENTURE;
+									
+									BreakEvent be = ForgeHooks.onBlockBreakEvent(e.worldObj, type, (EntityPlayerMP) e, dx, dy, dz);
+									if(!be.isCanceled())
+									{
+										e.worldObj.getBlock(dx, dy, dz).dropBlockAsItem(e.worldObj, dx, dy, dz, e.worldObj.getBlockMetadata(dx, dy, dz), 0);
+										e.worldObj.setBlock(dx, dy, dz, Block.getBlockFromItem(setTo.getItem()), setTo.getItemDamage(), 3);
+										++itemsSet;
+									}
 									
 									if(slotNum == -1)
 										return itemsSet;
 								}
 							}
 						}
+						settedTo = null;
 					}
 				}
 			}
