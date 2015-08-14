@@ -176,7 +176,7 @@ public class ItemGenericEC3 extends Item{
 	
     public String getUnlocalizedName(ItemStack p_77667_1_)
     {
-        return this.getUnlocalizedName()+names[p_77667_1_.getItemDamage()];
+        return this.getUnlocalizedName()+names[Math.min(p_77667_1_.getItemDamage(), names.length-1)];
     }
     
     public void registerIcons(IIconRegister p_94581_1_)
@@ -189,7 +189,7 @@ public class ItemGenericEC3 extends Item{
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int i)
     {
-        return itemIcons[i];
+        return itemIcons[Math.min(i, itemIcons.length-1)];
     }
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
