@@ -14,6 +14,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -21,7 +22,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class BlockDropsOre extends Block{
 
 	public IIcon[] icons = new IIcon[4];
-	
+	private Random rand = new Random();
+    @Override
+    public int getExpDrop(IBlockAccess p_149690_1_, int p_149690_5_, int p_149690_7_)
+    {
+    	return MathHelper.getRandomIntegerInRange(rand, 0, 2);
+    }
 	
 	@Override
     @SideOnly(Side.CLIENT)

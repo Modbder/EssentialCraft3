@@ -12,6 +12,11 @@ public class EntityPlayerClone extends EntityZombie{
 	public EntityPlayerClone(World w) 
 	{
 		super(w);
+		this.equipmentDropChances[0] = 0;
+		this.equipmentDropChances[1] = 0;
+		this.equipmentDropChances[2] = 0;
+		this.equipmentDropChances[3] = 0;
+		this.equipmentDropChances[4] = 0;
 	}
 	
     protected Entity findPlayerToAttack()
@@ -23,6 +28,11 @@ public class EntityPlayerClone extends EntityZombie{
     {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(2.0D);
+    }
+    
+    protected void dropEquipment(boolean p_82160_1_, int p_82160_2_)
+    {
+    	//...
     }
     
 	@Override
