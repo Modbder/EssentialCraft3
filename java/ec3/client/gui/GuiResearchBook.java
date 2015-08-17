@@ -48,7 +48,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public class GuiResearchBook extends GuiScreen{
 	
-	 protected static RenderItem itemRender = new RenderItem();
+	 public static RenderItem itemRender = new RenderItem();
 	 
 	 public int currentDepth;
 	 public static int currentPage;
