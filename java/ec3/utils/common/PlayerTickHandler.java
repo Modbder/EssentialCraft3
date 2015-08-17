@@ -474,13 +474,13 @@ public class PlayerTickHandler{
 					e.addPotionEffect(new PotionEffect(Potion.fireResistance.id,100,0,true));
 			}
 			
-			if(e.inventory.armorInventory[0] != null && (e.inventory.armorInventory[0].getItem() instanceof ItemGenericArmor || e.inventory.armorInventory[0].getItem() instanceof ItemComputerArmor) && (!isWearingBoots.get(e) || e.stepHeight < 1F))
+			if(e.inventory.armorInventory[0] != null && (e.inventory.armorInventory[0].getItem() instanceof ItemGenericArmor || e.inventory.armorInventory[0].getItem() instanceof ItemComputerArmor || e.inventory.armorInventory[0].getItem() == ItemsCore.magicArmorItems[7]) && (!isWearingBoots.get(e) || e.stepHeight < 1F))
 			{
 				isWearingBoots.put(e, true);
 				e.stepHeight = 1F;
 			}
 			
-			if((e.inventory.armorInventory[0] == null || !(e.inventory.armorInventory[0].getItem() instanceof ItemGenericArmor || e.inventory.armorInventory[0].getItem() instanceof ItemComputerArmor)) && isWearingBoots.get(e))
+			if((e.inventory.armorInventory[0] == null || !(e.inventory.armorInventory[0].getItem() instanceof ItemGenericArmor || e.inventory.armorInventory[0].getItem() instanceof ItemComputerArmor || e.inventory.armorInventory[0].getItem() == ItemsCore.magicArmorItems[7])) && isWearingBoots.get(e))
 			{
 				isWearingBoots.put(e, false);
 				e.stepHeight = 0.5F;

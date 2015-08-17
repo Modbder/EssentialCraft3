@@ -76,7 +76,7 @@ public class ItemArmorMod extends ItemArmor implements IRepairable, IVisDiscount
     		mods.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), new AttributeModifier(UUID.fromString("1bca943c-3cf5-42cc-a3df-2ed994ae0000"), "hp", 20D, 0));
     	
     	if(this == ItemsCore.magicArmorItems[7])
-    		mods.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(UUID.fromString("1bca943c-3cf5-42cc-a3df-2ed994ae0000"), "movespeed", 0.05D, 0));
+    		mods.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(UUID.fromString("1bca943c-3cf5-42cc-a3df-2ed994ae0000"), "movespeed", 0.075D, 0));
     	
     	if(this == ItemsCore.magicArmorItems[9])
     		mods.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), new AttributeModifier(UUID.fromString("1bca943c-3cf5-42cc-a3df-2ed994ae0000"), "hp", 30D, 0));
@@ -206,7 +206,7 @@ public class ItemArmorMod extends ItemArmor implements IRepairable, IVisDiscount
 			if(mru > 0)
 			{
                 ItemArmor aarmor = (ItemArmor)armor.getItem();
-                return new ArmorProperties(0, aarmor.damageReduceAmount / 25D, aarmor.getMaxDamage() + 1 - armor.getItemDamage());
+                return new ArmorProperties(0, aarmor.damageReduceAmount / 20D, aarmor.getMaxDamage() + 1 - armor.getItemDamage());
 			}else
 				return new ArmorProperties(0,0,armor.getMaxDamage() + 1 - armor.getItemDamage());
 		}
@@ -229,7 +229,7 @@ public class ItemArmorMod extends ItemArmor implements IRepairable, IVisDiscount
 			if(entity instanceof EntityPlayer)
 			{
 				EntityPlayer p = (EntityPlayer) entity;
-				if(ECUtils.tryToDecreaseMRUInStorage(p, -damage*1000) || this.setMRU(stack, -damage*1000))
+				if(ECUtils.tryToDecreaseMRUInStorage(p, -damage*800) || this.setMRU(stack, -damage*800))
 				{
 					
 				}else
