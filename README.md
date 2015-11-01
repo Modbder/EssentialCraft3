@@ -1,6 +1,6 @@
 # EssentialCraft3
-EssentialCraft3 is a huge magic themed industrial mod, which adds a lot of content to the game. New energy, recipes, tools, armor, devices, bosses - event new dimension exists!
+EssentialCraft 3 is a huge magic themed industrial mod, which adds a lot of content to the game. A new energy system, recipes, tools, armor, devices, bosses - even a new dimension exists!
 
-Feel free to report bugs. However, please, attach a crashreport when reporting bugs!
+Feel free to report bugs. However, please, attach a crash report when reporting bugs!
 
-Essentialcraft is redistributed under CreativeCommons 4.0 share-alike license(http://creativecommons.org/licenses/by-sa/4.0/)
+EssentialCraft is redistributed under CreativeCommons 4.0 share-alike license. license(http://creativecommons.org/licenses/by-sa/4.0/)
