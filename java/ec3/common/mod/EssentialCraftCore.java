@@ -47,7 +47,7 @@ import ec3.utils.common.CommandSetMRU;
 		modid = EssentialCraftCore.modid,
 		name = "EssentialCraftIII",
 		version = EssentialCraftCore.version,
-		dependencies = "required-after:DummyCore@[1.12,);",
+		dependencies = "required-after:DummyCore@[1.12,);after:Baubles",
 		guiFactory = "ec3.client.regular.ModConfigGuiHandler"
 	)
 public class EssentialCraftCore {
