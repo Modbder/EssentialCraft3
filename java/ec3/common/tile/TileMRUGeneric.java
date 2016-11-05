@@ -270,7 +270,7 @@ public abstract class TileMRUGeneric extends TileEntity implements ITERequiresMR
 							++cnt;
 						}else
 						{
-							if(!MathUtils.arrayContains(getOutputSlots(), i))
+							if(!slot0IsBoundGem && !MathUtils.arrayContains(getOutputSlots(), i))
 							{
 								if(cnt < retInt.length)
 									retInt[cnt] = i;
