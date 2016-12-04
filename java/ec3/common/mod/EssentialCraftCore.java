@@ -6,6 +6,7 @@ import java.util.Arrays;
 import net.minecraft.command.CommandHandler;
 import net.minecraft.server.MinecraftServer;
 import DummyCore.Core.Core;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -34,6 +35,7 @@ import ec3.common.registry.ResearchRegistry;
 import ec3.common.registry.StructureRegistry;
 import ec3.common.registry.VillagersRegistry;
 import ec3.common.world.WorldGenManager;
+import ec3.integration.minetweaker.MTRegistry;
 import ec3.integration.rotarycraft.RCLoadingHandler;
 import ec3.integration.versionChecker.Check;
 import ec3.integration.waila.WailaInitialiser;
@@ -97,6 +99,23 @@ public class EssentialCraftCore {
 		Check.checkerCommit();
 		WailaInitialiser.sendIMC();
 		RCLoadingHandler.runPreInitChecks();
+		
+		if(Loader.isModLoaded("MineTweaker3"))
+		{
+			try
+			{
+		        MTRegistry.init();
+			}
+			catch(Exception ex)
+			{
+				System.out.println("[EssentialCraft3]Unable to add MineTweaker3 integration!");
+				System.out.println(ex.getMessage());
+				ex.printStackTrace();
+			}
+		}
+		else
+			System.out.println("[EssentialCraft3]Unable to add MineTweaker3 integration - mod not found");
+			
 	}
 	
 	@EventHandler
