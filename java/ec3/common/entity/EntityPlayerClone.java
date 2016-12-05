@@ -3,12 +3,15 @@ package ec3.common.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
 public class EntityPlayerClone extends EntityZombie{
 
+	public EntityPlayer playerToAttack = null;
+	
 	public EntityPlayerClone(World w) 
 	{
 		super(w);
@@ -19,9 +22,10 @@ public class EntityPlayerClone extends EntityZombie{
 		this.equipmentDropChances[4] = 0;
 	}
 	
-    protected Entity findPlayerToAttack()
+    public Entity findPlayerToAttack()
     {
-        return this.worldObj.getClosestVulnerablePlayerToEntity(this, 16);
+    	playerToAttack = this.worldObj.getClosestVulnerablePlayerToEntity(this, 16);
+        return playerToAttack;
     }
 	
     protected void applyEntityAttributes()
@@ -66,3 +70,4 @@ public class EntityPlayerClone extends EntityZombie{
     }
 
 }
+
